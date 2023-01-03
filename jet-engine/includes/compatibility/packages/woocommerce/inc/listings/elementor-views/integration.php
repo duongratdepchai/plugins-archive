@@ -43,9 +43,12 @@ class Integration {
 		$widget->add_control(
 			'dynamic_link_add_to_cart_quantity',
 			[
-				'label'   => __( 'Quantity', 'elementor-pro' ),
-				'type'    => \Elementor\Controls_Manager::NUMBER,
-				'default' => 1,
+				'label'     => __( 'Quantity', 'elementor-pro' ),
+				'type'      => \Elementor\Controls_Manager::NUMBER,
+				'default'   => 1,
+				'condition' => [
+					'dynamic_link_source' => 'add_to_cart',
+				],
 			]
 		);
 

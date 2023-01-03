@@ -82,6 +82,11 @@
 			opacity: .5;
 		}
 	}
+	&__items {
+		pre {
+			white-space: pre-wrap;
+		}
+	}
 }
 
 .cx-vui-component.cx-vui-component--query-fullwidth {

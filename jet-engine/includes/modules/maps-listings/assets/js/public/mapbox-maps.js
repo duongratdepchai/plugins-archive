@@ -47,7 +47,7 @@ window.JetEngineMapsProvider = function() {
 		let settingsMap = {
 			zoom: 'zoom',
 			center: 'center',
-			scrollwheel: 'scrollWheelZoom',
+			cooperativeGestures: 'scrollwheel',
 			zoomControl: 'zoomControl',
 			style: 'styles',
 			maxZoom: 'maxZoom',

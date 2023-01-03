@@ -1314,7 +1314,7 @@
 									@input="setConditionProp( currentConditionIndex, conditionIndex, 'value', $event )"
 									:remote="isGlossaryField( currentConditionIndex, conditionIndex )"
 									:remote-callback="getGlossaryFields.bind( this, currentConditionIndex, conditionIndex )"
-									:remote-trigger="'2'"
+									:remote-trigger="2"
 									:conditions="[
 										{
 											'input':   getConditionFieldType( currentConditionIndex, conditionIndex ),
@@ -1338,7 +1338,7 @@
 									@input="setConditionProp( currentConditionIndex, conditionIndex, 'values', $event )"
 									:remote="isGlossaryField( currentConditionIndex, conditionIndex )"
 									:remote-callback="getGlossaryFields.bind( this, currentConditionIndex, conditionIndex )"
-									:remote-trigger="'2'"
+									:remote-trigger="2"
 									:conditions="[
 										{
 											'input':   getConditionFieldType( currentConditionIndex, conditionIndex ),

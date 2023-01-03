@@ -857,4 +857,13 @@ class SQL_Query extends Base_Query {
 		$this->current_query = null;
 	}
 
+	public function before_preview_body() {
+		print_r( $this->wpdb()->last_query . "\n\n" );
+
+		if ( $this->wpdb()->last_error ) {
+			print_r( esc_html__( 'ERROR:' ) . "\n" );
+			print_r( $this->wpdb()->last_error . "\n\n" );
+		}
+	}
+
 }

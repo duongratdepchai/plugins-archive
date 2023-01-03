@@ -250,7 +250,7 @@ class Query {
 	 * Returns slug of currently queried user.
 	 *
 	 * Will return:
-	 * - for user loops will return URL of apropriate user in loop
+	 * - for user loops will return URL of appropriate user in loop
 	 * - queried user slug for single user page
 	 * - current user slug for other cases
 	 *
@@ -303,6 +303,20 @@ class Query {
 	 * @return [type] [description]
 	 */
 	public function get_queried_user_id() {
+
+		$user = apply_filters( 'jet-engine/profile-builder/query/pre-get-queried-user', null );
+
+		if ( ! $user ) {
+			$listing = jet_engine()->listings->data->get_listing_source();
+
+			if ( 'users' === $listing ) {
+				$user = jet_engine()->listings->data->get_current_object();
+			}
+		}
+
+		if ( $user && ( $user instanceof \WP_User ) ) {
+			return absint( $user->ID );
+		}
 
 		if ( null !== $this->queried_user_id ) {
 			return $this->queried_user_id;

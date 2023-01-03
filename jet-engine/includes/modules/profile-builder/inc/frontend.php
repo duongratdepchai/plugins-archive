@@ -198,7 +198,11 @@ class Frontend {
 			if ( 1 < count( $profile_page ) ) {
 				$this->maybe_set_user_obj_by_context();
 
-				$url = Module::instance()->settings->get_subpage_url( $profile_page[1], $profile_page[0] );
+				if ( $this->is_subpage_url_visible( $profile_page[1], $profile_page[0] ) ) {
+					$url = Module::instance()->settings->get_subpage_url( $profile_page[1], $profile_page[0] );
+				} else {
+					$url = null;
+				}
 
 				$this->maybe_reset_user_obj_by_context();
 			}
@@ -206,6 +210,30 @@ class Frontend {
 		}
 
 		return $url;
+	}
+
+	public function is_subpage_url_visible( $slug = null, $page = 'account_page' ) {
+
+		$page_data    = Module::instance()->settings->get_subpage_data( $slug, $page );
+		$page_visible = Module::instance()->query->is_subpage_visible( $page_data );
+
+		if ( ! $page_visible ) {
+			return false;
+		}
+
+		$slug    = Module::instance()->query->get_queried_user_slug();
+		$rewrite = Module::instance()->settings->get( 'user_page_rewrite', 'login' );
+		$rewrite = ( 'user_nicename' === $rewrite ) ? 'slug' : $rewrite;
+
+		$user = get_user_by( $rewrite, $slug );
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		$roles_intersect = empty( $page_data['roles'] ) ? $user->roles : array_intersect( $user->roles, $page_data['roles'] );
+
+		return ! empty( $roles_intersect );
 	}
 
 	public function maybe_set_user_obj_by_context() {

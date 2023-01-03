@@ -334,18 +334,7 @@ class Settings {
 			return false;
 		} else {
 
-			$pages = ( 'single_user_page' === $page ) ? $this->get( $this->user_key, array() ) : $this->get( $this->account_key, array() );
-
-			if ( ! empty( $pages ) ) {
-
-				$pages     = array_values( $pages );
-				$page_data = $pages[0];
-
-				/*if ( $page_data['slug'] === $slug ) {
-					$slug = null;
-				}*/
-
-			}
+			$page_data = $this->get_subpage_data( $slug, $page );
 
 			$url = ! empty( $slug ) ? $page_url . $slug . '/' : $page_url;
 
@@ -353,6 +342,34 @@ class Settings {
 
 		}
 
+	}
+
+	/**
+	 * Return the subpage data by passed page name and subpage slug.
+	 *
+	 * @param null   $slug
+	 * @param string $page
+	 *
+	 * @return mixed
+	 */
+	public function get_subpage_data( $slug = null, $page = 'account_page' ) {
+
+		$page_data = null;
+		$pages     = ( 'single_user_page' === $page ) ? $this->get( $this->user_key, array() ) : $this->get( $this->account_key, array() );
+
+		if ( ! empty( $pages ) ) {
+
+			$pages = array_values( $pages );
+
+			foreach ( $pages as $_page ) {
+				if ( ! empty( $_page['slug'] ) && $_page['slug'] === $slug ) {
+					$page_data = $_page;
+					break;
+				}
+			}
+		}
+
+		return $page_data;
 	}
 
 	/**

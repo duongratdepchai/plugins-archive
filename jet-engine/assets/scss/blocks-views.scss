@@ -106,6 +106,10 @@
 	}
 	.components-panel__body {
 		width: 200px;
+
+		&.is-opened > .components-panel__body-title {
+			margin: 0 0 5px 0;
+		}
 	}
 	.components-base-control__help {
 		margin-top: 0;

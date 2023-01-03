@@ -1055,7 +1055,7 @@ if ( ! class_exists( 'Jet_Engine_Listings_Data' ) ) {
 					
 					$meta_value = $this->get_meta( $source_field, $this->get_current_object(), 'object' );
 
-					if ( empty( $meta_value ) ) {
+					if ( empty( $meta_value ) || ! is_array( $meta_value ) ) {
 						return false;
 					}
 
@@ -1077,7 +1077,7 @@ if ( ! class_exists( 'Jet_Engine_Listings_Data' ) ) {
 
 					$meta_value = $this->get_option( $source_option );
 
-					if ( empty( $meta_value ) ) {
+					if ( empty( $meta_value ) || ! is_array( $meta_value ) ) {
 						return false;
 					}
 

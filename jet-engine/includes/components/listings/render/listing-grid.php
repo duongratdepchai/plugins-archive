@@ -39,6 +39,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				'use_load_more'            => '',
 				'load_more_id'             => '',
 				'load_more_type'           => 'click',
+				'load_more_offset'         => null,
 				'loader_text'              => '',
 				'loader_spinner'           => '',
 				'use_custom_post_types'    => '',
@@ -1139,7 +1140,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 			if ( 'acf' === $repeater_source ) {
 				$count = $meta_value;
 			} else {
-				$count = count( $meta_value );
+				$count = is_array( $meta_value ) ? count( $meta_value ) : 0;
 			}
 
 			$query = array_fill( 0, $count, $current_object );
@@ -1223,6 +1224,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 					'use_load_more'            => ! empty( $settings['use_load_more'] ) ? $settings['use_load_more'] : '',
 					'load_more_id'             => ! empty( $settings['load_more_id'] ) ? $settings['load_more_id'] : '',
 					'load_more_type'           => ! empty( $settings['load_more_type'] ) ? $settings['load_more_type'] : 'click',
+					'load_more_offset'         => ! empty( $settings['load_more_offset'] ) ? $settings['load_more_offset'] : null,
 					'use_custom_post_types'    => ! empty( $settings['use_custom_post_types'] ) ? $settings['use_custom_post_types'] : '',
 					'custom_post_types'        => ! empty( $settings['custom_post_types'] ) ? $settings['custom_post_types'] : array(),
 					'hide_widget_if'           => ! empty( $settings['hide_widget_if'] ) ? $settings['hide_widget_if'] : '',

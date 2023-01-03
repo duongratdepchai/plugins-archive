@@ -173,8 +173,11 @@ registerBlockType( 'jet-engine/dynamic-link', {
 								{ customComtrols && customComtrols.length && customComtrols.map( ( control ) => {
 									return <CustomControl
 										control={ control }
-										value={ attributes[control.name] }
-										attributes={attributes}
+										value={ attributes[ control.name ] }
+										getValue={ ( name ) => {
+											return attributes[ name ];
+										} }
+										condition={ control.condition }
 										onChange={ newValue => {
 											props.setAttributes( { [control.name]: newValue } );
 										} }

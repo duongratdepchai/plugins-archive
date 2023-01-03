@@ -53,6 +53,8 @@ if ( ! class_exists( 'Jet_Engine_Listings_Ajax_Handlers' ) ) {
 
 			define( 'DOING_AJAX', true );
 
+			do_action( 'jet-engine/ajax-handlers/referrer/request' );
+
 			$action = 'jet_engine_ajax';
 
 			if ( ! empty( $_REQUEST['jet_engine_action'] ) ) {

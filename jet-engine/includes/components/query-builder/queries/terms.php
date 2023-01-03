@@ -49,6 +49,8 @@ class Terms_Query extends Base_Query {
 				$args['orderby'] = $clause_name;
 			}
 		}
+		
+		$args['hide_empty'] = ! empty( $args['hide_empty'] ) ? filter_var( $args['hide_empty'], FILTER_VALIDATE_BOOLEAN ) : false;
 
 		$args_replacer = new Empty_Items_Replacer( $args, array( 'include', 'exclude', 'object_ids' ) );
 

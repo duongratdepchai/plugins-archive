@@ -1,5 +1,20 @@
 # ChangeLog
 
+## 3.0.9.1
+* FIX: profile page url in the Dynamic Link;
+* FIX: providers issue in the Map Listing module.
+
+## 3.0.9
+* ADD: Output SQL request in preview for SQL query;
+* ADD: Allow to style Not found Message in Listing Grid;
+* ADD: Infinite scroll offset option for Listing Grid;
+* UPD: Allow to control zoom on scrool behavior for Leaflet and Map Box providers;
+* FIX: Better check conditional rules for Profile Builder pages;
+* FIX: Correctly save root object on JetEngine AJAX requests;
+* FIX: Query builder, Terms query. Hide empty terms option behavior;
+* FIX: Filter field output Callbacks for blocks editor;
+* FIX: PHP warning in some cases.
+
 ## 3.0.8
 * ADD: Save as timestamp setting for date fields inside repeaters;
 * ADD: Quantity input for Add to cart source in Dynamic link widget;

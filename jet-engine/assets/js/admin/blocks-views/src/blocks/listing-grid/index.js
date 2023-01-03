@@ -330,6 +330,16 @@ registerBlockType( 'jet-engine/listing-grid', {
 									} }
 								/>
 							}
+							{ attributes.use_load_more && attributes.load_more_type && 'scroll' === attributes.load_more_type &&
+								<TextControl
+									type="number"
+									label={ __( 'Load more offset' ) }
+									value={ attributes.load_more_offset }
+									onChange={ newValue => {
+										props.setAttributes( { load_more_offset: Number(newValue) } );
+									} }
+								/>
+							}
 							{ attributes.use_load_more &&
 								<div>
 									<TextControl

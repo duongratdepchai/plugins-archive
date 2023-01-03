@@ -953,14 +953,12 @@
 
 						if ( ( ! window.elementorFrontend || ! window.elementorFrontend.isEditMode() ) && ! $slider.length ) {
 
-							$( window )
-								.off( 'scroll.JetEngineInfinityScroll/' + widgetID )
-								.on( 'scroll.JetEngineInfinityScroll/' + widgetID, JetEngine.debounce( 250, JetEngine.handleInfiniteScroll.bind( {
-									container: $listing,
-									settings:  navSettings,
-									masonry:   $masonry,
-									slider:    $slider,
-								} ) ) );
+							JetEngine.handleInfiniteScroll( {
+								container: $listing,
+								settings:  navSettings,
+								masonry:   $masonry,
+								slider:    $slider,
+							} );
 
 						}
 
@@ -1221,13 +1219,12 @@
 
 		},
 
-		handleInfiniteScroll: function( event ) {
-			var self     = this,
-				$wrapper = self.container.closest( '.jet-listing-grid' ),
-				page     = parseInt( self.container.data( 'page' ), 10 ),
-				pages    = parseInt( self.container.data( 'pages' ), 10 );
+		handleInfiniteScroll: function( args ) {
+			var $wrapper = args.container.closest( '.jet-listing-grid' ),
+				page     = parseInt( args.container.data( 'page' ), 10 ),
+				pages    = parseInt( args.container.data( 'pages' ), 10 );
 
-			if ( self.container.hasClass( 'jet-listing-not-found' ) ) {
+			if ( args.container.hasClass( 'jet-listing-not-found' ) ) {
 				return;
 			}
 
@@ -1235,40 +1232,83 @@
 				return;
 			}
 
-			if ( JetEngine.lazyLoading ) {
-				return;
+			var $trigger   = $wrapper.find( '.jet-listing-grid__loader' ),
+				preventCSS = !! $trigger.length, // Prevent CSS if listing has the loader.
+				offset     = '0%';
+
+			if ( ! $trigger.length ) {
+				$trigger = $( '<div>', {
+					class: 'jet-listing-grid__loading-trigger'
+				} );
+
+				$wrapper.append( $trigger );
 			}
 
-			if ( ! self.container.outerHeight() ) {
-				return;
+			// Prepare ofsset value.
+			if ( args.settings.widget_settings && args.settings.widget_settings.load_more_offset ) {
+				var offsetValue = args.settings.widget_settings.load_more_offset;
+
+				switch ( typeof offsetValue ) {
+					case 'object':
+						var size = offsetValue.size ? offsetValue.size : '0',
+							unit = offsetValue.unit ? offsetValue.unit : 'px';
+
+						offset = size + unit;
+						break;
+
+					case 'number':
+					case 'string':
+						offset = offsetValue + 'px';
+						break;
+				}
 			}
 
-			if ( $( window ).scrollTop() + $( window ).outerHeight() < self.container.offset().top + self.container.outerHeight() ) {
-				return;
-			}
+			var observer = new IntersectionObserver(
+					function( entries, observer ) {
 
-			page++;
-			JetEngine.lazyLoading = true;
-			$wrapper.addClass( 'jet-listing-grid-loading' );
+						if ( entries[0].isIntersecting ) {
 
-			JetEngine.ajaxGetListing( {
-				handler: 'listing_load_more',
-				container: self.container,
-				masonry: self.masonry,
-				slider: self.slider,
-				append: true,
-				query: self.settings.query,
-				widgetSettings: self.settings.widget_settings,
-				page: page,
-			}, function( response ) {
-				JetEngine.lazyLoading = false;
-				$wrapper.removeClass( 'jet-listing-grid-loading' );
-				$( document ).trigger( 'jet-engine/listing-grid/after-load-more', [ self, response ] );
-			}, function() {
-				JetEngine.lazyLoading = false;
-				$wrapper.removeClass( 'jet-listing-grid-loading' );
-			} );
+							page++;
+							JetEngine.lazyLoading = true;
+							$wrapper.addClass( 'jet-listing-grid-loading' );
 
+							JetEngine.ajaxGetListing( {
+								handler:        'listing_load_more',
+								container:      args.container,
+								masonry:        args.masonry,
+								slider:         args.slider,
+								append:         true,
+								query:          args.settings.query,
+								widgetSettings: args.settings.widget_settings,
+								page:           page,
+								preventCSS:     preventCSS,
+							}, function( response ) {
+								JetEngine.lazyLoading = false;
+								$wrapper.removeClass( 'jet-listing-grid-loading' );
+								$( document ).trigger( 'jet-engine/listing-grid/after-load-more', [args, response] );
+
+								// Reinit observer if the last page is not loaded
+								if ( page !== pages ) {
+									setTimeout( function() {
+										observer.observe( entries[0].target );
+									}, 250 );
+								}
+
+							}, function() {
+								JetEngine.lazyLoading = false;
+								$wrapper.removeClass( 'jet-listing-grid-loading' );
+							} );
+
+							// Detach observer
+							observer.unobserve( entries[0].target );
+						}
+					},
+					{
+						rootMargin: '0% 0% ' + offset + ' 0%',
+					}
+				);
+
+			observer.observe( $trigger[0] );
 		},
 
 		lazyLoadListing: function( args ) {

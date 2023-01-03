@@ -31,6 +31,7 @@ class Jet_Engine_Objects_Stack {
 	public function __construct() {
 		add_action( 'wp', array( $this, 'save_root' ) );
 		add_action( 'jet-smart-filters/referrer/request', array( $this, 'save_root' ) );
+		add_action( 'jet-engine/ajax-handlers/referrer/request', array( $this, 'save_root' ) );
 		add_action( 'jet-engine/listings/data/set-current-object', array( $this, 'ensure_root' ) );
 		add_action( 'jet-engine/listings/frontend/setup-data', array( $this, 'increase_stack' ) );
 		add_action( 'jet-engine/listings/frontend/object-done', array( $this, 'decrease_stack' ) );

@@ -16,13 +16,13 @@ class CustomControl extends Component {
 
 	isEnabled() {
 
-		if ( ! this.props.control.condition ) {
+		if ( ! this.props.condition ) {
 			return true;
 		}
 
-		for ( var field in this.props.control.condition ) {
+		for ( var field in this.props.condition ) {
 
-			var compare        = this.props.control.condition[ field ];
+			var compare        = this.props.condition[ field ];
 			var checked        = true;
 			var isNotEqualCond = field.includes( '!' );
 
@@ -34,7 +34,7 @@ class CustomControl extends Component {
 				field = this.props.prefix + field;
 			}
 
-			var fieldVal = this.props.attributes[ field ];
+			var fieldVal = this.props.getValue( field, this.props.attr, this.props.attributes );
 
 			if ( isNotEqualCond ) {
 				if ( Array.isArray( compare ) ) {

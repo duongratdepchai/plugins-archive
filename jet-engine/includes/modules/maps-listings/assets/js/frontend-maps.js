@@ -237,11 +237,17 @@
 			}
 
 			if ( general.advanced ) {
+				
 				if ( general.advanced.zoom_control ) {
 					mapSettings.gestureHandling = general.advanced.zoom_control;
 				} else {
 					mapSettings.scrollwheel = false;
 				}
+
+				if ( undefined !== general.advanced.scrollwheel ) {
+					mapSettings.scrollwheel = general.advanced.scrollwheel;
+				}
+
 			}
 
 			map    = mapProvider.initMap( $container[0], mapSettings );

@@ -955,7 +955,7 @@ if ( ! class_exists( 'Jet_Engine_Listings' ) ) {
 						$widget->prevent_icon = true;
 					}
 
-					$divider     = filter_var( $settings['checklist_divider'], FILTER_VALIDATE_BOOLEAN );
+					$divider     = ! empty( $settings['checklist_divider'] ) ? filter_var( $settings['checklist_divider'], FILTER_VALIDATE_BOOLEAN ) : false;
 					$glossary_id = ! empty( $settings['labels_by_glossary'] ) ? $settings['labels_by_glossary'] : false;
 
 					$args = array( $result, $icon, $cols, $divider, $glossary_id );

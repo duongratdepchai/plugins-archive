@@ -648,7 +648,7 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 
 		$permalink_structure = get_option( 'permalink_structure' );
 
-		$general = array(
+		$general = apply_filters( 'jet-engine/maps-listings/data-settings', array(
 			'api'              => jet_engine()->api->get_route( 'get-map-marker-info', true ),
 			'restNonce'        => wp_create_nonce( 'wp_rest' ),
 			'listingID'        => $listing_id,
@@ -667,7 +667,7 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 			'advanced'         => array(
 				'zoom_control' => ! empty( $settings['zoom_control'] ) ? $settings['zoom_control'] : 'auto',
 			),
-		);
+		), $settings, $this );
 
 		if ( ! empty( $settings['custom_style'] ) ) {
 			$decoded = json_decode( $settings['custom_style'] );

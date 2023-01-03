@@ -129,6 +129,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 					'type' => 'string',
 					'default' => '',
 				),
+				'load_more_offset' => array(
+					'type' => 'number',
+					'default' => 0,
+				),
 				'loader_text' => array(
 					'type' => 'string',
 					'default' => '',
@@ -604,6 +608,39 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 					'separator'    => 'before',
 					'css_selector' => array(
 						'{{WRAPPER}} .jet-listing-grid__slider .jet-slick-dots li.slick-active' => 'background: {{VALUE}}',
+					),
+				)
+			);
+
+			$this->controls_manager->end_section();
+
+			$this->controls_manager->start_section(
+				'style_controls',
+				array(
+					'title' => __( 'Not Found Message', 'jet-engine' ),
+					'id'    => 'section_not_found_style',
+				)
+			);
+
+			$this->controls_manager->add_control(
+				array(
+					'id'           => 'not_found_typography',
+					'label'        => __( 'Typography', 'jet-engine' ),
+					'type'         => 'typography',
+					'css_selector' => array(
+						'{{WRAPPER}} .jet-listing-not-found' => 'font-family: {{FAMILY}}; font-weight: {{WEIGHT}}; text-transform: {{TRANSFORM}}; font-style: {{STYLE}}; text-decoration: {{DECORATION}}; line-height: {{LINEHEIGHT}}{{LH_UNIT}}; letter-spacing: {{LETTERSPACING}}{{LS_UNIT}}; font-size: {{SIZE}}{{S_UNIT}};',
+					),
+				)
+			);
+
+			$this->controls_manager->add_control(
+				array(
+					'id'           => 'not_found_color',
+					'label'        => __( 'Color', 'jet-engine' ),
+					'type'         => 'color-picker',
+					'separator'    => 'before',
+					'css_selector' => array(
+						'{{WRAPPER}} .jet-listing-not-found' => 'color: {{VALUE}}',
 					),
 				)
 			);

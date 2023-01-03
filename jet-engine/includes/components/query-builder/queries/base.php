@@ -469,4 +469,6 @@ abstract class Base_Query {
 		return $args;
 	}
 
+	public function before_preview_body() {}
+
 }
