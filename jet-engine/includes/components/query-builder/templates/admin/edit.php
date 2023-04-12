@@ -18,7 +18,7 @@
 		<div class="cx-vui-panel">
 			<cx-vui-input
 				:label="'<?php _e( 'Name', 'jet-engine' ); ?>'"
-				:description="'<?php _e( 'Name of Custom Content Type will be shown in the admin menu`', 'jet-engine' ); ?>'"
+				:description="'<?php _e( 'Name of Query will be shown in the admin menu', 'jet-engine' ); ?>'"
 				:wrapper-css="[ 'equalwidth' ]"
 				:size="'fullwidth'"
 				:error="errors.name"

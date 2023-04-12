@@ -23,7 +23,7 @@ if ( ! class_exists( 'Jet_Engine_Compatibility' ) ) {
 		 * Constructor for the class
 		 */
 		function __construct() {
-			add_action( 'init', array( $this, 'load_compat_packages' ) );
+			add_action( 'init', array( $this, 'load_compat_packages' ), -1 );
 		}
 
 		/**
@@ -46,7 +46,7 @@ if ( ! class_exists( 'Jet_Engine_Compatibility' ) ) {
 					'cb'   => 'function_exists',
 					'args' => 'jet_advanced_list_block_init',
 				),
-				'acf.php' => array(
+				'acf/acf.php' => array(
 					'cb'   => 'class_exists',
 					'args' => 'acf',
 				),

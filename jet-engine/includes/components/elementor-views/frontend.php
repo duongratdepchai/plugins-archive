@@ -19,12 +19,11 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 	 */
 	class Jet_Engine_Elementor_Frontend {
 
-		private $processed_listing_id = null;
-		private $css_added = array();
-
-		private $reset_excerpt_flag = false;
-
-		private $inner_templates = array();
+		protected $processed_listing_id = null;
+		protected $css_added = array();
+		protected $reset_excerpt_flag = false;
+		protected $inner_templates = array();
+		protected $not_found_templates = array();
 
 		/**
 		 * Constructor for the class
@@ -46,6 +45,11 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			add_action( 'jet-engine/ajax-handlers/before-call-handler', array( $this, 'register_assets_on_ajax' ) );
 
 			add_filter( 'jet-engine/listing/frontend/js-settings', array( $this, 'modify_localize_data' ) );
+			add_filter( 'jet-engine/listing/content/elementor', array( $this, 'get_listing_content_cb' ), 10, 2 );
+
+			// Print a template styles if the "Not found message" contains elementor shortcodes.
+			add_action( 'jet-engine/listing/grid/not-found/before', array( $this, 'find_not_found_templates' ) );
+			add_action( 'jet-engine/listing/grid/not-found/after',  array( $this, 'print_not_found_templates_css' ) );
 		}
 
 		/**
@@ -120,6 +124,10 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			}
 
 			$this->css_added[] = $post_id;
+		}
+
+		public function get_listing_content_cb( $result, $listing_id ) {
+			return $this->get_listing_content( $listing_id );
 		}
 
 		/**
@@ -424,6 +432,37 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			if ( ! in_array( $id, $this->css_added ) ) {
 				$this->css_added[] = $id;
 			}
+		}
+
+		public function find_not_found_templates() {
+			add_filter( 'pre_do_shortcode_tag', array( $this, 'store_not_found_templates' ), 10, 3 );
+		}
+
+		public function print_not_found_templates_css() {
+
+			if ( ! empty( $this->not_found_templates ) ) {
+
+				foreach ( $this->not_found_templates as $template_id ) {
+					$this->maybe_add_inline_css( $template_id );
+				}
+
+				$this->not_found_templates = array();
+			}
+
+			remove_filter( 'pre_do_shortcode_tag', array( $this, 'store_not_found_templates' ) );
+		}
+
+		public function store_not_found_templates( $result, $tag, $attr ) {
+
+			if ( 'elementor-template' !== $tag ) {
+				return $result;
+			}
+
+			if ( ! empty( $attr['id'] ) && ! in_array( $attr['id'], $this->not_found_templates ) ) {
+				$this->not_found_templates[] = $attr['id'];
+			}
+
+			return $result;
 		}
 	}
 

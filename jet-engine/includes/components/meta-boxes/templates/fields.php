@@ -1076,15 +1076,15 @@
 			></cx-vui-input>
 			<cx-vui-switcher
 				label="<?php _e( 'Is required', 'jet-engine' ); ?>"
-				description="<?php _e( 'Toggle this option to make this field as required one. Note: so far, required fields don’t work properly with Blocks editor', 'jet-engine' ); ?>"
+				description="<?php _e( 'Toggle this option to make this field as required one', 'jet-engine' ); ?>"
 				:wrapper-css="[ 'equalwidth' ]"
 				:value="fieldsList[ index ].is_required"
 				@input="setFieldProp( index, 'is_required', $event )"
 				:conditions="[
 					{
 						'input':    fieldsList[ index ].type,
-						'compare': 'in',
-						'value':    [ 'text', 'date', 'time', 'datetime-local', 'textarea', 'iconpicker', 'select' ],
+						'compare': 'not_in',
+						'value':    [ 'switcher', 'html' ],
 					},
 					{
 						'input':    fieldsList[ index ].object_type,
@@ -1150,6 +1150,11 @@
 						'input':    fieldsList[ index ].object_type,
 						'compare': 'equal',
 						'value':   'field',
+					},
+					{
+						'input':   fieldsList[ index ].type,
+						'compare': 'not_equal',
+						'value':   'html',
 					},
 				]"
 			></cx-vui-switcher>

@@ -22,7 +22,7 @@ Vue.component( 'jet-query-dynamic-args', {
 			return;
 		}
 
-		const regexp     = /%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s|]+)?%(\{.+\})?/;
+		const regexp = /%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s|]*)?%(\{.+\})?/;
 		const parsedData = [ ...this.value.match( regexp ) ];
 
 		let macros = parsedData[1];

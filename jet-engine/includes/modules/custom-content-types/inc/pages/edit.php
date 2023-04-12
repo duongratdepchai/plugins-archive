@@ -57,6 +57,8 @@ class Edit extends \Jet_Engine_CPT_Page_Base {
 
 		$ui = new \CX_Vue_UI( $module_data );
 
+		\CX_Vue_UI::$templates_path = Module::instance()->module_path( 'templates/admin/rewrite/' );
+
 		$ui->enqueue_assets();
 
 		if ( ! class_exists( '\Jet_Engine_Meta_Boxes_Page_Edit' ) ) {

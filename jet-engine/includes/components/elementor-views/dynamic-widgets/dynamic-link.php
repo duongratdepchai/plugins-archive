@@ -81,7 +81,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'Note: this filed will override Meta Field value', 'jet-engine' ),
+				'description' => __( 'Note: this field will override Meta Field value', 'jet-engine' ),
 				'condition'   => array(
 					'dynamic_link_source!' => 'delete_post_link',
 				),
@@ -470,7 +470,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 			array(
 				'label'      => __( 'Padding', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'separator'  => 'before',
 				'selectors'  => array(
 					$this->css_selector( '__link' ) => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -483,7 +483,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 			array(
 				'label'      => __( 'Margin', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'em' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__link' ) => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -505,7 +505,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 			array(
 				'label'      => __( 'Border Radius', 'jet-engine' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%' ) ),
 				'selectors'  => array(
 					$this->css_selector( '__link' ) => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),

@@ -38,6 +38,13 @@ class Data extends \Jet_Engine_Base_Data {
 	public $table_format = array( '%s', '%s', '%s', '%s', '%s' );
 
 	/**
+	 * Found items
+	 *
+	 * @var array
+	 */
+	public $found_items = array();
+
+	/**
 	 * Returns blacklisted post types slugs
 	 *
 	 * @return array

@@ -361,12 +361,19 @@ class Item_Handler {
 				$single_post_id = isset( $prev_item['cct_single_post_id'] ) ? $prev_item['cct_single_post_id'] : false;
 			}
 
+			$update_single_post = ! ! $single_post_id;
+
 			if ( ! $single_post_id ) {
 				$single_post_id = $this->process_single_post( $item );
 			}
 
 			if ( $single_post_id ) {
 				$item['cct_single_post_id'] = $single_post_id;
+			}
+
+			// Update single post.
+			if ( $single_post_id && $update_single_post ) {
+				$this->process_single_post( $item );
 			}
 
 		}

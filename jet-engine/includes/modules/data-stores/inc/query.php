@@ -101,7 +101,7 @@ class Query {
 				continue;
 			}
 
-			if ( 'is-front' !== $value[0] ) {
+			if ( isset( $value[0] ) && 'is-front' !== $value[0] ) {
 				continue;
 			}
 

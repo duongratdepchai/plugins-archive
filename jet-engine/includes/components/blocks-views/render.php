@@ -45,6 +45,8 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Render' ) ) {
 			add_action( 'jet-engine/listing/grid/after', array( $this, 'print_preview_css' ) );
 
 			add_action( 'jet-engine/blocks-views/print-template-styles', array( $this, 'print_template_css' ) );
+
+			add_filter( 'jet-engine/listing/content/blocks', array( $this, 'get_listing_content_cb' ), 10, 2 );
 		}
 
 		/**
@@ -63,6 +65,10 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Render' ) ) {
 					$this->printed_css[] = $post_id;
 				}
 			}
+		}
+
+		public function get_listing_content_cb( $content, $listing_id ) {
+			return $this->get_listing_content( $listing_id );
 		}
 
 		/**

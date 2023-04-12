@@ -66,6 +66,12 @@ class Manager {
 		require_once $path . 'is-not-parent.php';
 		require_once $path . 'is-child-of.php';
 		require_once $path . 'is-not-child-of.php';
+		require_once $path . 'time-period.php';
+		require_once $path . 'week-days.php';
+
+		require_once $path . 'listing-even.php';
+		require_once $path . 'listing-odd.php';
+		require_once $path . 'listing-is-num.php';
 
 		do_action( 'jet-engine/modules/dynamic-visibility/conditions/register', $this );
 
@@ -120,6 +126,14 @@ class Manager {
 			),
 			'posts'      => array(
 				'label'   => __( 'Posts', 'jet-engine' ),
+				'options' => array(),
+			),
+			'date_time'  => array(
+				'label'   => __( 'Date & Time', 'jet-engine' ),
+				'options' => array(),
+			),
+			'listing'  => array(
+				'label'   => __( 'Listing', 'jet-engine' ),
 				'options' => array(),
 			),
 		) );

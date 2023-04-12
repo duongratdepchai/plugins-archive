@@ -284,6 +284,36 @@ class Posts_Query extends Base_Query {
 				$this->replace_tax_query_row( $value );
 				break;
 
+			case 'post__in':
+
+				if ( ! empty( $this->final_query['post__in'] ) ) {
+					$this->final_query['post__in'] = array_intersect( $this->final_query['post__in'], $value );
+
+					if ( empty( $this->final_query['post__in'] ) ) {
+						$this->final_query['post__in'] = array( PHP_INT_MAX );
+					}
+
+				} else {
+					$this->final_query['post__in'] = $value;
+				}
+
+				break;
+
+			case 'post__not_in':
+
+				if ( ! empty( $this->final_query['post__not_in'] ) ) {
+					$this->final_query['post__not_in'] = array_intersect( $this->final_query['post__not_in'], $value );
+
+					if ( empty( $this->final_query['post__not_in'] ) ) {
+						$this->final_query['post__not_in'] = array( PHP_INT_MAX );
+					}
+
+				} else {
+					$this->final_query['post__not_in'] = $value;
+				}
+
+				break;
+
 			default:
 				$this->merge_default_props( $prop, $value );
 				break;

@@ -291,7 +291,7 @@ class Manager {
 			array(
 				'label'       => __( 'Get items from store', 'jet-engine' ),
 				'label_block' => true,
-				'type'        => \Elementor\Controls_Manager::SELECT,
+				'type'        => 'select',
 				'default'     => '',
 				'options'     => $stores,
 

@@ -337,7 +337,7 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 			$image_url = $image;
 		}
 
-		return sprintf( '<img src="%1$s" class="jet-map-marker-image" alt="" style="cursor: pointer;">', $image_url );
+		return sprintf( '<img src=\'%1$s\' class=\'jet-map-marker-image\' alt=\'\' style=\'cursor: pointer;\'>', $image_url );
 
 	}
 
@@ -412,12 +412,12 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 
 			if ( $condition_met ) {
 
-				$result = $this->get_marker_data( $marker );
+				$result = $this->prepare_marker_data( $this->get_marker_data( $marker ) );
 
 				if ( $result && ! empty( $result['html'] ) ) {
 					return $result['html'];
 				} elseif ( $result && ! empty( $result['url'] ) ) {
-					return sprintf( '<img src="%1$s" class="jet-map-marker-image" alt="" style="cursor: pointer;">', $result['url'] );
+					return sprintf( '<img src=\'%1$s\' class=\'jet-map-marker-image\' alt=\'\' style=\'cursor: pointer;\'>', $result['url'] );
 				}
 
 			}
@@ -488,6 +488,16 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 
 		return $result;
 
+	}
+
+	/**
+	 * Allow to change marker data before usage
+	 * 
+	 * @param  [type] $marker [description]
+	 * @return [type]         [description]
+	 */
+	public function prepare_marker_data( $marker ) {
+		return apply_filters( 'jet-engine/maps-listings/marker-data', $marker );
 	}
 
 	/**
@@ -637,7 +647,7 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 		$auto_center     = ! empty( $settings['auto_center'] ) ? $settings['auto_center'] : false;
 		$auto_center     = filter_var( $auto_center, FILTER_VALIDATE_BOOLEAN );
 		$custom_center   = ! empty( $settings['custom_center'] ) ? $settings['custom_center'] : false;
-		$custom_zoom     = ! empty( $settings['custom_zoom'] ) ? $settings['custom_zoom'] : 11;
+		$custom_zoom     = ! empty( $settings['custom_zoom'] ) ? absint( $settings['custom_zoom'] ) : 11;
 		$popup_preloader = ! empty( $settings['popup_preloader'] ) ? $settings['popup_preloader'] : false;
 		$popup_preloader = filter_var( $popup_preloader, FILTER_VALIDATE_BOOLEAN );
 
@@ -656,7 +666,7 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 			'width'            => ! empty( $settings['popup_width'] ) ? absint( $settings['popup_width'] ) : 320,
 			'offset'           => isset( $settings['popup_offset'] ) ? absint( $settings['popup_offset'] ) : 40,
 			'clustererImg'     => jet_engine()->plugin_url( 'includes/modules/maps-listings/assets/lib/markerclustererplus/img/m' ),
-			'marker'           => $this->get_marker_data( $settings ),
+			'marker'           => $this->prepare_marker_data( $this->get_marker_data( $settings ) ),
 			'autoCenter'       => $auto_center,
 			'maxZoom'          => ! empty( $settings['max_zoom'] ) ? absint( $settings['max_zoom'] ) : false,
 			'customCenter'     => $custom_center,

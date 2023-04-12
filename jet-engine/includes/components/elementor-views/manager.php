@@ -28,6 +28,7 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 		function __construct() {
 
 			if ( ! jet_engine()->has_elementor() ) {
+				add_filter( 'jet-engine/data/listing-type', array( $this, 'reset_listing_types' ) );
 				return;
 			}
 
@@ -84,6 +85,18 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 			add_filter( 'jet-engine/listings/dynamic-image/size', array( $this, 'prepare_custom_image_size' ), 10, 3 );
 			add_filter( 'jet-engine/listings/dynamic-image/link-attr', array( $this, 'add_lightbox_attr' ), 10, 2 );
 
+		}
+
+		/**
+		 * Reset given listing type if Elementor is not installed
+		 */
+		public function reset_listing_types( $listing_type ) {
+			
+			if ( 'elementor' === $listing_type ) {
+				$listing_type = 'blocks';
+			}
+			
+			return $listing_type;
 		}
 
 		/**
@@ -400,10 +413,15 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 		 */
 		public function get_redirect_url( $template_id ) {
 
+			if ( ! defined( 'ELEMENTOR_VERSION' ) ) {
+				return '';
+			}
+
 			if ( version_compare( ELEMENTOR_VERSION, '2.6.0', '<' ) ) {
 				$redirect = Elementor\Utils::get_edit_link( $template_id );
 			} else {
-				$redirect = Elementor\Plugin::$instance->documents->get( $template_id )->get_edit_url();
+				$document = Elementor\Plugin::$instance->documents->get( $template_id );
+				$redirect = $document ? $document->get_edit_url() : false;
 			}
 
 			return $redirect;
@@ -547,6 +565,15 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 			$attr['data-elementor-open-lightbox'] = $lightbox ? 'yes' : 'no';
 
 			return $attr;
+		}
+
+		public function add_custom_size_unit( $units ) {
+
+			if ( version_compare( ELEMENTOR_VERSION, '3.10.0', '>=' ) ) {
+				$units[] = 'custom';
+			}
+
+			return $units;
 		}
 
 	}

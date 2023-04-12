@@ -17,16 +17,6 @@ class Elementor {
 		$this->manager = $manager;
 
 		add_action(
-			'jet-engine/listings/document/get-preview/' . $this->manager->source,
-			array( $this->manager, 'setup_preview' )
-		);
-
-		add_action(
-			'jet-engine/listings/document/get-preview/' . $this->manager->repeater_source,
-			array( $this->manager, 'setup_preview' )
-		);
-
-		add_action(
 			'jet-engine/listings/document/custom-source-control',
 			array( $this, 'add_document_controls' )
 		);

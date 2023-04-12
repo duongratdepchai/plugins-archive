@@ -422,7 +422,11 @@ class SQL_Query extends Base_Query {
 					$base_col    = $table['on_base'];
 					$current_col = $table['on_current'];
 
-					$current_query .= "$type $join_table AS $as_table ON $raw_table.$base_col = $as_table.$current_col ";
+					if ( false === strpos( $base_col, '.' ) ) {
+						$base_col = $raw_table . '.' . $base_col;
+					}
+
+					$current_query .= "$type $join_table AS $as_table ON $base_col = $as_table.$current_col ";
 
 				}
 			}
@@ -802,8 +806,10 @@ class SQL_Query extends Base_Query {
 				$value = $this->adjust_value_by_type( $value, $type );
 			}
 
-			if ( in_array( $compare, $array_operators ) ) {
+			if ( in_array( $compare, array( 'IN', 'BETWEEN' ) ) ) {
 				$compare = '=';
+			} elseif ( in_array( $compare, array( 'NOT IN', 'NOT BETWEEN' ) ) ) {
+				$compare = '!=';
 			}
 
 		}

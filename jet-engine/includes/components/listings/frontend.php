@@ -19,19 +19,20 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 	 */
 	class Jet_Engine_Frontend {
 
-		private $listing_id = null;
-		private $processed_listing_id = null;
-		private $did_scripts = false;
+		protected $listing_id = null;
+		protected $processed_listing_id = null;
+		protected $did_scripts = false;
 
 		/**
 		 * Constructor for the class
 		 */
 		public function __construct() {
 			$this->register_listing_styles();
-			add_action( 'wp_enqueue_scripts', array( $this, 'register_listing_deps') );
+			add_action( 'wp_enqueue_scripts', array( $this, 'register_listing_deps'), 9 );
 		}
 
 		public function register_listing_deps() {
+			
 			wp_register_script(
 				'jquery-slick',
 				jet_engine()->plugin_url( 'assets/lib/slick/slick.min.js' ),
@@ -39,6 +40,15 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 				'1.8.1',
 				true
 			);
+
+			wp_register_script(
+				'jet-plugins',
+				jet_engine()->plugin_url( 'assets/lib/jet-plugins/jet-plugins.js' ),
+				array( 'jquery' ),
+				'1.1.0',
+				true
+			);
+
 		}
 
 		/**
@@ -73,7 +83,7 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 			wp_enqueue_script(
 				'jet-engine-frontend',
 				jet_engine()->plugin_url( 'assets/js/frontend.js' ),
-				array( 'jquery' ),
+				array( 'jquery', 'jet-plugins' ),
 				jet_engine()->get_version(),
 				true
 			);
@@ -171,6 +181,31 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 
 		}
 
+		public function ensure_lib( $lib ) {
+
+			$libs = array(
+				'imagesloaded' => 'assets/lib/imagesloaded/imagesloaded.min.js',
+			);
+
+			if ( ! isset( $libs[ $lib ] ) ) {
+				return;
+			}
+
+			if ( ! wp_script_is( $lib, 'registered' ) ) {
+				wp_register_script( 
+					$lib,
+					jet_engine()->plugin_url( $libs[ $lib ] ),
+					array(),
+					jet_engine()->get_version(),
+					true
+				);
+			}
+
+			if ( ! wp_script_is( $lib, 'enqueued' ) ) {
+				wp_enqueue_script( $lib );
+			}
+		}
+
 		/**
 		 * Enqueues masonry assets
 		 *
@@ -178,7 +213,8 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 		 */
 		public function enqueue_masonry_assets() {
 
-			wp_enqueue_script( 'imagesloaded' );
+			$this->ensure_lib( 'imagesloaded' );
+			
 			wp_enqueue_script(
 				'jet-engine-macy',
 				jet_engine()->plugin_url( 'assets/lib/macy/macy.js' ),
@@ -259,15 +295,8 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 				return $content;
 			}
 
-			if ( jet_engine()->blocks_views && jet_engine()->blocks_views->is_blocks_listing( $listing_id ) ) {
-				$content = jet_engine()->blocks_views->render->get_listing_content( $listing_id );
-			} else {
-				if ( jet_engine()->has_elementor() ) {
-					$content = jet_engine()->elementor_views->frontend->get_listing_content( $listing_id );
-				} else {
-					$content = jet_engine()->blocks_views->render->get_listing_content( $listing_id );
-				}
-			}
+			$listing_view = jet_engine()->listings->data->get_listing_type( $listing_id );
+			$content      = apply_filters( 'jet-engine/listing/content/' . $listing_view, null, $listing_id );
 
 			return $content;
 		}

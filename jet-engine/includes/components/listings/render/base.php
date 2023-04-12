@@ -207,6 +207,16 @@ if ( ! class_exists( 'Jet_Engine_Render_Base' ) ) {
 		 */
 		public function render_content() {
 
+			/**
+			 * General hook fires before any JetEngine element render in any builder
+			 */
+			do_action( 'jet-engine/listing-element/before-render', $this );
+
+			/**
+			 * Specific hook for each JetEngine element fires before this element render
+			 */
+			do_action( 'jet-engine/listing-element/before-render/' . $this->get_name(), $this );
+
 			$this->render();
 
 			jet_engine()->frontend->footer_styles();

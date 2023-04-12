@@ -46,6 +46,9 @@ class Module {
 		require $this->module_path( 'blocks-integration.php' );
 		require $this->module_path( 'compatibility.php' );
 
+		// Bricks Integration
+		require jet_engine()->modules->modules_path( 'profile-builder/inc/bricks-views/manager.php' );
+
 		$this->settings  = new Settings();
 		$this->rewrite   = new Rewrite();
 		$this->query     = new Query();
@@ -54,6 +57,7 @@ class Module {
 
 		new Blocks_Integration();
 		new Compatibility();
+		new Bricks_Views\Manager();
 
 		$this->maybe_disable_admin_bar();
 

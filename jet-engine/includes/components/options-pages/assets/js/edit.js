@@ -15,6 +15,8 @@
 			availableCaps: JetEnginePageConfig.capabilities,
 			availablePositions: JetEnginePageConfig.positions,
 			helpLinks: JetEnginePageConfig.help_links,
+			initialStorageType: null,
+			updateOptions: '',
 			showDeleteDialog: false,
 			saving: false,
 			errors: {
@@ -36,8 +38,9 @@
 
 					if ( response.success && response.data ) {
 
-						self.generalSettings = response.data.general_settings;
-						self.fieldsList      = response.data.fields;
+						self.generalSettings    = response.data.general_settings;
+						self.fieldsList         = response.data.fields;
+						self.initialStorageType = self.storageType;
 
 					} else {
 						if ( response.notices.length ) {
@@ -78,6 +81,24 @@
 				} );
 
 				return parents;
+			},
+			storageType: function() {
+				var storageType = this.generalSettings.storage_type;
+
+				if ( 'separate' === storageType && this.generalSettings.option_prefix ) {
+					storageType += '_with_prefix';
+				}
+
+				return storageType;
+			},
+			storageTypeIsChanged: function() {
+				if ( ! this.isEdit ) {
+					return false;
+				} else if ( ! this.initialStorageType ) {
+					return false;
+				} else {
+					return this.initialStorageType !== this.storageType;
+				}
 			},
 		},
 		methods: {
@@ -147,6 +168,8 @@
 					data: {
 						general_settings: self.generalSettings,
 						fields: self.fieldsList,
+						initial_storage_type: this.initialStorageType,
+						update_options: this.updateOptions,
 					}
 				} ).then( function( response ) {
 

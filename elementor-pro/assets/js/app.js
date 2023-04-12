@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.9.2 - 21-12-2022 */
+/*! elementor-pro - v3.12.2 - 09-04-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -1344,6 +1344,138 @@ var shallowCompare = function shallowCompare(obj1, obj2) {
 
 /***/ }),
 
+/***/ "../core/app/assets/js/hooks/use-feature-lock.js":
+/*!*******************************************************!*\
+  !*** ../core/app/assets/js/hooks/use-feature-lock.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = useFeatureLock;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _connectButton = _interopRequireDefault(__webpack_require__(/*! ../ui/connect-button */ "../core/app/assets/js/ui/connect-button.js"));
+var _utils = __webpack_require__(/*! ../utils */ "../core/app/assets/js/utils.js");
+function useFeatureLock(featureName) {
+  const appConfig = elementorAppProConfig[featureName] ?? {},
+    isLocked = appConfig.lock?.is_locked ?? false;
+  const buttonText = (0, _utils.htmlDecodeTextContent)(appConfig.lock?.button.text);
+  const buttonLink = (0, _utils.replaceUtmPlaceholders)(appConfig.lock?.button.url ?? '', appConfig.utms ?? {});
+  const ConnectButton = () => /*#__PURE__*/_react.default.createElement(_connectButton.default, {
+    text: buttonText,
+    url: buttonLink
+  });
+  return {
+    isLocked,
+    ConnectButton
+  };
+}
+
+/***/ }),
+
+/***/ "../core/app/assets/js/ui/connect-button.js":
+/*!**************************************************!*\
+  !*** ../core/app/assets/js/ui/connect-button.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
+var _utils = __webpack_require__(/*! ../utils.js */ "../core/app/assets/js/utils.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+const ConnectButton = props => {
+  const className = (0, _utils.arrayToClassName)(['e-app-connect-button', props.className]);
+  const buttonRef = (0, _react.useRef)(null);
+  (0, _react.useEffect)(() => {
+    if (!buttonRef.current) {
+      return;
+    }
+    jQuery(buttonRef.current).elementorConnect();
+  }, []);
+  return /*#__PURE__*/_react.default.createElement(_appUi.Button, (0, _extends2.default)({}, props, {
+    elRef: buttonRef,
+    className: className
+  }));
+};
+ConnectButton.propTypes = {
+  ..._appUi.Button.propTypes,
+  text: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  className: PropTypes.string
+};
+ConnectButton.defaultProps = {
+  className: '',
+  variant: 'contained',
+  size: 'sm',
+  color: 'cta',
+  target: '_blank',
+  rel: 'noopener noreferrer',
+  text: __('Connect & Activate', 'elementor')
+};
+var _default = _react.default.memo(ConnectButton);
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../core/app/assets/js/utils.js":
+/*!**************************************!*\
+  !*** ../core/app/assets/js/utils.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.replaceUtmPlaceholders = exports.htmlDecodeTextContent = exports.arrayToClassName = void 0;
+// Copied from Core.
+const arrayToClassName = (array, action) => {
+  return array.filter(item => 'object' === typeof item ? Object.entries(item)[0][1] : item).map(item => {
+    const value = 'object' === typeof item ? Object.entries(item)[0][0] : item;
+    return action ? action(value) : value;
+  }).join(' ');
+};
+exports.arrayToClassName = arrayToClassName;
+const htmlDecodeTextContent = input => {
+  const doc = new DOMParser().parseFromString(input, 'text/html');
+  return doc.documentElement.textContent;
+};
+exports.htmlDecodeTextContent = htmlDecodeTextContent;
+const replaceUtmPlaceholders = function () {
+  let link = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  let utms = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  if (!link || !utms) {
+    return link;
+  }
+  Object.keys(utms).forEach(key => {
+    const match = new RegExp(`%%${key}%%`, 'g');
+    link = link.replace(match, utms[key]);
+  });
+  return link;
+};
+exports.replaceUtmPlaceholders = replaceUtmPlaceholders;
+
+/***/ }),
+
 /***/ "../core/app/modules/site-editor/assets/js/atoms/indicator-bullet.js":
 /*!***************************************************************************!*\
   !*** ../core/app/modules/site-editor/assets/js/atoms/indicator-bullet.js ***!
@@ -1355,28 +1487,21 @@ var shallowCompare = function shallowCompare(obj1, obj2) {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.Indicator = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 __webpack_require__(/*! ./indicator-bullet.scss */ "../core/app/modules/site-editor/assets/js/atoms/indicator-bullet.scss");
-
 const Indicator = props => {
   let className = 'eps-indicator-bullet';
-
   if (props.active) {
     className += ` ${className}--active`;
   }
-
   return /*#__PURE__*/_react.default.createElement("i", {
     className: className
   });
 };
-
 exports.Indicator = Indicator;
 Indicator.propTypes = {
   active: PropTypes.bool
@@ -1395,31 +1520,26 @@ Indicator.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = PreviewIFrame;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 __webpack_require__(/*! ./preview-iframe.scss */ "../core/app/modules/site-editor/assets/js/atoms/preview-iframe.scss");
-
 function PreviewIFrame(props) {
   const ref = _react.default.useRef(null),
-        previewBreakpoint = 1200,
-        [scale, setScale] = _react.default.useState(1),
-        [height, setHeight] = _react.default.useState(0); // In order to make sure that the iframe itself show the content in specific viewport,
+    previewBreakpoint = 1200,
+    [scale, setScale] = _react.default.useState(1),
+    [height, setHeight] = _react.default.useState(0);
+
+  // In order to make sure that the iframe itself show the content in specific viewport,
   // and it should fit to the size of the card, there is a use of css props `scale` and `height`,
   // and another element that wraps the iframe to be the guidelines of the iframe sizes.
-
-
   _react.default.useEffect(() => {
     const currentScale = ref.current.clientWidth / previewBreakpoint;
     setScale(currentScale);
     setHeight(ref.current.clientHeight / currentScale);
   }, []);
-
   return /*#__PURE__*/_react.default.createElement("div", {
     ref: ref,
     className: `site-editor__preview-iframe site-editor__preview-iframe--${props.templateType}`
@@ -1434,7 +1554,6 @@ function PreviewIFrame(props) {
     }
   }));
 }
-
 PreviewIFrame.propTypes = {
   src: PropTypes.string.isRequired,
   templateType: PropTypes.string.isRequired
@@ -1456,7 +1575,6 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.BaseContext = void 0;
-
 class BaseContext extends React.Component {
   constructor(props) {
     super(props);
@@ -1471,7 +1589,6 @@ class BaseContext extends React.Component {
       resetActionState: this.resetActionState.bind(this)
     };
   }
-
   executeAction(name, handler) {
     this.updateActionState({
       current: name,
@@ -1492,15 +1609,14 @@ class BaseContext extends React.Component {
       return Promise.reject(error);
     });
   }
-
   updateActionState(data) {
     return this.setState(prev => ({
-      action: { ...prev.action,
+      action: {
+        ...prev.action,
         ...data
       }
     }));
   }
-
   resetActionState() {
     this.updateActionState({
       current: null,
@@ -1509,9 +1625,7 @@ class BaseContext extends React.Component {
       errorMeta: {}
     });
   }
-
 }
-
 exports.BaseContext = BaseContext;
 var _default = BaseContext;
 exports["default"] = _default;
@@ -1530,26 +1644,17 @@ exports["default"] = _default;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.Context = exports.ConditionsProvider = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _condition = _interopRequireDefault(__webpack_require__(/*! ./models/condition */ "../core/app/modules/site-editor/assets/js/context/models/condition.js"));
-
 var _conditionsConfig = _interopRequireDefault(__webpack_require__(/*! ./services/conditions-config */ "../core/app/modules/site-editor/assets/js/context/services/conditions-config.js"));
-
 var _baseContext = _interopRequireDefault(__webpack_require__(/*! ./base-context */ "../core/app/modules/site-editor/assets/js/context/base-context.js"));
-
 var _commands = __webpack_require__(/*! ../data/commands */ "../core/app/modules/site-editor/assets/js/data/commands/index.js");
-
 const Context = _react.default.createContext();
-
 exports.Context = Context;
-
 class ConditionsProvider extends _baseContext.default {
   static propTypes = {
     children: PropTypes.any.isRequired,
@@ -1565,22 +1670,23 @@ class ConditionsProvider extends _baseContext.default {
     SAVE: 'save',
     CHECK_CONFLICTS: 'check-conflicts'
   };
+
   /**
    * Holds the conditions config object.
    *
    * @type {ConditionsConfig}
    */
-
   conditionsConfig = null;
+
   /**
    * ConditionsProvider constructor.
    *
    * @param {any} props
    */
-
   constructor(props) {
     super(props);
-    this.state = { ...this.state,
+    this.state = {
+      ...this.state,
       conditions: {},
       updateConditionItemState: this.updateConditionItemState.bind(this),
       removeConditionItemInState: this.removeConditionItemInState.bind(this),
@@ -1589,22 +1695,20 @@ class ConditionsProvider extends _baseContext.default {
       saveConditions: this.saveConditions.bind(this)
     };
   }
+
   /**
    * Fetch the conditions config, then normalize the conditions and then setup titles for
    * the subIds.
    */
-
-
   componentDidMount() {
     this.executeAction(ConditionsProvider.actions.FETCH_CONFIG, () => _conditionsConfig.default.create()).then(conditionsConfig => this.conditionsConfig = conditionsConfig).then(this.normalizeConditionsState.bind(this)).then(this.setSubIdTitles.bind(this));
   }
+
   /**
    * Execute a request to save the template conditions.
    *
    * @return {any} -
    */
-
-
   saveConditions() {
     const conditions = Object.values(this.state.conditions).map(condition => condition.forDb());
     return this.executeAction(ConditionsProvider.actions.SAVE, () => $e.data.update(_commands.TemplatesConditions.signature, {
@@ -1620,14 +1724,13 @@ class ConditionsProvider extends _baseContext.default {
       });
     });
   }
+
   /**
    * Check for conflicts in the server and mark the condition if there
    * is a conflict.
    *
    * @param {any} condition
    */
-
-
   checkConflicts(condition) {
     return this.executeAction(ConditionsProvider.actions.CHECK_CONFLICTS, () => $e.data.get(_commands.TemplatesConditionsConflicts.signature, {
       post_id: this.props.currentTemplate.id,
@@ -1636,14 +1739,13 @@ class ConditionsProvider extends _baseContext.default {
       conflictErrors: Object.values(response.data)
     }, false));
   }
+
   /**
    * Fetching subId titles.
    *
    * @param {any} condition
    * @return {Promise<unknown>} -
    */
-
-
   fetchSubIdsTitles(condition) {
     return new Promise(resolve => {
       return elementorCommon.ajax.loadObjects({
@@ -1653,24 +1755,22 @@ class ConditionsProvider extends _baseContext.default {
           get_titles: condition.subIdAutocomplete,
           unique_id: elementorCommon.helpers.getUniqueId()
         },
-
         success(response) {
           resolve(response);
         }
-
       });
     });
   }
+
   /**
    * Get the conditions from the template and normalize it to data structure
    * that the components can work with.
    */
-
-
   normalizeConditionsState() {
     this.updateConditionsState(() => {
       return this.props.currentTemplate.conditions.reduce((current, condition) => {
-        const conditionObj = new _condition.default({ ...condition,
+        const conditionObj = new _condition.default({
+          ...condition,
           default: this.props.currentTemplate.defaultCondition,
           options: this.conditionsConfig.getOptions(),
           subOptions: this.conditionsConfig.getSubOptions(condition.name),
@@ -1680,7 +1780,8 @@ class ConditionsProvider extends _baseContext.default {
             label: condition.subId
           }] : []
         });
-        return { ...current,
+        return {
+          ...current,
           [conditionObj.id]: conditionObj
         };
       }, {});
@@ -1688,18 +1789,16 @@ class ConditionsProvider extends _baseContext.default {
       Object.values(this.state.conditions).forEach(condition => this.checkConflicts(condition));
     });
   }
+
   /**
    * Set titles to the subIds,
    * for the first render of the component.
    */
-
-
   setSubIdTitles() {
     return Object.values(this.state.conditions).forEach(condition => {
       if (!condition.subId) {
         return;
       }
-
       return this.fetchSubIdsTitles(condition).then(response => this.updateConditionItemState(condition.id, {
         subIdOptions: [{
           label: Object.values(response)[0],
@@ -1708,6 +1807,7 @@ class ConditionsProvider extends _baseContext.default {
       }, false));
     });
   }
+
   /**
    * Update state of specific condition item.
    *
@@ -1715,25 +1815,22 @@ class ConditionsProvider extends _baseContext.default {
    * @param {any}     args
    * @param {boolean} shouldCheckConflicts
    */
-
-
   updateConditionItemState(id, args) {
     let shouldCheckConflicts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
     if (args.name) {
       args.subOptions = this.conditionsConfig.getSubOptions(args.name);
     }
-
     if (args.sub || args.name) {
-      args.subIdAutocomplete = this.conditionsConfig.getSubIdAutocomplete(args.sub); // In case that the condition has been changed, it will set the options of the subId
-      // to empty array to let select2 autocomplete handle the options.
+      args.subIdAutocomplete = this.conditionsConfig.getSubIdAutocomplete(args.sub);
 
+      // In case that the condition has been changed, it will set the options of the subId
+      // to empty array to let select2 autocomplete handle the options.
       args.subIdOptions = [];
     }
-
     this.updateConditionsState(prev => {
       const condition = prev[id];
-      return { ...prev,
+      return {
+        ...prev,
         [id]: condition.clone().set(args)
       };
     }).then(() => {
@@ -1742,39 +1839,39 @@ class ConditionsProvider extends _baseContext.default {
       }
     });
   }
+
   /**
    * Remove a condition item from the state.
    *
    * @param {any} id
    */
-
-
   removeConditionItemInState(id) {
     this.updateConditionsState(prev => {
-      const newConditions = { ...prev
+      const newConditions = {
+        ...prev
       };
       delete newConditions[id];
       return newConditions;
     });
   }
+
   /**
    * Add a new condition item into the state.
    *
    * @param {boolean} shouldCheckConflicts
    */
-
-
   createConditionItemInState() {
     let shouldCheckConflicts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
     const defaultCondition = this.props.currentTemplate.defaultCondition,
-          newCondition = new _condition.default({
-      name: defaultCondition,
-      default: defaultCondition,
-      options: this.conditionsConfig.getOptions(),
-      subOptions: this.conditionsConfig.getSubOptions(defaultCondition),
-      subIdAutocomplete: this.conditionsConfig.getSubIdAutocomplete('')
-    });
-    this.updateConditionsState(prev => ({ ...prev,
+      newCondition = new _condition.default({
+        name: defaultCondition,
+        default: defaultCondition,
+        options: this.conditionsConfig.getOptions(),
+        subOptions: this.conditionsConfig.getSubOptions(defaultCondition),
+        subIdAutocomplete: this.conditionsConfig.getSubIdAutocomplete('')
+      });
+    this.updateConditionsState(prev => ({
+      ...prev,
       [newCondition.id]: newCondition
     })).then(() => {
       if (shouldCheckConflicts) {
@@ -1782,55 +1879,48 @@ class ConditionsProvider extends _baseContext.default {
       }
     });
   }
+
   /**
    * Find a condition item from the conditions state.
    *
    * @param {any} id
    * @return {Condition|null} -
    */
-
-
   findConditionItemInState(id) {
     return Object.values(this.state.conditions).find(c => c.id === id);
   }
+
   /**
    * Update the whole conditions state.
    *
    * @param {Function} callback
    * @return {Promise<any>} -
    */
-
-
   updateConditionsState(callback) {
     return new Promise(resolve => this.setState(prev => ({
       conditions: callback(prev.conditions)
     }), resolve));
   }
+
   /**
    * Renders the provider.
    *
    * @return {any} -
    */
-
-
   render() {
     if (this.state.action.current === ConditionsProvider.actions.FETCH_CONFIG) {
       if (this.state.error) {
         return /*#__PURE__*/_react.default.createElement("h3", null, __('Error:', 'elementor-pro'), " ", this.state.error);
       }
-
       if (this.state.loading) {
         return /*#__PURE__*/_react.default.createElement("h3", null, __('Loading', 'elementor-pro'), "...");
       }
     }
-
     return /*#__PURE__*/_react.default.createElement(Context.Provider, {
       value: this.state
     }, this.props.children);
   }
-
 }
-
 exports.ConditionsProvider = ConditionsProvider;
 var _default = ConditionsProvider;
 exports["default"] = _default;
@@ -1850,7 +1940,6 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 class Condition {
   id = elementorCommon.helpers.getUniqueId();
   default = '';
@@ -1863,53 +1952,42 @@ class Condition {
   subIdAutocomplete = [];
   subIdOptions = [];
   conflictErrors = [];
-
   constructor(args) {
     this.set(args);
   }
-
   set(args) {
     Object.assign(this, args);
     return this;
   }
-
   clone() {
     return Object.assign(new Condition(), this);
   }
-
   remove(keys) {
     if (!Array.isArray(keys)) {
       keys = [keys];
     }
-
     keys.forEach(key => {
       delete this[key];
     });
     return this;
   }
-
   only(keys) {
     if (!Array.isArray(keys)) {
       keys = [keys];
     }
-
     const keysToRemove = Object.keys(this).filter(conditionKey => !keys.includes(conditionKey));
     this.remove(keysToRemove);
     return this;
   }
-
   toJson() {
     return JSON.stringify(this);
   }
-
   toString() {
     return this.forDb().filter(item => item).join('/');
   }
-
   forDb() {
     return [this.type, this.name, this.sub, this.subId];
   }
-
   forContext() {
     return {
       type: this.type,
@@ -1918,9 +1996,7 @@ class Condition {
       subId: this.subId
     };
   }
-
 }
-
 exports["default"] = Condition;
 
 /***/ }),
@@ -1939,26 +2015,21 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.ConditionsConfig = void 0;
-
 var _commands = __webpack_require__(/*! ../../data/commands */ "../core/app/modules/site-editor/assets/js/data/commands/index.js");
-
 class ConditionsConfig {
   static instance;
   config = null;
-
   constructor(config) {
     this.config = config;
   }
+
   /**
    * @return {Promise<ConditionsConfig>} -
    */
-
-
   static create() {
     if (ConditionsConfig.instance) {
       return Promise.resolve(ConditionsConfig.instance);
     }
-
     return $e.data.get(_commands.ConditionsConfig.signature, {}, {
       refresh: true
     }).then(response => {
@@ -1966,13 +2037,12 @@ class ConditionsConfig {
       return ConditionsConfig.instance;
     });
   }
+
   /**
    * Get main options for condition name.
    *
    * @return {Array} -
    */
-
-
   getOptions() {
     return this.getSubOptions('general', true).map(_ref => {
       let {
@@ -1985,6 +2055,7 @@ class ConditionsConfig {
       };
     });
   }
+
   /**
    * Get the sub options for the select.
    *
@@ -1992,16 +2063,12 @@ class ConditionsConfig {
    * @param {boolean} isSubItem
    * @return {Array} -
    */
-
-
   getSubOptions(itemName) {
     let isSubItem = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     const config = this.config[itemName];
-
     if (!config) {
       return [];
     }
-
     return [{
       label: config.all_label,
       value: isSubItem ? itemName : ''
@@ -2014,67 +2081,53 @@ class ConditionsConfig {
       };
     })];
   }
+
   /**
    * Get the autocomplete property from the conditions config
    *
    * @param {string} sub
    * @return {{}|any} -
    */
-
-
   getSubIdAutocomplete(sub) {
-    var _controls$;
-
     const config = this.config[sub];
-
     if (!config || !('object' === typeof config.controls)) {
       return {};
     }
-
     const controls = Object.values(config.controls);
-
-    if (!(controls !== null && controls !== void 0 && (_controls$ = controls[0]) !== null && _controls$ !== void 0 && _controls$.autocomplete)) {
+    if (!controls?.[0]?.autocomplete) {
       return {};
     }
-
     return controls[0].autocomplete;
   }
+
   /**
    * Calculate instances from the conditions.
    *
    * @param {Array} conditions
    * @return {Object} -
    */
-
-
   calculateInstances(conditions) {
     let instances = conditions.reduce((current, condition) => {
       if ('exclude' === condition.type) {
         return current;
       }
-
       const key = condition.sub || condition.name,
-            config = this.config[key];
-
+        config = this.config[key];
       if (!config) {
         return current;
       }
-
       const instanceLabel = condition.subId ? `${config.label} #${condition.subId}` : config.all_label;
-      return { ...current,
+      return {
+        ...current,
         [key]: instanceLabel
       };
     }, {});
-
     if (0 === Object.keys(instances).length) {
       instances = [__('No instances', 'elementor-pro')];
     }
-
     return instances;
   }
-
 }
-
 exports.ConditionsConfig = ConditionsConfig;
 var _default = ConditionsConfig;
 exports["default"] = _default;
@@ -2093,24 +2146,16 @@ exports["default"] = _default;
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.TemplatesProvider = exports.Context = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _baseContext = _interopRequireDefault(__webpack_require__(/*! ./base-context */ "../core/app/modules/site-editor/assets/js/context/base-context.js"));
-
 var _commands = __webpack_require__(/*! ../data/commands */ "../core/app/modules/site-editor/assets/js/data/commands/index.js");
-
 var _component = _interopRequireDefault(__webpack_require__(/*! ../data/component */ "../core/app/modules/site-editor/assets/js/data/component.js"));
-
 const Context = _react.default.createContext();
-
 exports.Context = Context;
-
 class TemplatesProvider extends _baseContext.default {
   static propTypes = {
     children: PropTypes.object.isRequired
@@ -2121,11 +2166,12 @@ class TemplatesProvider extends _baseContext.default {
     UPDATE: 'update',
     IMPORT: 'import'
   };
-
   constructor(props) {
     super(props);
-    this.state = { ...this.state,
-      action: { ...this.state.action,
+    this.state = {
+      ...this.state,
+      action: {
+        ...this.state.action,
         current: TemplatesProvider.actions.FETCH,
         loading: true
       },
@@ -2138,11 +2184,9 @@ class TemplatesProvider extends _baseContext.default {
       importTemplates: this.importTemplates.bind(this)
     };
   }
-
   componentDidMount() {
     this.fetchTemplates();
   }
-
   importTemplates(_ref) {
     let {
       fileName,
@@ -2152,13 +2196,14 @@ class TemplatesProvider extends _baseContext.default {
       fileName,
       fileData
     })).then(response => {
-      this.updateTemplatesState(prev => ({ ...prev,
+      this.updateTemplatesState(prev => ({
+        ...prev,
         ...Object.values(response.data).reduce((current, template) => {
           if (!template.supportsSiteEditor) {
             return current;
           }
-
-          return { ...current,
+          return {
+            ...current,
             [template.id]: template
           };
         }, {})
@@ -2166,20 +2211,19 @@ class TemplatesProvider extends _baseContext.default {
       return response;
     });
   }
-
   deleteTemplate(id) {
     return this.executeAction(TemplatesProvider.actions.DELETE, () => $e.data.delete(_commands.Templates.signature, {
       id
     })).then(() => {
       this.updateTemplatesState(prev => {
-        const newTemplates = { ...prev
+        const newTemplates = {
+          ...prev
         };
         delete newTemplates[id];
         return newTemplates;
       });
     });
   }
-
   updateTemplate(id, args) {
     return this.executeAction(TemplatesProvider.actions.UPDATE, () => $e.data.update(_commands.Templates.signature, args, {
       id
@@ -2187,64 +2231,56 @@ class TemplatesProvider extends _baseContext.default {
       this.updateTemplateItemState(id, response.data);
     });
   }
-
   fetchTemplates() {
     return this.executeAction(TemplatesProvider.actions.FETCH, () => $e.data.get(_commands.Templates.signature, {}, {
       refresh: true
     })).then(response => {
-      this.updateTemplatesState(() => Object.values(response.data).reduce((current, template) => ({ ...current,
+      this.updateTemplatesState(() => Object.values(response.data).reduce((current, template) => ({
+        ...current,
         [template.id]: template
       }), {}), false);
     });
   }
-
   updateTemplateItemState(id, args) {
     return this.updateTemplatesState(prev => {
-      const template = { ...prev[id],
+      const template = {
+        ...prev[id],
         ...args
       };
-      return { ...prev,
+      return {
+        ...prev,
         [id]: template
       };
     });
   }
-
   updateTemplatesState(callback) {
     let clearCache = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
     if (clearCache) {
       $e.data.deleteCache($e.components.get(_component.default.namespace), _commands.Templates.signature);
     }
-
     return this.setState(prev => {
       return {
         templates: callback(prev.templates)
       };
     });
   }
-
   findTemplateItemInState(id) {
     return this.state.templates[id];
   }
-
   render() {
     if (this.state.action.current === TemplatesProvider.actions.FETCH) {
       if (this.state.action.error) {
         return /*#__PURE__*/_react.default.createElement("h3", null, __('Error:', 'elementor-pro'), " ", this.state.action.error);
       }
-
       if (this.state.action.loading) {
         return /*#__PURE__*/_react.default.createElement("h3", null, __('Loading', 'elementor-pro'), "...");
       }
     }
-
     return /*#__PURE__*/_react.default.createElement(Context.Provider, {
       value: this.state
     }, this.props.children);
   }
-
 }
-
 exports.TemplatesProvider = TemplatesProvider;
 var _default = TemplatesProvider;
 exports["default"] = _default;
@@ -2264,16 +2300,12 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.ConditionsConfig = void 0;
-
 class ConditionsConfig extends $e.modules.CommandData {
   static signature = 'site-editor/conditions-config';
-
   static getEndpointFormat() {
     return 'site-editor/conditions-config/{id}';
   }
-
 }
-
 exports.ConditionsConfig = ConditionsConfig;
 var _default = ConditionsConfig;
 exports["default"] = _default;
@@ -2316,13 +2348,9 @@ Object.defineProperty(exports, "TemplatesConditionsConflicts", ({
     return _templatesConditionsConflicts.TemplatesConditionsConflicts;
   }
 }));
-
 var _templates = __webpack_require__(/*! ./templates */ "../core/app/modules/site-editor/assets/js/data/commands/templates.js");
-
 var _conditionsConfig = __webpack_require__(/*! ./conditions-config */ "../core/app/modules/site-editor/assets/js/data/commands/conditions-config.js");
-
 var _templatesConditions = __webpack_require__(/*! ./templates-conditions */ "../core/app/modules/site-editor/assets/js/data/commands/templates-conditions.js");
-
 var _templatesConditionsConflicts = __webpack_require__(/*! ./templates-conditions-conflicts */ "../core/app/modules/site-editor/assets/js/data/commands/templates-conditions-conflicts.js");
 
 /***/ }),
@@ -2340,16 +2368,12 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.TemplatesConditionsConflicts = void 0;
-
 class TemplatesConditionsConflicts extends $e.modules.CommandData {
   static signature = 'site-editor/templates-conditions-conflicts';
-
   static getEndpointFormat() {
     return `${TemplatesConditionsConflicts.signature}/{id}`;
   }
-
 }
-
 exports.TemplatesConditionsConflicts = TemplatesConditionsConflicts;
 var _default = TemplatesConditionsConflicts;
 exports["default"] = _default;
@@ -2369,16 +2393,12 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.TemplatesConditions = void 0;
-
 class TemplatesConditions extends $e.modules.CommandData {
   static signature = 'site-editor/templates-conditions';
-
   static getEndpointFormat() {
     return 'site-editor/templates-conditions/{id}';
   }
-
 }
-
 exports.TemplatesConditions = TemplatesConditions;
 var _default = TemplatesConditions;
 exports["default"] = _default;
@@ -2398,16 +2418,12 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.Templates = void 0;
-
 class Templates extends $e.modules.CommandData {
   static signature = 'site-editor/templates';
-
   static getEndpointFormat() {
     return 'site-editor/templates/{id}';
   }
-
 }
-
 exports.Templates = Templates;
 var _default = Templates;
 exports["default"] = _default;
@@ -2427,26 +2443,18 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var dataCommands = _interopRequireWildcard(__webpack_require__(/*! ./commands */ "../core/app/modules/site-editor/assets/js/data/commands/index.js"));
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 class Component extends $e.modules.ComponentBase {
   static namespace = 'site-editor';
-
   getNamespace() {
     return this.constructor.namespace;
   }
-
   defaultData() {
     return this.importCommands(dataCommands);
   }
-
 }
-
 exports["default"] = Component;
 
 /***/ }),
@@ -2465,15 +2473,10 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = useTemplatesScreenshot;
-
 var _templates = __webpack_require__(/*! ../context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js");
-
 var _useScreenshot = _interopRequireWildcard(__webpack_require__(/*! modules/screenshots/app/assets/js/hooks/use-screenshot */ "../modules/screenshots/app/assets/js/hooks/use-screenshot.js"));
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 /**
  * Wrapper function that was made to take screenshots specific for template.
  * it will capture a screenshot and update the templates context with the new screenshot.
@@ -2486,17 +2489,20 @@ function useTemplatesScreenshot() {
     updateTemplateItemState,
     templates
   } = React.useContext(_templates.Context);
-  const templatesForScreenshot = Object.values(templates).filter(template => shouldScreenshotTemplate(template, templateType)); // Start to capture screenshots.
+  const templatesForScreenshot = Object.values(templates).filter(template => shouldScreenshotTemplate(template, templateType));
 
-  const screenshot = (0, _useScreenshot.default)(templatesForScreenshot); // Update the thumbnail url when screenshot created.
+  // Start to capture screenshots.
+  const screenshot = (0, _useScreenshot.default)(templatesForScreenshot);
 
+  // Update the thumbnail url when screenshot created.
   React.useEffect(() => {
     screenshot.posts.filter(post => post.status === _useScreenshot.SCREENSHOT_STATUS_SUCCEED).forEach(post => updateTemplateItemState(post.id, {
       thumbnail: post.imageUrl
     }));
-  }, [screenshot.succeed]); // Update the screenshot url that was failed.
-  // When the user will hit the route on the second time it will avoid trying to take another screenshot.
+  }, [screenshot.succeed]);
 
+  // Update the screenshot url that was failed.
+  // When the user will hit the route on the second time it will avoid trying to take another screenshot.
   React.useEffect(() => {
     screenshot.posts.filter(post => post.status === _useScreenshot.SCREENSHOT_STATUS_FAILED).forEach(post => updateTemplateItemState(post.id, {
       screenshot_url: null
@@ -2504,6 +2510,7 @@ function useTemplatesScreenshot() {
   }, [screenshot.failed]);
   return screenshot;
 }
+
 /**
  * Filter handler.
  * will remove all the drafts and private and also will filter by template type if exists.
@@ -2512,15 +2519,11 @@ function useTemplatesScreenshot() {
  * @param {any} templateType
  * @return {boolean} -
  */
-
-
 function shouldScreenshotTemplate(template) {
   let templateType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
   if (templateType) {
     return false;
   }
-
   return 'publish' === template.status && !template.thumbnail && template.screenshot_url;
 }
 
@@ -2538,18 +2541,13 @@ function shouldScreenshotTemplate(template) {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = BackButton;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 __webpack_require__(/*! ./back-button.scss */ "../core/app/modules/site-editor/assets/js/molecules/back-button.scss");
-
 function BackButton(props) {
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "back-button-wrapper"
@@ -2560,7 +2558,6 @@ function BackButton(props) {
     onClick: props.onClick
   }));
 }
-
 BackButton.propTypes = {
   onClick: PropTypes.func
 };
@@ -2581,20 +2578,14 @@ BackButton.defaultProps = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.SiteTemplateBody = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _siteTemplateThumbnail = _interopRequireDefault(__webpack_require__(/*! ./site-template-thumbnail */ "../core/app/modules/site-editor/assets/js/molecules/site-template-thumbnail.js"));
-
 var _previewIframe = _interopRequireDefault(__webpack_require__(/*! ../atoms/preview-iframe */ "../core/app/modules/site-editor/assets/js/atoms/preview-iframe.js"));
-
 const SiteTemplateBody = props => {
   return /*#__PURE__*/_react.default.createElement(_appUi.CardBody, null, props.extended ? /*#__PURE__*/_react.default.createElement(_previewIframe.default, {
     src: props.previewUrl,
@@ -2607,7 +2598,6 @@ const SiteTemplateBody = props => {
     placeholder: props.placeholderUrl
   }));
 };
-
 exports.SiteTemplateBody = SiteTemplateBody;
 SiteTemplateBody.propTypes = {
   extended: PropTypes.bool,
@@ -2633,16 +2623,12 @@ SiteTemplateBody.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.SiteTemplateFooter = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 const SiteTemplateFooter = props => {
   const instances = Object.values(props.instances).join(', ');
   return /*#__PURE__*/_react.default.createElement(_appUi.CardFooter, null, /*#__PURE__*/_react.default.createElement("div", {
@@ -2662,7 +2648,6 @@ const SiteTemplateFooter = props => {
     url: `/site-editor/conditions/${props.id}`
   })));
 };
-
 exports.SiteTemplateFooter = SiteTemplateFooter;
 SiteTemplateFooter.propTypes = {
   id: PropTypes.number.isRequired,
@@ -2683,47 +2668,40 @@ SiteTemplateFooter.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.SiteTemplateHeader = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _dialogsAndButtons = _interopRequireDefault(__webpack_require__(/*! ../part-actions/dialogs-and-buttons */ "../core/app/modules/site-editor/assets/js/part-actions/dialogs-and-buttons.js"));
-
 var _indicatorBullet = __webpack_require__(/*! ../atoms/indicator-bullet */ "../core/app/modules/site-editor/assets/js/atoms/indicator-bullet.js");
-
 const SiteTemplateHeader = props => {
   const status = props.status && 'publish' !== props.status ? ` (${props.status})` : '',
-        title = props.title + status,
-        ActionButtons = () => /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_appUi.Button, {
-    text: __('Edit', 'elementor-pro'),
-    icon: "eicon-edit",
-    className: "e-site-template__edit-btn",
-    size: "sm",
-    url: props.editURL
-  }), /*#__PURE__*/_react.default.createElement(_dialogsAndButtons.default, props)),
-        MetaDataIcon = innerProps => /*#__PURE__*/_react.default.createElement(_appUi.Text, {
-    tag: "span",
-    className: "e-site-template__meta-data"
-  }, /*#__PURE__*/_react.default.createElement(_appUi.Icon, {
-    className: innerProps.icon
-  }), innerProps.content),
-        MetaData = () => /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(MetaDataIcon, {
-    icon: "eicon-user-circle-o",
-    content: props.author
-  }), /*#__PURE__*/_react.default.createElement(MetaDataIcon, {
-    icon: "eicon-clock-o",
-    content: props.modifiedDate
-  })),
-        IndicatorDot = props.showInstances ? /*#__PURE__*/_react.default.createElement(_indicatorBullet.Indicator, {
-    active: props.isActive
-  }) : '';
-
+    title = props.title + status,
+    ActionButtons = () => /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_appUi.Button, {
+      text: __('Edit', 'elementor-pro'),
+      icon: "eicon-edit",
+      className: "e-site-template__edit-btn",
+      size: "sm",
+      url: props.editURL
+    }), /*#__PURE__*/_react.default.createElement(_dialogsAndButtons.default, props)),
+    MetaDataIcon = innerProps => /*#__PURE__*/_react.default.createElement(_appUi.Text, {
+      tag: "span",
+      className: "e-site-template__meta-data"
+    }, /*#__PURE__*/_react.default.createElement(_appUi.Icon, {
+      className: innerProps.icon
+    }), innerProps.content),
+    MetaData = () => /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(MetaDataIcon, {
+      icon: "eicon-user-circle-o",
+      content: props.author
+    }), /*#__PURE__*/_react.default.createElement(MetaDataIcon, {
+      icon: "eicon-clock-o",
+      content: props.modifiedDate
+    })),
+    IndicatorDot = props.showInstances ? /*#__PURE__*/_react.default.createElement(_indicatorBullet.Indicator, {
+      active: props.isActive
+    }) : '';
   return /*#__PURE__*/_react.default.createElement(_appUi.CardHeader, null, IndicatorDot, /*#__PURE__*/_react.default.createElement(_appUi.Heading, {
     tag: "h1",
     title: title,
@@ -2731,7 +2709,6 @@ const SiteTemplateHeader = props => {
     className: "eps-card__headline"
   }, title), props.extended && /*#__PURE__*/_react.default.createElement(MetaData, null), props.extended && /*#__PURE__*/_react.default.createElement(ActionButtons, null));
 };
-
 exports.SiteTemplateHeader = SiteTemplateHeader;
 SiteTemplateHeader.propTypes = {
   isActive: PropTypes.bool,
@@ -2758,16 +2735,12 @@ SiteTemplateHeader.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = SiteTemplateThumbnail;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 function SiteTemplateThumbnail(props) {
   return /*#__PURE__*/_react.default.createElement(_appUi.CardImage, {
     alt: props.title,
@@ -2782,7 +2755,6 @@ function SiteTemplateThumbnail(props) {
     url: `/site-editor/templates/${props.type}/${props.id}`
   })));
 }
-
 SiteTemplateThumbnail.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string,
@@ -2804,55 +2776,41 @@ SiteTemplateThumbnail.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = SiteTemplate;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _siteTemplateHeader = __webpack_require__(/*! ./site-template-header */ "../core/app/modules/site-editor/assets/js/molecules/site-template-header.js");
-
 var _siteTemplateBody = __webpack_require__(/*! ./site-template-body */ "../core/app/modules/site-editor/assets/js/molecules/site-template-body.js");
-
 var _siteTemplateFooter = __webpack_require__(/*! ./site-template-footer */ "../core/app/modules/site-editor/assets/js/molecules/site-template-footer.js");
-
 __webpack_require__(/*! ./site-template.scss */ "../core/app/modules/site-editor/assets/js/molecules/site-template.scss");
-
 function SiteTemplate(props) {
   const baseClassName = 'e-site-template',
-        classes = [baseClassName],
-        ref = _react.default.useRef(null);
-
+    classes = [baseClassName],
+    ref = _react.default.useRef(null);
   _react.default.useEffect(() => {
     if (!props.isSelected) {
       return;
     }
-
     ref.current.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     });
   }, [props.isSelected]);
-
   if (props.extended) {
     classes.push(`${baseClassName}--extended`);
   }
-
   if (props.aspectRatio) {
     classes.push(`${baseClassName}--${props.aspectRatio}`);
   }
-
   const CardFooter = props.extended && props.showInstances ? /*#__PURE__*/_react.default.createElement(_siteTemplateFooter.SiteTemplateFooter, props) : '';
   return /*#__PURE__*/_react.default.createElement(_appUi.Card, {
     className: classes.join(' '),
     ref: ref
   }, /*#__PURE__*/_react.default.createElement(_siteTemplateHeader.SiteTemplateHeader, props), /*#__PURE__*/_react.default.createElement(_siteTemplateBody.SiteTemplateBody, props), CardFooter);
 }
-
 SiteTemplate.propTypes = {
   aspectRatio: PropTypes.string,
   className: PropTypes.string,
@@ -2884,81 +2842,66 @@ SiteTemplate.defaultProps = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = SiteTemplates;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _siteTemplate = _interopRequireDefault(__webpack_require__(/*! ../molecules/site-template */ "../core/app/modules/site-editor/assets/js/molecules/site-template.js"));
-
 var _dialogsAndButtons = __webpack_require__(/*! ../part-actions/dialogs-and-buttons */ "../core/app/modules/site-editor/assets/js/part-actions/dialogs-and-buttons.js");
-
 var _templates = __webpack_require__(/*! ../context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js");
-
 var _useTemplatesScreenshot = _interopRequireDefault(__webpack_require__(/*! ../hooks/use-templates-screenshot */ "../core/app/modules/site-editor/assets/js/hooks/use-templates-screenshot.js"));
-
 function SiteTemplates(props) {
   const {
     templates: contextTemplates,
     action,
     resetActionState
   } = _react.default.useContext(_templates.Context);
+  let gridColumns, templates;
 
-  let gridColumns, templates; // Make the templates object a memorize value, will re run again only if
+  // Make the templates object a memorize value, will re run again only if
   // templates has been changed, also sort the templates by `isActive`.
-
   templates = _react.default.useMemo(() => {
     return Object.values(contextTemplates).sort((a, b) => {
       // This sort make sure to show first the active templates, second the
       // inactive templates that are not draft, and then the drafts,
       // in each category it sorts it inside by date.
+
       if (!b.isActive && !a.isActive) {
         if ('draft' === b.status && 'draft' === a.status || 'draft' !== b.status && 'draft' !== a.status) {
           return b.date < a.date ? 1 : -1;
         }
-
         return 'draft' === a.status ? 1 : -1;
       }
-
       if (b.isActive && a.isActive) {
         return b.date < a.date ? 1 : -1;
       }
-
       return b.isActive ? 1 : -1;
     });
-  }, [contextTemplates]); // Start to capture screenshots.
+  }, [contextTemplates]);
 
+  // Start to capture screenshots.
   (0, _useTemplatesScreenshot.default)(props.type);
   const siteTemplateConfig = {};
-
   if (props.type) {
     templates = templates.filter(item => item.type === props.type);
     siteTemplateConfig.extended = true;
     siteTemplateConfig.type = props.type;
-
     switch (props.type) {
       case 'header':
       case 'footer':
         gridColumns = 1;
         siteTemplateConfig.aspectRatio = 'wide';
         break;
-
       default:
         gridColumns = 2;
     }
   }
-
   if (!templates || !templates.length) {
     return /*#__PURE__*/_react.default.createElement("h3", null, __('No Templates found. Want to create one?', 'elementor-pro'), "...");
   }
-
   return /*#__PURE__*/_react.default.createElement("section", {
     className: "e-site-editor__site-templates"
   }, /*#__PURE__*/_react.default.createElement(_dialogsAndButtons.PartActionsDialogs, null), action.error && /*#__PURE__*/_react.default.createElement(_appUi.Dialog, {
@@ -2979,7 +2922,6 @@ function SiteTemplates(props) {
     isSelected: parseInt(props.id) === item.id
   })))));
 }
-
 SiteTemplates.propTypes = {
   type: PropTypes.string,
   id: PropTypes.string
@@ -2999,37 +2941,42 @@ SiteTemplates.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = AddNew;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _siteEditor = __webpack_require__(/*! @elementor/site-editor */ "@elementor/site-editor");
-
 __webpack_require__(/*! ./add-new.scss */ "../core/app/modules/site-editor/assets/js/pages/add-new.scss");
-
 var _templates = __webpack_require__(/*! ../context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js");
-
 var _backButton = _interopRequireDefault(__webpack_require__(/*! ../molecules/back-button */ "../core/app/modules/site-editor/assets/js/molecules/back-button.js"));
-
+var _useFeatureLock = _interopRequireDefault(__webpack_require__(/*! elementor-pro-app/hooks/use-feature-lock */ "../core/app/assets/js/hooks/use-feature-lock.js"));
 function AddNew() {
   const {
-    templates
-  } = _react.default.useContext(_templates.Context),
-        hasTemplates = 1 <= Object.keys(templates).length;
+      templates
+    } = _react.default.useContext(_templates.Context),
+    hasTemplates = 1 <= Object.keys(templates).length;
+  const {
+    isLocked,
+    ConnectButton
+  } = (0, _useFeatureLock.default)('site-editor');
+
   /**
    * An hover element for each site part.
    *
    * @param {any} props
    */
-
-
   const HoverElement = props => {
+    if (isLocked) {
+      return /*#__PURE__*/_react.default.createElement(_appUi.CardOverlay, {
+        className: "e-site-editor__promotion-overlay"
+      }, /*#__PURE__*/_react.default.createElement("div", {
+        className: "e-site-editor__promotion-overlay__link"
+      }, /*#__PURE__*/_react.default.createElement("i", {
+        className: "e-site-editor__promotion-overlay__icon eicon-lock"
+      })));
+    }
     return /*#__PURE__*/_react.default.createElement("a", {
       href: props.urls.create,
       className: "eps-card__image-overlay eps-add-new__overlay"
@@ -3037,17 +2984,25 @@ function AddNew() {
       hideText: true
     }));
   };
-
   HoverElement.propTypes = {
     urls: PropTypes.object.isRequired
   };
   return /*#__PURE__*/_react.default.createElement("section", {
     className: "e-site-editor__add-new"
-  }, /*#__PURE__*/_react.default.createElement("header", {
+  }, /*#__PURE__*/_react.default.createElement(_appUi.Grid, {
+    container: true,
+    direction: "column",
     className: "e-site-editor__header"
-  }, hasTemplates && /*#__PURE__*/_react.default.createElement(_backButton.default, null), /*#__PURE__*/_react.default.createElement(_appUi.Heading, {
+  }, hasTemplates && /*#__PURE__*/_react.default.createElement(_appUi.Grid, {
+    item: true
+  }, /*#__PURE__*/_react.default.createElement(_backButton.default, null)), /*#__PURE__*/_react.default.createElement(_appUi.Grid, {
+    item: true,
+    container: true,
+    justify: "space-between",
+    alignItems: "start"
+  }, /*#__PURE__*/_react.default.createElement(_appUi.Heading, {
     variant: "h1"
-  }, __('Start customizing every part of your site', 'elementor-pro'))), /*#__PURE__*/_react.default.createElement(_siteEditor.SiteParts, {
+  }, __('Start customizing every part of your site', 'elementor-pro')), isLocked && /*#__PURE__*/_react.default.createElement(ConnectButton, null))), /*#__PURE__*/_react.default.createElement(_siteEditor.SiteParts, {
     hoverElement: HoverElement
   }));
 }
@@ -3066,21 +3021,16 @@ function AddNew() {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = ConditionConflicts;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 function ConditionConflicts(props) {
   if (!props.conflicts.length) {
     return '';
   }
-
   const conflictLinks = props.conflicts.map(conflict => {
     return /*#__PURE__*/_react.default.createElement(_appUi.Button, {
       key: conflict.template_id,
@@ -3094,7 +3044,6 @@ function ConditionConflicts(props) {
     variant: "sm"
   }, __('Elementor recognized that you have set this location for other templates: ', 'elementor-pro'), " ", conflictLinks);
 }
-
 ConditionConflicts.propTypes = {
   conflicts: PropTypes.array.isRequired
 };
@@ -3112,28 +3061,22 @@ ConditionConflicts.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = ConditionName;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 function ConditionName(props) {
   // Hide for template types that has another default, like single & archive.
   if ('general' !== props.default) {
     return '';
   }
-
   const onChange = e => props.updateConditions(props.id, {
     name: e.target.value,
     sub: '',
     subId: ''
   });
-
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "e-site-editor-conditions__input-wrapper"
   }, /*#__PURE__*/_react.default.createElement(_appUi.Select, {
@@ -3142,7 +3085,6 @@ function ConditionName(props) {
     onChange: onChange
   }));
 }
-
 ConditionName.propTypes = {
   updateConditions: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
@@ -3168,16 +3110,12 @@ ConditionName.defaultProps = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = ConditionSubId;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 /**
  * Main component.
  *
@@ -3187,15 +3125,12 @@ var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
  */
 function ConditionSubId(props) {
   const settings = _react.default.useMemo(() => Object.keys(props.subIdAutocomplete).length ? getSettings(props.subIdAutocomplete) : null, [props.subIdAutocomplete]);
-
   if (!props.sub || !settings) {
     return '';
   }
-
   const onChange = e => props.updateConditions(props.id, {
     subId: e.target.value
   });
-
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "e-site-editor-conditions__input-wrapper"
   }, /*#__PURE__*/_react.default.createElement(_appUi.Select2, {
@@ -3205,6 +3140,7 @@ function ConditionSubId(props) {
     options: props.subIdOptions
   }));
 }
+
 /**
  * Get settings for the select2 base on the autocomplete settings,
  * that passes as a prop
@@ -3212,8 +3148,6 @@ function ConditionSubId(props) {
  * @param {any} autocomplete
  * @return {Object} -
  */
-
-
 function getSettings(autocomplete) {
   return {
     allowClear: false,
@@ -3230,25 +3164,20 @@ function getSettings(autocomplete) {
           error: failure
         });
       },
-
       data(params) {
         return {
           q: params.term,
           page: params.page
         };
       },
-
       cache: true
     },
-
     escapeMarkup(markup) {
       return markup;
     },
-
     minimumInputLength: 1
   };
 }
-
 ConditionSubId.propTypes = {
   subIdAutocomplete: PropTypes.object,
   id: PropTypes.string.isRequired,
@@ -3275,26 +3204,20 @@ ConditionSubId.defaultProps = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = ConditionSub;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 function ConditionSub(props) {
   if ('general' === props.name || !props.subOptions.length) {
     return '';
   }
-
   const onChange = e => props.updateConditions(props.id, {
     sub: e.target.value,
     subId: ''
   });
-
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "e-site-editor-conditions__input-wrapper"
   }, /*#__PURE__*/_react.default.createElement(_appUi.Select, {
@@ -3303,7 +3226,6 @@ function ConditionSub(props) {
     onChange: onChange
   }));
 }
-
 ConditionSub.propTypes = {
   updateConditions: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
@@ -3330,19 +3252,14 @@ ConditionSub.defaultProps = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = ConditionType;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 function ConditionType(props) {
   const wrapperRef = _react.default.createRef();
-
   const options = [{
     label: __('Include', 'elementor-pro'),
     value: 'include'
@@ -3350,17 +3267,14 @@ function ConditionType(props) {
     label: __('Exclude', 'elementor-pro'),
     value: 'exclude'
   }];
-
   const onChange = e => {
     props.updateConditions(props.id, {
       type: e.target.value
     });
   };
-
   _react.default.useEffect(() => {
     wrapperRef.current.setAttribute('data-elementor-condition-type', props.type);
   });
-
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "e-site-editor-conditions__input-wrapper e-site-editor-conditions__input-wrapper--condition-type",
     ref: wrapperRef
@@ -3370,7 +3284,6 @@ function ConditionType(props) {
     onChange: onChange
   }));
 }
-
 ConditionType.propTypes = {
   updateConditions: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
@@ -3394,30 +3307,19 @@ ConditionType.defaultProps = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = ConditionsRows;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/extends */ "../node_modules/@babel/runtime/helpers/extends.js"));
-
 var _conditions = __webpack_require__(/*! ../../context/conditions */ "../core/app/modules/site-editor/assets/js/context/conditions.js");
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _conditionType = _interopRequireDefault(__webpack_require__(/*! ./condition-type */ "../core/app/modules/site-editor/assets/js/pages/conditions/condition-type.js"));
-
 var _conditionName = _interopRequireDefault(__webpack_require__(/*! ./condition-name */ "../core/app/modules/site-editor/assets/js/pages/conditions/condition-name.js"));
-
 var _conditionSub = _interopRequireDefault(__webpack_require__(/*! ./condition-sub */ "../core/app/modules/site-editor/assets/js/pages/conditions/condition-sub.js"));
-
 var _conditionSubId = _interopRequireDefault(__webpack_require__(/*! ./condition-sub-id */ "../core/app/modules/site-editor/assets/js/pages/conditions/condition-sub-id.js"));
-
 var _conditionConflicts = _interopRequireDefault(__webpack_require__(/*! ./condition-conflicts */ "../core/app/modules/site-editor/assets/js/pages/conditions/condition-conflicts.js"));
-
 function ConditionsRows(props) {
   const {
     conditions,
@@ -3428,7 +3330,6 @@ function ConditionsRows(props) {
     action,
     resetActionState
   } = _react.default.useContext(_conditions.Context);
-
   const rows = Object.values(conditions).map(condition => /*#__PURE__*/_react.default.createElement("div", {
     key: condition.id
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -3485,7 +3386,6 @@ function ConditionsRows(props) {
     onClick: () => save().then(props.onAfterSave)
   })));
 }
-
 ConditionsRows.propTypes = {
   onAfterSave: PropTypes.func
 };
@@ -3504,37 +3404,26 @@ ConditionsRows.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = Conditions;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _conditions = _interopRequireDefault(__webpack_require__(/*! ../../context/conditions */ "../core/app/modules/site-editor/assets/js/context/conditions.js"));
-
 var _templates = __webpack_require__(/*! ../../context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js");
-
 var _conditionsRows = _interopRequireDefault(__webpack_require__(/*! ./conditions-rows */ "../core/app/modules/site-editor/assets/js/pages/conditions/conditions-rows.js"));
-
 __webpack_require__(/*! ./conditions.scss */ "../core/app/modules/site-editor/assets/js/pages/conditions/conditions.scss");
-
 var _backButton = _interopRequireDefault(__webpack_require__(/*! ../../molecules/back-button */ "../core/app/modules/site-editor/assets/js/molecules/back-button.js"));
-
 function Conditions(props) {
   const {
-    findTemplateItemInState,
-    updateTemplateItemState
-  } = _react.default.useContext(_templates.Context),
-        template = findTemplateItemInState(parseInt(props.id));
-
+      findTemplateItemInState,
+      updateTemplateItemState
+    } = _react.default.useContext(_templates.Context),
+    template = findTemplateItemInState(parseInt(props.id));
   if (!template) {
     return /*#__PURE__*/_react.default.createElement("div", null, __('Not Found', 'elementor-pro'));
   }
-
   return /*#__PURE__*/_react.default.createElement("section", {
     className: "e-site-editor-conditions"
   }, /*#__PURE__*/_react.default.createElement(_backButton.default, null), /*#__PURE__*/_react.default.createElement("div", {
@@ -3555,7 +3444,6 @@ function Conditions(props) {
     onAfterSave: () => history.back()
   })));
 }
-
 Conditions.propTypes = {
   id: PropTypes.string
 };
@@ -3573,36 +3461,28 @@ Conditions.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = Import;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _templates = __webpack_require__(/*! ../context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js");
-
 var _backButton = _interopRequireDefault(__webpack_require__(/*! ../molecules/back-button */ "../core/app/modules/site-editor/assets/js/molecules/back-button.js"));
-
 function Import() {
   const {
-    importTemplates,
-    action,
-    resetActionState
-  } = _react.default.useContext(_templates.Context),
-        [importedTemplate, setImportedTemplate] = _react.default.useState(null),
-        isImport = _react.default.useMemo(() => action.current === _templates.TemplatesProvider.actions.IMPORT, [action]),
-        isUploading = _react.default.useMemo(() => isImport && action.loading, [action]),
-        hasError = _react.default.useMemo(() => isImport && action.error, [action]);
-
+      importTemplates,
+      action,
+      resetActionState
+    } = _react.default.useContext(_templates.Context),
+    [importedTemplate, setImportedTemplate] = _react.default.useState(null),
+    isImport = _react.default.useMemo(() => action.current === _templates.TemplatesProvider.actions.IMPORT, [action]),
+    isUploading = _react.default.useMemo(() => isImport && action.loading, [action]),
+    hasError = _react.default.useMemo(() => isImport && action.error, [action]);
   const upload = _react.default.useCallback(file => {
     if (isUploading) {
       return;
     }
-
     readFile(file).then(fileData => importTemplates({
       fileName: file.name,
       fileData
@@ -3611,7 +3491,6 @@ function Import() {
       setImportedTemplate(response.data[0]);
     });
   }, []);
-
   return /*#__PURE__*/_react.default.createElement("section", {
     className: "site-editor__import"
   }, importedTemplate && /*#__PURE__*/_react.default.createElement(_appUi.Dialog, {
@@ -3641,12 +3520,10 @@ function Import() {
     filetypes: ['zip', 'json']
   }));
 }
-
 function readFile(file) {
   return new Promise(resolve => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-
     fileReader.onload = event => {
       // Replace the mime type that prepended to the base64 with empty string and return a
       // resolved promise only with the base64 string.
@@ -3669,32 +3546,28 @@ function readFile(file) {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = TemplateType;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _siteEditor = __webpack_require__(/*! @elementor/site-editor */ "@elementor/site-editor");
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _siteTemplates = _interopRequireDefault(__webpack_require__(/*! ../organisms/site-templates */ "../core/app/modules/site-editor/assets/js/organisms/site-templates.js"));
-
+var _useFeatureLock = _interopRequireDefault(__webpack_require__(/*! elementor-pro-app/hooks/use-feature-lock */ "../core/app/assets/js/hooks/use-feature-lock.js"));
 __webpack_require__(/*! ./template-type.scss */ "../core/app/modules/site-editor/assets/js/pages/template-type.scss");
-
 function TemplateType(props) {
   const {
-    templateTypes
-  } = _react.default.useContext(_siteEditor.TemplateTypesContext),
-        currentType = templateTypes.find(item => item.type === props.type);
-
+      templateTypes
+    } = _react.default.useContext(_siteEditor.TemplateTypesContext),
+    currentType = templateTypes.find(item => item.type === props.type),
+    {
+      isLocked,
+      ConnectButton
+    } = (0, _useFeatureLock.default)('site-editor');
   if (!currentType) {
     return /*#__PURE__*/_react.default.createElement(_appUi.NotFound, null);
   }
-
   return /*#__PURE__*/_react.default.createElement("section", {
     className: `e-site-editor__templates e-site-editor__templates--type-${props.type}`
   }, /*#__PURE__*/_react.default.createElement(_appUi.Grid, {
@@ -3703,7 +3576,7 @@ function TemplateType(props) {
     justify: "space-between"
   }, /*#__PURE__*/_react.default.createElement(_appUi.Heading, {
     variant: "h1"
-  }, currentType.page_title), /*#__PURE__*/_react.default.createElement(_appUi.AddNewButton, {
+  }, currentType.page_title), isLocked ? /*#__PURE__*/_react.default.createElement(ConnectButton, null) : /*#__PURE__*/_react.default.createElement(_appUi.AddNewButton, {
     url: currentType.urls.create,
     text: __('Add New', 'elementor-pro')
   })), /*#__PURE__*/_react.default.createElement("hr", {
@@ -3713,7 +3586,6 @@ function TemplateType(props) {
     id: props.id
   }));
 }
-
 TemplateType.propTypes = {
   type: PropTypes.string,
   page_title: PropTypes.string,
@@ -3733,26 +3605,27 @@ TemplateType.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = Templates;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _siteTemplates = _interopRequireDefault(__webpack_require__(/*! ../organisms/site-templates */ "../core/app/modules/site-editor/assets/js/organisms/site-templates.js"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
+var _useFeatureLock = _interopRequireDefault(__webpack_require__(/*! elementor-pro-app/hooks/use-feature-lock */ "../core/app/assets/js/hooks/use-feature-lock.js"));
 function Templates() {
+  const {
+    isLocked,
+    ConnectButton
+  } = (0, _useFeatureLock.default)('site-editor');
   return /*#__PURE__*/_react.default.createElement("section", {
     className: "e-site-editor__site-templates"
   }, /*#__PURE__*/_react.default.createElement(_appUi.Grid, {
     container: true,
     justify: "space-between",
+    alignItems: "start",
     className: "page-header"
-  }, /*#__PURE__*/_react.default.createElement("h1", null, __('Your Site\'s Global Parts', 'elementor-pro')), /*#__PURE__*/_react.default.createElement(_appUi.AddNewButton, {
+  }, /*#__PURE__*/_react.default.createElement("h1", null, __('Your Site\'s Global Parts', 'elementor-pro')), isLocked ? /*#__PURE__*/_react.default.createElement(ConnectButton, null) : /*#__PURE__*/_react.default.createElement(_appUi.AddNewButton, {
     url: "/site-editor/add-new"
   })), /*#__PURE__*/_react.default.createElement("hr", {
     className: "eps-separator"
@@ -3773,36 +3646,27 @@ function Templates() {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = DialogDelete;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _templates = __webpack_require__(/*! ../context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js");
-
 function DialogDelete(props) {
   const {
     deleteTemplate,
     findTemplateItemInState
   } = _react.default.useContext(_templates.Context);
-
   const closeDialog = shouldUpdate => {
     props.setId(null);
-
     if (shouldUpdate) {
       deleteTemplate(props.id);
     }
   };
-
   if (!props.id) {
     return '';
   }
-
   const template = findTemplateItemInState(props.id);
   return /*#__PURE__*/_react.default.createElement(_appUi.Dialog, {
     title: __('Move Item To Trash', 'elementor-pro'),
@@ -3816,7 +3680,6 @@ function DialogDelete(props) {
     onClose: () => closeDialog()
   });
 }
-
 DialogDelete.propTypes = {
   id: PropTypes.number,
   setId: PropTypes.func.isRequired
@@ -3839,47 +3702,35 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = DialogRename;
-
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _templates = __webpack_require__(/*! ../context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js");
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function DialogRename(props) {
   const {
-    findTemplateItemInState,
-    updateTemplate
-  } = _react.default.useContext(_templates.Context),
-        template = findTemplateItemInState(props.id);
-
+      findTemplateItemInState,
+      updateTemplate
+    } = _react.default.useContext(_templates.Context),
+    template = findTemplateItemInState(props.id);
   const [title, setTitle] = _react.default.useState('');
-
   (0, _react.useEffect)(() => {
     // The "title" state should be updated if the template title changed.
     if (template) {
       setTitle(template.title);
     }
   }, [template]);
-
   const closeDialog = shouldUpdate => {
     props.setId(null);
-
     if (shouldUpdate) {
       updateTemplate(props.id, {
         post_title: title
       });
     }
   };
-
   if (!props.id) {
     return '';
   }
-
   return /*#__PURE__*/_react.default.createElement(_appUi.Dialog, {
     title: __('Rename Site Part', 'elementor-pro'),
     approveButtonText: __('Change', 'elementor-pro'),
@@ -3891,14 +3742,14 @@ function DialogRename(props) {
     onClose: () => closeDialog()
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "text",
-    className: "eps-input eps-input-text eps-input--block" // eslint-disable-next-line jsx-a11y/no-autofocus
+    className: "eps-input eps-input-text eps-input--block"
+    // eslint-disable-next-line jsx-a11y/no-autofocus
     ,
     autoFocus: true,
     value: title,
     onChange: e => setTitle(e.target.value)
   }));
 }
-
 DialogRename.propTypes = {
   id: PropTypes.number,
   setId: PropTypes.func.isRequired
@@ -3918,34 +3769,26 @@ DialogRename.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.PartActionsDialogs = PartActionsDialogs;
 exports["default"] = PartActionsButtons;
 exports.handlers = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _dialogRename = _interopRequireDefault(__webpack_require__(/*! ./dialog-rename */ "../core/app/modules/site-editor/assets/js/part-actions/dialog-rename.js"));
-
 var _dialogDelete = _interopRequireDefault(__webpack_require__(/*! ./dialog-delete */ "../core/app/modules/site-editor/assets/js/part-actions/dialog-delete.js"));
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 const handlers = {
   rename: null,
   delete: null
-}; // TODO: Think about refactor to portals: https://reactjs.org/docs/portals.html
+};
 
+// TODO: Think about refactor to portals: https://reactjs.org/docs/portals.html
 exports.handlers = handlers;
-
 function PartActionsDialogs() {
   const [DialogRenameId, setDialogRenameId] = _react.default.useState(null);
-
   const [DialogDeleteId, setDialogDeleteId] = _react.default.useState(null);
-
   handlers.rename = setDialogRenameId;
   handlers.delete = setDialogDeleteId;
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_dialogRename.default, {
@@ -3956,12 +3799,9 @@ function PartActionsDialogs() {
     setId: setDialogDeleteId
   }));
 }
-
 function PartActionsButtons(props) {
   const [showMenu, setShowMenu] = _react.default.useState(false);
-
   let SiteTemplatePopover = '';
-
   if (showMenu) {
     SiteTemplatePopover = /*#__PURE__*/_react.default.createElement(_appUi.Popover, {
       closeFunction: () => setShowMenu(!showMenu)
@@ -3982,7 +3822,6 @@ function PartActionsButtons(props) {
       onClick: () => handlers.rename(props.id)
     })));
   }
-
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "eps-popover__container"
   }, /*#__PURE__*/_react.default.createElement(_appUi.Button, {
@@ -3993,7 +3832,6 @@ function PartActionsButtons(props) {
     onClick: () => setShowMenu(!showMenu)
   }), SiteTemplatePopover);
 }
-
 PartActionsButtons.propTypes = {
   id: PropTypes.number.isRequired,
   exportLink: PropTypes.string.isRequired
@@ -4012,45 +3850,30 @@ PartActionsButtons.propTypes = {
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
 var _router = __webpack_require__(/*! @reach/router */ "../node_modules/@reach/router/es/index.js");
-
 var _templates = _interopRequireDefault(__webpack_require__(/*! ./pages/templates */ "../core/app/modules/site-editor/assets/js/pages/templates.js"));
-
 var _templateType = _interopRequireDefault(__webpack_require__(/*! ./pages/template-type */ "../core/app/modules/site-editor/assets/js/pages/template-type.js"));
-
 var _addNew = _interopRequireDefault(__webpack_require__(/*! ./pages/add-new */ "../core/app/modules/site-editor/assets/js/pages/add-new.js"));
-
 var _conditions = _interopRequireDefault(__webpack_require__(/*! ./pages/conditions/conditions */ "../core/app/modules/site-editor/assets/js/pages/conditions/conditions.js"));
-
 var _import = _interopRequireDefault(__webpack_require__(/*! ./pages/import */ "../core/app/modules/site-editor/assets/js/pages/import.js"));
-
 var _templates2 = _interopRequireWildcard(__webpack_require__(/*! ./context/templates */ "../core/app/modules/site-editor/assets/js/context/templates.js"));
-
 var _siteEditor = __webpack_require__(/*! @elementor/site-editor */ "@elementor/site-editor");
-
 var _appUi = __webpack_require__(/*! @elementor/app-ui */ "@elementor/app-ui");
-
 var _router2 = _interopRequireDefault(__webpack_require__(/*! @elementor/router */ "@elementor/router"));
-
 var _component = _interopRequireDefault(__webpack_require__(/*! ./data/component */ "../core/app/modules/site-editor/assets/js/data/component.js"));
-
+var _useFeatureLock = _interopRequireDefault(__webpack_require__(/*! elementor-pro-app/hooks/use-feature-lock */ "../core/app/assets/js/hooks/use-feature-lock.js"));
 __webpack_require__(/*! ./site-editor.scss */ "../core/app/modules/site-editor/assets/js/site-editor.scss");
-
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function SiteEditor() {
-  var _elementorAppProConfi, _elementorAppProConfi2;
-
+  const {
+    isLocked
+  } = (0, _useFeatureLock.default)('site-editor');
   const basePath = 'site-editor';
   const headerButtons = [{
     id: 'import',
@@ -4058,17 +3881,16 @@ function SiteEditor() {
     hideText: true,
     icon: 'eicon-download-circle-o',
     onClick: () => _router2.default.appHistory.navigate(basePath + '/import')
-  }]; // Remove Core cache.
+  }];
 
+  // Remove Core cache.
   elementorCommon.ajax.invalidateCache({
     unique_id: 'app_site_editor_template_types'
   });
-
   const SiteEditorDefault = () => {
     const {
       templates
     } = _react.default.useContext(_templates2.Context);
-
     if (Object.keys(templates).length) {
       return /*#__PURE__*/_react.default.createElement(_router.Redirect, {
         from: '/',
@@ -4076,14 +3898,12 @@ function SiteEditor() {
         noThrow: true
       });
     }
-
     return /*#__PURE__*/_react.default.createElement(_router.Redirect, {
       from: '/',
       to: '/' + basePath + '/add-new',
       noThrow: true
     });
   };
-
   return /*#__PURE__*/_react.default.createElement(_appUi.ErrorBoundary, {
     title: __('Theme Builder could not be loaded', 'elementor-pro'),
     learnMoreUrl: "https://go.elementor.com/app-theme-builder-load-issue"
@@ -4092,7 +3912,8 @@ function SiteEditor() {
       url: '/' + basePath
     }),
     headerButtons: headerButtons,
-    titleRedirectRoute: '/' + basePath
+    titleRedirectRoute: '/' + basePath,
+    promotion: isLocked
   }, /*#__PURE__*/_react.default.createElement(_appUi.Grid, {
     container: true,
     className: "e-site-editor__content_container"
@@ -4120,23 +3941,19 @@ function SiteEditor() {
     className: "e-site-editor__content_container_secondary"
   }, /*#__PURE__*/_react.default.createElement(_appUi.Button, {
     text: __('Switch to table view', 'elementor-pro'),
-    url: (_elementorAppProConfi = elementorAppProConfig['site-editor']) === null || _elementorAppProConfi === void 0 ? void 0 : (_elementorAppProConfi2 = _elementorAppProConfi.urls) === null || _elementorAppProConfi2 === void 0 ? void 0 : _elementorAppProConfi2.legacy_view
+    url: elementorAppProConfig['site-editor']?.urls?.legacy_view
   })))));
 }
-
 class Module {
   constructor() {
     elementorCommon.debug.addURLToWatch('elementor-pro/assets');
     $e.components.register(new _component.default());
-
     _router2.default.addRoute({
       path: '/site-editor/*',
       component: SiteEditor
     });
   }
-
 }
-
 exports["default"] = Module;
 
 /***/ }),
@@ -4169,16 +3986,17 @@ exports.SCREENSHOT_STATUS_IN_PROGRESS = SCREENSHOT_STATUS_IN_PROGRESS;
 const SCREENSHOT_STATUS_SUCCEED = 'succeed';
 exports.SCREENSHOT_STATUS_SUCCEED = SCREENSHOT_STATUS_SUCCEED;
 const SCREENSHOT_STATUS_FAILED = 'failed';
+
 /**
  * Default options for the hook function
  *
  * @type {{numberOfScreenshotInParallel: number}}
  */
-
 exports.SCREENSHOT_STATUS_FAILED = SCREENSHOT_STATUS_FAILED;
 const defaultOptions = {
   numberOfScreenshotInParallel: 1
 };
+
 /**
  * Filter the posts by status.
  *
@@ -4186,18 +4004,16 @@ const defaultOptions = {
  * @param {string} status
  * @return {Array} -
  */
-
 function filterPostByStatus(posts, status) {
   return posts.filter(item => status === item.status);
 }
+
 /**
  * Receive the initial posts and normalize it
  * to an array that the hook can work with.
  *
  * @param {Array} posts
  */
-
-
 function normalizeInitialPosts(posts) {
   return posts.map(post => ({
     id: post.id,
@@ -4207,6 +4023,7 @@ function normalizeInitialPosts(posts) {
     imageUrl: null
   }));
 }
+
 /**
  * Find the post id inside the posts array, update it with the attrs,
  * and make sure to return the whole posts array.
@@ -4217,28 +4034,25 @@ function normalizeInitialPosts(posts) {
  * @param {Object} attrs
  * @return {Array} -
  */
-
-
 function updatePostsAttrs(posts, id) {
   let attrs = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   return posts.map(post => {
     if (post.id !== id) {
       return post;
     }
-
-    return { ...post,
+    return {
+      ...post,
       ...attrs
     };
   });
 }
+
 /**
  * Creates an IFrame that will create the screenshot.
  *
  * @param {Object} post
  * @return {any} -
  */
-
-
 function createScreenshotIframe(post) {
   const iframe = document.createElement('iframe');
   iframe.src = post.screenshot_url;
@@ -4247,6 +4061,7 @@ function createScreenshotIframe(post) {
   document.body.appendChild(iframe);
   return iframe;
 }
+
 /**
  * Returns a callback, that will be bind to the iframe message event.
  *
@@ -4254,24 +4069,18 @@ function createScreenshotIframe(post) {
  * @param {Function} setPosts
  * @return {any} -
  */
-
-
 function useIFrameMessageListener(inProgressPosts, setPosts) {
   return useCallback(message => {
     const {
       data
     } = message;
-
     if (!data.name || data.name !== 'capture-screenshot-done') {
       return;
     }
-
     const post = inProgressPosts.find(item => item.id === parseInt(data.id));
-
     if (!post) {
       return;
     }
-
     post.iframe.remove();
     setPosts(prevState => updatePostsAttrs(prevState, post.id, {
       status: data.success ? SCREENSHOT_STATUS_SUCCEED : SCREENSHOT_STATUS_FAILED,
@@ -4279,6 +4088,7 @@ function useIFrameMessageListener(inProgressPosts, setPosts) {
     }));
   }, [inProgressPosts]);
 }
+
 /**
  * Will create a screenshot based on the posts that was passed to it.
  *
@@ -4286,48 +4096,48 @@ function useIFrameMessageListener(inProgressPosts, setPosts) {
  * @param {number} numberOfScreenshotInParallel
  * @return {{inProgress: Array, succeed: Array, failed: Array, posts: Array, queue: Array}} -
  */
-
-
 function useScreenshot(initialPosts) {
   let {
     numberOfScreenshotInParallel
   } = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultOptions;
-  const [posts, setPosts] = useState([]); // Holds some kind of computed value of the `posts` state,
-  // it is been created mostly for convenient workflow and little bit performance optimization.
+  const [posts, setPosts] = useState([]);
 
+  // Holds some kind of computed value of the `posts` state,
+  // it is been created mostly for convenient workflow and little bit performance optimization.
   const queue = useMemo(() => filterPostByStatus(posts, SCREENSHOT_STATUS_QUEUE), [posts]);
   const inProgress = useMemo(() => filterPostByStatus(posts, SCREENSHOT_STATUS_IN_PROGRESS), [posts]);
   const succeed = useMemo(() => filterPostByStatus(posts, SCREENSHOT_STATUS_SUCCEED), [posts]);
-  const failed = useMemo(() => filterPostByStatus(posts, SCREENSHOT_STATUS_FAILED), [posts]); // Will run every initialPosts change, make the diff between the local state
-  // and initialPosts and creates a new local state.
+  const failed = useMemo(() => filterPostByStatus(posts, SCREENSHOT_STATUS_FAILED), [posts]);
 
+  // Will run every initialPosts change, make the diff between the local state
+  // and initialPosts and creates a new local state.
   useEffect(() => {
     const postsDiff = initialPosts.filter(initialPost => !posts.find(statePost => statePost.id === initialPost.id));
-
     if (!postsDiff.length) {
       return;
     }
-
     setPosts(prev => [...prev, ...normalizeInitialPosts(postsDiff)]);
-  }, [initialPosts]); // Holds the useCallback that will be used to listen to the screenshot iframe events.
+  }, [initialPosts]);
 
-  const iframeMessageListener = useIFrameMessageListener(inProgress, setPosts); // Listens to the screenshot iframe events
+  // Holds the useCallback that will be used to listen to the screenshot iframe events.
+  const iframeMessageListener = useIFrameMessageListener(inProgress, setPosts);
+
+  // Listens to the screenshot iframe events
   // eventually will remove the iframe and set the post status to succeed or failed.
-
   useEffect(() => {
     window.addEventListener('message', iframeMessageListener, false);
     return () => {
       window.removeEventListener('message', iframeMessageListener);
     };
-  }, [iframeMessageListener]); // Runs every time `posts` state change (all most every event in this hook will trigger change to `posts`),
+  }, [iframeMessageListener]);
+
+  // Runs every time `posts` state change (all most every event in this hook will trigger change to `posts`),
   // this logic response for setting status of the process to DONE if needed + taking the next post and start
   // to capture a screenshot.
-
   useEffect(() => {
     if (0 === queue.length || inProgress.length >= numberOfScreenshotInParallel) {
       return;
     }
-
     const [nextPost] = queue;
     const iframe = createScreenshotIframe(nextPost);
     setPosts(prevState => updatePostsAttrs(prevState, nextPost.id, {
@@ -6071,19 +5881,16 @@ function _extends() {
   module.exports = _extends = Object.assign ? Object.assign.bind() : function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
-
       for (var key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
           target[key] = source[key];
         }
       }
     }
-
     return target;
   }, module.exports.__esModule = true, module.exports["default"] = module.exports;
   return _extends.apply(this, arguments);
 }
-
 module.exports = _extends, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
@@ -6099,7 +5906,6 @@ function _interopRequireDefault(obj) {
     "default": obj
   };
 }
-
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ })
@@ -6194,9 +6000,7 @@ var __webpack_exports__ = {};
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
 var _siteEditor = _interopRequireDefault(__webpack_require__(/*! ../../modules/site-editor/assets/js/site-editor */ "../core/app/modules/site-editor/assets/js/site-editor.js"));
-
 new _siteEditor.default();
 })();
 

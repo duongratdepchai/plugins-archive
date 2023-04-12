@@ -3541,7 +3541,7 @@ msgid "Dynamic Image"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:82
-msgid "Note: this filed will override Source value"
+msgid "Note: this field will override Source value"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:89
@@ -3577,7 +3577,7 @@ msgstr ""
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:261
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:302
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:471
-msgid "Note: this filed will override Meta Field value"
+msgid "Note: this field will override Meta Field value"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:202

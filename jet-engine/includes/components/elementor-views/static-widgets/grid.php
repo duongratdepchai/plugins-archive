@@ -287,6 +287,7 @@ if ( ! class_exists( 'Elementor\Jet_Listing_Grid_Widget' ) ) {
 				'load_more_id',
 				array(
 					'label'       => __( 'Load more element ID', 'jet-engine' ),
+					'description' => __( 'Please, make sure to add a Button widget that will be used as "Load more" button', 'jet-engine' ),
 					'type'        => Controls_Manager::TEXT,
 					'default'     => '',
 					'label_block' => true,
@@ -1551,8 +1552,8 @@ if ( ! class_exists( 'Elementor\Jet_Listing_Grid_Widget' ) ) {
 					),
 					'size_units' => array( 'px', 'em', 'rem' ),
 					'selectors' => array(
-						'{{WRAPPER}} .jet-listing-grid__item' => 'padding-left: calc({{SIZE}}{{UNIT}} / 2); padding-right: calc({{SIZE}}{{UNIT}} / 2);',
-						'{{WRAPPER}} .jet-listing-grid__items' => 'margin-left: calc(-{{SIZE}}{{UNIT}} / 2); margin-right: calc(-{{SIZE}}{{UNIT}} / 2); width: calc(100% + {{SIZE}}{{UNIT}});',
+						':is( {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__items, {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__slider > .jet-listing-grid__items > .slick-list > .slick-track, {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__scroll-slider > .jet-listing-grid__items ) > .jet-listing-grid__item' => 'padding-left: calc({{SIZE}}{{UNIT}} / 2); padding-right: calc({{SIZE}}{{UNIT}} / 2);',
+						':is( {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid, {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__slider, {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__scroll-slider ) > .jet-listing-grid__items' => 'margin-left: calc(-{{SIZE}}{{UNIT}} / 2); margin-right: calc(-{{SIZE}}{{UNIT}} / 2); width: calc(100% + {{SIZE}}{{UNIT}});',
 					),
 				)
 			);
@@ -1570,7 +1571,7 @@ if ( ! class_exists( 'Elementor\Jet_Listing_Grid_Widget' ) ) {
 					),
 					'size_units' => array( 'px', 'em', 'rem' ),
 					'selectors' => array(
-						'{{WRAPPER}} .jet-listing-grid__item' => 'padding-top: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
+						':is( {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__items, {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__slider > .jet-listing-grid__items > .slick-list > .slick-track, {{WRAPPER}} > .elementor-widget-container > .jet-listing-grid > .jet-listing-grid__scroll-slider > .jet-listing-grid__items ) > .jet-listing-grid__item' => 'padding-top: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
 					),
 				)
 			);
@@ -1967,7 +1968,7 @@ if ( ! class_exists( 'Elementor\Jet_Listing_Grid_Widget' ) ) {
 					array(
 						'label'      => sprintf( esc_html__( 'Static column width on %s', 'jet-engine' ), $device_label ),
 						'type'       => Controls_Manager::SLIDER,
-						'size_units' => array( 'px', '%', 'vw' ),
+						'size_units' => jet_engine()->elementor_views->add_custom_size_unit( array( 'px', '%', 'vw' ) ),
 						'range' => array(
 							'px' => array(
 								'min' => 0,

@@ -377,7 +377,7 @@ if ( ! class_exists( 'Jet_Engine_WPML_Package' ) ) {
 			$name = "Admin Label - {$label}";
 
 			if ( 160 < strlen( $name ) ) {
-				$name = substr( $name, 0, 100 ) . '... - ' . md5( $label );
+				$name = jet_engine_trim_string( $name, 100, '' ) . '... - ' . md5( $label );
 			}
 
 			if ( $lang === $wpml_default_lang ) {

@@ -63,7 +63,13 @@ class Jet_Engine_Objects_Stack {
 	 * @return [type] [description]
 	 */
 	public function save_root() {
-		$this->root = get_queried_object();
+		$this->set_root_object( get_queried_object() );
+	}
+
+	public function set_root_object( $object = null ) {
+		if ( is_object( $object ) ) {
+			$this->root = $object;
+		}
 	}
 
 	/**

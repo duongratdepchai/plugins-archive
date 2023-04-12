@@ -121,6 +121,8 @@ class Leaflet extends Base {
 	
 		if ( $this->is_active() && isset( $settings['scrollwheel'] ) ) {
 			$data['advanced']['scrollwheel'] = filter_var( $settings['scrollwheel'], FILTER_VALIDATE_BOOLEAN );
+		} elseif ( $this->is_active() && ! isset( $settings['scrollwheel'] ) ) {
+			$data['advanced']['scrollwheel'] = false;
 		}
 
 		return $data;

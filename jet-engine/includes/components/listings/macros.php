@@ -99,6 +99,36 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 
 		}
 
+		public function get_macros_for_js() {
+			$res = array();
+
+			foreach ( jet_engine()->listings->macros->get_all( false, true ) as $macros_id => $data ) {
+
+				$macros_data = array(
+					'id' => $macros_id,
+				);
+
+				if ( ! is_array( $data ) || empty( $data['label'] ) ) {
+					$macros_data['name'] = $macros_id;
+				} elseif ( ! empty( $data['label'] ) ) {
+					$macros_data['name'] = $data['label'];
+				}
+
+				if ( is_array( $data ) && ! empty( $data['args'] ) ) {
+					$macros_data['controls'] = $data['args'];
+				}
+
+				$res[] = $macros_data;
+
+			}
+
+			usort( $res, function ( $a, $b ) {
+				return strcmp( $a['name'], $b['name'] );
+			} );
+
+			return $res;
+		}
+
 		public function register_core_macros() {
 
 			foreach ( glob( jet_engine()->plugin_path( 'includes/components/listings/macros/' ) . '*.php' ) as $file ) {
@@ -244,6 +274,9 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 
 				case 'WP_User':
 					return get_user_meta( $object->ID, $meta_key, true );
+
+				default:
+					return apply_filters( 'jet-engine/macros/current-meta', false, $object, $meta_key );
 
 			}
 

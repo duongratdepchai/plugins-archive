@@ -74,11 +74,21 @@
 						if ( 'none' === response.data[i].display ) {
 
 							$( '#' + response.data[i].id )
+								.find( '.cx-control-required' )
+								.removeClass( 'cx-control-required' )
+								.addClass( 'cx-control-not-required' );
+
+							$( '#' + response.data[i].id )
 								.find( '[required]' )
 								.removeAttr( 'required' )
 								.attr( 'data-required', 1 );
 
 						} else {
+
+							$( '#' + response.data[i].id )
+								.find( '.cx-control-not-required' )
+								.removeClass( 'cx-control-not-required' )
+								.addClass( 'cx-control-required' );
 
 							$( '#' + response.data[i].id )
 								.find( '[data-required="1"]' )

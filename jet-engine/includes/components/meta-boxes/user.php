@@ -267,11 +267,11 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 
 						switch ( $field['input_type'] ) {
 							case 'date':
-								$value = date( 'Y-m-d', $value );
+								$value = $this->get_date( 'Y-m-d', $value );
 								break;
 
 							case 'datetime-local':
-								$value = date( 'Y-m-d\TH:i', $value );
+								$value = $this->get_date( 'Y-m-d\TH:i', $value );
 								break;
 						}
 					}
@@ -280,6 +280,15 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 			}
 
 			return $value;
+		}
+
+		/**
+		 * Returns date converted from timestamp
+		 * 
+		 * @return [type] [description]
+		 */
+		public function get_date( $format, $time ) {
+			return apply_filters( 'cx_user_meta/date', date( $format, $time ), $time, $format );
 		}
 
 		/**
@@ -507,7 +516,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_User_Meta' ) ) {
 			}
 
 			if ( $this->to_timestamp( $field ) ) {
-				return strtotime( $value );
+				return apply_filters( 'cx_user_meta/strtotime', strtotime( $value ), $value );
 			}
 
 			if ( empty( $field['sanitize_callback'] ) ) {

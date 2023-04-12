@@ -3,7 +3,7 @@
  * Plugin Name: JetEngine
  * Plugin URI:  https://crocoblock.com/plugins/jetengine/
  * Description: The ultimate solution for managing custom post types, taxonomies and meta boxes.
- * Version:     3.0.9.1
+ * Version:     3.1.3.1
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: jet-engine
@@ -25,6 +25,7 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 	 *
 	 * Sets up and initializes the plugin.
 	 */
+	#[AllowDynamicProperties]
 	class Jet_Engine {
 
 		/**
@@ -59,7 +60,7 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.0.9.1';
+		private $version = '3.1.3.1';
 
 		/**
 		 * Holder for base plugin path
@@ -129,6 +130,8 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 		public $dynamic_functions;
 		public $admin_bar;
 
+		public $shortcodes;
+
 		/**
 		 * Sets up needed actions/filters for the plugin to initialize.
 		 *
@@ -186,6 +189,7 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 					$this->plugin_path( 'framework/jet-elementor-extension/jet-elementor-extension.php' ),
 					$this->plugin_path( 'framework/db-updater/cherry-x-db-updater.php' ),
 					$this->plugin_path( 'framework/admin-bar/jet-admin-bar.php' ),
+					$this->plugin_path( 'framework/knowledge-base-search/knowledge-base-search.php' ),
 				)
 			);
 
@@ -207,6 +211,28 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 
 			$this->dashboard     = new Jet_Engine_Dashboard();
 			$this->accessibility = new Jet_Engine_Accessibility();
+
+			$this->init_knowledge_base_search();
+
+		}
+
+		public function init_knowledge_base_search() {
+
+			$module_data = $this->framework->get_included_module_data( 'knowledge-base-search.php' );
+			$search      = new \Jet_Knowledge_Base_Search\Module( array(
+				'path' => $module_data['path'],
+				'url'  => $module_data['url'],
+			) );
+
+			$page = ! empty( $_GET['page'] ) ? $_GET['page'] : false;
+
+			if ( ! $page ) {
+				$page = isset( $_GET['post_type'] ) ? $_GET['post_type'] : false;
+			}
+			
+			if ( $page && false !== strpos( $page, 'jet-engine' ) ) {
+				$search->enable();
+			}
 
 		}
 
@@ -241,7 +267,7 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 
 			// Register plugin-related shortcodes
 			require $this->plugin_path( 'includes/classes/shortcodes.php' );
-			new Jet_Engine_Shortcodes();
+			$this->shortcodes = new Jet_Engine_Shortcodes();
 
 			if ( wp_doing_ajax() ) {
 

@@ -103,6 +103,15 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 
 		$content_type = Module::instance()->manager->get_content_types( $type );
 		$args         = ! empty( $this->final_query['args'] ) ? $this->final_query['args'] : array();
+		$status       = ! empty( $this->final_query['status'] ) ? $this->final_query['status'] : '';
+
+		if ( $status ) {
+			$args[] = array(
+				'field'    => 'cct_status',
+				'operator' => '=',
+				'value'    => $status,
+			);
+		}
 
 		$content_type->db->set_query_object( $this );
 

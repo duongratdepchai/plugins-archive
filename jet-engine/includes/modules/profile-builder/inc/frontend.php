@@ -5,6 +5,7 @@ class Frontend {
 
 	private $template_id = null;
 	private $has_access = false;
+	public $access = null;
 	public $menu = null;
 	public $current_user_obj = false;
 	public $user_page_title = null;
@@ -76,6 +77,12 @@ class Frontend {
 
 		$settings = Module::instance()->settings->get();
 		$template_mode = Module::instance()->settings->get( 'template_mode' );
+
+		// Render listing item with listing own render API
+		if ( jet_engine()->listings->post_type->slug() === get_post_type( $template_id ) ) {
+			echo jet_engine()->frontend->get_listing_item_content( $template_id );
+			return;
+		}
 
 		if ( 'rewrite' === $template_mode && ! empty( $settings['force_template_rewrite'] ) ) {
 
@@ -157,9 +164,9 @@ class Frontend {
 			$current_template = get_page_template_slug();
 
 			if ( $current_template && 'elementor_canvas' === $current_template ) {
-				$template = jet_engine()->get_template( 'profile-builder/page-canvas.php' );
+				$template = jet_engine()->modules->modules_path( 'profile-builder/inc/templates/page-canvas.php' );
 			} else {
-				$template = jet_engine()->get_template( 'profile-builder/page.php' );
+				$template = jet_engine()->modules->modules_path( 'profile-builder/inc/templates/page.php' );
 			}
 		}
 
@@ -311,7 +318,7 @@ class Frontend {
 		$title_macros = $this->get_user_page_title_macros();
 
 		$user_page_title = preg_replace_callback(
-			'/%([a-z0-9_-]+)%/',
+			'/%([a-z0-9_-]+)(\([a-zA-Z0-9_-]+\))?%/',
 			function( $matches ) use ( $title_macros ) {
 
 				$found = $matches[1];
@@ -330,7 +337,8 @@ class Frontend {
 					return $matches[0];
 				}
 
-				$result = call_user_func( $cb );
+				$args   = isset( $matches[2] ) ? trim( $matches[2], '()' ) : false;
+				$result = call_user_func( $cb, $args );
 
 				if ( is_array( $result ) ) {
 					$result = implode( ',', $result );
@@ -352,7 +360,7 @@ class Frontend {
 	public function get_user_page_title_macros() {
 		return apply_filters( 'jet-engine/profile-builder/user-page-title/macros', array(
 			'username' => array(
-				'label' => esc_html__( 'User Name', 'jet-engine' ),
+				'label' => esc_html__( 'User Display Name', 'jet-engine' ),
 				'cb'    => function() {
 					$user = Module::instance()->query->get_queried_user();
 					return $user ? $user->display_name : null;
@@ -381,6 +389,19 @@ class Frontend {
 				'label' => esc_html__( 'Site Name', 'jet-engine' ),
 				'cb'    => function() {
 					return get_bloginfo( 'name', 'display' );
+				},
+			),
+			'user_field' => array(
+				'label'    => esc_html__( 'User Field', 'jet-engine' ) . ' (<i>first_name, last_name, nickname, ...</i>)',
+				'variable' => 'user_field(field-name)',
+				'cb'       => function( $user_field ) {
+
+					if ( empty( $user_field ) ) {
+						return null;
+					}
+
+					$user = Module::instance()->query->get_queried_user();
+					return $user ? get_user_meta( $user->ID, $user_field, true ) : null;
 				},
 			),
 		) );

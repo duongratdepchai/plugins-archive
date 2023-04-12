@@ -32,7 +32,7 @@ class Integration {
 			'dynamic_link_enable_quantity_input',
 			[
 				'label'       => __( 'Enable quantity input', 'jet-engine' ),
-				'type'        => \Elementor\Controls_Manager::SWITCHER,
+				'type'        => 'switcher',
 				'description' => __( 'Display quantity input fields for simple products next to add to cart buttons.', 'jet-engine' ),
 				'condition'   => [
 					'dynamic_link_source' => 'add_to_cart',
@@ -44,7 +44,7 @@ class Integration {
 			'dynamic_link_add_to_cart_quantity',
 			[
 				'label'     => __( 'Quantity', 'elementor-pro' ),
-				'type'      => \Elementor\Controls_Manager::NUMBER,
+				'type'      => 'number',
 				'default'   => 1,
 				'condition' => [
 					'dynamic_link_source' => 'add_to_cart',

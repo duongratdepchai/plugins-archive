@@ -47,6 +47,7 @@ a.jet-engine-dash-help-link {
 		line-height: 20px;
 		font-family: 'Courier New', monospace;
 		direction: ltr;
+		word-break: break-word;
 		&-copy {
 			position: absolute;
 			top: 2px;
@@ -66,6 +67,9 @@ a.jet-engine-dash-help-link {
 					fill: #007cba;
 				}
 			}
+		}
+		.cx-vui-tooltip {
+			width: 60px;
 		}
 	}
 }

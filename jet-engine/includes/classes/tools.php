@@ -7,8 +7,10 @@ class Jet_Engine_Tools {
 
 	/**
 	 * Process
+	 *
 	 * @param  [type] $filename [description]
-	 * @param  string $file     [description]
+	 * @param string $file [description]
+	 *
 	 * @return [type]           [description]
 	 */
 	public static function file_download( $filename = null, $file = '', $type = 'application/json' ) {
@@ -19,10 +21,10 @@ class Jet_Engine_Tools {
 
 		@session_write_close();
 
-		if( function_exists( 'apache_setenv' ) ) {
+		if ( function_exists( 'apache_setenv' ) ) {
 			$variable = 'no-gzip';
-			$value = 1;
-			@apache_setenv($variable, $value);
+			$value    = 1;
+			@apache_setenv( $variable, $value );
 		}
 
 		@ini_set( 'zlib.output_compression', 'Off' );
@@ -49,7 +51,7 @@ class Jet_Engine_Tools {
 	 * Add query arguments string by query arguments array
 	 *
 	 * @param [type] $url      [description]
-	 * @param array  $settings [description]
+	 * @param array $settings [description]
 	 */
 	public static function add_query_args_by_settings( $url = null, $settings = array() ) {
 
@@ -88,7 +90,33 @@ class Jet_Engine_Tools {
 	}
 
 	public static function sanitize_html_tag( $input ) {
-		$available_tags = array( 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'a', 'section', 'header', 'footer', 'main', 'b', 'em', 'i', 'nav', 'article', 'aside', 'tr', 'ul', 'ol', 'li' );
+		$available_tags = array(
+			'div',
+			'h1',
+			'h2',
+			'h3',
+			'h4',
+			'h5',
+			'h6',
+			'p',
+			'span',
+			'a',
+			'section',
+			'header',
+			'footer',
+			'main',
+			'b',
+			'em',
+			'i',
+			'nav',
+			'article',
+			'aside',
+			'tr',
+			'ul',
+			'ol',
+			'li'
+		);
+
 		return in_array( strtolower( $input ), $available_tags ) ? $input : 'div';
 	}
 
@@ -156,6 +184,7 @@ class Jet_Engine_Tools {
 	 */
 	public static function get_taxonomies_for_js( $key = false ) {
 		$taxonomies = get_taxonomies( array(), 'objects' );
+
 		return self::prepare_list_for_js( $taxonomies, 'name', 'label', $key );
 	}
 
@@ -164,7 +193,7 @@ class Jet_Engine_Tools {
 	 */
 	public static function get_user_roles_for_js() {
 
-		$roles = self::get_user_roles();
+		$roles  = self::get_user_roles();
 		$result = array();
 
 		foreach ( $roles as $role => $label ) {
@@ -294,22 +323,50 @@ class Jet_Engine_Tools {
 
 			echo '<div class="' . $icon_class . ' is-svg-icon"' . $custom_atts_string . '>';
 
-				$mime = get_post_mime_type( $icon );
+			$mime = get_post_mime_type( $icon );
 
-				if ( 'image/svg+xml' === $mime ) {
-					$file = get_attached_file( $icon );
+			if ( 'image/svg+xml' === $mime ) {
+				$file = get_attached_file( $icon );
 
-					if ( file_exists( $file ) ) {
-						include $file;
-					}
-
-				} else {
-					echo wp_get_attachment_image( $icon, 'full' );
+				if ( file_exists( $file ) ) {
+					include $file;
 				}
+
+			} else {
+				echo wp_get_attachment_image( $icon, 'full' );
+			}
 
 			echo '</div>';
 
 			return ob_get_clean();
+
+		}
+		// Render Bricks svg icon
+		elseif ( ! is_array( $icon ) && false !== str_contains( $icon, '<svg' ) ) {
+
+			ob_start();
+
+			echo '<div class="' . $icon_class . ' is-svg-icon"' . $custom_atts_string . '>';
+			echo $icon;
+			echo '</div>';
+
+			return ob_get_clean();
+
+		}
+		// Render Bricks font icon
+		elseif ( ! is_array( $icon ) && false !== str_contains( $icon, '<i' ) ) {
+
+			ob_start();
+
+			echo '<div class="' . $icon_class . '">';
+			echo $icon;
+			echo '</div>';
+
+			return ob_get_clean();
+		}
+		// Bricks font icon with array value
+		elseif ( is_array( $icon ) && isset( $icon['library'] ) && isset( $icon['icon'] ) ) {
+			return sprintf( '<div class="%1$s"><i class="%2$s"></i></div>', $icon_class, $icon['icon'] );
 		}
 
 		if ( empty( $icon['value'] ) ) {
@@ -321,7 +378,7 @@ class Jet_Engine_Tools {
 		if ( $is_new ) {
 			ob_start();
 
-			$custom_atts['class'] = $icon_class;
+			$custom_atts['class']       = $icon_class;
 			$custom_atts['aria-hidden'] = 'true';
 
 			Elementor\Icons_Manager::render_icon( $icon, $custom_atts );
@@ -329,7 +386,7 @@ class Jet_Engine_Tools {
 			$html = ob_get_clean();
 
 			$is_svg_library = 'svg' === $icon['library'];
-			$is_svg_inline = false !== strpos( $html, 'e-font-icon-svg' );
+			$is_svg_inline  = false !== strpos( $html, 'e-font-icon-svg' );
 
 			if ( $is_svg_library || $is_svg_inline ) {
 
@@ -351,7 +408,8 @@ class Jet_Engine_Tools {
 	/**
 	 * Get html attributes string.
 	 *
-	 * @param  array $attrs
+	 * @param array $attrs
+	 *
 	 * @return string
 	 */
 	public static function get_attr_string( $attrs ) {
@@ -371,7 +429,8 @@ class Jet_Engine_Tools {
 	/**
 	 * Check if is valid timestamp
 	 *
-	 * @param  mixed $timestamp
+	 * @param mixed $timestamp
+	 *
 	 * @return boolean
 	 */
 	public static function is_valid_timestamp( $timestamp ) {
@@ -381,15 +440,16 @@ class Jet_Engine_Tools {
 		}
 
 		return ( ( string ) ( int ) $timestamp === $timestamp || ( int ) $timestamp === $timestamp )
-			&& ( $timestamp <= PHP_INT_MAX )
-			&& ( $timestamp >= ~PHP_INT_MAX );
+		       && ( $timestamp <= PHP_INT_MAX )
+		       && ( $timestamp >= ~PHP_INT_MAX );
 	}
 
 	/**
 	 * Checks a value for being empty.
 	 *
-	 * @param  mixed $source
-	 * @param  bool|string $key
+	 * @param mixed $source
+	 * @param bool|string $key
+	 *
 	 * @return bool
 	 */
 	public static function is_empty( $source = null, $key = false ) {
@@ -418,8 +478,9 @@ class Jet_Engine_Tools {
 	/**
 	 * Returns allowed operatos list in the given format
 	 *
-	 * @param  array  $exclude excluded operators list
+	 * @param array $exclude excluded operators list
 	 * @param  [type] $format  ARRAY_N or ARRAY_A
+	 *
 	 * @return [type]          [description]
 	 */
 	public static function operators_list( $exclude = array(), $format = ARRAY_N ) {
@@ -469,6 +530,7 @@ class Jet_Engine_Tools {
 	 * Returns allowed data tpes list in the given format
 	 *
 	 * @param  [type] $format  ARRAY_N or ARRAY_A
+	 *
 	 * @return [type]          [description]
 	 */
 	public static function data_types_list( $format = ARRAY_N ) {
@@ -545,10 +607,68 @@ class Jet_Engine_Tools {
 	}
 
 	/**
+	 * Return registered image sizes array for options
+	 * 
+	 * @param  string $context [description]
+	 * @return [type]          [description]
+	 */
+	public static function get_image_sizes( $context = 'elementor' ) {
+
+		global $_wp_additional_image_sizes;
+
+		$sizes         = get_intermediate_image_sizes();
+		$result        = array();
+		$blocks_result = array();
+
+		foreach ( $sizes as $size ) {
+			if ( in_array( $size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
+				$label           = ucwords( trim( str_replace( array( '-', '_' ), array( ' ', ' ' ), $size ) ) );
+				$result[ $size ] = $label;
+				$blocks_result[] = array(
+					'value' => $size,
+					'label' => $label,
+				);
+
+			} else {
+
+				$label = sprintf(
+					'%1$s (%2$sx%3$s)',
+					ucwords( trim( str_replace( array( '-', '_' ), array( ' ', ' ' ), $size ) ) ),
+					$_wp_additional_image_sizes[ $size ]['width'],
+					$_wp_additional_image_sizes[ $size ]['height']
+				);
+
+				$result[ $size ] = $label;
+				$blocks_result[] = array(
+					'value' => $size,
+					'label' => $label,
+				);
+			}
+		}
+
+		$result        = array_merge( array( 'full' => __( 'Full', 'jet-engine' ), ), $result );
+		$blocks_result = array_merge(
+			array(
+				array(
+					'value' => 'full',
+					'label' => __( 'Full', 'jet-engine' ),
+				)
+			),
+			$blocks_result
+		);
+
+		if ( 'blocks' === $context ) {
+			return $blocks_result;
+		} else {
+			return $result;
+		}
+	}
+
+	/**
 	 * Get attachment image data array from raw data.
 	 *
-	 * @param mixed  $img_data Image data(id, url, array('id'=>'','url'=>'')).
-	 * @param string $include  Includes keys(id, url, all).
+	 * @param mixed $img_data Image data(id, url, array('id'=>'','url'=>'')).
+	 * @param string $include Includes keys(id, url, all).
 	 *
 	 * @return array|bool
 	 */
@@ -560,69 +680,61 @@ class Jet_Engine_Tools {
 			return $result;
 		}
 
-		if ( is_numeric( $img_data ) ) {
+		switch ( $include ) {
+			case 'id':
 
-			switch ( $include ) {
-				case 'id':
-					$result = array(
-						'id' => $img_data,
-					);
-					break;
+				$id = null;
 
-				case 'url':
-					$result = array(
-						'url' => wp_get_attachment_url( $img_data ),
-					);
-					break;
+				if ( is_numeric( $img_data ) ) {
+					$id = $img_data;
+				} elseif ( filter_var( $img_data, FILTER_VALIDATE_URL ) ) {
+					$id = attachment_url_to_postid( $img_data );
+				} elseif ( is_array( $img_data ) && isset( $img_data['id'] ) && isset( $img_data['url'] ) ) {
+					$id = $img_data['id'];
+				}
 
-				default:
-					$result = array(
-						'id'  => $img_data,
-						'url' => wp_get_attachment_url( $img_data ),
-					);
-			}
+				$result = array(
+					'id' => $id,
+				);
+				break;
 
-		} elseif ( filter_var( $img_data, FILTER_VALIDATE_URL ) ) {
+			case 'url':
 
-			switch ( $include ) {
-				case 'id':
-					$result = array(
-						'id' => attachment_url_to_postid( $img_data ),
-					);
-					break;
+				$url = null;
 
-				case 'url':
-					$result = array(
-						'url' => $img_data,
-					);
-					break;
+				if ( is_numeric( $img_data ) ) {
+					$url = wp_get_attachment_url( $img_data );
+				} elseif ( filter_var( $img_data, FILTER_VALIDATE_URL ) ) {
+					$url = $img_data;
+				} elseif ( is_array( $img_data ) && isset( $img_data['id'] ) && isset( $img_data['url'] ) ) {
+					$url = $img_data['url'];
+				}
 
-				default:
-					$result = array(
-						'id'  => attachment_url_to_postid( $img_data ),
-						'url' => $img_data,
-					);
-			}
+				$result = array(
+					'url' => $url,
+				);
+				break;
 
-		} elseif ( is_array( $img_data ) && isset( $img_data['id'] ) && isset( $img_data['url'] ) ) {
+			default:
 
-			switch ( $include ) {
-				case 'id':
-					$result = array(
-						'id' => $img_data['id'],
-					);
-					break;
+				$id  = null;
+				$url = null;
 
-				case 'url':
-					$result = array(
-						'url' => $img_data['url'],
-					);
-					break;
+				if ( is_numeric( $img_data ) ) {
+					$id  = $img_data;
+					$url = wp_get_attachment_url( $img_data );
+				} elseif ( filter_var( $img_data, FILTER_VALIDATE_URL ) ) {
+					$id  = attachment_url_to_postid( $img_data );
+					$url = $img_data;
+				} elseif ( is_array( $img_data ) && isset( $img_data['id'] ) && isset( $img_data['url'] ) ) {
+					$id  = $img_data['id'];
+					$url = $img_data['url'];
+				}
 
-				default:
-					$result = $img_data;
-			}
-
+				$result = array(
+					'id'  => $id,
+					'url' => $url,
+				);
 		}
 
 		return $result;
@@ -631,7 +743,8 @@ class Jet_Engine_Tools {
 	/**
 	 * Convert PHP date format to JS datepicker format. Ex.: Y-m-d => yy-mm-dd
 	 *
-	 * @param  string $format PHP date format.
+	 * @param string $format PHP date format.
+	 *
 	 * @return string
 	 */
 	public static function convert_date_format_php_to_js( $format = '' ) {

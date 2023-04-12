@@ -2,7 +2,7 @@
 /**
  * Term Meta module
  *
- * Version: 1.5.0
+ * Version: 1.6.0
  */
 
 // If this file is called directly, abort.
@@ -230,11 +230,11 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 
 						switch ( $field['input_type'] ) {
 							case 'date':
-								$value = date( 'Y-m-d', $value );
+								$value = $this->get_date( 'Y-m-d', $value );
 								break;
 
 							case 'datetime-local':
-								$value = date( 'Y-m-d\TH:i', $value );
+								$value = $this->get_date( 'Y-m-d\TH:i', $value );
 								break;
 						}
 					}
@@ -243,6 +243,15 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 			}
 
 			return $value;
+		}
+
+		/**
+		 * Returns date converted from timestamp
+		 * 
+		 * @return [type] [description]
+		 */
+		public function get_date( $format, $time ) {
+			return apply_filters( 'cx_term_meta/date', date( $format, $time ), $time, $format );
 		}
 
 		/**
@@ -436,7 +445,7 @@ if ( ! class_exists( 'Cherry_X_Term_Meta' ) ) {
 			}
 
 			if ( $this->to_timestamp( $field ) ) {
-				return strtotime( $value );
+				return apply_filters( 'cx_term_meta/strtotime', strtotime( $value ), $value );
 			}
 
 			if ( ! empty( $field['sanitize_callback'] ) && is_callable( $field['sanitize_callback'] ) ) {

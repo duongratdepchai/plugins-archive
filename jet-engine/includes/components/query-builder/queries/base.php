@@ -10,6 +10,7 @@ abstract class Base_Query {
 	public $final_query   = null;
 	public $query_type    = null;
 	public $query_id      = null;
+	public $preview       = array();
 
 	public $parsed_macros = array();
 
@@ -21,6 +22,7 @@ abstract class Base_Query {
 		$this->query_type    = ! empty( $args['type'] ) ? $args['type'] : false;
 		$this->query         = ! empty( $args['query'] ) ? $args['query'] : false;
 		$this->dynamic_query = ! empty( $args['dynamic_query'] ) ? $args['dynamic_query'] : false;
+		$this->preview       = ! empty( $args['preview'] ) ? $args['preview'] : $this->preview;
 
 		$this->maybe_add_instance_fields_to_ui();
 

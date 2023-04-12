@@ -169,6 +169,10 @@ window.JetEngineMapsProvider = function() {
 		} );
 	}
 
+	this.setCenterByPosition = function( data ) {
+		data.map.setView( data.position, data.zoom );
+	}
+
 	this.setAutoCenter = function( data ) {
 		if ( ! this.fitMapBounds( data ) ) {
 			if ( window.JetEngineMapData && window.JetEngineMapData.mapCenter ) {

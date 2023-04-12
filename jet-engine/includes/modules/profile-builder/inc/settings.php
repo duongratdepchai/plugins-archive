@@ -17,6 +17,8 @@ class Settings {
 		'user_page_seo_title'  => '%username% %sep% %sitename%',
 	);
 
+	private $nonce_action = 'jet-engine-profile-builder';
+
 	/**
 	 * Constructor for the class
 	 */
@@ -38,6 +40,12 @@ class Settings {
 	 * @return [type] [description]
 	 */
 	public function save_settings() {
+
+		if ( empty( $_REQUEST['_nonce'] ) || ! wp_verify_nonce( $_REQUEST['_nonce'], $this->nonce_action ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Nonce validation failed', 'jet-engine' ),
+			) );
+		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied', 'jet-engine' ) ) );
@@ -156,7 +164,7 @@ class Settings {
 		foreach ( $all_title_macros as $macro => $args ) {
 			$title_macros_list[] = array(
 				'label' => $args['label'],
-				'macro' => '%' . $macro . '%',
+				'macro' => '%' . ( ! empty( $args['variable'] ) ? $args['variable'] : $macro ) . '%',
 			);
 		}
 
@@ -212,6 +220,7 @@ class Settings {
 					),
 				),
 				'user_page_title_macros' => $title_macros_list,
+				'_nonce' => wp_create_nonce( $this->nonce_action ),
 			)
 		);
 
@@ -227,7 +236,7 @@ class Settings {
 	public function print_templates() {
 
 		ob_start();
-		include jet_engine()->get_template( 'profile-builder/admin/settings.php' );
+		include jet_engine()->modules->modules_path( 'profile-builder/inc/templates/admin/settings.php' );
 		$content = ob_get_clean();
 
 		printf( '<script type="text/x-template" id="jet-profile-builder">%s</script>', $content );

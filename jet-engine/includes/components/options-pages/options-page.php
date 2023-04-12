@@ -72,6 +72,7 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 		public $current_component = false;
 		public $current_panel     = false;
 		public $custom_css        = array();
+		public $storage_type      = 'default';
 
 		/**
 		 * Constructor for the class
@@ -83,6 +84,10 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 
 			if ( ! empty( $page['hide_field_names'] ) ) {
 				$this->hide_field_names = $page['hide_field_names'];
+			}
+
+			if ( ! empty( $page['storage_type'] ) ) {
+				$this->storage_type = $page['storage_type'];
 			}
 
 			$page['fields'] = apply_filters( 'jet-engine/options-pages/raw-fields', $page['fields'], $this );
@@ -97,7 +102,7 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 				}
 				
 				foreach ( $this->show_in_rest as $field ) {
-					new Jet_Engine_Rest_Settings( $field, $this->slug );
+					new Jet_Engine_Rest_Settings( $field, $this->slug, $this );
 				}
 			}
 
@@ -184,32 +189,7 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 				return;
 			}
 
-			$current = get_option( $this->slug, array() );
-
-			if ( empty( $current ) && ! is_array( $current ) ) {
-				$current = array();
-			}
-
-			$data   = $_REQUEST;
-			$fields = $this->get_prepared_fields();
-
-			if ( ! empty( $fields ) ) {
-				foreach ( $fields as $key => $field ) {
-
-					if ( isset( $data[ $key ] ) ) {
-
-						$value = $data[ $key ];
-						$value = $this->maybe_apply_sanitize_callback( $value, $field );
-
-						$current[ $key ] = $value;
-
-					} else {
-						$current[ $key ] = null;
-					}
-				}
-			}
-
-			update_option( $this->slug, $current );
+			$this->update_options( $_REQUEST );
 
 			$redirect = add_query_arg(
 				array(
@@ -222,6 +202,57 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 			wp_redirect( $redirect );
 			die();
 
+		}
+
+		/**
+		 * Update options.
+		 *
+		 * @param array $data     Data array.
+		 * @param bool  $rewrite  Rewrite or not fields not isset in data array.
+		 * @param bool  $sanitize Apply or not the sanitize callbacks to raw values.
+		 */
+		public function update_options( $data = array(), $rewrite = true, $sanitize = true ) {
+
+			if ( empty( $data ) ) {
+				return;
+			}
+
+			if ( 'default' === $this->storage_type ) {
+				$current = get_option( $this->slug, array() );
+			}
+
+			$fields = $this->get_prepared_fields();
+
+			if ( ! empty( $fields ) ) {
+				foreach ( $fields as $key => $field ) {
+
+					if ( isset( $data[ $key ] ) ) {
+
+						$value = $data[ $key ];
+
+						if ( $sanitize ) {
+							$value = $this->maybe_apply_sanitize_callback( $value, $field );
+						}
+
+					} else {
+						$value = null;
+					}
+
+					if ( ! isset( $data[ $key ] ) && ! $rewrite ) {
+						continue;
+					}
+
+					if ( 'default' === $this->storage_type ) {
+						$current[ $key ] = $value;
+					} elseif ( 'separate' === $this->storage_type ) {
+						update_option( $this->get_separate_option_name( $key ), $value );
+					}
+				}
+			}
+
+			if ( 'default' === $this->storage_type && isset( $current ) ) {
+				update_option( $this->slug, $current );
+			}
 		}
 
 		/**
@@ -420,12 +451,39 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 		 */
 		public function get( $option = '', $default = false, $field = array() ) {
 
+			if ( 'separate' === $this->storage_type ) {
+
+				if ( isset( $this->options[ $option ] ) ) {
+					return $this->options[ $option ];
+				}
+
+				$result = get_option( $this->get_separate_option_name( $option ), $default );
+				$this->options[ $option ] = wp_unslash( $result );
+
+				return $this->options[ $option ];
+			}
+
 			if ( null === $this->options ) {
 				$this->options = get_option( $this->slug, array() );
 			}
 
 			return isset( $this->options[ $option ] ) ? wp_unslash( $this->options[ $option ] ) : $default;
 
+		}
+
+		/**
+		 * Get separate option name.
+		 *
+		 * @param  $option
+		 * @return string
+		 */
+		public function get_separate_option_name( $option ) {
+
+			if ( ! empty( $this->page['option_prefix'] ) ) {
+				return $this->slug . '_' . $option;
+			}
+
+			return $option;
 		}
 
 		/**
@@ -473,6 +531,14 @@ if ( ! class_exists( 'Jet_Engine_Options_Page_Factory' ) ) {
 						$result[ $field_name ],
 						$result[ $field_name ]['value']
 					);
+
+					if ( 'separate' === $this->storage_type && ! empty( $this->page['option_prefix'] ) ) {
+						$result[ $field_name ]['description'] = str_replace(
+							$field_name,
+							$this->get_separate_option_name( $field_name ),
+							$result[ $field_name ]['description']
+						);
+					}
 				}
 			}
 

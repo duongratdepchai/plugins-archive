@@ -178,6 +178,20 @@
 					]"
 					v-model="advancedSettings.with_front"
 				></cx-vui-switcher>
+				<cx-vui-switcher
+					:name="'rewrite_hierarchical'"
+					:label="'<?php _e( 'Rewrite Hierarchical', 'jet-engine' ); ?>'"
+					:description="'<?php _e( 'Either hierarchical rewrite tag or not', 'jet-engine' ); ?>'"
+					:wrapper-css="[ 'equalwidth' ]"
+					:conditions="[
+						{
+							'input':    advancedSettings.rewrite,
+							'compare': 'equal',
+							'value':    true,
+						}
+					]"
+					v-model="advancedSettings.rewrite_hierarchical"
+				></cx-vui-switcher>
 				<cx-vui-input
 					:name="'capability_type'"
 					:label="'<?php _e( 'Capability Type', 'jet-engine' ); ?>'"

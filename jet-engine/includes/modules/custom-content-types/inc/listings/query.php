@@ -57,6 +57,28 @@ class Query {
 
 	}
 
+	public function format_filter_args( $query_args = array() ) {
+    
+    	$args = array();
+
+		if ( ! empty( $query_args['meta_query'] ) ) {
+			
+			$result = array();
+
+			foreach ( $query_args['meta_query'] as $row ) {
+				$result = $this->add_filter_row( $row, $result );
+			}
+
+			$args = $result;
+
+		} elseif ( isset( $query_args['args'] ) ) {
+			$args = $query_args['args'];
+		}
+
+		return $args;
+
+	}
+
 	/**
 	 * Returns indexed data for CCT query
 	 *
@@ -114,8 +136,7 @@ class Query {
 			$query_args['args'] = $query_object->final_query['args'];
 		}
 
-		$args = ! empty( $query_args ) && isset( $query_args['args'] ) ? $query_args['args'] : array();
-		$args  = $content_type->prepare_query_args( $args );
+		$args  = $content_type->prepare_query_args( $this->format_filter_args( $query_args ) );
 		$where = $content_type->db->add_where_args( $args, 'AND', false );
 		$table = $content_type->db->table();
 
@@ -417,7 +438,7 @@ class Query {
 			return true;
 		}
 
-		if ( ! empty( $_REQUEST['jsf'] ) && 'jet-engine' === $_REQUEST['jsf'] ) {
+		if ( ! empty( $_REQUEST['jsf'] ) && false !== strpos( $_REQUEST['jsf'], 'jet-engine' ) ) {
 			return true;
 		}
 

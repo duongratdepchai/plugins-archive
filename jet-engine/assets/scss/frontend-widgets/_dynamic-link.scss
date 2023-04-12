@@ -51,3 +51,20 @@
 .jet-remove-from-store.is-hidden {
 	display: none !important;
 }
+
+.jet-add-to-cart + .added_to_cart.wc-forward {
+	display: none !important;
+}
+
+
+// Context Bricks
+.brxe-jet-engine-listing-dynamic-link {
+	.jet-listing-dynamic-link {
+		flex-direction: row;
+	}
+
+	.jet-listing-dynamic-link__icon :is(svg, path) {
+		fill: currentColor;
+	}
+
+}

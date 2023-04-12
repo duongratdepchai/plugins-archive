@@ -344,8 +344,8 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 						),
 					),
 					'css_selector' => array(
-						'{{WRAPPER}} .jet-listing-grid__item' => 'padding-left: calc({{VALUE}}{{UNIT}} / 2); padding-right: calc({{VALUE}}{{UNIT}} / 2);',
-						'{{WRAPPER}} .jet-listing-grid__items' => 'margin-left: calc(-{{VALUE}}{{UNIT}} / 2); margin-right: calc(-{{VALUE}}{{UNIT}} / 2); width: calc(100% + {{VALUE}}{{UNIT}});',
+						':is( {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__items, {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__slider > .jet-listing-grid__items > .slick-list > .slick-track, {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__scroll-slider > .jet-listing-grid__items ) > .jet-listing-grid__item' => 'padding-left: calc({{VALUE}}{{UNIT}} / 2); padding-right: calc({{VALUE}}{{UNIT}} / 2);',
+						':is( {{WRAPPER}} > .jet-listing-grid, {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__slider, {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__scroll-slider ) > .jet-listing-grid__items' => 'margin-left: calc(-{{VALUE}}{{UNIT}} / 2); margin-right: calc(-{{VALUE}}{{UNIT}} / 2); width: calc(100% + {{VALUE}}{{UNIT}});',
 					),
 				)
 			);
@@ -382,7 +382,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 						),
 					),
 					'css_selector' => array(
-						'{{WRAPPER}} .jet-listing-grid__item' => 'padding-top: calc({{VALUE}}{{UNIT}} / 2); padding-bottom: calc({{VALUE}}{{UNIT}} / 2);',
+						':is( {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__items, {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__slider > .jet-listing-grid__items > .slick-list > .slick-track, {{WRAPPER}} > .jet-listing-grid > .jet-listing-grid__scroll-slider > .jet-listing-grid__items ) > .jet-listing-grid__item' => 'padding-top: calc({{VALUE}}{{UNIT}} / 2); padding-bottom: calc({{VALUE}}{{UNIT}} / 2);',
 					),
 				)
 			);
@@ -718,6 +718,8 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 				return __( 'Listing renderer class not found', 'jet-engine' );
 			}
 
+			$render->before_listing_grid();
+
 			ob_start();
 
 			add_action( 'jet-engine/listing/grid-items/before', array( $this, 'slider_before' ), 10, 2 );
@@ -728,30 +730,28 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Grid' ) ) {
 			remove_action( 'jet-engine/listing/grid-items/before', array( $this, 'slider_before' ), 10, 2 );
 			remove_action( 'jet-engine/listing/grid-items/after', array( $this, 'slider_after' ), 10, 2 );
 
-			if ( $listing_id && ! jet_engine()->blocks_views->is_blocks_listing( $listing_id )
-				&& jet_engine()->has_elementor()
-				&& ! wp_style_is( 'elementor-frontend', 'registered' )
-			) {
-
-				Elementor\Plugin::$instance->frontend->register_styles();
-				Elementor\Plugin::$instance->frontend->enqueue_styles();
-				Elementor\Plugin::$instance->frontend->print_fonts_links();
-
-				wp_print_styles( 'elementor-frontend' );
-
-				$css_file = Elementor\Core\Files\CSS\Post::create( $listing_id );
-				$css_file->print_css();
-			}
-
 			$content = ob_get_clean();
 
-			return sprintf(
-				'<div class="jet-listing-grid--blocks%3$s" data-element-id="%1$s" data-listing-type="blocks"%4$s>%2$s</div>',
-				$attributes['_block_id'],
-				$content,
-				! empty( $attributes['className'] ) ? ' ' . $attributes['className'] : '',
-				! empty( $attributes['_element_id'] ) ? ' id="' . esc_attr( $attributes['_element_id'] ) . '"' : ''
+			$this->_root['class'][] = 'jet-listing-grid--blocks';
+			$this->_root['class'][] = ! empty( $attributes['className'] ) ? ' ' . $attributes['className'] : '';
+			$this->_root['data-element-id'] = $attributes['_block_id'];
+			$this->_root['data-listing-type'] = 'blocks';
+			$this->_root['data-is-block'] = $this->get_block_name();
+
+			if ( ! empty( $attributes['_element_id'] ) ) {
+				$this->_root['id'] = $attributes['_element_id'];
+			}
+
+			$result = sprintf(
+				'<div %1$s>%2$s</div>',
+				$this->get_root_attr_string(),
+				$content
 			);
+
+			$render->after_listing_grid();
+
+			return $result;
+
 		}
 
 	}

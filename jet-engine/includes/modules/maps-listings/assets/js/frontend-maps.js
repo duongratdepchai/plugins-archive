@@ -22,14 +22,25 @@
 
 		},
 
-		initBlocks: function() {
-			var $block = $( '.jet-map-listing-block' );
+		initBlocks: function( $scope ) {
 
-			if ( $block.length ) {
-				$block.each( function() {
-					JetEngineMaps.widgetMap( $( this ) );
-				} );
-			}
+			$scope = $scope || $( 'body' );
+
+			window.JetPlugins.init( $scope, [
+				{
+					block: 'jet-engine/maps-listing',
+					callback: JetEngineMaps.widgetMap
+				}
+			] );
+
+		},
+
+		initBricks: function( $scope ) {
+
+			$scope = $scope || $( 'body' );
+
+			JetEngineMaps.initBlocks( $scope );
+
 		},
 
 		commonInit: function() {
@@ -59,7 +70,7 @@
 				customCenter,
 				markerCluster;
 
-			if ( ! $container.length ) {
+			if ( ! $container.length || $container.attr( 'id' ) ) {
 				return;
 			}
 
@@ -370,7 +381,7 @@
 		},
 
 		customInitMapBySelector: function( $selector ) {
-			var $mapBlock = $selector.closest( '.jet-map-listing-block' ),
+			var $mapBlock = $selector.closest( '[data-is-block="jet-engine/maps-listing"]' ),
 				$mapElWidget = $selector.closest( '.elementor-widget-jet-engine-maps-listing' );
 
 			if ( $mapBlock.length ) {
@@ -388,7 +399,14 @@
 
 	$( window ).on( 'elementor/frontend/init', JetEngineMaps.init );
 
-	JetEngineMaps.initBlocks();
+	window.addEventListener( 'DOMContentLoaded', function() {
+		JetEngineMaps.initBlocks();
+		JetEngineMaps.initBricks();
+	} );
+
+	window.jetEngineMapsBricks = function() {
+		JetEngineMaps.initBricks();
+	}
 
 	window.JetEngineMaps = JetEngineMaps;
 
