@@ -396,8 +396,10 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 					unset( $post_type['meta_fields'] );
 				}
 
+				unset( $post_type['hide_field_names'] );
+
 				if ( ! empty( $post_type['menu_position'] ) ) {
-					$post_type['menu_position'] = absint( $post_type['menu_position'] );
+					$post_type['menu_position'] = intval( $post_type['menu_position'] );
 				}
 
 				if ( ! empty( $post_type['show_edit_link'] ) ) {
@@ -414,6 +416,12 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 					unset( $post_type['show_edit_link'] );
 
 				}
+
+				if ( ! isset( $args['map_meta_cap'] ) ) {
+					$post_type['map_meta_cap'] = true;
+				}
+
+				jet_engine()->add_instance( 'post-type', $post_type );
 
 				register_post_type( $post_type['slug'], $post_type );
 
@@ -938,6 +946,7 @@ if ( ! class_exists( 'Jet_Engine_CPT' ) ) {
 				'query_var'          => true,
 				'rewrite'            => true,
 				'capability_type'    => 'post',
+				'map_meta_cap'       => true,
 				'has_archive'        => true,
 				'menu_icon'          => 'dashicons-format-standard',
 				'supports'           => array( 'title', 'editor' ),

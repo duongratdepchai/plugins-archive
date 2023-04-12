@@ -3,7 +3,7 @@
  * Plugin Name: JetEngine
  * Plugin URI:  https://crocoblock.com/plugins/jetengine/
  * Description: The ultimate solution for managing custom post types, taxonomies and meta boxes.
- * Version:     3.1.3.1
+ * Version:     3.1.4
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: jet-engine
@@ -60,7 +60,7 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.1.3.1';
+		private $version = '3.1.4';
 
 		/**
 		 * Holder for base plugin path
@@ -132,6 +132,8 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 
 		public $shortcodes;
 
+		public $instances = array();
+
 		/**
 		 * Sets up needed actions/filters for the plugin to initialize.
 		 *
@@ -159,6 +161,32 @@ if ( ! class_exists( 'Jet_Engine' ) ) {
 			register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
 
 
+		}
+
+		/**
+		 * Get information about user-registered JetEngine intances
+		 * @return [type] [description]
+		 */
+		public function get_instances( $category = '' ) {
+			if ( ! $category ) {
+				return $this->instances;
+			} else {
+				return isset( $this->instances[ $category ] ) ? $this->instances[ $category ] : array();
+			}
+		}
+
+		/**
+		 * Store information about user-registered instance by category
+		 * @param [type] $category [description]
+		 * @param [type] $instance [description]
+		 */
+		public function add_instance( $category = '', $instance = array() ) {
+
+			if ( ! isset( $this->instances[ $category ] ) ) {
+				$this->instances[ $category ] = array();
+			}
+
+			$this->instances[ $category ][] = $instance;
 		}
 
 		/**

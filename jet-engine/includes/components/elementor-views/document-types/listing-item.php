@@ -261,6 +261,21 @@ class Jet_Listing_Item_Document extends Elementor\Core\Base\Document {
 		);
 
 		$this->add_control(
+			'listing_link_aria_label',
+			array(
+				'label'   => __( 'Aria label attr', 'jet-engine' ),
+				'type'    => Elementor\Controls_Manager::TEXT,
+				'default' => '',
+				'dynamic' => array(
+					'active' => true
+				),
+				'condition' => array(
+					'listing_link' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
 			'listing_link_prefix',
 			array(
 				'label'       => __( 'Link prefix', 'jet-engine' ),

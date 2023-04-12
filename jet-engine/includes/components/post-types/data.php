@@ -156,6 +156,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 				'show_in_rest',
 				'query_var',
 				'rewrite',
+				'map_meta_cap',
 				'has_archive',
 				'hierarchical',
 				'exclude_from_search',
@@ -367,6 +368,10 @@ if ( ! class_exists( 'Jet_Engine_CPT_Data' ) ) {
 			$with_front         = isset( $args['with_front'] ) ? $args['with_front'] : true;
 			$with_front         = filter_var( $with_front, FILTER_VALIDATE_BOOLEAN );
 			$args['with_front'] = $with_front;
+
+			if ( ! isset( $args['map_meta_cap'] ) ) {
+				$args['map_meta_cap'] = true;
+			}
 
 			$result['labels']            = $labels;
 			$result['advanced_settings'] = $args;

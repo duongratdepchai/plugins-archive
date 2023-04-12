@@ -56,6 +56,15 @@ class Query {
 			}
 		} );
 
+		// Added for correctly setup and reset global $post in nested listings.
+		add_action( 'jet-engine/query-builder/listings/on-query', function ( $query, $settings, $widget ) {
+
+			if ( 'wc-product-query' === $query->query_type ) {
+				$widget->posts_query = $query->get_current_wp_query();
+			}
+
+		}, 10, 3 );
+
 	}
 	
 	/**

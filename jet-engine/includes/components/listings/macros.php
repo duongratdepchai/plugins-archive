@@ -331,7 +331,7 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 			$macros = $this->get_all();
 
 			return preg_replace_callback(
-				'/%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s\(\)|]+)?%(\{.+\})?/',
+				'/%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s\(\)|\[\]\'\"=]+)?%(\{.+\})?/',
 				function( $matches ) use ( $macros, $field_value ) {
 
 					$found = $matches[1];

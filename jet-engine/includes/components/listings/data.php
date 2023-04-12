@@ -987,7 +987,12 @@ if ( ! class_exists( 'Jet_Engine_Listings_Data' ) ) {
 				if ( ! $user ) {
 					return false;
 				} else {
-					return get_user_meta( $user->ID, $key, true );
+					return apply_filters(
+						'jet-engine/listing/data/get-user-meta',
+						get_user_meta( $user->ID, $key, true ),
+						$key,
+						$user->ID
+					);
 				}
 
 			}
@@ -1011,6 +1016,8 @@ if ( ! class_exists( 'Jet_Engine_Listings_Data' ) ) {
 				return $this->get_repeater_value( $key );
 			}
 
+			$object_id = $this->get_current_object_id( $object );
+
 			switch ( $class ) {
 				case 'WP_Post':
 
@@ -1020,16 +1027,36 @@ if ( ! class_exists( 'Jet_Engine_Listings_Data' ) ) {
 						$single = true;
 					}
 
-					return get_post_meta( $this->get_current_object_id( $object ), $key, $single );
+					return apply_filters(
+						'jet-engine/listing/data/get-post-meta',
+						get_post_meta( $object_id, $key, $single ),
+						$key,
+						$object_id
+					);
 
 				case 'WP_Term':
-					return get_term_meta( $this->get_current_object_id( $object ), $key, true );
+					return apply_filters(
+						'jet-engine/listing/data/get-term-meta',
+						get_term_meta( $object_id, $key, true ),
+						$key,
+						$object_id
+					);
 
 				case 'WP_User':
-					return get_user_meta( $this->get_current_object_id( $object ), $key, true );
+					return apply_filters(
+						'jet-engine/listing/data/get-user-meta',
+						get_user_meta( $object_id, $key, true ),
+						$key,
+						$object_id
+					);
 
 				case 'WP_Comment':
-					return get_comment_meta( $this->get_current_object_id( $object ), $key, true );
+					return apply_filters(
+						'jet-engine/listing/data/get-comment-meta',
+						get_comment_meta( $object_id, $key, true ),
+						$key,
+						$object_id
+					);
 
 				default:
 

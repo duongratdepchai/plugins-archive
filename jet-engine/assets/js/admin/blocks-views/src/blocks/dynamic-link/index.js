@@ -395,6 +395,16 @@ registerBlockType( 'jet-engine/dynamic-link', {
 										props.setAttributes({ rel_attr: newValue });
 									}}
 								/>
+								<TextControl
+									type="text"
+									label={ __("Aria label attr") }
+									value={attributes.aria_label_attr}
+									onChange={ newValue =>
+										props.setAttributes({
+											aria_label_attr: newValue
+										})
+									}
+								/>
 								<ToggleControl
 									label={ __( 'Hide if value is empty' ) }
 									checked={ attributes.hide_if_empty }

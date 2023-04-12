@@ -269,6 +269,16 @@ class Dynamic_Link extends Base {
 		);
 
 		$this->register_jet_control(
+			'aria_label_attr',
+			[
+				'tab'     => 'content',
+				'label'   => esc_html__( 'Aria label attr', 'jet-engine' ),
+				'type'    => 'text',
+				'default' => '',
+			]
+		);
+
+		$this->register_jet_control(
 			'hide_if_empty',
 			[
 				'tab'     => 'content',

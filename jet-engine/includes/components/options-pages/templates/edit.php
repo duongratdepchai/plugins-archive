@@ -130,7 +130,7 @@
 						},
 						{
 							value: 'update',
-							label: '<?php _e( 'Update and left options saved in the previous storage type without changes', 'jet-engine' ); ?>',
+							label: '<?php _e( 'Update and leave options saved in the previous storage type without changes', 'jet-engine' ); ?>',
 						},
 						{
 							value: 'update_and_delete',

@@ -37,7 +37,7 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 			}
 
 			wp_enqueue_script( 'jquery-slick' );
-			
+
 			jet_engine()->frontend->ensure_lib( 'imagesloaded' );
 			jet_engine()->frontend->frontend_scripts();
 

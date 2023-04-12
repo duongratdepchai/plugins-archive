@@ -74,9 +74,11 @@ class Module {
 
 			require $this->module_path( 'dynamic-visibility/can-add-posts.php' );
 			require $this->module_path( 'dynamic-visibility/is-profile-page.php' );
+			require $this->module_path( 'dynamic-visibility/post-by-queried-user.php' );
 
 			$conditions_manager->register_condition( new Dynamic_Visibility\User_Can_Add_Posts() );
 			$conditions_manager->register_condition( new Dynamic_Visibility\Is_Profile_Page() );
+			$conditions_manager->register_condition( new Dynamic_Visibility\Post_By_Queried_User() );
 
 		} );
 
@@ -100,6 +102,24 @@ class Module {
 			add_filter( 'show_admin_bar', '__return_false' );
 		}
 
+	}
+
+	/**
+	 * Returns path to module template file.
+	 *
+	 * @param $name
+	 *
+	 * @return string|bool
+	 */
+	public function get_template( $name ) {
+
+		$template = jet_engine()->get_template( 'profile-builder/' . $name ); // for back-compatibility
+
+		if ( $template ) {
+			return $template;
+		}
+
+		return jet_engine()->modules->modules_path( 'profile-builder/inc/templates/' . $name );
 	}
 
 	/**

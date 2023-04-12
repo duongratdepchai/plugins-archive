@@ -164,9 +164,9 @@ class Frontend {
 			$current_template = get_page_template_slug();
 
 			if ( $current_template && 'elementor_canvas' === $current_template ) {
-				$template = jet_engine()->modules->modules_path( 'profile-builder/inc/templates/page-canvas.php' );
+				$template = Module::instance()->get_template( 'page-canvas.php' );
 			} else {
-				$template = jet_engine()->modules->modules_path( 'profile-builder/inc/templates/page.php' );
+				$template = Module::instance()->get_template( 'page.php' );
 			}
 		}
 

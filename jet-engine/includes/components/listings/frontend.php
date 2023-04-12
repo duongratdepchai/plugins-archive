@@ -333,7 +333,7 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 				wp_reset_postdata();
 			}
 
-			jet_engine()->listings->data->reset_current_object();
+			//jet_engine()->listings->data->reset_current_object();
 
 		}
 

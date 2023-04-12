@@ -288,6 +288,10 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 				return $content;
 			}
 
+			if ( ! empty( $settings['__dynamic__'] ) ) {
+				$settings = $document->parse_dynamic_settings( $settings );
+			}
+
 			$url = apply_filters(
 				'jet-engine/elementor-views/frontend/custom-listing-url',
 				false,
@@ -329,6 +333,7 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 
 			$open_in_new = isset( $settings['listing_link_open_in_new'] ) ? $settings['listing_link_open_in_new'] : '';
 			$rel_attr    = isset( $settings['listing_link_rel_attr'] ) ? $settings['listing_link_rel_attr'] : '';
+			$aria_label  = isset( $settings['listing_link_aria_label'] ) ? $settings['listing_link_aria_label'] : '';
 
 			if ( $open_in_new ) {
 				$overlay_attrs['data-target'] = '_blank';
@@ -337,6 +342,10 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 
 			if ( $rel_attr ) {
 				$link_attrs['rel'] = $rel_attr;
+			}
+
+			if ( $aria_label ) {
+				$link_attrs['aria-label'] = esc_attr( $aria_label );
 			}
 
 			$link = sprintf( '<a %s></a>', Jet_Engine_Tools::get_attr_string( $link_attrs ) );

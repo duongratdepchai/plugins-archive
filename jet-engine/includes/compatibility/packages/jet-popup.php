@@ -43,7 +43,7 @@ if ( ! class_exists( 'Jet_Engine_Popup_Package' ) ) {
 					'dataAttr'    => 'data-popup-is-jet-engine',
 					'default'     => false,
 					'label'       => __( 'JetEngine Listing popup' ),
-					'description' => __( 'Enbale this to use this popup inside Listing Grid items' ),
+					'description' => __( 'Enable this to use this popup inside Listing Grid items' ),
 				] );
 			} );
 		}
@@ -112,6 +112,16 @@ if ( ! class_exists( 'Jet_Engine_Popup_Package' ) ) {
 			$plugin = Elementor\Plugin::instance();
 			$source = ! empty( $popup_data['listingSource'] ) ? $popup_data['listingSource'] : 'posts';
 
+			$query_id = ! empty( $popup_data['queryId'] ) ? $popup_data['queryId'] : false;
+
+			if ( $query_id ) {
+				$query = \Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $query_id );
+
+				if ( $query ) {
+					$source = $query->query_type;
+				}
+			}
+
 			switch ( $source ) {
 				
 				case 'terms':
@@ -147,14 +157,12 @@ if ( ! class_exists( 'Jet_Engine_Popup_Package' ) ) {
 
 			}
 
-			$query_id = ! empty( $popup_data['queryId'] ) ? $popup_data['queryId'] : false;
-
 			if ( $query_id ) {
-				
+
 				$query = \Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $query_id );
 
 				if ( $query && 'repeater' === $query->query_type ) {
-					
+
 					$id_data = explode( '-', $popup_data['postId'] );
 
 					if ( 3 === count( $id_data ) ) {

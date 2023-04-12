@@ -84,6 +84,7 @@ class Manager {
 				jet_engine()->listings->get_new_doc(
 					array(
 						'listing_source' => $source,
+						'_query_id'      => $settings['custom_query_id'],
 					),
 					absint( $settings['lisitng_id'] ) )
 			);

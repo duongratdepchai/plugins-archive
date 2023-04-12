@@ -132,7 +132,7 @@ class Query {
 		}
 
 		if ( ! empty( $_REQUEST['query']['post__in'] ) ) {
-			$query->set_filtered_prop( 'post__in', $_REQUEST['query']['post__in'] );
+			$query->final_query['post__in'] = $_REQUEST['query']['post__in'];
 		}
 
 	}

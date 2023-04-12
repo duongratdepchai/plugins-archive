@@ -41,6 +41,11 @@
 				:size="'fullwidth'"
 				v-model="generalSettings.query_id"
 			></cx-vui-input>
+			<cx-vui-component-wrapper
+				v-if="generalSettings.query_id"
+				label="<?php _e( 'Warning!', 'jet-engine' ); ?>"
+				description="<?php _e( 'Please make sure you set up the same ID for any filters used with this query.', 'jet-engine' ); ?>"
+			></cx-vui-component-wrapper>
 		</div>
 		<component
 			v-if="generalSettings.query_type && typesComponents[ generalSettings.query_type ]"

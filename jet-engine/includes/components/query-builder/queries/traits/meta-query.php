@@ -80,10 +80,8 @@ trait Meta_Query_Trait {
 	}
 
 	public function get_dates_range_meta_query( $args = array(), $dates_range = array(), $settings = array() ) {
-		
-		if ( $settings['group_by_key'] ) {
-			$meta_key = esc_attr( $settings['group_by_key'] );
-		}
+
+		$meta_key = $settings['group_by_key'] ? esc_attr( $settings['group_by_key'] ) : false;
 
 		if ( isset( $args['meta_query'] ) ) {
 			$meta_query = $args['meta_query'];
@@ -105,7 +103,7 @@ trait Meta_Query_Trait {
 
 		}
 
-		if ( ! empty( $settings['allow_multiday'] ) && ! empty( $settings['end_date_key'] ) ) {
+		if ( $meta_key && ! empty( $settings['allow_multiday'] ) && ! empty( $settings['end_date_key'] ) ) {
 
 			$calendar_meta_query = array_merge( $calendar_meta_query, array(
 				array(

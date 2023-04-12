@@ -272,6 +272,24 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 			return $config;
 		}
 
+		/**
+		 * Returns path to module template file.
+		 *
+		 * @param $name
+		 *
+		 * @return string|bool
+		 */
+		public function get_template( $name ) {
+
+			$template = jet_engine()->get_template( 'calendar/' . $name ); // for back-compatibility
+
+			if ( $template ) {
+				return $template;
+			}
+
+			return jet_engine()->modules->modules_path( 'calendar/templates/' . $name );
+		}
+
 	}
 
 }

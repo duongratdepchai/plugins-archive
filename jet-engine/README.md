@@ -1,5 +1,18 @@
 # ChangeLog
 
+## 3.1.4
+* ADD: Relevanssi search and Query Builder compatibility;
+* ADD: Allow to set aria-labels for Dynamic Link widget and for clickable listing grid item;
+* ADD: Is post by queried user dynamic visibility condition;
+* ADD: Shortcode Result macro;
+* UPD: Show deleted instance name in dialog box for JetEngine instances;
+* FIX: Better WPML compatibility;
+* FIX: Media-realted dynamic tags processing;
+* FIX: ACF repeater settings for Dynamic Repeater widget;
+* FIX: Grid/Slider Gallery Dynamic Field;
+* FIX: Listing grid in Bricks builder - Not Found message control;
+* FIX: Dynamic Meta widget inside listing grid with Custom Query.
+
 ## 3.1.3.1
 ADD: 'jet-engine/query-builder/set-props', 'jet-engine/listing/current-object-title', 'jet-engine/query-builder/filters/before-set-props', 'jet-engine/query-builder/filters/after-set-props' hooks;
 FIX: Additional security checks on export, import and duplicate legacy forms.

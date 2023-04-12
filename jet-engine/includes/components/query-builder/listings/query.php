@@ -24,9 +24,37 @@ class Query {
 		add_filter( 'jet-engine/listing/grid/query/' . $this->source, array( $this, 'query_items' ), 10, 3 );
 
 		add_action( 'jet-engine/listings/frontend/reset-data', function( $data ) {
-			if ( $this->source === $data->get_listing_source() ) {
+
+			if ( $this->source !== $data->get_listing_source() ) {
+				return;
+			}
+
+			$query_id = $data->get_listing()->get_settings( '_query_id' );
+
+			if ( ! $query_id ) {
+				$listing_id = jet_engine()->listings->data->get_listing()->get_main_id();
+
+				if ( ! $listing_id ) {
+					return;
+				}
+
+				$query_id = get_post_meta( $listing_id, $this->source_meta, true );
+			}
+
+			if ( ! $query_id ) {
+				return;
+			}
+
+			$query = Query_Manager::instance()->get_query_by_id( $query_id );
+
+			if ( ! $query ) {
+				return;
+			}
+
+			if ( 'posts' === $query->query_type ) {
 				wp_reset_postdata();
 			}
+
 		} );
 
 		add_action( 'jet-engine/query-builder/query/after-query-setup', array( $this, 'maybe_setup_load_more_prop' ) );

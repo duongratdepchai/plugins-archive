@@ -778,7 +778,14 @@ class Manager {
 	 * @return false|array
 	 */
 	public function get_dynamic_repeater_value( $value, $settings ) {
-		return $this->get_custom_value_by_setting( 'dynamic_field_source', $settings );
+
+		$result = $this->get_custom_value_by_setting( 'dynamic_field_source', $settings );
+
+		if ( ! $result ) {
+			return $value;
+		}
+
+		return $result;
 	}
 
 	/**

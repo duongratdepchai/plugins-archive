@@ -464,7 +464,7 @@ class Repeater_Query extends Base_Query {
 					$page = isset( jet_engine()->options_pages->registered_pages[ $field_data[0] ] ) ? jet_engine()->options_pages->registered_pages[ $field_data[0] ] : false;
 
 					if ( $page ) {
-						$result = $this->get_options_from_fields_data( $field_data[1], $page->page['fields'] );
+						$result = $this->get_options_from_fields_data( $field_data[1], $page->meta_box );
 					}
 					
 				}

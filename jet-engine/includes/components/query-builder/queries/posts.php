@@ -181,6 +181,7 @@ class Posts_Query extends Base_Query {
 		}
 
 		$this->current_wp_query = new \WP_Query( $this->get_query_args() );
+		$this->current_wp_query = apply_filters( 'jet-engine/query-builder/posts-query/wp-query', $this->current_wp_query, $this );
 
 		return $this->current_wp_query;
 

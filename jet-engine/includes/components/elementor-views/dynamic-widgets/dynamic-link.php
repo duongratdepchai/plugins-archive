@@ -292,6 +292,18 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 			)
 		);
 
+		$this->add_control(
+			'aria_label_attr',
+			array(
+				'label'   => __( 'Aria label attr', 'jet-engine' ),
+				'type'    => Controls_Manager::TEXT,
+				'default' => '',
+				'dynamic' => array(
+					'active' => true
+				),
+			)
+		);
+
 		$this->add_responsive_control(
 			'link_alignment',
 			array(

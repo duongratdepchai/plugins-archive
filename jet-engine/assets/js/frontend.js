@@ -274,7 +274,15 @@
 
 			} );
 
-			$( '.jet-listing-not-found.jet-listing-grid__items' ).each( function() {
+			JetEngine.loadFrontStoresItems();
+
+		},
+
+		loadFrontStoresItems: function( $scope ) {
+
+			$scope = $scope || $( 'body' );
+
+			$( '.jet-listing-not-found.jet-listing-grid__items', $scope ).each( function() {
 
 				var $this   = $( this ),
 					nav     = $this.data( 'nav' ),
@@ -325,7 +333,6 @@
 				}
 
 			} );
-
 		},
 
 		removeFromStore: function( event ) {
@@ -894,6 +901,7 @@
 				popupData['isJetEngine'] = true;
 
 				var $gridItems    = $scope.closest( '.jet-listing-grid__items' ),
+					$queryItems   = $scope.closest( '[data-query-id]' ),
 					$gridItem     = $scope.closest( '.jet-listing-grid__item' ),
 					$calendarItem = $scope.closest( '.jet-calendar-week__day-event' ),
 					$itemObject   = $scope.closest( '[data-item-object]' );
@@ -902,6 +910,8 @@
 					popupData['listingSource'] = $gridItems.data( 'listing-source' );
 					popupData['listingId']     = $gridItems.data( 'listing-id' );
 					popupData['queryId']       = $gridItems.data( 'query-id' );
+				} else if ( $queryItems.length ) {
+					popupData['queryId'] = $queryItems.data( 'query-id' );
 				}
 
 				if ( $gridItem.length ) {
@@ -1486,6 +1496,7 @@
 								}
 
 								JetEngine.widgetListingGrid( $widget );
+								JetEngine.loadFrontStoresItems( $widget );
 								JetEngine.lazyLoading = false;
 
 								var needReInitFilters = false,
@@ -1521,7 +1532,7 @@
 
 								// ReInit filters
 								if ( needReInitFilters && window.JetSmartFilters ) {
-									window.JetSmartFilters.initializeFilters();
+									window.JetSmartFilters.reinitFilters();
 								}
 
 								$( document ).trigger( 'jet-engine/listing-grid/after-lazy-load', [ args, response ] );
@@ -1854,6 +1865,11 @@
 				window.elementorFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $this, $ );
 
 			} );
+
+			if ( window.elementorFrontend ) {
+				const elementorLazyLoad = new Event( "elementor/lazyload/observe" );
+				document.dispatchEvent( elementorLazyLoad );
+			}
 
 		},
 
