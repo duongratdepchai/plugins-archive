@@ -2,14 +2,14 @@
 Contributors: bdthemes, selimmw
 Donate link: http://bdthemes.com/
 Tags: elementor addons, elementor widget, elementor extensions, elementor addon, addons, elementor, addons for elementor, addons pack, live copy, template library, bdthemes
-Stable tag: 6.15.1
+Stable tag: 6.15.2
 Requires PHP: 7.4.0
 Requires at least: 5.0.0
 Tested up to: 6.2
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Elementor requires at least: 3.0.0
-Elementor tested up to: 3.12.0
+Elementor tested up to: 3.12.1
 
 The all-new Element Pack Pro brings incredibly advanced, and super-flexible widgets, and A to Z essential addons to the Elementor page builder for WordPress. Explore expertly-coded widgets with first-class support, risk-free! Get a full-refund if you’re not 100% satisfied.*
 
@@ -34,6 +34,15 @@ e.g.
 3. Start use it by go to elementor editor.
 
 == Changelog ==
+
+= 6.15.2 [9th April 2023] =
+
+= Fixed =
+
+* Post gallery filter issue fixed
+* Portfolio gallery filter issue fixed
+* Global box sizing border box css issue fixed
+* Icon Image Broken issue fixed in Hover Video widget (Thanks to Michael Lux)
 
 = 6.15.1 [30th March 2023] =
 

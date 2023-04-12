@@ -1415,7 +1415,7 @@ class ModuleService {
                 ],
                 [
                     'name'         => 'toggle',
-                    'label'        => esc_html__('Toggle', 'bdthemes-element-pack'),
+                    'label'        => esc_html__('Read More Toggle', 'bdthemes-element-pack'),
                     'type'         => 'checkbox',
                     'default'      => 'on',
                     'widget_type'  => 'free',
@@ -3232,7 +3232,7 @@ class ModuleService {
             'plugin_name'  => 'bdthemes-testimonials',
             'plugin_path'  => 'bdthemes-testimonials/bdthemes-testimonials.php',
             'paid'         => 'https://bdthemes.com/secure/plugins/bdthemes-testimonials.zip?key=40fb823b8016d31411a7fe281f41044g',
-            'widget_type'  => 'pro',
+            'widget_type'  => 'free',
             'content_type' => 'post',
             'demo_url'     => 'https://www.elementpack.pro/demo/element/testimonial-grid/',
             'video_url'    => 'https://youtu.be/pYMTXyDn8g4',

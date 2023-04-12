@@ -243,8 +243,8 @@ class Facebook_Feed extends Module_Base {
                 'label'      => __('Layout Style', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SELECT,
                 'options'    => [
-                    'style-1' => __('1', 'bdthemes-element-pack'),
-                    'style-2' => __('2', 'bdthemes-element-pack'),
+                    'style-1' => '1',
+                    'style-2' => '2',
                 ],
                 'default'    => 'style-1',
             ]
@@ -1080,7 +1080,7 @@ class Facebook_Feed extends Module_Base {
         $this->add_control(
             'like_button_hover_options',
             [
-                'label' => esc_html__('H O V E R', 'bdthemes-element-pack'),
+                'label' => esc_html__('HOVER', 'bdthemes-element-pack'),
                 'type' => Controls_Manager::HEADING,
                 'separator' => 'before',
             ]
@@ -1231,7 +1231,7 @@ class Facebook_Feed extends Module_Base {
         $this->add_control(
             'commenting_button_hover_options',
             [
-                'label' => esc_html__('H O V E R', 'bdthemes-element-pack'),
+                'label' => esc_html__('HOVER', 'bdthemes-element-pack'),
                 'type' => Controls_Manager::HEADING,
                 'separator' => 'before',
             ]

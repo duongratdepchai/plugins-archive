@@ -210,20 +210,27 @@ class Post_Gallery extends Module_Base {
 			]
 		);
 
-		$this->add_control(
-			'taxonomy',
-			[
-				'label'       => esc_html__('Taxonomy', 'bdthemes-element-pack'),
-				'type'        => Controls_Manager::SELECT2,
-				'label_block' => true,
-				'options'     => $this->get_taxonomies(),
-				'condition'   => [
-					'show_filter_bar'  => 'yes',
-					'posts_post_type!' => 'by_id',
-				],
-				'default' => 'category',
-			]
-		);
+		$post_types = $this->getGroupControlQueryPostTypes();
+
+		foreach ($post_types as $key => $post_type) {
+			$taxonomies = $this->get_taxonomies($key);
+			if (!$taxonomies[$key]) {
+				continue;
+			}
+			$this->add_control(
+				'taxonomy_' . $key,
+				[
+					'label'     => __('Taxonomies', 'bdthemes-element-pack'),
+					'type'      => Controls_Manager::SELECT,
+					'options'   => $taxonomies[$key],
+					'default'   => key($taxonomies[$key]),
+					'condition' => [
+						'posts_source' => $key,
+						'show_filter_bar' => 'yes'
+					],
+				]
+			);
+		}
 
 		$this->add_control(
 			'active_hash',
@@ -1256,39 +1263,6 @@ class Post_Gallery extends Module_Base {
 		$this->register_style_controls_filter();
 	}
 
-	public function get_taxonomies() {
-		$taxonomies = get_taxonomies(['show_in_nav_menus' => true], 'objects');
-
-		$options = ['' => ''];
-
-		foreach ($taxonomies as $taxonomy) {
-			$options[$taxonomy->name] = $taxonomy->label;
-		}
-
-		return $options;
-	}
-
-	public function get_posts_tags() {
-		$taxonomy = $this->get_settings('taxonomy');
-
-		foreach ($this->_query->posts as $post) {
-			if (!$taxonomy) {
-				$post->tags = [];
-
-				continue;
-			}
-
-			$tags = wp_get_post_terms($post->ID, $taxonomy);
-
-			$tags_slugs = [];
-
-			foreach ($tags as $tag) {
-				$tags_slugs[$tag->term_id] = $tag;
-			}
-
-			$post->tags = $tags_slugs;
-		}
-	}
 
 	/**
 	 * Get post query builder arguments
@@ -1308,6 +1282,18 @@ class Post_Gallery extends Module_Base {
 		$this->_query = new \WP_Query($args);
 	}
 
+
+	public function get_taxonomies($post_type = '') {
+		$_taxonomies = [];
+		if ($post_type) {
+			$taxonomies = get_taxonomies(['public' => true, 'object_type' => [$post_type]], 'object');
+			$tax = array_diff_key(wp_list_pluck($taxonomies, 'label', 'name'), []);
+			$_taxonomies[$post_type] = count($tax) !== 0 ? $tax : '';
+		}
+		return $_taxonomies;
+	}
+
+
 	public function render() {
 		$settings = $this->get_settings_for_display();
 
@@ -1318,8 +1304,6 @@ class Post_Gallery extends Module_Base {
 		if (!$wp_query->found_posts) {
 			return;
 		}
-
-		$this->get_posts_tags();
 
 		$this->render_header();
 
@@ -1371,110 +1355,33 @@ class Post_Gallery extends Module_Base {
 	<?php
 	}
 
-	// available taxonommies for filter
-	public function available_post_type() {
-		switch ($this->get_settings('posts_source')) {
-			case 'campaign':
-				$taxonomy = 'campaign_category';
-				break;
-			case 'lightbox_library':
-				$taxonomy = 'ngg_tag';
-				break;
-			case 'give_forms':
-				$taxonomy = 'give_forms_category';
-				break;
-			case 'tribe_events':
-				$taxonomy = 'tribe_events_cat';
-				break;
-			case 'product':
-				$taxonomy = 'product_cat';
-				break;
-			case 'portfolio':
-				$taxonomy = 'portfolio_filter';
-				break;
-			case 'faq':
-				$taxonomy = 'faq_filter';
-				break;
-			case 'bdthemes-testimonial':
-				$taxonomy = 'testimonial_categories';
-				break;
-			case 'knowledge_base':
-				$taxonomy = 'knowledge-type';
-				break;
-			default:
-				$taxonomy = 'category';
-				break;
-		}
-		return $taxonomy;
-	}
 	protected function filter_menu_categories() {
 		$settings = $this->get_settings_for_display();
-		$this->get_custom_terms();
-		$taxonomy = $this->available_post_type();
 		$include_Categories = $settings['posts_include_term_ids'];
 		$exclude_Categories = $settings['posts_exclude_term_ids'];
 		$post_options = [];
-
-		$params = [
-			'taxonomy' => $taxonomy,
-			'hide_empty' => true,
-			'include' => $include_Categories,
-			'exclude' => $exclude_Categories,
-		];
-		$post_categories = get_terms($params);
-
-		if (!$post_categories) {
-			unset($params['taxonomy']);
+		if (isset($settings['taxonomy_' . $settings['posts_source']])) {
+			$taxonomy = $settings['taxonomy_' . $settings['posts_source']];
+			$params = [
+				'taxonomy' => $taxonomy,
+				'hide_empty' => true,
+				'include' => $include_Categories,
+				'exclude' => $exclude_Categories,
+			];
 			$post_categories = get_terms($params);
-		}
-
-		if (is_wp_error($post_categories)) {
-			return $post_options;
-		}
-		if (false !== $post_categories and is_array($post_categories)) {
-			foreach ($post_categories as $category) {
-				$post_options[$category->slug] = $category->name;
+			if (is_wp_error($post_categories)) {
+				return $post_options;
+			}
+			if (false !== $post_categories and is_array($post_categories)) {
+				foreach ($post_categories as $category) {
+					$post_options[$category->slug] = $category->name;
+				}
 			}
 		}
+
 		return $post_options;
 	}
 
-	public function get_custom_terms() {
-		$settings = $this->get_settings_for_display();
-		/**
-		 * Set Taxonomy
-		 */
-		$include_by    = $this->getGroupControlQueryParamBy('include');
-		$exclude_by    = $this->getGroupControlQueryParamBy('exclude');
-		$include_terms = [];
-		$exclude_terms = [];
-		$terms_query   = [];
-
-		if (in_array('terms', $include_by)) {
-			$include_terms = wp_parse_id_list($settings['posts_include_term_ids']);
-		}
-
-		if (in_array('terms', $exclude_by)) {
-			$exclude_terms = wp_parse_id_list($settings['posts_exclude_term_ids']);
-			$include_terms = array_diff($include_terms, $exclude_terms);
-		}
-
-		if (!empty($include_terms)) {
-			$tax_terms_map = $this->mapGroupControlQuery($include_terms);
-
-			foreach ($tax_terms_map as $tax => $terms) {
-				$terms_query[] = [
-					'taxonomy' => $tax,
-					'field'    => 'term_id',
-					'terms'    => $terms,
-					'operator' => 'IN',
-				];
-			}
-		}
-		if (!empty($terms_query)) {
-			return $terms_query;
-		}
-	}
 	public function render_filter_menu() {
 		$settings  = $this->get_settings_for_display();
 		$categories = $this->filter_menu_categories();
@@ -1519,8 +1426,8 @@ class Post_Gallery extends Module_Base {
 						</li>
 					<?php endif; ?>
 
-					<?php foreach ($categories as $category) { ?>
-						<li class="" data-bdt-filter-control="[data-filter*='<?php echo esc_attr(strtolower($category)); ?>']">
+					<?php foreach ($categories as $slug => $category) { ?>
+						<li class="" data-bdt-target="<?php echo esc_attr(trim($slug)); ?>" data-bdt-filter-control="[data-filter*='<?php echo esc_attr(trim($slug)); ?>']">
 							<a href="#"><?php echo esc_html($category); ?></a>
 						</li>
 					<?php } ?>
@@ -1531,14 +1438,14 @@ class Post_Gallery extends Module_Base {
 			<ul id="bdt-ep-grid-filters<?php echo $this->get_id(); ?>" class="bdt-ep-grid-filters bdt-visible@m" data-bdt-margin>
 				<li class="bdt-ep-grid-filter bdt-active" data-bdt-filter-control>
 					<?php if (isset($settings['filter_custom_text']) && ($settings['filter_custom_text'] != 'yes')) : ?>
-						<?php esc_html_e('All', 'bdthemes-element-pack'); ?>
+						<a href="#"><?php esc_html_e('All', 'bdthemes-element-pack'); ?></a>
 					<?php else : ?>
 						<a href="#"><?php esc_html_e($settings['filter_custom_text_all'], 'bdthemes-element-pack'); ?></a>
 					<?php endif; ?>
 				</li>
 
-				<?php foreach ($categories as $category) { ?>
-					<li class="bdt-ep-grid-filter" data-bdt-filter-control="[data-filter*='<?php echo esc_attr(strtolower($category)); ?>']">
+				<?php foreach ($categories as $slug => $category) { ?>
+					<li class="bdt-ep-grid-filter" data-bdt-target="<?php echo esc_attr(trim($slug)); ?>" data-bdt-filter-control="[data-filter*='<?php echo esc_attr(trim($slug)); ?>']">
 						<a href="#"><?php echo esc_html($category); ?></a>
 					</li>
 				<?php } ?>
@@ -1810,41 +1717,15 @@ class Post_Gallery extends Module_Base {
 
 
 		public function filter_menu_terms() {
-			$taxonomy = $this->available_post_type();
+			$settings = $this->get_settings_for_display();
+			$taxonomy = $settings['taxonomy_' . $settings['posts_source']];
 			$categories = get_the_terms(get_the_ID(), $taxonomy);
 			$_categories = [];
 			if ($categories) {
 				foreach ($categories as $category) {
-					$_categories[$category->slug] = strtolower($category->name);
+					$_categories[$category->slug] = $category->slug;
 				}
 			}
 			return implode(' ', $_categories);
-		}
-
-		private function getGroupControlQueryParamBy($by = 'exclude') {
-			$mapBy = [
-				'exclude' => 'posts_exclude_by',
-				'include' => 'posts_include_by',
-			];
-
-			$setting = $this->get_settings_for_display($mapBy[$by]);
-
-			return (!empty($setting) ? $setting : []);
-		}
-		private function mapGroupControlQuery($term_ids = []) {
-			$terms = get_terms(
-				[
-					'term_taxonomy_id' => $term_ids,
-					'hide_empty'       => false,
-				]
-			);
-
-			$tax_terms_map = [];
-
-			foreach ($terms as $term) {
-				$taxonomy                     = $term->taxonomy;
-				$tax_terms_map[$taxonomy][] = $term->term_id;
-			}
-			return $tax_terms_map;
 		}
 	}

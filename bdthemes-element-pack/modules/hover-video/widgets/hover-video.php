@@ -21,33 +21,27 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-class Hover_Video extends Module_Base
-{
+class Hover_Video extends Module_Base {
 
-    public function get_name()
-    {
+    public function get_name() {
         return 'bdt-hover-video';
     }
 
-    public function get_title()
-    {
+    public function get_title() {
         return BDTEP . esc_html__('Hover Video', 'bdthemes-element-pack');
     }
 
-    public function get_icon()
-    {
+    public function get_icon() {
         return 'bdt-wi-hover-video';
     }
 
-    public function get_categories()
-    {
+    public function get_categories() {
         return [
             'element-pack',
         ];
     }
 
-    public function get_keywords()
-    {
+    public function get_keywords() {
         return ['hover', 'insta', 'video', 'player'];
     }
 
@@ -71,12 +65,11 @@ class Hover_Video extends Module_Base
     }
 
     public function register_skins() {
-        $this->add_skin( new Skins\Skin_Accordion( $this ) );
-        $this->add_skin( new Skins\Skin_Vertical ( $this ) );
+        $this->add_skin(new Skins\Skin_Accordion($this));
+        $this->add_skin(new Skins\Skin_Vertical($this));
     }
 
-    protected function register_controls()
-    {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'section_layouts',
@@ -90,13 +83,13 @@ class Hover_Video extends Module_Base
         $repeater->add_control(
             'source_type',
             [
-                'label'       => esc_html__( 'Video Type', 'bdthemes-element-pack' ),
+                'label'       => esc_html__('Video Type', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::SELECT,
                 'default'     => 'hosted_url',
                 'label_block' => true,
                 'options'     => [
-                    'remote_url' => esc_html__( 'Remote Video', 'bdthemes-element-pack' ),
-                    'hosted_url' => esc_html__( 'Local Video', 'bdthemes-element-pack' ),
+                    'remote_url' => esc_html__('Remote Video', 'bdthemes-element-pack'),
+                    'hosted_url' => esc_html__('Local Video', 'bdthemes-element-pack'),
                 ],
             ]
         );
@@ -105,11 +98,11 @@ class Hover_Video extends Module_Base
             'remote_url',
             [
                 'type'          => Controls_Manager::URL,
-                'label'         => __( 'Video Source', 'bdthemes-element-pack' ),
+                'label'         => __('Video Source', 'bdthemes-element-pack'),
                 'label_block'   => true,
                 'show_external' => false,
-                'placeholder'   => __( 'https://exmaple.com/sample.mp4', 'bdthemes-element-pack' ),
-                'dynamic'       => [ 'active' => true ],
+                'placeholder'   => __('https://exmaple.com/sample.mp4', 'bdthemes-element-pack'),
+                'dynamic'       => ['active' => true],
                 'condition'     => [
                     'source_type' => 'remote_url',
                 ],
@@ -187,7 +180,7 @@ class Hover_Video extends Module_Base
         $repeater->add_control(
             'hover_item_icon',
             [
-                'label'            => __( 'Icon', 'bdthemes-element-pack' ),
+                'label'            => __('Icon', 'bdthemes-element-pack'),
                 'type'             => Controls_Manager::ICONS,
                 'default' => [
                     'value' => 'fas fa-star',
@@ -202,7 +195,7 @@ class Hover_Video extends Module_Base
         $repeater->add_control(
             'hover_selected_image',
             [
-                'label'       => __( 'Image Icon', 'bdthemes-element-pack' ),
+                'label'       => __('Image Icon', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::MEDIA,
                 'render_type' => 'template',
                 'default'     => [
@@ -234,11 +227,11 @@ class Hover_Video extends Module_Base
                 'fields'      => $repeater->get_controls(),
                 'default'     => [
                     [
-                        'hover_video_title' => __( 'Hover Video 01', 'bdthemes-element-pack' ),
+                        'hover_video_title' => __('Hover Video 01', 'bdthemes-element-pack'),
                         'hover_item_icon'   => ['value' => 'far fa-laugh', 'library' => 'fa-regular'],
                     ],
                     [
-                        'hover_video_title' => __( 'Hover Video 02', 'bdthemes-element-pack' ),
+                        'hover_video_title' => __('Hover Video 02', 'bdthemes-element-pack'),
                         'hover_item_icon'   => ['value' => 'far fa-laugh', 'library' => 'fa-regular'],
                     ],
                 ],
@@ -267,11 +260,11 @@ class Hover_Video extends Module_Base
         $this->add_control(
             'aspect_ratio',
             [
-                'label'       => esc_html__( 'Aspect Ratio', 'bdthemes-element-pack' ) . BDTEP_NC,
+                'label'       => esc_html__('Aspect Ratio', 'bdthemes-element-pack') . BDTEP_NC,
                 'type'        => Controls_Manager::SELECT,
                 'default'     => '',
                 'options'     => [
-                    ''    => esc_html__( 'Select Aspect Ratio', 'bdthemes-element-pack' ),
+                    ''    => esc_html__('Select Aspect Ratio', 'bdthemes-element-pack'),
                     '11'  => '1:1',
                     '21'  => '2:1',
                     '32'  => '3:2',
@@ -283,7 +276,7 @@ class Hover_Video extends Module_Base
                 ],
                 'prefix_class' => 'bdt-hv-ratio-yes bdt-hv-ratio-',
                 'render_type' => 'template',
-                'description' => esc_html__( 'Note: We recommend you choose only one from "Video Height" or "Aspect Ratio". Please don\'t use both.', 'bdthemes-element-pack' )
+                'description' => esc_html__('Note: We recommend you choose only one from "Video Height" or "Aspect Ratio". Please don\'t use both.', 'bdthemes-element-pack')
             ]
         );
 
@@ -353,7 +346,7 @@ class Hover_Video extends Module_Base
             [
                 'label'   => __('Progress On Button', 'bdthemes-element-pack'),
                 'type'    => Controls_Manager::SWITCHER,
-                'condition'=> [
+                'condition' => [
                     '_skin' => ['']
                 ]
             ]
@@ -394,8 +387,8 @@ class Hover_Video extends Module_Base
         );
 
         $this->add_group_control(
-           Group_Control_Box_Shadow::get_type(),
-           [
+            Group_Control_Box_Shadow::get_type(),
+            [
                 'name'     => 'hover_video_shadow',
                 'selector' => '{{WRAPPER}} .bdt-hover-video .bdt-hover-wrapper-list video',
                 'condition' => [
@@ -445,13 +438,13 @@ class Hover_Video extends Module_Base
             ]
         );
 
-         $this->add_control(
+        $this->add_control(
             'mask_content_color',
             [
                 'label'     => __('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                     '{{WRAPPER}} .bdt-hover-video.skin-accordion .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask, {{WRAPPER}} .bdt-hover-video.skin-vertical  .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .bdt-hover-video.skin-accordion .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask, {{WRAPPER}} .bdt-hover-video.skin-vertical  .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask' => 'color: {{VALUE}}',
                     '{{WRAPPER}} .bdt-hover-video.skin-accordion  .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask .bdt-hover-text, {{WRAPPER}} .bdt-hover-video.skin-vertical  .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask .bdt-hover-text' => 'color: {{VALUE}}',
                 ],
                 'condition' => [
@@ -475,7 +468,7 @@ class Hover_Video extends Module_Base
             Group_Control_Text_Shadow::get_type(),
             [
                 'name' => 'accrordion_text_shadow',
-                'label' => __( 'Text Shadow', 'bdthemes-element-pack' ),
+                'label' => __('Text Shadow', 'bdthemes-element-pack'),
                 'selector' => '{{WRAPPER}} .bdt-hover-video.skin-accordion .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask .bdt-hover-text, {{WRAPPER}} .bdt-hover-video.skin-vertical .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask .bdt-hover-text',
                 'condition' => [
                     '_skin!' => '',
@@ -488,7 +481,7 @@ class Hover_Video extends Module_Base
             [
                 'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
+                'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
                     '{{WRAPPER}} .bdt-hover-video.skin-accordion .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask .bdt-hover-mask-text-group, {{WRAPPER}} .bdt-hover-video.skin-vertical .bdt-hover-wrapper-list .bdt-hover-mask-list .bdt-hover-mask .bdt-hover-mask-text-group' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
@@ -512,21 +505,21 @@ class Hover_Video extends Module_Base
         $this->add_control(
             'mask_content_align',
             [
-                'label'       => __( 'Alignment', 'bdthemes-element-pack' ),
+                'label'       => __('Alignment', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::CHOOSE,
                 'toggle'      => false,
                 'default'     => 'left',
                 'options'     => [
                     'left'   => [
-                        'title' => __( 'Left', 'bdthemes-element-pack' ),
+                        'title' => __('Left', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __( 'Center', 'bdthemes-element-pack' ),
+                        'title' => __('Center', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-center',
                     ],
                     'right'  => [
-                        'title' => __( 'Right', 'bdthemes-element-pack' ),
+                        'title' => __('Right', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-right',
                     ],
                 ],
@@ -543,26 +536,26 @@ class Hover_Video extends Module_Base
         $this->add_control(
             'mask_alignment',
             [
-                'label' => __( 'Vertical Alignment', 'bdthemes-element-pack' ),
+                'label' => __('Vertical Alignment', 'bdthemes-element-pack'),
                 'type' => Controls_Manager::CHOOSE,
                 'default' => 'top',
                 'options' => [
                     'top' => [
-                        'title' => __( 'Top', 'bdthemes-element-pack' ),
+                        'title' => __('Top', 'bdthemes-element-pack'),
                         'icon' => 'eicon-v-align-top',
                     ],
                     'middle' => [
-                        'title' => __( 'Middle', 'bdthemes-element-pack' ),
+                        'title' => __('Middle', 'bdthemes-element-pack'),
                         'icon' => 'eicon-v-align-middle',
                     ],
                     'bottom' => [
-                        'title' => __( 'Bottom', 'bdthemes-element-pack' ),
+                        'title' => __('Bottom', 'bdthemes-element-pack'),
                         'icon' => 'eicon-v-align-bottom',
                     ],
                 ],
                 'prefix_class' => 'bdt-hover-video-position-',
                 'toggle' => false,
-                 'condition' => [
+                'condition' => [
                     '_skin!' => '',
                 ],
             ]
@@ -576,7 +569,7 @@ class Hover_Video extends Module_Base
                 'range'     => [
                     'px' => [
                         'min' => 0,
-                        'step'=> 0.1,
+                        'step' => 0.1,
                         'max' => 1,
                     ],
                 ],
@@ -646,7 +639,7 @@ class Hover_Video extends Module_Base
                 'range'     => [
                     'px' => [
                         'min' => 0,
-                        'step'=> 0.1,
+                        'step' => 0.1,
                         'max' => 1,
                     ],
                 ],
@@ -663,7 +656,7 @@ class Hover_Video extends Module_Base
 
         $this->end_controls_tabs();
 
-         $this->add_control(
+        $this->add_control(
             'mask_hover_svg_img_heading',
             [
                 'label'     => __('Icon', 'bdthemes-element-pack'),
@@ -855,7 +848,7 @@ class Hover_Video extends Module_Base
             [
                 'label' => __('Button', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
-                'condition'=> [
+                'condition' => [
                     '_skin' => ['']
                 ]
             ]
@@ -934,7 +927,7 @@ class Hover_Video extends Module_Base
             [
                 'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
+                'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
                     '{{WRAPPER}} .bdt-hover-video .bdt-hover-btn-wrapper .bdt-hover-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
                 ]
@@ -946,7 +939,7 @@ class Hover_Video extends Module_Base
             [
                 'label'      => esc_html__('Margin', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
+                'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
                     '{{WRAPPER}} .bdt-hover-video .bdt-hover-btn-wrapper .bdt-hover-btn' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
                 ]
@@ -954,8 +947,8 @@ class Hover_Video extends Module_Base
         );
 
         $this->add_group_control(
-           Group_Control_Box_Shadow::get_type(),
-           [
+            Group_Control_Box_Shadow::get_type(),
+            [
                 'name'     => 'hover_button_shadow',
                 'selector' => '{{WRAPPER}} .bdt-hover-video .bdt-hover-btn-wrapper .bdt-hover-btn'
             ]
@@ -973,21 +966,21 @@ class Hover_Video extends Module_Base
         $this->add_responsive_control(
             'hover_button_align',
             [
-                'label'       => __( 'Alignment', 'bdthemes-element-pack' ),
+                'label'       => __('Alignment', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::CHOOSE,
                 'toggle'      => false,
                 'default'     => 'center',
                 'options'     => [
                     'left'   => [
-                        'title' => __( 'Left', 'bdthemes-element-pack' ),
+                        'title' => __('Left', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __( 'Center', 'bdthemes-element-pack' ),
+                        'title' => __('Center', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-center',
                     ],
                     'right'  => [
-                        'title' => __( 'Right', 'bdthemes-element-pack' ),
+                        'title' => __('Right', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-right',
                     ],
                 ],
@@ -1075,12 +1068,12 @@ class Hover_Video extends Module_Base
         $this->add_control(
             'hover_button_border_active',
             [
-                'label'     => __( 'Border Color', 'bdthemes-element-pack' ),
+                'label'     => __('Border Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                   '{{WRAPPER}} .bdt-hover-video .bdt-hover-btn-wrapper .bdt-hover-btn.active'  => 'border-color: {{VALUE}};',
-               ],
-               'condition' => [
+                    '{{WRAPPER}} .bdt-hover-video .bdt-hover-btn-wrapper .bdt-hover-btn.active'  => 'border-color: {{VALUE}};',
+                ],
+                'condition' => [
                     'hover_button_border_border!' => '',
                 ],
             ]
@@ -1099,11 +1092,9 @@ class Hover_Video extends Module_Base
         $this->end_controls_tabs();
 
         $this->end_controls_section();
-
     }
 
-    protected function render()
-    {
+    protected function render() {
         $settings = $this->get_settings_for_display();
 
         $id = 'default-' . $this->get_id();
@@ -1129,31 +1120,31 @@ class Hover_Video extends Module_Base
 
         $video_preload = ($settings['video_preload']) == 'yes' ? 'auto' : 'none';
 
-        if ( 'yes' == $settings['video_autoplay'] ) {
-            $this->add_render_attribute( 'hover_video_wrapper', 'class', 'bdt-hover-wrapper-list autoplay' );
+        if ('yes' == $settings['video_autoplay']) {
+            $this->add_render_attribute('hover_video_wrapper', 'class', 'bdt-hover-wrapper-list autoplay');
         } else {
-            $this->add_render_attribute( 'hover_video_wrapper', 'class', 'bdt-hover-wrapper-list' );
+            $this->add_render_attribute('hover_video_wrapper', 'class', 'bdt-hover-wrapper-list');
         }
 
-        ?>
+?>
 
         <div <?php echo $this->get_render_attribute_string('hover_video_attr'); ?>>
             <span class="hover-video-loader"></span>
             <div <?php echo $this->get_render_attribute_string('hover_video_wrapper'); ?>>
                 <?php
                 $i = 0;
-                foreach ($settings['hover_video_list'] as $index => $item):
+                foreach ($settings['hover_video_list'] as $index => $item) :
                     $i++;
-                    $this->add_render_attribute('bdt_hover_video_attr', 'id', $id.'-'.$item['_id'], true);
+                    $this->add_render_attribute('bdt_hover_video_attr', 'id', $id . '-' . $item['_id'], true);
                     $active_class = ($i == 1) ? 'active' : '';
                     $this->add_render_attribute('bdt_hover_video_attr', 'class', $active_class, true);
                     $this->add_render_attribute('bdt_hover_video_attr', 'preload', $video_preload, true);
 
-                    $video_poster = ( $item['hover_video_poster']['url'] ) ? $item['hover_video_poster']['url'] : BDTEP_ASSETS_URL . 'images/video-thumbnail.svg';
+                    $video_poster = ($item['hover_video_poster']['url']) ? $item['hover_video_poster']['url'] : BDTEP_ASSETS_URL . 'images/video-thumbnail.svg';
 
                     $video_source = '';
 
-                    if ( 'hosted_url' == $item['source_type'] ) {
+                    if ('hosted_url' == $item['source_type']) {
                         $video_source = $item['hosted_url']['url'];
                     } else {
                         $video_source = $item['remote_url']['url'];
@@ -1163,115 +1154,112 @@ class Hover_Video extends Module_Base
                         $video_poster = BDTEP_ASSETS_URL . 'images/no-video.svg';
                     }
 
-                    ?>
-                    <video <?php echo $this->get_render_attribute_string('bdt_hover_video_attr'); ?>
-                    oncontextmenu="return false;"
-                    src="<?php echo esc_url($video_source); ?>"
-                    poster="<?php echo esc_url($video_poster); ?>"  muted >
-                </video>
-            <?php endforeach;?>
-
-        </div>
-        <?php if($settings['progress_visibility'] == 'yes'){ ?>
-            <div class="bdt-hover-bar-list">
-                <?php
-                $i = 0;
-                foreach ($settings['hover_video_list'] as $index => $item):
-                    $i++;
-            // pro = progress
-                    $this->add_render_attribute('bdt_hover_pro_attr', 'class', 'bdt-hover-progress', true);
-                    $this->add_render_attribute('bdt_hover_pro_attr', 'data-id', $id.'-'.$item['_id'], true);
-                    if ($i == 1) {
-                        $this->add_render_attribute('bdt_hover_pro_attr', 'class', 'active');
-                    }
-            // echo $i;
-
-                    ?>
-                    <div class="bdt-hover-bar-wrapper">
-                        <div class="bdt-hover-bar">
-                            <div <?php echo $this->get_render_attribute_string('bdt_hover_pro_attr'); ?>></div>
-                        </div>
-                    </div>
-                <?php endforeach;?>
+                ?>
+                    <video <?php echo $this->get_render_attribute_string('bdt_hover_video_attr'); ?> oncontextmenu="return false;" src="<?php echo esc_url($video_source); ?>" poster="<?php echo esc_url($video_poster); ?>" muted>
+                    </video>
+                <?php endforeach; ?>
 
             </div>
-        <?php } ?>
-        <div class="bdt-hover-btn-wrapper">
-            <?php
-            $i = 0;
-            foreach ($settings['hover_video_list'] as $index => $item):
-                $i++;
-                $this->add_render_attribute('bdt_hover_btn_attr', 'class', 'bdt-hover-btn', true);
-                $this->add_render_attribute('bdt_hover_btn_attr', 'data-id', $id.'-'.$item['_id'], true);
+            <?php if ($settings['progress_visibility'] == 'yes') { ?>
+                <div class="bdt-hover-bar-list">
+                    <?php
+                    $i = 0;
+                    foreach ($settings['hover_video_list'] as $index => $item) :
+                        $i++;
+                        // pro = progress
+                        $this->add_render_attribute('bdt_hover_pro_attr', 'class', 'bdt-hover-progress', true);
+                        $this->add_render_attribute('bdt_hover_pro_attr', 'data-id', $id . '-' . $item['_id'], true);
+                        if ($i == 1) {
+                            $this->add_render_attribute('bdt_hover_pro_attr', 'class', 'active');
+                        }
+                        // echo $i;
 
-                $this->add_render_attribute('button_pro_attr', 'class', 'bdt-hover-progress', true);
-                $this->add_render_attribute('button_pro_attr', 'data-id', $id.'-'.$item['_id'], true);
+                    ?>
+                        <div class="bdt-hover-bar-wrapper">
+                            <div class="bdt-hover-bar">
+                                <div <?php echo $this->get_render_attribute_string('bdt_hover_pro_attr'); ?>></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
 
-                if ($i == 1) {
-                    $this->add_render_attribute('bdt_hover_btn_attr', 'class', 'active');
-                    $this->add_render_attribute('button_pro_attr', 'class', 'active');
-                }
+                </div>
+            <?php } ?>
+            <div class="bdt-hover-btn-wrapper">
+                <?php
+                $i = 0;
+                foreach ($settings['hover_video_list'] as $index => $item) :
+                    $i++;
+                    $this->add_render_attribute('bdt_hover_btn_attr', 'class', 'bdt-hover-btn', true);
+                    $this->add_render_attribute('bdt_hover_btn_attr', 'data-id', $id . '-' . $item['_id'], true);
 
-                if(!empty($item['video_wrapper_link']['url'])){
-                    $target = $item['video_wrapper_link']['is_external'] ? '_blank' : '_self';
-                    $this->add_render_attribute( 'bdt_hover_btn_attr', 'onclick', "window.open('" . $item['video_wrapper_link']['url'] . "', '$target')", true );
-                }
+                    $this->add_render_attribute('button_pro_attr', 'class', 'bdt-hover-progress', true);
+                    $this->add_render_attribute('button_pro_attr', 'data-id', $id . '-' . $item['_id'], true);
+
+                    if ($i == 1) {
+                        $this->add_render_attribute('bdt_hover_btn_attr', 'class', 'active');
+                        $this->add_render_attribute('button_pro_attr', 'class', 'active');
+                    }
+
+                    if (!empty($item['video_wrapper_link']['url'])) {
+                        $target = $item['video_wrapper_link']['is_external'] ? '_blank' : '_self';
+                        $this->add_render_attribute('bdt_hover_btn_attr', 'onclick', "window.open('" . $item['video_wrapper_link']['url'] . "', '$target')", true);
+                    }
 
                 ?>
-                <?php if(($settings['icon_visibility'] == 'yes' or (!empty($item['hover_video_title']))) or $settings['btn_progress_visibility'] == 'yes'){ ?>
-                    <div <?php echo $this->get_render_attribute_string('bdt_hover_btn_attr'); ?>>
-                        <?php if($settings['icon_visibility'] == 'yes'){ ?>
-                            <div class="bdt-hover-icon-wrapper">
-                                <span class="bdt-hover-icon">
-                                    <?php
-                                    $has_icon  = ! empty( $item['hover_item_icon'] );
-                                    $has_image = ! empty( $item['hover_selected_image']['url'] );
+                    <?php if (($settings['icon_visibility'] == 'yes' or (!empty($item['hover_video_title']))) or $settings['btn_progress_visibility'] == 'yes') { ?>
+                        <div <?php echo $this->get_render_attribute_string('bdt_hover_btn_attr'); ?>>
+                            <?php if ($settings['icon_visibility'] == 'yes') { ?>
+                                <div class="bdt-hover-icon-wrapper">
+                                    <span class="bdt-hover-icon">
+                                        <?php
+                                        $has_icon  = !empty($item['hover_item_icon']);
+                                        $has_image = !empty($item['hover_selected_image']['url']);
 
-                                    if ( $has_icon and 'icon' == $item['hover_item_icon_type'] ) {
-                                        $this->add_render_attribute( 'font-icon', 'class', $item['hover_item_icon'] );
-                                        $this->add_render_attribute( 'font-icon', 'aria-hidden', 'true' );
-                                    } elseif ( $has_image and 'image' == $item['hover_item_icon_type'] ) {
-                                        $this->add_render_attribute( 'image-icon', 'src', $item['hover_selected_image']['url'] );
-                                        $this->add_render_attribute( 'image-icon', 'alt', $item['hover_video_title'] );
-                                    }
+                                        if ($has_icon and 'icon' == $item['hover_item_icon_type']) {
+                                            $this->add_render_attribute('font-icon', 'class', $item['hover_item_icon']);
+                                            $this->add_render_attribute('font-icon', 'aria-hidden', 'true');
+                                        } elseif ($has_image and 'image' == $item['hover_item_icon_type']) {
+                                            $this->add_render_attribute('image-icon', 'src', $item['hover_selected_image']['url'], true);
+                                            $this->add_render_attribute('image-icon', 'alt', $item['hover_video_title'], true);
+                                        }
 
-                                    if ( ! $has_icon && ! empty( $item['hover_item_icon']['value'] ) ) {
-                                        $has_icon = true;
-                                    }
+                                        if (!$has_icon && !empty($item['hover_item_icon']['value'])) {
+                                            $has_icon = true;
+                                        }
 
-                                    ?>
-
-                                    <?php
-                                    if ( $has_icon and 'icon' == $item['hover_item_icon_type'] ) {
-                                        Icons_Manager::render_icon($item['hover_item_icon'], ['aria-hidden' => 'true']);
-                                    }elseif ( $has_image and 'image' == $item['hover_item_icon_type'] ) {
                                         ?>
-                                        <img <?php echo $this->get_render_attribute_string( 'image-icon' ); ?>>
-                                    <?php } ?>
-                                </span>
-                            </div>
-                        <?php } ?>
 
-                        <?php if (!empty($item['hover_video_title'])): ?>
-                            <div class="bdt-hover-btn-text">
-                                <?php echo $item['hover_video_title']; ?>
-                            </div>
-                        <?php endif ?>
+                                        <?php
+                                        if ($has_icon and 'icon' == $item['hover_item_icon_type']) {
+                                            Icons_Manager::render_icon($item['hover_item_icon'], ['aria-hidden' => 'true']);
+                                        } elseif ($has_image and 'image' == $item['hover_item_icon_type']) {
+                                        ?>
+                                            <img <?php echo $this->get_render_attribute_string('image-icon'); ?>>
+                                        <?php } ?>
+                                    </span>
+                                </div>
+                            <?php } ?>
 
-                        <?php if($settings['btn_progress_visibility'] == 'yes'){ ?>
-                       <div class="bdt-hover-bar">
-                           <div <?php echo $this->get_render_attribute_string('button_pro_attr'); ?>></div>
-                       </div>
-                        <?php } ?>
+                            <?php if (!empty($item['hover_video_title'])) : ?>
+                                <div class="bdt-hover-btn-text">
+                                    <?php echo $item['hover_video_title']; ?>
+                                </div>
+                            <?php endif ?>
 
-                    </div>
-                <?php } ?>
+                            <?php if ($settings['btn_progress_visibility'] == 'yes') { ?>
+                                <div class="bdt-hover-bar">
+                                    <div <?php echo $this->get_render_attribute_string('button_pro_attr'); ?>></div>
+                                </div>
+                            <?php } ?>
+
+                        </div>
+                    <?php } ?>
 
 
-            <?php endforeach;?>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
 
-    <?php
-}
+<?php
+    }
 }

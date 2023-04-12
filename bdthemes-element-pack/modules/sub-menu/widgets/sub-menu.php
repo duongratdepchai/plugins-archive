@@ -92,12 +92,12 @@ class Sub_Menu extends Module_Base {
                 'label'     => __('Columns', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SELECT,
                 'options'   => [
-                    '1' => __('1', 'bdthemes-element-pack'),
-                    '2' => __('2', 'bdthemes-element-pack'),
-                    '3' => __('3', 'bdthemes-element-pack'),
-                    '4' => __('4', 'bdthemes-element-pack'),
-                    '5' => __('5', 'bdthemes-element-pack'),
-                    '6' => __('6', 'bdthemes-element-pack'),
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                    '6' => '6',
                 ],
                 'default'   => '2',
                 'selectors' => [
@@ -860,7 +860,10 @@ class Sub_Menu extends Module_Base {
                     '{{WRAPPER}} .ep-sub-menu .ep-sub-menu-wrap .ep-item:hover' => 'border-color: {{VALUE}}',
                 ],
                 'condition' => [
-                    'item_border!' => 'none',
+                    'submenu_items_border_border!' => [
+                        '',
+                        'none',
+                    ],
                 ],
             ]
         );
@@ -1226,7 +1229,7 @@ class Sub_Menu extends Module_Base {
                 'separator' => 'before'
             ]
         );
-        
+
         $this->add_responsive_control(
             'submenu_icon_spacing',
             [

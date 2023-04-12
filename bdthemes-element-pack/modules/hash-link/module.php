@@ -58,7 +58,7 @@ class Module extends Element_Pack_Module_Base {
 				'dynamic' => [
 					'active' => true,
 				],
-				'placeholder' => esc_html__('.elementor', 'bdthemes-element-pack'),
+				'placeholder' => '.elementor',
 				'label_block' => true,
 				'condition'   => [
 					'ep_hash_link_enable' => 'yes'

@@ -10,31 +10,25 @@ use Elementor\Group_Control_Border;
 if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
 
-class Dark_Mode extends Module_Base
-{
+class Dark_Mode extends Module_Base {
 
-    public function get_name()
-    {
+    public function get_name() {
         return 'bdt-dark-mode';
     }
 
-    public function get_title()
-    {
+    public function get_title() {
         return BDTEP . esc_html__('Dark Mode', 'bdthemes-element-pack');
     }
 
-    public function get_icon()
-    {
+    public function get_icon() {
         return 'bdt-wi-dark-mode';
     }
 
-    public function get_categories()
-    {
+    public function get_categories() {
         return ['element-pack'];
     }
 
-    public function get_keywords()
-    {
+    public function get_keywords() {
         return ['dark', 'mode', 'darkmode', 'dm'];
     }
 
@@ -55,11 +49,10 @@ class Dark_Mode extends Module_Base
     }
 
     public function get_custom_help_url() {
-		return 'https://youtu.be/nuYa-0sWFxU';
-	}
+        return 'https://youtu.be/nuYa-0sWFxU';
+    }
 
-    protected function register_controls()
-    {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'section_layout',
@@ -180,15 +173,15 @@ class Dark_Mode extends Module_Base
             ]
         );
 
-	    $this->add_control(
-		    'ignore_element_notes',
-		    [
-			    'type' => Controls_Manager::RAW_HTML,
-			    'raw' => __( 'Note: Image can invert some cases so you need use the class for that image element. If you will add classes they will be ignore. Some cases Background image not support in dark mode effect. So don\'t blame us for it. But it\'s possible to solve by Ignore Elements.', 'bdthemes-element-pack' ),
-			    'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+        $this->add_control(
+            'ignore_element_notes',
+            [
+                'type' => Controls_Manager::RAW_HTML,
+                'raw' => __('Note: Image can invert some cases so you need use the class for that image element. If you will add classes they will be ignore. Some cases Background image not support in dark mode effect. So don\'t blame us for it. But it\'s possible to solve by Ignore Elements.', 'bdthemes-element-pack'),
+                'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 
-		    ]
-	    );
+            ]
+        );
 
         $this->add_control(
             'saveInCookies',
@@ -201,14 +194,14 @@ class Dark_Mode extends Module_Base
         );
 
         $this->add_control(
-		    'save_cookies_notes',
-		    [
-			    'type' => Controls_Manager::RAW_HTML,
-			    'raw' => __( 'Note: If you will activate this option, this will save user action on the browser. Example:- If the user pressed Dark/Light Mode, this mode will always activate on the user browsers. Cookie will not work on Elementor Editor.', 'bdthemes-element-pack' ),
-			    'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+            'save_cookies_notes',
+            [
+                'type' => Controls_Manager::RAW_HTML,
+                'raw' => __('Note: If you will activate this option, this will save user action on the browser. Example:- If the user pressed Dark/Light Mode, this mode will always activate on the user browsers. Cookie will not work on Elementor Editor.', 'bdthemes-element-pack'),
+                'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 
-		    ]
-	    );
+            ]
+        );
 
         $this->add_control(
             'autoMatchOsTheme',
@@ -448,12 +441,11 @@ class Dark_Mode extends Module_Base
         $this->end_controls_section();
     }
 
-    public function render()
-    {
+    public function render() {
 
         $settings = $this->get_settings_for_display();
 
-        ?>
+?>
 
 
     <?php

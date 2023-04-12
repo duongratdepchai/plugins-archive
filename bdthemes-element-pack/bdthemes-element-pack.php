@@ -1,22 +1,23 @@
 <?php
-update_option( 'mpu_license_bdthemes-element-pack', 'activated' );
+
 /**
  * Plugin Name: Element Pack Pro
  * Plugin URI: https://elementpack.pro/
  * Description: The all-new <a href="https://elementpack.pro/">Element Pack Pro</a> brings incredibly advanced, and super-flexible widgets, and A to Z essential addons to the Elementor page builder for WordPress. Explore expertly-coded widgets with first-class support by experts.
- * Version: 6.15.1
+ * Version: 6.15.2
  * Author: BdThemes
  * Author URI: https://bdthemes.com/
- * Secret Key: 83a5bb0e2ad5164690bc7a42ae592cf5
  * Text Domain: bdthemes-element-pack
  * Domain Path: /languages
  * License: GPL3
  * Elementor requires at least: 3.0.0
- * Elementor tested up to: 3.12.0
+ * Elementor tested up to: 3.12.1
  */
 
+update_option( 'mpu_license_bdthemes-element-pack', 'activated' );
+
 // Some pre defined value for easy use
-define('BDTEP_VER', '6.15.1');
+define('BDTEP_VER', '6.15.2');
 define('BDTEP_TPL_DB_VER', '1.0.0');
 define('BDTEP__FILE__', __FILE__);
 if (!defined('BDTEP_TITLE')) {
@@ -57,7 +58,7 @@ if (!function_exists('bdthemes_element_pack_load_plugin')) {
                 if (bdt_license_validation()) {
                     return true;
                 }
-                return true;
+                return false;
             }
         }
         /**
@@ -146,5 +147,3 @@ if (!function_exists('ep_activation_redirect')) {
  * Will be use again on the next major changes
  */
 // add_action('activated_plugin', 'ep_activation_redirect', 20);
-/* Anti-Leecher Indentifier */
-/* Credited By BABIATO-FORUM */

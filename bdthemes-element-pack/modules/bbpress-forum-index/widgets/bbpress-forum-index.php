@@ -240,7 +240,7 @@ class Bbpress_Forum_Index extends Module_Base {
 		$this->add_control(
 			'button_normal_heading',
 			[
-				'label' => esc_html__( 'N O R M A L', 'bdthemes-element-pack' ),
+				'label' => esc_html__( 'NORMAL', 'bdthemes-element-pack' ),
 				'type' => Controls_Manager::HEADING,
 			]
 		);
@@ -324,7 +324,7 @@ class Bbpress_Forum_Index extends Module_Base {
 		$this->add_control(
 			'button_hover_heading',
 			[
-				'label' => esc_html__( 'H O V E R', 'bdthemes-element-pack' ),
+				'label' => esc_html__( 'HOVER', 'bdthemes-element-pack' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before'
 			]

@@ -634,9 +634,14 @@
 			}
 			
 			final function _CheckWPPlugin( $purchase_key, &$error = "", &$responseObj = null ) {
-				$responseObj = (object) [ 'is_valid' => '1', 'expire_date' => '01.01.2030', 'support_end' => '01.01.2030', 'license_title' => 'Lifetime License', 'license_key' => 'XXXXXXXX-XXXXXXXX', 'msg' => 'msg' ];
-				$this->SaveWPResponse( $responseObj );
-				return true;
+			        $responseObj = new \stdClass();
+                    $responseObj->license_title = 'Lifetime license';
+                    $responseObj->license_key = 'XXXXXXXX-XXXXXXXX';
+                    $responseObj->is_valid = true;
+                    $responseObj->expire_date = 'no expiry';
+                    $responseObj->support_end = 'expired';
+                    $this->SaveWPResponse($responseObj);
+                    return true;
 
 				if ( empty( $purchase_key ) ) {
 					$this->removeOldWPResponse();
