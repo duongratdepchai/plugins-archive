@@ -78,6 +78,12 @@ class Jet_Engine_Tools {
 		}
 
 		if ( ! empty( $final_query_args ) ) {
+
+			// To prevent errors on PHP 8.1+
+			if ( is_null( $url ) ) {
+				$url = '';
+			}
+
 			$url = add_query_arg( $final_query_args, $url );
 		}
 
@@ -527,7 +533,7 @@ class Jet_Engine_Tools {
 	}
 
 	/**
-	 * Returns allowed data tpes list in the given format
+	 * Returns allowed data types list in the given format
 	 *
 	 * @param  [type] $format  ARRAY_N or ARRAY_A
 	 *
@@ -788,6 +794,66 @@ class Jet_Engine_Tools {
 		}, $result );
 
 		return $result;
+	}
+
+	/**
+	 * Returns allowed `rel` attribute options in the given format
+	 *
+	 * @param  string $format ARRAY_N or ARRAY_A
+	 * @return array
+	 */
+	public static function get_rel_attr_options( $format = ARRAY_A ) {
+
+		$options = array(
+			''           => esc_html__( 'No', 'jet-engine' ),
+			'alternate'  => esc_html__( 'Alternate', 'jet-engine' ),
+			'author'     => esc_html__( 'Author', 'jet-engine' ),
+			'bookmark'   => esc_html__( 'Bookmark', 'jet-engine' ),
+			'external'   => esc_html__( 'External', 'jet-engine' ),
+			'help'       => esc_html__( 'Help', 'jet-engine' ),
+			'license'    => esc_html__( 'License', 'jet-engine' ),
+			'next'       => esc_html__( 'Next', 'jet-engine' ),
+			'nofollow'   => esc_html__( 'Nofollow', 'jet-engine' ),
+			'noreferrer' => esc_html__( 'Noreferrer', 'jet-engine' ),
+			'noopener'   => esc_html__( 'Noopener', 'jet-engine' ),
+			'prev'       => esc_html__( 'Prev', 'jet-engine' ),
+			'search'     => esc_html__( 'Search', 'jet-engine' ),
+			'tag'        => esc_html__( 'Tag', 'jet-engine' ),
+		);
+
+		if ( ARRAY_N === $format ) {
+
+			$result = array();
+
+			foreach ( $options as $value => $label ) {
+				$result[] = array(
+					'value' => $value,
+					'label' => $label,
+				);
+			}
+
+			return $result;
+		}
+
+		return $options;
+	}
+
+	public static function array_insert_after( $source = array(), $after = null, $insert = array() ) {
+
+		$keys  = array_keys( $source );
+		$index = array_search( $after, $keys );
+
+		if ( ! $source ) {
+			$source = array();
+		}
+
+		if ( false === $index ) {
+			return $source + $insert;
+		}
+
+		$offset = $index + 1;
+
+		return array_slice( $source, 0, $offset, true ) + $insert + array_slice( $source, $offset, null, true );
 	}
 
 	/**

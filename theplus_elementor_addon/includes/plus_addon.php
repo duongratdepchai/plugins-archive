@@ -265,7 +265,7 @@ function theplus_woocomerce_ajax_cart_update($fragments) {
 		return $fragments;
 	}
 }
-add_filter('woocommerce_add_to_cart_fragments', 'theplus_woocomerce_ajax_cart_update',10,3);
+add_filter('woocommerce_add_to_cart_fragments', 'theplus_woocomerce_ajax_cart_update', 10, 3);
 
 /*3rd party WC_Product_Subtitle*/
 if(!function_exists('product_subtitle_after_title')){
@@ -1463,6 +1463,7 @@ function theplus_filter_post(){
 			$Archivepage = isset($postdata['archive_page']) ? $postdata['archive_page'] : '';
 			$ArchivepageType = ( !empty($Archivepage) && !empty($Archivepage['archive_Type']) ) ? sanitize_text_field($Archivepage['archive_Type']) : '';
 			$ArchivepageID = ( !empty($Archivepage) && !empty($Archivepage['archive_Id']) ) ? $Archivepage['archive_Id'] : '';
+			$ArchivepageName = ( !empty($Archivepage) && !empty($Archivepage['archive_Name']) ) ? $Archivepage['archive_Name'] : '';
 
 			$is_searchPage = isset($postdata['is_search']) ? $postdata['is_search'] : 0;
 			$SearchPage = isset($postdata['is_search_page']) ? $postdata['is_search_page'] : '';
@@ -1651,6 +1652,10 @@ function theplus_filter_post(){
 									}else if($post_type == 'product'){
 										$TagTaxonomy = 'product_tag';
 										$TagType = 'product_tag';
+									}else{
+										/**static tag Taxonomy*/
+										$TagTaxonomy = 'post_tag';
+										$TagType = 'tag';
 									}
 
 									$PTag = query_posts( array(
@@ -2071,11 +2076,15 @@ function theplus_filter_post(){
 			// if( $enable_archive_search == 'false' ){
 			if( !empty($category_type) || $category_type == 'true' ){
 				if( !empty($category) && $post_type == 'post' ){
-					$attr_tax[] = array(
-						'taxonomy'=>$NameValue,
-						'field'=>'term_id',
-						'terms'=> explode(',', $category),
-					);
+					if( $ArchivepageName == 'cat' ){
+						$args['category__in'] = explode(',', $category);
+					}else{
+						$attr_tax[] = array(
+							'taxonomy'=>$NameValue,
+							'field'=>'term_id',
+							'terms'=> explode(',', $category),
+						);
+					}
 				}else if( !empty($category) && $post_type == 'product' ){
 					$attr_tax[] = array(
 						'taxonomy' => 'product_cat',
@@ -2739,6 +2748,10 @@ function tp_search_bar(){
 					}else if($PostType == 'product'){
 						$TagTaxonomy = 'product_tag';
 						$TagType = 'product_tag';
+					}else{
+						/**static tag Taxonomy*/
+						$TagTaxonomy = 'post_tag';
+						$TagType = 'tag';
 					}
 
 					$PTag = query_posts( array(
@@ -3231,55 +3244,56 @@ function tp_verify_google_data_user( $token, $client_id ){
 	}
 }
 /*verify google */
-add_action( 'wp_ajax_nopriv_theplus_google_ajax_register', 'theplus_google_ajax_register' );
 function theplus_google_ajax_register() {
-	
-	if(!get_option('users_can_register')){
-		echo wp_json_encode( ['registered'=>false, 'message'=> esc_html__( 'Registration option not enbled in your general settings.', 'theplus' )] );
+
+	if(!isset($_POST['security']) || empty($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'ajax-login-nonce' )){	
+		die ('Security checked!');
+	}
+
+	$credential = $guclientId = '';
+
+	if(isset($_POST["googleCre"]) && !empty($_POST["googleCre"])){
+		$credential = sanitize_text_field($_POST["googleCre"]);
+	}else{
+		echo wp_json_encode( ['login' => false, 'message'=> esc_html__('Unauthorized access', 'theplus')] );
+		exit;
+	}
+
+	if(isset($_POST["clientId"]) && !empty($_POST["clientId"])){
+		$guclientId  = sanitize_text_field($_POST["clientId"]);
+	}else{
+		echo wp_json_encode( ['login' => false, 'message'=> esc_html__('clientId Not Set', 'theplus')] );
 		exit;
 	}
 	
-	if( !isset( $_POST['nonce'] ) || !wp_verify_nonce( $_POST['nonce'], 'ajax-login-nonce' ) ){		
-		echo wp_json_encode( ['registered'=>false, 'message'=> esc_html__( 'Ooops, something went wrong, please try again later.', 'theplus' )] );
-		exit;
-	 }
+	$verified = tp_verify_google_data_user( $credential, $guclientId );
 	
-	$response  = array();
-	$user_data = array();
-	$result    = '';
-	$response['loggedin'] = false;
-	$response['message'] = 'Invalid User.';
-	if ( isset( $_POST['email'] ) && sanitize_email( $_POST['email'] ) ) {
-		
-		$name       = isset( $_POST['name'] ) ? sanitize_text_field($_POST['name']) : '';
-		$email      = isset( $_POST['email'] ) ? sanitize_email($_POST['email']) : '';
-		$id_token = filter_input( INPUT_POST, 'id_token', FILTER_SANITIZE_STRING );
-		$google_data= get_option( 'theplus_api_connection_data' );
-		$client_id = (!empty($google_data['theplus_google_client_id'])) ? $google_data['theplus_google_client_id'] : '';
-		$verified = tp_verify_google_data_user( $id_token, $client_id );
+	if ( empty( $verified ) ) {
+		echo wp_json_encode( ['login'=>false, 'message'=> esc_html__( 'User not verified by Google', 'theplus' )] );
+		exit;
+	}
+	
+	if( !empty( $verified ) && isset( $verified['aud'] ) && !empty($verified['aud']) && $verified['aud'] === $guclientId ){
+		// verify the ID token
+		$curl = curl_init( 'https://oauth2.googleapis.com/tokeninfo?id_token=' . $credential );
+		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+		$response = curl_exec( $curl );
+		curl_close( $curl );
 
-		if ( empty( $verified ) ) {
-			echo wp_json_encode( ['loggedin'=>false, 'message'=> esc_html__( 'User not verified by Google', 'theplus' )] );
-			exit;
+		// convert the response from JSON string to object
+		$response = json_decode($response);
+
+		if (isset($response->error)) {
+			echo wp_json_encode( ['login'=>false, 'message'=> $response->error_description] );
 		}
-		
-		$v_client_id = isset( $verified['aud'] ) ? $verified['aud'] : '';
-		$v_name      = isset( $verified['name'] ) ? $verified['name'] : '';
-		$v_email     = isset( $verified['email'] ) ? $verified['email'] : '';
-		
-
-		if ( ( $client_id !== $v_client_id ) || ( $email !== $v_email ) || ( $name !== $v_name ) ) {
-			echo wp_json_encode( ['loggedin'=>false, 'message'=> esc_html__( 'User not verified by Google', 'theplus' )] );
-			exit;
+		else{
+			tp_login_social_app( $response->name, $response->email , 'google' );
 		}
-
-		tp_login_social_app( $v_name, $v_email, 'google' );
-		
-	} else {
-		echo wp_json_encode( $response );
-		die;
+		exit;
 	}
 }
+add_action( 'wp_ajax_nopriv_theplus_google_ajax_register', 'theplus_google_ajax_register' );
+add_action( 'wp_ajax_theplus_google_ajax_register', 'theplus_google_ajax_register' );
 /*google login end*/
 
 /*Forgot Password*/
@@ -4324,11 +4338,17 @@ function plus_filter_woocommerce_sale_flash( $output_html, $post, $product ) {
 		}
 		$output_html = '<span class="badge onsale perc">&darr; '.$maximumper.'%</span>';
 	} else if ($product->get_type() == 'simple'){
-		$percentage = round( ( ( $product->get_regular_price() - $product->get_sale_price() ) / $product->get_regular_price() ) * 100 );
-		$output_html = '<span class="badge onsale perc">&darr; '.$percentage.'%</span>';
+		if( !empty($product->get_sale_price() )){
+			$salePrice = $product->get_sale_price();
+			$percentage = round( ( ( $product->get_regular_price() - $salePrice ) / $product->get_regular_price() ) * 100 );
+			$output_html = '<span class="badge onsale perc">&darr; '.$percentage.'%</span>';
+		}
 	} else if ($product->get_type() == 'external'){
-		$percentage = round( ( ( $product->get_regular_price() - $product->get_sale_price() ) / $product->get_regular_price() ) * 100 );
-		$output_html = '<span class="badge onsale perc">&darr; '.$percentage.'%</span>';
+		if( !empty($product->get_sale_price() )){
+			$salePrice = $product->get_sale_price();
+			$percentage = round( ( ( $product->get_regular_price() - $salePrice ) / $product->get_regular_price() ) * 100 );
+			$output_html = '<span class="badge onsale perc">&darr; '.$percentage.'%</span>';
+		}
 	}else {
 		$output_html = '<span class="badge onsale">'.esc_html__( 'Sale','theplus' ).'</span>';
 	}
@@ -4339,19 +4359,18 @@ add_filter( 'woocommerce_sale_flash', 'plus_filter_woocommerce_sale_flash', 11, 
 
 }
 
-
 add_action('elementor/widgets/register', function($widgets_manager){
-  $elementor_widget_blacklist = [
-  'plus-elementor-widget',
-];
-
-  foreach($elementor_widget_blacklist as $widget_name){
-    $widgets_manager->unregister($widget_name);
-  }
+	$elementor_widget_blacklist = [
+		'plus-elementor-widget',
+	];
+	
+	foreach($elementor_widget_blacklist as $widget_name){
+		$widgets_manager->unregister($widget_name);
+	}
 }, 15);
 
 function registered_widgets(){
-	
+
 	// widgets class map
 	return [
 		
@@ -5238,6 +5257,7 @@ function registered_widgets(){
 				],
 			],
 		],
+
 		'tp-search-filter' => [
 			'dependency' => [
 				'css' => [

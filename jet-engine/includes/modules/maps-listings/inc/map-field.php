@@ -114,8 +114,8 @@ class Map_Field {
 
 		$result = '<p><b>' . esc_html__( 'Lat and Lng are separately stored in the following fields', 'jet-engine' ) . ':</b></p>';
 		$result .= '<ul>';
-		$result .= sprintf( '<li>%1$s: <code class="je-field-name">%2$s</code></li>', esc_html__( 'Lat', 'jet-engine' ), $prefix . '_lat' );
-		$result .= sprintf( '<li>%1$s: <code class="je-field-name">%2$s</code></li>', esc_html__( 'Lng', 'jet-engine' ), $prefix . '_lng' );
+		$result .= sprintf( '<li>%1$s: <span class="je-field-name">%2$s</span></li>', esc_html__( 'Lat', 'jet-engine' ), $prefix . '_lat' );
+		$result .= sprintf( '<li>%1$s: <span class="je-field-name">%2$s</span></li>', esc_html__( 'Lng', 'jet-engine' ), $prefix . '_lng' );
 		$result .= '</ul>';
 
 		return $result;
@@ -174,7 +174,7 @@ class Map_Field {
 			<div class="jet-engine-map-field__description">
 				<p>
 					<?php _e( 'Lat and Lng are separately stored in the following fields', 'jet-engine' ); ?>:&nbsp;
-					<code class="je-field-name">{{{data.fieldPrefix}}}_lat</code>, <code class="je-field-name">{{{data.fieldPrefix}}}_lng</code>
+					<span class="je-field-name">{{{data.fieldPrefix}}}_lat</span>, <span class="je-field-name">{{{data.fieldPrefix}}}_lng</span>
 				</p>
 			</div>
 			<# } #>

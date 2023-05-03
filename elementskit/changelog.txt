@@ -1,5 +1,15 @@
 == Changelog ==
 
+Version: 3.2.1 (05 Apr 2023)
+Fixed: Swiper v8.45 compatibility
+Fixed: Advanced Tab Widget Enable URL Hash Issue
+Fixed: Pause on Hover option doesn't work on the Video Gallery widget Carousel
+Fixed: Stylish List description escaping issue
+Fixed: Social profile URL on the popup of the Team Carousel Slider widget issue.
+Fixed: Yelp Review feed issue
+Improved: Advanced Slider Widget Js Optimize and New Controls Added like Thumbnail Scale, Loop Option, Speed.
+Improved: Fancy Animated Text Support with an Advanced Slider widget
+
 Version: 3.2.0 (28 Feb 2023)
 Added: Content Ticker widget
 Added: Coupon Code Widget

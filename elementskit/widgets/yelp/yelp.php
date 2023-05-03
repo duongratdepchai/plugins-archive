@@ -86,12 +86,12 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 
 	protected function get_slideshow_column( $settings, $slides_to_show, $slides_to_scroll ){
 		$responsive = [];
-		$slides_to_show_tablet = esc_attr($settings[$slides_to_show . "_tablet"]);
-		$slides_to_show_mobile = esc_attr($settings[$slides_to_show . "_mobile"]);
+		$slides_to_show_tablet = !empty($settings[$slides_to_show . "_tablet"])? esc_attr($settings[$slides_to_show . "_tablet"]) : '2';
+		$slides_to_show_mobile = !empty($settings[$slides_to_show . "_mobile"]) ? esc_attr($settings[$slides_to_show . "_mobile"]) : '1';
 		$slides_to_show_desktop = esc_attr($settings[$slides_to_show]);
 
-		$slides_to_scroll_tablet = esc_attr($settings[$slides_to_scroll . "_tablet"]);
-		$slides_to_scroll_mobile = esc_attr($settings[$slides_to_scroll . "_mobile"]);
+		$slides_to_scroll_tablet = !empty($settings[$slides_to_scroll . "_tablet"]) ? esc_attr($settings[$slides_to_scroll . "_tablet"]) : '1';
+		$slides_to_scroll_mobile = !empty($settings[$slides_to_scroll . "_mobile"]) ? esc_attr($settings[$slides_to_scroll . "_mobile"]) : '1';
 		$slides_to_scroll_desktop = esc_attr($settings[$slides_to_scroll]);
 
 		if($slides_to_show_mobile || $slides_to_scroll_mobile) {
@@ -175,15 +175,19 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 		$this->end_controls_section();
 	}
 
-	private function control_border($key, $selectors, $config = [ 'default' => '8', 'unit' => 'px' ]){
+	private function control_border($key, $selectors, $config = [ 'default' => '8', 'unit' => 'px' ], $condition = NULL){
 		
 		$selectors = array_map( function($selector) { return "{{WRAPPER}} " . $selector ;}, $selectors );
+
+		// Check if $condition is null, assign an empty string to $conditions if it is, or assign the value of $condition if it's not
+		$conditions = is_null($condition) ? '' : $condition;
 
 		// Border heading
 		$this->add_control( $key, [
 			'label'     => esc_html__('Border', 'elementskit'),
 			'type'      => Controls_Manager::HEADING,
 			'separator' => 'before',
+			'condition' => $conditions,
 		]);
 
 		// Review card border
@@ -191,7 +195,8 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 			Group_Control_Border::get_type(), [
 				'name'     => $key . '_type',
 				'label'    => esc_html__('Border Type', 'elementskit'),
-				'selector' => implode(',', $selectors)
+				'selector' => implode(',', $selectors),
+				'condition' => $conditions,
 			]
 		);
 
@@ -205,6 +210,7 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 			'type'			=> Controls_Manager::DIMENSIONS,
 			'size_units'	=> ['px', '%', 'em'],
 			'selectors'		=> $new_selectors,
+			'condition' => $conditions,
 			'default'    => [
 				'top'      => $config['default'], 'right'	=> $config['default'],
 				'bottom'   => $config['default'], 'left'	=> $config['default'],
@@ -562,6 +568,7 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 				'max'     => 5,
 				'step'    => 1,
 				'default' => 3,
+				'devices' => [ 'desktop', 'tablet', 'mobile' ],
 			]
 		);
 
@@ -575,6 +582,7 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 				'max'     => 20,
 				'step'    => 1,
 				'default' => 1,
+				'devices' => [ 'desktop', 'tablet', 'mobile' ],
 			]
 		);
 
@@ -1296,8 +1304,16 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 		// ekit_yelp_review_review_card_border
         $this->control_border(
 			'ekit_yelp_review_review_card_border', 
-			[ '.ekit-review-card.ekit-review-card-yelp' ], 
-			[ 'default' => '0', 'unit' => 'px' ] 
+			[ '.ekit-review-card.ekit-review-card-yelp' ],
+			[ 'default' => '0', 'unit' => 'px' ], 
+			[ 'ekit_review_card_type' => 'default' ],
+		);
+
+		$this->control_border(
+			'ekit_yelp_review_bubble_card_border', 
+			[ '.ekit-review-card.ekit-review-card-bubble::before' ],
+			[ 'default' => '0', 'unit' => 'px' ] ,
+			[ 'ekit_review_card_type' => 'bubble' ],
 		);
 
     }
@@ -1452,6 +1468,46 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 				'unit'     => '%', 'isLinked' => true,
 			]
 		]);
+
+		 // Thumbnail Badge
+		 $this->add_control( 'ekit_yelp_review_thumbnail_bag_heading', [
+			'label'     => esc_html__('Thumbnail Badge', 'elementskit'),
+			'type'      => Controls_Manager::HEADING,
+			'separator' => 'before',
+			'condition' => [
+				'ekit_review_card_thumbnail_badge' => 'yes'
+			]
+        ]);
+
+		$this->add_control(
+			'ekit_yelp_review_header_card_thumbnail_badge_color',
+			[
+				'label' => esc_html__( 'Color', 'elementskit' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FFFFFF',
+				'selectors' => [
+					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--thumbnail-badge .badge i' => 'color: {{VALUE}}',
+				],
+				'condition' => [
+					'ekit_review_card_thumbnail_badge' => 'yes'
+				]
+			]
+		);
+
+		$this->add_control(
+			'ekit_yelp_review_header_card_thumbnail_bg_color',
+			[
+				'label' => esc_html__( 'Background Color', 'elementskit' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#AF0606',
+				'selectors' => [
+					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--thumbnail-badge .badge' => 'background-color: {{VALUE}}',
+				],
+				'condition' => [
+					'ekit_review_card_thumbnail_badge' => 'yes'
+				]
+			]
+		);
     }
 
     private function controls_section_reviewer_name(){
@@ -1515,6 +1571,33 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 			'tablet_default'	=> [ 'top' => '12', 'right' => '12', 'bottom' => '12', 'left' => '0', 'unit' => 'px', 'isLinked' => false, ],
 			'mobile_default'	=> [ 'top' => '8', 'right' => '8', 'bottom' => '8', 'left' => '0', 'unit' => 'px', 'isLinked' => false, ]
 		]);
+
+		 // Thumbnail Badge
+		$this->add_control( 'controls_section_reviewer_card_more_heading', [
+			'label'     => esc_html__('More Option', 'elementskit'),
+			'type'      => Controls_Manager::HEADING,
+			'separator' => 'before',
+        ]);
+
+		$this->add_control(
+			'controls_section_reviewer_card_more_color',
+			[
+				'label' => esc_html__( 'Text Color', 'elementskit' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#AF0606',
+				'selectors' => [
+					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--comment .more' => 'color: {{VALUE}}',
+				]
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'controls_section_reviewer_card_more_typography',
+				'selector' => '{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--comment .more',
+			]
+		);
     }
 
 	private function controls_section_overview_page_name(){
@@ -1650,6 +1733,7 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 				'mobile_default' => [ 'unit' => 'px', 'size' => 32 ],
 				'selectors' => [
 					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--posted-on i' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--posted-on svg' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 			]
         );
@@ -1661,6 +1745,8 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--posted-on i' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--posted-on svg' => 'fill: {{VALUE}};',
+					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--posted-on svg path' => 'fill: {{VALUE}};',
 				],
 			]
         );
@@ -1680,6 +1766,7 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 				'mobile_default' => [ 'unit' => 'px', 'size' => 12 ],
 				'selectors' => [
 					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--posted-on i' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .ekit-review-card-yelp .ekit-review-card--posted-on svg' => 'margin-right: {{SIZE}}{{UNIT}};',
 				],
 			]
         );
@@ -1708,6 +1795,56 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 			'ekit_yelp_review_card_bottom_posted_on_yelp',
 			'.ekit-review-card-yelp .ekit-review-card--posted-on h5', 
 			['margin', 'shadow']
+		);
+	}
+
+	private function controls_section_arrow(){
+
+		$this->add_control(
+			'ekit_yelp_review_arrow_icon_size',
+			[
+				'label' => esc_html__( 'Icon Size', 'elementskit' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+						'step' => 5,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .ekit-review-slider-wrapper .slick-arrow i' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'ekit_yelp_review_arrow_color',
+			[
+				'label' => esc_html__( 'Color', 'elementskit' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FFFFFF',
+				'selectors' => [
+					'{{WRAPPER}} .ekit-review-slider-wrapper .slick-arrow i' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'ekit_yelp_review_arrow_bg_color',
+			[
+				'label' => esc_html__( 'Background Color', 'elementskit' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#AF0606',
+				'selectors' => [
+					'{{WRAPPER}} .ekit-review-slider-wrapper .slick-arrow' => 'background-color: {{VALUE}}',
+				],
+			]
 		);
 	}
 
@@ -2151,6 +2288,19 @@ class ElementsKit_Widget_Yelp extends Widget_Base
 				]
 			], 
 			esc_html__('controls_section_bottom_posted_on', 'elementskit')
+		);
+		
+		// Arrow
+		$this->controls_section(
+			[ 
+				'label' => esc_html__('Arrow', 'elementskit'),       
+				'key' => 'ekit_yelp_review_arrow_section', 
+				'tab' => Controls_Manager::TAB_STYLE, 
+				'condition' => [ 
+					'ekit_review_slideshow_show_arrow' => 'yes', 
+				]
+			], 
+			esc_html__('controls_section_arrow', 'elementskit')
 		);
 
 		// Bottom posted on logo

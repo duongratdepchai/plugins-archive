@@ -87,6 +87,9 @@ class Manager {
 			return [];
 		}
 
+		// Reset current object
+		jet_engine()->listings->data->reset_current_object();
+
 		// Setup query args
 		$jet_engine_query->setup_query();
 

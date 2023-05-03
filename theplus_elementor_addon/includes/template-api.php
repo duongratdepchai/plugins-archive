@@ -170,8 +170,22 @@ if( is_admin() &&  current_user_can("manage_options") ){
 
 if(!function_exists('theplus_get_api_check')){
 	function theplus_get_api_check($check_license ='') {
+		$home_url=get_home_url();
 		
-		return 'valid';
+		$purchase_option=get_option( 'theplus_purchase_code' );
+		if(isset($purchase_option['tp_api_key']) && !empty($purchase_option['tp_api_key'])){
+			$theplus_type=THEPLUS_TYPE;
+			if(!empty($theplus_type) && $theplus_type=='code'){
+				$home_url=plus_simple_crypt( $home_url, 'ey' );
+				return theplus_api_check_license_code($purchase_option['tp_api_key'],$home_url,$check_license);
+			}else if(!empty($theplus_type) && $theplus_type=='store'){
+				return theplus_api_check_license($purchase_option['tp_api_key'],home_url(),$check_license);
+			}
+		}else{
+			$verify = '0' ;
+			theplus_check_api_options('theplus_verified',$verify);
+			return false;
+		}
 	}
 }
 
@@ -194,7 +208,6 @@ if(!function_exists('theplus_message_display')){
 					$check = $values['license'];
 				}
 			}
-			$check = 'valid';
 			
 			if($check=='expired'){
 				echo '<div style="width:auto;position:relative;word-wrap:break-word;background-color:#fff;border-radius:0 0 .25rem .25rem;border:none;margin:0;padding-left:30px;padding-bottom:30px;"><div style="padding:8px 0 8px 15px;border-left:3px solid #f2dede;margin-left:15px;color:#313131;font-size:14px;line-height:26px;display:flex;align-items:center;"><strong>'.esc_html__('Licence key recently Expired 😵','theplus').'</strong> '.esc_html__('Please visit account to renew that.','theplus').'</div></div>';

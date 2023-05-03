@@ -250,21 +250,7 @@ class Dynamic_Link extends Base {
 				'tab'     => 'content',
 				'label'   => esc_html__( 'Add "rel" attr', 'jet-engine' ),
 				'type'    => 'select',
-				'options' => [
-					'alternate'  => esc_html__( 'Alternate', 'jet-engine' ),
-					'author'     => esc_html__( 'Author', 'jet-engine' ),
-					'bookmark'   => esc_html__( 'Bookmark', 'jet-engine' ),
-					'external'   => esc_html__( 'External', 'jet-engine' ),
-					'help'       => esc_html__( 'Help', 'jet-engine' ),
-					'license'    => esc_html__( 'License', 'jet-engine' ),
-					'next'       => esc_html__( 'Next', 'jet-engine' ),
-					'nofollow'   => esc_html__( 'Nofollow', 'jet-engine' ),
-					'noreferrer' => esc_html__( 'Noreferrer', 'jet-engine' ),
-					'noopener'   => esc_html__( 'Noopener', 'jet-engine' ),
-					'prev'       => esc_html__( 'Prev', 'jet-engine' ),
-					'search'     => esc_html__( 'Search', 'jet-engine' ),
-					'tag'        => esc_html__( 'Tag', 'jet-engine' ),
-				],
+				'options' => \Jet_Engine_Tools::get_rel_attr_options(),
 			]
 		);
 

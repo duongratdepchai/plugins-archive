@@ -103,7 +103,7 @@ jQuery( window ).on( 'elementor:init', function() {
 		},
 
 	} );
-
+    
 	elementor.addControlView( 'plus-query', PlusQuery );
 } );
 

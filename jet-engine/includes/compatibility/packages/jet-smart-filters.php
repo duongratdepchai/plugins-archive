@@ -101,6 +101,8 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 					$page = absint( $_REQUEST['jet_paged'] );
 				} elseif ( wp_doing_ajax() && isset( $_REQUEST['paged'] ) ) {
 					$page = absint( $_REQUEST['paged'] );
+				} elseif ( defined( 'JET_SMART_FILTERS_DOING_REQUEST' ) && isset( $_REQUEST['paged'] ) ) {
+					$page = absint( $_REQUEST['paged'] );
 				} else {
 					$page = $widget->query_vars['page'];
 				}
@@ -278,11 +280,14 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 
 			if ( 1 < $page ) {
 
+				$per_page = $settings['posts_num'];
+
 				if ( $render->listing_query_id ) {
-					$query    = Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $render->listing_query_id );
-					$per_page = $query->get_items_per_page();
-				} else {
-					$per_page = $settings['posts_num'];
+					$query = Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $render->listing_query_id );
+
+					if ( $query ) {
+						$per_page = $query->get_items_per_page();
+					}
 				}
 
 				$start_from = ( $page - 1 ) * absint( $per_page ) + 1;

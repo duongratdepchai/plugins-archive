@@ -159,7 +159,7 @@ class WP_Dashboard_Manager {
 				}
 			}
 
-			if ( function_exists( 'jet_engine' ) ) {
+			if ( function_exists( 'jet_engine' ) && method_exists(jet_engine(), 'get_instances' ) ) {
 
 				$is_jet_engine_post_type = $this->is_jet_engine_post_type( $item_data );
 
@@ -287,7 +287,7 @@ class WP_Dashboard_Manager {
 			'jet-engine',
 			'jet-abaf-bookings',
 			'jet-style-manager',
-			'jet-appointments-booking',
+			'jet-apb-appointments',
 			'jet-theme-core',
 			'jet-form-builder',
 		];

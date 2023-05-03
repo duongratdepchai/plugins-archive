@@ -146,6 +146,31 @@ class ThePlus_Pricing_List extends Widget_Base {
 				],
 			]
 		);
+		$this->add_responsive_control(
+			'imglotti_right_space',
+			[
+				'label' => esc_html__( 'Right Space', 'theplus' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 500,
+						'step' => 1,
+					],
+				],
+				'default'=>[
+					'unit'=>'px',
+					'size'=> '',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .pt-plus-food-menu.food-menu-style-3 .food-flex-line .food-flex-img,{{WRAPPER}} .pt-plus-food-menu.food-menu-style-3 .food-flex-line .food-flex-imgs' => 'margin-right: {{SIZE}}{{UNIT}};',
+				],
+				'condition' => [
+					'menu_style' => 'style_3',
+				],
+			]
+		);
 		$this->add_group_control(
 			Group_Control_Image_Size::get_type(),
 			[

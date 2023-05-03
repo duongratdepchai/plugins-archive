@@ -110,6 +110,7 @@ Class Plus_Generator
 	* @since 2.0.2
 	*/
 	public function plus_widgets_options($options='',$widget_name=''){
+		
 		if(!empty($options["animation_effects"]) && $options["animation_effects"]!='no-animation'){
 			$this->transient_widgets[] = 'plus-velocity';
 		}
@@ -588,7 +589,7 @@ Class Plus_Generator
 			}
 		}
 
-		if(!empty($widget_name) && $widget_name=='tp-dynamic-categories'){			
+		if(!empty($widget_name) && $widget_name=='tp-dynamic-categories'){
 			if(!empty($options["layout"]) && $options["layout"]=='grid' || $options["layout"]=='masonry' ){
 				$this->transient_widgets[] = 'plus-listing-masonry';
 			}
@@ -623,7 +624,7 @@ Class Plus_Generator
 				}
 			}
 			
-		}		
+		}
 	} 
    
 	/**
@@ -769,30 +770,51 @@ Class Plus_Generator
 		}
 	}
 
-	protected function enqueue_frontend_pre_loader_load()
-	{
-		//Load pre loader
+	/**
+	 * Extra Option pre-loader js load
+	 * 
+	 * @since 5.2.2
+	 */
+	protected function enqueue_frontend_pre_loader_load() {
 		$options = get_option( 'theplus_api_connection_data' );
-		$load_pre_loader_id=array();
-		if(isset($options["load_pre_loader_func_ids"]) && !empty($options["load_pre_loader_func_ids"])){
-			$load_pre_loader_id = explode(",", $options["load_pre_loader_func_ids"]);
-		}
-		
 		$pre_load_paged_id = get_queried_object_id();
-		if(!isset($options["load_pre_loader_func"]) || (isset($options["load_pre_loader_func"]) && !empty($options["load_pre_loader_func"]) && $options["load_pre_loader_func"]=='enable') || ( isset($options["load_pre_loader_func"]) && $options["load_pre_loader_func"]=='disable' && in_array($pre_load_paged_id,$load_pre_loader_id) )){				
-			wp_enqueue_style('plus-pre-loader-css',$this->pathurl_security(THEPLUS_URL .'/assets/css/main/pre-loader/plus-pre-loader.min.css'),false,THEPLUS_VERSION);
-			wp_enqueue_script('plus-pre-loader-js2',$this->pathurl_security(THEPLUS_URL . '/assets/js/main/pre-loader/plus-pre-loader-extra-transition.min.js'),('jquery'),THEPLUS_VERSION);
-			wp_enqueue_script('plus-pre-loader-js',$this->pathurl_security(THEPLUS_URL . '/assets/js/main/pre-loader/plus-pre-loader.min.js'),('jquery'),THEPLUS_VERSION);
-			if(!empty($options["load_pre_loader_lottie_js"]) && $options["load_pre_loader_lottie_js"]=='on'){				
-				wp_enqueue_script('plus-pre-loader-lotties',$this->pathurl_security(THEPLUS_URL . '/assets/js/extra/lottie-player.js'),
-					false,THEPLUS_VERSION);
+		$load_pre_loader_id = array();
+
+		$PreLoader_Pageids = !empty($options["load_pre_loader_func_ids"]) ? $options["load_pre_loader_func_ids"] : '';
+
+		if( isset($PreLoader_Pageids) ){
+			$load_pre_loader_id = explode(",", $PreLoader_Pageids);
+		}
+
+		$Ex_PreLoader = !empty($options["load_pre_loader_func"]) ? $options["load_pre_loader_func"] : '';
+		if( (!empty($Ex_PreLoader) && $Ex_PreLoader == "enable") || ($Ex_PreLoader == "disable" && in_array($pre_load_paged_id, $load_pre_loader_id) ) ){
+			wp_enqueue_style('plus-pre-loader-css',
+				$this->pathurl_security( THEPLUS_URL .'/assets/css/main/pre-loader/plus-pre-loader.min.css' ),
+				false, THEPLUS_VERSION
+			);
+
+			wp_enqueue_script('plus-pre-loader-js2',
+				$this->pathurl_security( THEPLUS_URL . '/assets/js/main/pre-loader/plus-pre-loader-extra-transition.min.js' ), 
+				array('jquery'), THEPLUS_VERSION
+			);
+
+			wp_enqueue_script('plus-pre-loader-js',
+				$this->pathurl_security( THEPLUS_URL . '/assets/js/main/pre-loader/plus-pre-loader.min.js' ),
+				array('jquery'), THEPLUS_VERSION
+			);
+
+			$Ex_PreLoader_lottieJS = !empty($options["load_pre_loader_lottie_js"]) ? $options["load_pre_loader_lottie_js"] : '';
+			if( !empty($Ex_PreLoader_lottieJS) && $Ex_PreLoader_lottieJS == 'on' ){
+				wp_enqueue_script('plus-pre-loader-lotties',
+					$this->pathurl_security( THEPLUS_URL . '/assets/js/extra/lottie-player.js' ),
+					false, THEPLUS_VERSION
+				);
 			}
 		}
 	}
 	
 	// rules how css will be enqueued on front-end
-	protected function enqueue_frontend_load()
-	{
+	protected function enqueue_frontend_load(){
 		
 		wp_register_script( 'lottie' , $this->pathurl_security(THEPLUS_URL . DIRECTORY_SEPARATOR .  'assets/js/extra/lottie.min.js'), array(), '5.5.2' ); //Bodymovin Animation
 		wp_register_script( 'theplus-bodymovin' , $this->pathurl_security(THEPLUS_URL . DIRECTORY_SEPARATOR .  'assets/js/main/bodymovin/plus-bodymovin.js'), array( 'jquery', 'lottie' ), THEPLUS_VERSION, true );

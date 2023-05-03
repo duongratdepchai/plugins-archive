@@ -9,10 +9,13 @@
 
 			if(!empty($ekit_team_member['icon_'.$i]['value'])) : ?>
 				<li>
-					<a <?php $this->print_render_attribute_string('social_link_'.$i.$index); ?>>
+					<?php 
+					$link = $this->get_render_attribute_string('social_link_'.$i.$index);
+					$link = preg_replace('/href="(.+?)\s\1"/', 'href="$1"', $link);?>
+					<a <?php echo $link; ?>>
 						<?php \Elementor\Icons_Manager::render_icon( $ekit_team_member['icon_'.$i], [ 'aria-hidden' => 'true' ] ); ?>
 					</a>
-				</li>			
+				</li>
 			<?php endif;
 		endfor; ?>
 	</ul>

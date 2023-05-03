@@ -152,6 +152,17 @@
 				window.elementorFrontend.hooks.addAction( 'frontend/element_ready/' + widget, callback );
 			});
 
+			// Re-init sliders in nested tabs
+			window.elementorFrontend.elements.$window.on(
+				'elementor/nested-tabs/activate',
+				( event, content ) => {
+					const $content = $( content );
+
+					JetEngine.maybeReinitSlider( event, $content );
+					JetEngine.widgetDynamicField( $content );
+				}
+			);
+
 			window.elementorFrontend.hooks.addFilter(
 				'jet-popup/widget-extensions/popup-data',
 				JetEngine.prepareJetPopup
@@ -1622,9 +1633,9 @@
 								breakpointSettings.settings.slidesToScroll = breakpointSettings.settings.slidesToShow;
 							}
 
-							if ( 'mobile' === breakpointName ) {
-								breakpointSettings.settings.slidesToScroll = 1;
-							}
+							// if ( 'mobile' === breakpointName ) {
+							// 	breakpointSettings.settings.slidesToScroll = 1;
+							// }
 
 							responsive.push( breakpointSettings );
 						}

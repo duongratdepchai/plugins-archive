@@ -1107,6 +1107,7 @@ class ElementsKit_Widget_Team_Slider extends Widget_Base {
                 'size_units' => [ 'px', 'em'],
                 'selectors' => [
                     '{{WRAPPER}} .ekit-team-slider .swiper-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .ekit-team-slider .swiper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -1119,6 +1120,7 @@ class ElementsKit_Widget_Team_Slider extends Widget_Base {
                 'size_units' => [ 'px', 'em'],
                 'selectors' => [
                     '{{WRAPPER}} .ekit-wid-con .ekit-team-slider .swiper-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .ekit-wid-con .ekit-team-slider .swiper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -4063,7 +4065,7 @@ class ElementsKit_Widget_Team_Slider extends Widget_Base {
 		); ?>
 
         <div class="ekit-team-slider">
-            <div class="swiper-container" data-config ="<?php echo esc_attr(json_encode($config)); ?>">
+            <div class="<?php echo method_exists('\ElementsKit_Lite\Utils', 'swiper_class') ? esc_attr(\ElementsKit_Lite\Utils::swiper_class()) : 'swiper'; ?>" data-config ="<?php echo esc_attr(json_encode($config)); ?>">
                 <div class="swiper-wrapper">
 
                     <?php if ( in_array($ekit_team_style, ['default', 'centered_style', 'centered_style_details', 'long_height_details', 'long_height_details_hover']) ) :

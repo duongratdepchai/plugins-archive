@@ -144,6 +144,7 @@ Class Plus_Library
 			'tp_woo_single_tabs' => 'tp-woo-single-tabs',
 			'tp_woo_thank_you' => 'tp-woo-thank-you',
 			'tp_wp_login_register' => 'tp-wp-login-register',
+			'tp_custom_field' => 'tp-custom-field',
         ];
 		$merge = [
 			'plus-backend-editor'

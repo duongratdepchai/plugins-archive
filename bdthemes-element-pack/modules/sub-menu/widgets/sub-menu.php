@@ -128,6 +128,37 @@ class Sub_Menu extends Module_Base {
         );
 
         $this->add_control(
+            'submenu_item_alignment',
+            [
+                'label'     => __('Item Alignment', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::CHOOSE,
+                'options'   => [
+                    'left'   => [
+                        'title' => __('Left', 'bdthemes-element-pack'),
+                        'icon'  => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => __('Center', 'bdthemes-element-pack'),
+                        'icon'  => 'eicon-h-align-center',
+                    ],
+                    'right'  => [
+                        'title' => __('Right', 'bdthemes-element-pack'),
+                        'icon'  => 'eicon-h-align-right',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .ep-sub-menu .ep-sub-menu-wrap .ep-advance-menu .ep-item' => 'text-align:{{VALUE}}',
+                ],
+                'condition' => [
+                    'submenu_style' => ['3']
+                ],
+                'default'   => 'left',
+                'toggle'    => false,
+
+            ]
+        );
+
+        $this->add_control(
             'show_submenu_heading',
             [
                 'label'        => __('Show Heading', 'bdthemes-element-pack'),
@@ -180,6 +211,7 @@ class Sub_Menu extends Module_Base {
 
             ]
         );
+
         $this->add_control(
             'show_sub_menu_sub_title',
             [

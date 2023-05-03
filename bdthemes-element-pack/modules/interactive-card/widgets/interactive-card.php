@@ -1367,7 +1367,7 @@ class Interactive_Card extends Module_Base {
                 'label'     => __('Icon Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .bdt-interactive-card-readmore span.eicon-long-arrow-right' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .bdt-interactive-card-readmore span.ep-icon-long-arrow-right' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -1417,7 +1417,7 @@ class Interactive_Card extends Module_Base {
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
-                    '{{WRAPPER}} .bdt-interactive-card-readmore:before, {{WRAPPER}} .bdt-interactive-card-readmore span.eicon-long-arrow-right' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .bdt-interactive-card-readmore:before, {{WRAPPER}} .bdt-interactive-card-readmore span.ep-icon-long-arrow-right' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -1441,7 +1441,7 @@ class Interactive_Card extends Module_Base {
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
-                    '{{WRAPPER}} .bdt-interactive-card-readmore span.eicon-long-arrow-right' => 'margin-right: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .bdt-interactive-card-readmore span.ep-icon-long-arrow-right' => 'margin-right: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -1480,7 +1480,7 @@ class Interactive_Card extends Module_Base {
                 'label'     => __('Icon Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .bdt-interactive-card-readmore:hover span.eicon-long-arrow-right' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .bdt-interactive-card-readmore:hover span.ep-icon-long-arrow-right' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -1754,7 +1754,7 @@ class Interactive_Card extends Module_Base {
         <?php if ( $settings['readmore'] ) : ?>
             <div class="bdt-interactive-card-button">
                 <a <?php echo $this->get_render_attribute_string('readmore'); ?>>
-                    <span class="eicon-long-arrow-right"></span>
+                    <span class="ep-icon-long-arrow-right"></span>
                     <span class="bdt-position-relative">
 						<?php echo esc_html($settings['readmore_text']); ?>
 					</span>

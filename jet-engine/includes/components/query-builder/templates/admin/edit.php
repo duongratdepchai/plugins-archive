@@ -25,6 +25,13 @@
 				v-model="generalSettings.name"
 				@on-focus="handleFocus( 'name' )"
 			></cx-vui-input>
+			<cx-vui-textarea
+				:label="'<?php _e( 'Description', 'jet-engine' ); ?>'"
+				:description="'<?php _e( 'Description of Query', 'jet-engine' ); ?>'"
+				:wrapper-css="[ 'equalwidth' ]"
+				:size="'fullwidth'"
+				v-model="generalSettings.description"
+			></cx-vui-textarea>
 			<cx-vui-select
 				:label="'<?php _e( 'Query Type', 'jet-engine' ); ?>'"
 				:description="'<?php _e( 'Select type of queried data', 'jet-engine' ); ?>'"

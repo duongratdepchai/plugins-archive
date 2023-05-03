@@ -12,9 +12,9 @@
             searcharea = main.find('.tp-search-area'),
             resultList = '.tp-search-slider tp-row',
             searchheader = main.find('.tp-search-header'),
-            Rsetting = (container[0].dataset) ? JSON.parse(container[0].dataset.resultSetting) : [],
-            pagesetting = (container[0].dataset) ? JSON.parse(container[0].dataset.paginationData) : [],
-            Defsetting = (container[0].dataset) ? JSON.parse(container[0].dataset.defaultData) : [],
+            Rsetting = (container[0].dataset && container[0].dataset.resultSetting) ? JSON.parse(container[0].dataset.resultSetting) : [],
+            pagesetting = (container[0].dataset && container[0].dataset.paginationData) ? JSON.parse(container[0].dataset.paginationData) : [],
+            Defsetting = (container[0].dataset && container[0].dataset.defaultData) ? JSON.parse(container[0].dataset.defaultData) : [],
             effects = (Rsetting && Rsetting.animation_effects) ? Rsetting.animation_effects : 'no-animation';
             resultsinnerList.css('transform', 'translateX(0)');
         

@@ -6003,7 +6003,7 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 							/** features */
 						}else{
 							$dynamic_cat = $GetId;
-							$CategoryType = true;
+							$CategoryType = 'true';
 						}
 					}
 

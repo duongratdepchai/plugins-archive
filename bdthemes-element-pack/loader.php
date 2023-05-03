@@ -537,9 +537,8 @@ class Element_Pack_Loader {
 		);
 
 		$localize_data = [
-			'pro_installed'  => element_pack_pro_activated(),
-			'pro_installed'  => false,
-			'promotional_widgets'   => [],
+			'pro_installed'       => element_pack_pro_activated(),
+			'promotional_widgets' => [],
 		];
 
 		if (!element_pack_pro_activated()) {
@@ -782,6 +781,29 @@ class Element_Pack_Loader {
 
 		// load WordPress dashboard scripts
 		add_action('admin_init', [$this, 'enqueue_admin_scripts']);
+
+		if (!element_pack_pro_activated()) {
+			$pro_widget_map = new Pro_Widget_Map();
+			$pro_widgets = $pro_widget_map->get_pro_widget_map();
+
+			global $elementor_widget_blacklist;
+
+			$elementor_widget_blacklist = $pro_widgets;
+
+			add_filter(
+				'elementor/editor/localize_settings',
+				function ($settings) {
+					global $elementor_widget_blacklist;
+
+					foreach ($elementor_widget_blacklist as $widgets) {
+						$widget_name = 'bdt-' . $widgets['name'];
+						$settings['initial_document']['widgets'][$widget_name]['show_in_panel'] = false;
+					}
+					return $settings;
+				},
+				99
+			);
+		}
 	}
 
 	/**

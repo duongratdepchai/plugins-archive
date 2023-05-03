@@ -1386,6 +1386,17 @@ class ThePlus_Social_Feed extends Widget_Base {
 			]
 		);
 		$this->add_control(
+			'TextLess',
+			[
+				'label' => esc_html__( 'Less Text', 'theplus' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => esc_html__( 'Show Less', 'theplus' ),
+				'condition' => [
+					'TextLimit' => 'yes',
+				],
+			]
+		);
+		$this->add_control(
 			'TextCount',
 			[
 				'label' => esc_html__( 'Limit Count', 'theplus' ),
@@ -1504,17 +1515,17 @@ class ThePlus_Social_Feed extends Widget_Base {
 				'separator' => 'before',
 			]
 		);
-		$this->add_control(
-			'facebook_transient',
-			[
-				'label' => esc_html__( 'Facebook Transient', 'theplus' ),
-				'type' => Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Enable', 'theplus' ),
-				'label_off' => esc_html__( 'Disable', 'theplus' ),
-				'default' => 'yes',
-				'separator' => 'before',
-			]
-		);
+		// $this->add_control(
+		// 	'facebook_transient',
+		// 	[
+		// 		'label' => esc_html__( 'Facebook Transient', 'theplus' ),
+		// 		'type' => Controls_Manager::SWITCHER,
+		// 		'label_on' => esc_html__( 'Enable', 'theplus' ),
+		// 		'label_off' => esc_html__( 'Disable', 'theplus' ),
+		// 		'default' => 'yes',
+		// 		'separator' => 'before',
+		// 	]
+		// );
 		$this->end_controls_section();
 		/* Extra options end*/
 
@@ -6445,7 +6456,8 @@ class ThePlus_Social_Feed extends Widget_Base {
 		$txtLimt = !empty($settings['TextLimit'] == 'yes') ? true : false;
 		$TextCount = !empty($settings['TextCount']) ? $settings['TextCount'] : 100 ;
 		$TextType = !empty($settings['TextType']) ? $settings['TextType'] : 'char' ;
-		$TextMore = !empty($settings['TextMore']) ? $settings['TextMore'] : 'Show More' ;
+		$TextMore = !empty($settings['TextMore']) ? $settings['TextMore'] : 'Show More';
+		$TextLess = !empty($settings['TextLess']) ? $settings['TextLess'] : '';
 		$TextDots = !empty($settings['TextDots'] == 'yes') ? '...' : '';
 		$FancyStyle = !empty($settings['FancyStyle']) ? $settings['FancyStyle'] : 'default' ;
 		$DescripBTM = !empty($settings['DescripBTM'] == 'yes') ? true : false;
@@ -6465,6 +6477,19 @@ class ThePlus_Social_Feed extends Widget_Base {
 		$FcyScrolllOn = !empty($settings['FcySclOn'] == 'yes') ? true : false;
 		$OffsetPost = !empty($FeedId) ? $Postdisplay - count($FeedId) : '';
 
+		$FeedArray = array();
+		$ShomoreArray = array();
+		if( !empty($txtLimt) ){
+			$ShomoreArray = array(
+				'TextMore' => $TextMore,
+				'TextLess' => $TextLess,
+			);
+
+			array_merge($FeedArray , $ShomoreArray);
+		}
+
+		$NormalShomore = json_encode($ShomoreArray, true);
+
 		if( !empty($ScrollOn) || !empty($FcyScrolllOn) ){
 			$ScrollData = array(
 				'className'     => 'tp-normal-scroll',
@@ -6479,7 +6504,7 @@ class ThePlus_Social_Feed extends Widget_Base {
 			);
 			$NormalScroll = json_encode($ScrollData, true);
 		}
-
+		
 		$layout_attr=$data_class='';
 		if($layout!=''){
 			$data_class .= theplus_get_layout_list_class($layout);
@@ -6533,7 +6558,7 @@ class ThePlus_Social_Feed extends Widget_Base {
 		$Fancyboxids = json_encode( array( $WidgetId, $uid_sfeed ) );
 		$data_attr .=' data-id="'.esc_attr($uid_sfeed).'"';
 		$data_attr .=' data-style="'.esc_attr($style).'"';
-        $output .= '<div id="'.esc_attr($uid_sfeed).'" class="'.esc_attr($uid_sfeed).' tp-social-feed '.esc_attr($data_class).'" '.$layout_attr.' '.$data_attr.' data-fancy-option=\''.$fancybox_settings.'\' data-scroll-normal=\''.esc_attr($NormalScroll).'\' data-ids=\''.$Fancyboxids.'\' data-enable-isotope="1" >';
+        $output .= '<div id="'.esc_attr($uid_sfeed).'" class="'.esc_attr($uid_sfeed).' tp-social-feed '.esc_attr($data_class).'" '.$layout_attr.' '.$data_attr.' data-fancy-option=\''.$fancybox_settings.'\' data-scroll-normal=\''.esc_attr($NormalScroll).'\' data-feed-data=\''.esc_attr($NormalShomore).'\' data-ids=\''.$Fancyboxids.'\' data-enable-isotope="1" >';
 
 			$FancyBoxJS = '';
 			if($PopupOption == 'OnFancyBox'){
@@ -6804,17 +6829,15 @@ class ThePlus_Social_Feed extends Widget_Base {
 		if(!empty($url)){
 			$GetFbRL = get_transient("Fb-Url-$FbKey");
 			$GetFbTime = get_transient("Fb-Time-$FbKey");
-			if(empty($settings['facebook_transient']) && $settings['facebook_transient'] !='yes'){
+
+			if( $GetFbRL != $url || $GetFbTime != $FbTime ){
 				$FbAllData = $this->tp_api_call($url);
+
+				set_transient("Fb-Url-$FbKey", $url, $FbTime);
+				set_transient("Data-Fb-$FbKey", $FbAllData, $FbTime);
+				set_transient("Fb-Time-$FbKey", $FbTime, $FbTime);
 			}else{
-				if( $GetFbRL != $url || $GetFbTime != $FbTime ){
-					$FbAllData = $this->tp_api_call($url);
-						set_transient("Fb-Url-$FbKey", $url, $FbTime);
-						set_transient("Data-Fb-$FbKey", $FbAllData, $FbTime);
-						set_transient("Fb-Time-$FbKey", $FbTime, $FbTime);
-				}else{
-					$FbAllData = get_transient("Data-Fb-$FbKey");
-				}
+				$FbAllData = get_transient("Data-Fb-$FbKey");
 			}
 			
 			$status = !empty($FbAllData['HTTP_CODE']) ? $FbAllData['HTTP_CODE'] : '';

@@ -60,7 +60,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'label' => esc_html__('Animation Style', 'elementskit'),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'animated',
-                'frontend_available' => true,
                 'options' => [
                     'animated' => esc_html__('Text', 'elementskit'),
                     'highlighted' => esc_html__('SVG', 'elementskit'),
@@ -102,7 +101,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'type' => Controls_Manager::NUMBER,
                 'default' => 2500,
                 'min'  => 1,
-                'frontend_available' => true,
                 'condition'	=> [
                     'ekit_fancy_animation_type' => ['rotate-1', 'rotate-2', 'rotate-3', 'slide', 'zoom-out', 'scale', 'push', 'color-effect', 'bouncing'],
                     'ekit_fancy_animation_style' => ['animated'],
@@ -117,7 +115,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'type' => Controls_Manager::NUMBER,
                 'default' => 3800,
                 'min'  => 1,
-                'frontend_available' => true,
                 'condition'	=> [
                     'ekit_fancy_animation_type' => ['bar-loading'],
                     'ekit_fancy_animation_style' => ['animated'],
@@ -132,7 +129,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'type' => Controls_Manager::NUMBER,
                 'default' => 50,
                 'min'  => 1,
-                'frontend_available' => true,
                 'condition'	=> [
                     'ekit_fancy_animation_type' => ['rotate-2', 'rotate-3', 'scale', 'bouncing'],
                     'ekit_fancy_animation_style' => ['animated'],
@@ -164,7 +160,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'type' => Controls_Manager::NUMBER,
                 'default' => 150,
                 'min'  => 1,
-                'frontend_available' => true,
                 'condition'	=> [
                     'ekit_fancy_animation_type' => ['type'],
                     'ekit_fancy_animation_style' => ['animated'],
@@ -179,7 +174,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'type' => Controls_Manager::NUMBER,
                 'default' => 500,
                 'min'  => 1,
-                'frontend_available' => true,
                 'condition'	=> [
                     'ekit_fancy_animation_type' => ['type'],
                     'ekit_fancy_animation_style' => ['animated'],
@@ -194,7 +188,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'type' => Controls_Manager::NUMBER,
                 'default' => 600,
                 'min'  => 1,
-                'frontend_available' => true,
                 'condition'	=> [
                     'ekit_fancy_animation_type' => ['clip'],
                     'ekit_fancy_animation_style' => ['animated'],
@@ -209,7 +202,6 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
                 'type' => Controls_Manager::NUMBER,
                 'default' => 1500,
                 'min'  => 1,
-                'frontend_available' => true,
                 'condition'	=> [
                     'ekit_fancy_animation_type' => ['clip'],
                     'ekit_fancy_animation_style' => ['animated'],
@@ -961,48 +953,22 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
         $settings = $this->get_settings_for_display();
         extract($settings);
         // image effect class
-        $fancy_animation_type_class = "";
-        switch($ekit_fancy_animation_type) {
-            case 'clip':
-                $fancy_animation_type_class = "clip is-full-width";
-                break;
-            case 'rotate-1':
-                $fancy_animation_type_class = "rotate-1";
-                break;
-            case 'rotate-2':
-                $fancy_animation_type_class = "letters rotate-2";
-                break;
-            case 'rotate-3':
-                $fancy_animation_type_class = "letters rotate-3";
-                break; 
-            case 'type':
-                $fancy_animation_type_class = "letters type";
-                break;
-            case 'bar-loading':
-                $fancy_animation_type_class = "bar-loading";
-                break; 
-            case 'slide':
-                $fancy_animation_type_class = "slide";
-                break;
-            case 'zoom-out':
-                $fancy_animation_type_class = "zoom-out";
-                break;
-            case 'scale':
-                $fancy_animation_type_class = "letters scale";
-                break;
-            case 'push':
-                $fancy_animation_type_class = "push";
-                break; 
-            case 'color-effect':
-                $fancy_animation_type_class = "color-effect";
-                break; 
-            case 'bouncing':
-                $fancy_animation_type_class = "letters bouncing";
-                break;
-            default:
-                $fancy_animation_type_class = "clip is-full-width";
-                break;
-        }
+		$animation_types = [
+			'clip' => 'clip is-full-width',
+			'rotate-1' => 'rotate-1',
+			'rotate-2' => 'letters rotate-2',
+			'rotate-3' => 'letters rotate-3',
+			'type' => 'letters type',
+			'bar-loading' => 'bar-loading',
+			'slide' => 'slide',
+			'zoom-out' => 'zoom-out',
+			'scale' => 'letters scale',
+			'push' => 'push',
+			'color-effect' => 'color-effect',
+			'bouncing' => 'letters bouncing'
+		];
+		
+		$fancy_animation_type_class = isset($animation_types[$ekit_fancy_animation_type]) ? $animation_types[$ekit_fancy_animation_type] : 'clip is-full-width';
 
         // Sanitize title tags
         $options_ekit_text_title_tag = array_keys([
@@ -1019,10 +985,26 @@ class ElementsKit_Widget_Fancy_Animated_Text extends Widget_Base {
 
         $title_tag = \ElementsKit_Lite\Utils::esc_options($ekit_fancy_text_title_tag, $options_ekit_text_title_tag, 'h2');
 
-        $this->add_render_attribute('fancy-text-wrap', 'class', 'ekit-fancy-text');
-        if('highlighted' !== $ekit_fancy_animation_style) {
-            $this->add_render_attribute('fancy-text-wrap', 'class', esc_attr($fancy_animation_type_class));
-        }
+		$fancy_animation_settings = [
+			'animationStyle' => $ekit_fancy_animation_style,
+			'animationDelay' => !empty($ekit_fancy_animation_delay) ? (int) $ekit_fancy_animation_delay : 2500 ,
+			'loadingBar' => !empty($ekit_fancy_loading_bar) ? (int) $ekit_fancy_loading_bar : 3800,
+			'lettersDelay' => !empty($ekit_fancy_letters_delay) ? (int) $ekit_fancy_letters_delay : 50,
+			'typeLettersDelay' => !empty($ekit_fancy_type_letters_delay) ? (int) $ekit_fancy_type_letters_delay :150,
+			'duration' => !empty($ekit_fancy_selection_duration) ? (int) $ekit_fancy_selection_duration : 500,
+			'revealDuration' => !empty($ekit_fancy_reveal_duration) ? (int) $ekit_fancy_reveal_duration : 600,
+			'revealAnimationDelay' => !empty($ekit_fancy_reveal_animation_delay) ? (int) $ekit_fancy_reveal_animation_delay : 1500,
+		];
+
+		$this->add_render_attribute( 'fancy-text-wrap', [
+			'class' => [
+				'ekit-fancy-text' . ('highlighted' !== $ekit_fancy_animation_style ? ' ' . esc_attr($fancy_animation_type_class) : '')
+			],
+			'data-id' => $this->get_id(),
+			'data-animation-settings' => wp_json_encode($fancy_animation_settings),
+
+		] );
+
         ?>
             <<?php echo esc_attr($title_tag); ?> <?php $this->print_render_attribute_string('fancy-text-wrap'); ?>>
                 <?php

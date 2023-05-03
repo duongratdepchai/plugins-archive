@@ -57,7 +57,7 @@ class Manager {
 		$post_id = ! empty( $_REQUEST['postId'] ) ? $_REQUEST['postId'] : false;
 
 		if ( ! $post_id ) {
-			$post_id = Database::$page_data['post_id'];
+			$post_id = isset( Database::$page_data['original_post_id'] ) ? Database::$page_data['original_post_id'] : Database::$page_data['preview_or_post_id'];
 		}
 
 		if ( ! $post_id ) {

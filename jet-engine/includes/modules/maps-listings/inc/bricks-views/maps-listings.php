@@ -205,7 +205,7 @@ class Maps_Listings extends Listing_Grid {
 				'label'   => esc_html__( 'Marker type', 'jet-engine' ),
 				'type'    => 'select',
 				'options' => Module::instance()->get_marker_types(),
-				'default' => 'image',
+				'default' => 'icon',
 			]
 		);
 
@@ -226,6 +226,10 @@ class Maps_Listings extends Listing_Grid {
 				'label'    => esc_html__( 'Icon', 'jet-engine' ),
 				'type'     => 'icon',
 				'required' => [ 'marker_type', '=', 'icon' ],
+				'default'  => [
+					'library' => 'fontawesomeSolid',
+					'icon'    => 'fas fa-location-dot',
+				],
 			]
 		);
 

@@ -2,10 +2,10 @@
 Contributors: bdthemes, selimmw
 Donate link: http://bdthemes.com/
 Tags: elementor addons, elementor widget, elementor extensions, elementor addon, addons, elementor, addons for elementor, addons pack, live copy, template library, bdthemes
-Stable tag: 6.15.2
+Stable tag: 6.15.5
 Requires PHP: 7.4.0
 Requires at least: 5.0.0
-Tested up to: 6.2
+Tested up to: 6.2.0
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Elementor requires at least: 3.0.0
@@ -34,6 +34,57 @@ e.g.
 3. Start use it by go to elementor editor.
 
 == Changelog ==
+
+= 6.15.5 [17th April 2023] =
+
+= Added =
+
+* Add support for YouTube Shorts URLs in Lightbox component
+* Add Dropnav component
+* Add parent icon to Drop component
+* Add WAI-ARIA roles, states and properties to interactive JavaScript components
+* Add WAI-ARIA keyboard interaction pattern to interactive JavaScript components
+* Add language internationalization (i18n) for interactive JavaScript components
+
+= Fixed =
+
+* Fix Scrollspy Nav component updates state once shown
+* Fix Slider/Slideshow component autoplay in Firefox
+* Fix pause-on-hover option in Slider/Slideshow component
+* Fix Slideshow initially shows last slide first
+* Fix Slider reactivity when a slide is hidden/shown
+* Fix prevent background scrolling in Safari
+* Fix opened Drop component prevents smooth scrolling of document on iOS
+* Fix focusable elements within none visible slides are no longer focusable in Slider component
+* Fix Dropbar partially closing before opening when switching between Navbar items
+* Fix Parallax component updating too late during slide animation in Filter component
+* Readmore issue fixed in interactive card widget
+
+= 6.15.4 [13th April 2023] =
+
+= Added =
+
+* Read more text repeater option added in static carousel widget
+* Before after button align, border, box shadow & circle shadow color option added in image compare widget
+
+= Fixed =
+
+* Frontend eicon not showing issue fixed
+
+= Improved =
+
+* System Improved
+
+= 6.15.3 [11th April 2023] =
+
+= Added =
+
+* Pagination featured added in Dynamic Grid Widget
+* Wrapper Link upgraded for popup workable in Panel Slider widget (Thanks to Illuspic)
+
+= Fixed =
+
+* Fatal error issue fixed in Post gallery widget all skin
 
 = 6.15.2 [9th April 2023] =
 

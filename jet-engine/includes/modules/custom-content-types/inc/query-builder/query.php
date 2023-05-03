@@ -24,6 +24,10 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 
 		$content_type = Module::instance()->manager->get_content_types( $type );
 
+		if ( ! $content_type ) {
+			return $result;
+		}
+
 		$order  = ! empty( $this->final_query['order'] ) ? $this->final_query['order'] : array();
 		$args   = ! empty( $this->final_query['args'] ) ? $this->final_query['args'] : array();
 		$offset = ! empty( $this->final_query['offset'] ) ? absint( $this->final_query['offset'] ) : 0;
@@ -102,8 +106,13 @@ class CCT_Query extends \Jet_Engine\Query_Builder\Queries\Base_Query {
 		}
 
 		$content_type = Module::instance()->manager->get_content_types( $type );
-		$args         = ! empty( $this->final_query['args'] ) ? $this->final_query['args'] : array();
-		$status       = ! empty( $this->final_query['status'] ) ? $this->final_query['status'] : '';
+
+		if ( ! $content_type ) {
+			return $result;
+		}
+
+		$args   = ! empty( $this->final_query['args'] ) ? $this->final_query['args'] : array();
+		$status = ! empty( $this->final_query['status'] ) ? $this->final_query['status'] : '';
 
 		if ( $status ) {
 			$args[] = array(

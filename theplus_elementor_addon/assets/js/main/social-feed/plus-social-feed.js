@@ -5,10 +5,11 @@
         let container = $scope[0].querySelectorAll('.tp-social-feed'),
             GetId = (container[0].dataset && container[0].dataset.id) ? container[0].dataset.id : '',
             Getscroll = (container[0].dataset && container[0].dataset.scrollNormal) ? JSON.parse(container[0].dataset.scrollNormal) : '',
+            FeedData = (container[0].dataset && container[0].dataset.feedData) ? JSON.parse(container[0].dataset.feedData) : '',
             Getids = (container[0].dataset && container[0].dataset.ids) ? JSON.parse(container[0].dataset.ids) : '';
 
         tp_readbtn_click();
-
+        
         let FindLoadmore = container[0].querySelectorAll('.ajax_load_more .post-load-more');
         if( FindLoadmore.length > 0 ){
             FindLoadmore[0].addEventListener("click", tp_feed_loadmore);
@@ -228,6 +229,7 @@
                             complete: function() {
                                 tp_readbtn_click();
                                 Resizelayout(loadlayout, 500);
+                                EqualHeightlayout();
                                 lazyFeed_click.data('requestRunning', false);
                             }
                         })
@@ -311,6 +313,7 @@
                     complete: function() {
                         tp_readbtn_click();
                         Resizelayout(loadlayout, 500);
+                        EqualHeightlayout();
                         loadFeed_click.data('requestRunning', false);
                     }
                 })
@@ -341,11 +344,13 @@
         function tp_readbtn() {
             let $this = this,
                 Getmessage = $this.closest('.tp-message'),
-                Gettext = $this.closest('.showtext');
+                Gettext = $this.closest('.showtext'),
+                ShowMoreTxt = FeedData.TextMore,
+                TextLessTxt = FeedData.TextLess;
             
                 if ( Getmessage.classList.contains('show-text') ) {
                     Getmessage.classList.remove('show-text');
-                    $this.innerHTML = "Show More";
+                    $this.innerHTML = ShowMoreTxt;
 
                     let GetDot = Getmessage.querySelectorAll('.sf-dots');
                     if( GetDot.length > 0 ){
@@ -358,7 +363,7 @@
                     }
                 } else {
                     Getmessage.classList.add('show-text');
-                    $this.innerHTML = "Show Less";
+                    $this.innerHTML = TextLessTxt;
                     
                     let GetDot = Getmessage.querySelectorAll('.sf-dots');
                     if( GetDot.length > 0 ){
@@ -379,11 +384,13 @@
         function tp_fancybox_readbtn() {
             let $this = this,
                 Getmsg = $this.closest('.tp-message'),
-                GetDot = Getmsg.querySelectorAll('.sf-dots');
-
+                GetDot = Getmsg.querySelectorAll('.sf-dots'),
+                ShowMoreTxt = FeedData.TextMore,
+                TextLessTxt = FeedData.TextLess;
+              
                 if ( Getmsg.classList.contains('show-text') ) {
                     Getmsg.classList.remove('show-text');
-                    $this.innerHTML = "Show More";
+                    $this.innerHTML = ShowMoreTxt;
 
                     if( GetDot.length > 0 ){
                         GetDot[0].style.cssText = "display: inline";
@@ -395,7 +402,7 @@
                     }
                 } else {
                     Getmsg.classList.add('show-text');
-                    $this.innerHTML = "Show Less";
+                    $this.innerHTML = TextLessTxt;
 
                     if( GetDot.length > 0 ){
                         GetDot[0].style.cssText = "display: none";
@@ -438,6 +445,14 @@
                 }
             }
         }
+
+        /**compatibility with Equal Height*/
+        function EqualHeightlayout() {
+			var Equalcontainer = jQuery('.elementor-element[data-tp-equal-height-loadded]');
+			if( Equalcontainer.length > 0 ){
+				EqualHeightsLoadded();
+			}
+		}
 
         if( elementorFrontend.isEditMode() ){
             Resizelayout('grid', 4000)

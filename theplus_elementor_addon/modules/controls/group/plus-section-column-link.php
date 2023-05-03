@@ -68,8 +68,8 @@ class Theplus_Section_Column_Link extends Elementor\Widget_Base {
 		wp_enqueue_script('plus-section-column-link',THEPLUS_ASSETS_URL . 'js/main/section-column-link/plus-section-column-link.min.js',array( 'jquery' ),'',true);	
 	}
 	public function plus_before_render($element) {
-		$settings = $element->get_settings();
-		//$settings = $element->get_settings_for_display();
+		// $settings = $element->get_settings();
+		$settings = $element->get_settings_for_display();
 		if((!empty($settings['sc_link_switch']) && $settings['sc_link_switch']=='yes') && !empty($settings['sc_link']) && !empty($settings['sc_link']['url'])){			
 			$element->add_render_attribute( '_wrapper', 
 			array(

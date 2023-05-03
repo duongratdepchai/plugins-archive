@@ -1768,7 +1768,7 @@ class Profile_Card extends Module_Base {
 
 					<?php if ($settings['show_user_menu']) : ?>
                         <div class="bdt-profile-card-settings">
-                            <a href="javascript:void(0);" ><i class="eicon-ellipsis-h" aria-hidden="true"></i></a>
+                            <a href="javascript:void(0);" ><i class="ep-icon-ellipsis-h" aria-hidden="true"></i></a>
                         </div>
 
 						<?php $this->user_dropdown_menu(); ?>
@@ -1871,7 +1871,7 @@ class Profile_Card extends Module_Base {
 
 					<?php if ($settings['show_user_menu']) : ?>
                         <div class="bdt-profile-card-settings">
-                            <a href="javascript:void(0);" ><i class="eicon-ellipsis-h" aria-hidden="true"></i></a>
+                            <a href="javascript:void(0);" ><i class="ep-icon-ellipsis-h" aria-hidden="true"></i></a>
                         </div>
 
 						<?php $this->user_dropdown_menu(); ?>
@@ -1969,7 +1969,7 @@ class Profile_Card extends Module_Base {
 					
 					<?php if ($settings['show_user_menu']) : ?>
                     <div class="bdt-profile-card-settings">
-                        <a href="javascript:void(0);" ><i class="eicon-ellipsis-h" aria-hidden="true"></i></a>
+                        <a href="javascript:void(0);" ><i class="ep-icon-ellipsis-h" aria-hidden="true"></i></a>
                     </div>
 					
 					<?php $this->user_dropdown_menu(); ?>

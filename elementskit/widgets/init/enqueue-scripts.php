@@ -20,7 +20,6 @@ class Enqueue_Scripts{
 		if(is_admin()){
 			return;
 		}
-		// your normal frontend js goes here
 	}
 
 	public function frontend_css() {

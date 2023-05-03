@@ -1,5 +1,21 @@
 # ChangeLog
 
+## 3.1.5
+* ADD: Query Builder: Before and After options for Advanced settings section of dynamic arguments;
+* ADD: Query Builder: Description field for Query. Crocoblock/suggestions#6194;
+* ADD: Glossaries: Allow to convert options from the file into manual source;
+* UPD: Delete CCT items of user (author of CCT items) when user account is deleted;
+* UPD: Allow to make listing Item clickable in Blocks editor;
+* UPD: Minor Map Listing improvements;
+* FIX: Listing Grid: Compatibility with new Elementor Mega Menu;
+* FIX: Listing Grid: Slides to Scroll on mobile;
+* FIX: `%current_terms%` macro fatal error when no object received;
+* FIX: Error after deleting CCT which was used in Query Builder;
+* FIX: Bricks builder listings: Post ID after listing;
+* FIX: Translate default value of CPT labels;
+* FIX: Prevent errors in some cases when query was deleted from Query Builder;
+* FIX: Better PHP 8.1+ compatibility.
+
 ## 3.1.4
 * ADD: Relevanssi search and Query Builder compatibility;
 * ADD: Allow to set aria-labels for Dynamic Link widget and for clickable listing grid item;
@@ -7,15 +23,15 @@
 * ADD: Shortcode Result macro;
 * UPD: Show deleted instance name in dialog box for JetEngine instances;
 * FIX: Better WPML compatibility;
-* FIX: Media-realted dynamic tags processing;
+* FIX: Media-related dynamic tags processing;
 * FIX: ACF repeater settings for Dynamic Repeater widget;
 * FIX: Grid/Slider Gallery Dynamic Field;
 * FIX: Listing grid in Bricks builder - Not Found message control;
 * FIX: Dynamic Meta widget inside listing grid with Custom Query.
 
 ## 3.1.3.1
-ADD: 'jet-engine/query-builder/set-props', 'jet-engine/listing/current-object-title', 'jet-engine/query-builder/filters/before-set-props', 'jet-engine/query-builder/filters/after-set-props' hooks;
-FIX: Additional security checks on export, import and duplicate legacy forms.
+* ADD: 'jet-engine/query-builder/set-props', 'jet-engine/listing/current-object-title', 'jet-engine/query-builder/filters/before-set-props', 'jet-engine/query-builder/filters/after-set-props' hooks;
+* FIX: Additional security checks on export, import and duplicate legacy forms.
 
 ## 3.1.3
 * ADD: Dynamic Field: Allow to specify object property to get manually;

@@ -960,32 +960,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 
 			$current_listing = jet_engine()->listings->data->get_listing();
 
-			if ( jet_engine()->has_elementor() ) {
-				$doc = Elementor\Plugin::$instance->documents->get_doc_for_frontend( $listing_id );
-			} else {
-				$listing_settings = get_post_meta( $listing_id, '_elementor_page_settings', true );
-
-				if ( empty( $listing_settings ) ) {
-					$listing_settings = array();
-				}
-
-				$source          = ! empty( $listing_settings['listing_source'] ) ? $listing_settings['listing_source'] : 'posts';
-				$post_type       = ! empty( $listing_settings['listing_post_type'] ) ? $listing_settings['listing_post_type'] : 'post';
-				$tax             = ! empty( $listing_settings['listing_tax'] ) ? $listing_settings['listing_tax'] : 'category';
-				$repeater_source = ! empty( $listing_settings['repeater_source'] ) ? $listing_settings['repeater_source'] : '';
-				$repeater_field  = ! empty( $listing_settings['repeater_field'] ) ? $listing_settings['repeater_field'] : '';
-
-				$doc = jet_engine()->listings->get_new_doc( array(
-					'listing_source'    => $source,
-					'listing_post_type' => $post_type,
-					'listing_tax'       => $tax,
-					'is_main'           => true,
-					'repeater_source'   => $repeater_source,
-					'repeater_field'    => $repeater_field,
-				), absint( $listing_id ) );
-			}
-
-			jet_engine()->listings->data->set_listing( $doc );
+			jet_engine()->listings->data->set_listing_by_id( $listing_id );
 
 			$query = $this->get_query( $settings );
 

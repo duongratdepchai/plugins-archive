@@ -513,6 +513,41 @@ if ( ! class_exists( 'Jet_Engine_Listings' ) ) {
 
 		}
 
+		/**
+		 * Returns allowed link sources for listing item.
+		 *
+		 * @return array
+		 */
+		public function get_listing_link_sources() {
+
+			$default = array(
+				'label'   => __( 'General', 'jet-engine' ),
+				'options' => array(
+					'_permalink' => __( 'Permalink', 'jet-engine' ),
+				),
+			);
+
+			$meta_fields = array();
+
+			if ( jet_engine()->options_pages ) {
+				$default['options']['options_page'] = __( 'Options', 'jet-engine' );
+			}
+
+			if ( jet_engine()->modules->is_module_active( 'maps-listings' ) ) {
+				$default['options']['open_map_listing_popup']       = __( 'Open Map Listing Popup', 'jet-engine' );
+				$default['options']['open_map_listing_popup_hover'] = __( 'Open Map Listing Popup on Hover', 'jet-engine' );
+			}
+
+			if ( jet_engine()->meta_boxes ) {
+				$meta_fields = jet_engine()->meta_boxes->get_fields_for_select( 'plain' );
+			}
+
+			return apply_filters(
+				'jet-engine/listings/dynamic-link/fields',
+				array_merge( array( $default ), $meta_fields )
+			);
+		}
+
 	}
 
 }

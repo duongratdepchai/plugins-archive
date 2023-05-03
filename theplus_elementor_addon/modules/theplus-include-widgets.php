@@ -182,7 +182,6 @@ if ( ! class_exists( 'Theplus_Widgets_Include' ) ) {
 			);
 			
 			$get_option=theplus_get_option('general','check_elements');
-			
 			if(!empty($get_option)){
 				array_push($get_option, "theplus-widgets");
 				if(!empty($get_option) && in_array("tp_dynamic_listing",$get_option)){

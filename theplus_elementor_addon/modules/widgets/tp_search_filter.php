@@ -7243,6 +7243,23 @@ class ThePlus_Search_Filter extends Widget_Base {
                 ],
             ]
         );
+        $this->add_responsive_control('starSize',
+            [
+                'label'=>__('Icon Size','theplus'),
+                'type'=>Controls_Manager::SLIDER,
+                'size_units'=>['px'],
+                'range'=>[
+                    'px'=>[
+                        'min'=>1,
+                        'max'=>100,
+                        'step'=>1,
+                    ],
+                ],
+                'selectors'=>[
+                    '{{WRAPPER}} .tp-search-filter .tp-toggle-div .tp-star-rating .tp-start-icon'=>'font-size:{{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
         $this->start_controls_tabs('Startabs');
         $this->start_controls_tab('StarNormal',
             [

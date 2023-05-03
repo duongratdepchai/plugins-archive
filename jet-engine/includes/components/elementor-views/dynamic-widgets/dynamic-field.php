@@ -110,6 +110,7 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 				'condition' => array(
 					'dynamic_field_source'      => 'object',
 					'dynamic_field_post_object' => 'post_excerpt',
+					'dynamic_field_wp_excerpt'  => 'yes',
 				),
 			)
 		);
@@ -125,6 +126,7 @@ class Jet_Listing_Dynamic_Field_Widget extends \Jet_Listing_Dynamic_Widget {
 				'condition' => array(
 					'dynamic_field_source'      => 'object',
 					'dynamic_field_post_object' => 'post_excerpt',
+					'dynamic_field_wp_excerpt'  => 'yes',
 				),
 			)
 		);

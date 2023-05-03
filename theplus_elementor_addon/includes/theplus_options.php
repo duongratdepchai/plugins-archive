@@ -69,12 +69,12 @@ class Theplus_Elementor_Plugin_Options
     
 	/*Panel Function Overwrite Start*/
 	public function theplus_pro_import_data_content() {
-		$verify_api=1;
+		$verify_api=theplus_check_api_status();
 		wp_enqueue_script( 'jquery-masonry');
 		$ajax = Plugin::$instance->common->get_component( 'ajax' );
 		$cls_close='';
-		$purchase_option='1415b451be1a13c283ba771ea52d38bb';
-		$plus_key = '1415b451be1a13c283ba771ea52d38bb';
+		$purchase_option=get_option( 'theplus_purchase_code' );
+		$plus_key = isset($purchase_option['tp_api_key']) ? sanitize_text_field($purchase_option['tp_api_key']) : '';
 		if($verify_api==1 && !empty($plus_key)){
 			$cls_close = ' tp-close-up-box';
 		}?>
@@ -375,7 +375,7 @@ class Theplus_Elementor_Plugin_Options
 
 	
 	public function theplus_pro_purchase_code_field() { 
-	$verify_api=1; 
+	$verify_api=theplus_check_api_status(); 
 	
 	$purchase_option=get_option( 'theplus_purchase_code' );
 	$plus_key = isset($purchase_option['tp_api_key']) ? sanitize_text_field($purchase_option['tp_api_key']) : '';
@@ -409,8 +409,10 @@ class Theplus_Elementor_Plugin_Options
 				
 					$purchase_option=get_option( 'theplus_purchase_code' );
 					$plus_key =$plus_last_key_char='';
-					$plus_key = '1415b451be1a13c283ba771ea52d38bb';
+					if(isset($purchase_option['tp_api_key']) && !empty($purchase_option['tp_api_key'])){
+						$plus_key = sanitize_text_field($purchase_option['tp_api_key']);
 						$plus_last_key_char = substr($plus_key, -4);
+					}
 					?>
 					<div id="theplus_purchase_code" class="group theplus_form_content">
 					<form class="cmb-form" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post" id="theplus_purchase_code" enctype="multipart/form-data" encoding="multipart/form-data">

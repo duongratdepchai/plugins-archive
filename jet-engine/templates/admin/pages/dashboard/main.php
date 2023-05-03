@@ -11,6 +11,7 @@
 				:in-panel="false"
 				:value="activeTab"
 				layout="vertical"
+				@input="addTabLocationHash"
 			>
 				<cx-vui-tabs-panel
 					name="modules"

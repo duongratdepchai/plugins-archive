@@ -26,7 +26,7 @@ $config = [
     ],
 ];
 
-$slider_container_class = $ekit_price_menu_enable_slider == 'yes' ?  'swiper-container' : '';
+$slider_container_class = $ekit_price_menu_enable_slider == 'yes' ? (method_exists('\ElementsKit_Lite\Utils', 'swiper_class') ? esc_attr(\ElementsKit_Lite\Utils::swiper_class()) : 'swiper') : '';
 $wrapper_class = $ekit_price_menu_enable_slider == 'yes' ?  'slick-list swiper-wrapper' : '';
 $slide_class =  $ekit_price_menu_enable_slider == 'yes' ?  'swiper-slide' : '';
 ?>

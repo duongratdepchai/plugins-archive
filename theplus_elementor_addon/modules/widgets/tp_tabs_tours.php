@@ -3824,25 +3824,32 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 					
 					$tab_content .='<div '.$this->get_render_attribute_string( $tab_title_mobile_setting_key ).'>';
 					$image_alt='';
-						if ( $item['display_icon']=='yes' ) :
+						if ( $item['display_icon'] == 'yes' ) :
 							$icons=$icon_image='';
-							if($item['icon_style']=='font_awesome'){
-								$icons=$item['icon_fontawesome'];									
-							}else if($item['icon_style']=='font_awesome_5'){
+							$IconStyle = !empty($item['icon_style']) ? $item['icon_style'] : '';
+							
+							if( $IconStyle == 'font_awesome' ){
+								$icons = $item['icon_fontawesome'];									
+							}else if( $IconStyle == 'font_awesome_5' ){
 								ob_start();
-								\Elementor\Icons_Manager::render_icon( $item['icon_fontawesome_5'], [ 'aria-hidden' => 'true' ]);
-								$icons = ob_get_contents();
+									\Elementor\Icons_Manager::render_icon( $item['icon_fontawesome_5'], [ 'aria-hidden' => 'true' ]);
+									$icons = ob_get_contents();
 								ob_end_clean();		
-							}else if($item['icon_style']=='icon_mind'){
-								$icons=$item['icons_mind'];									
-							}else if($item['icon_style']=='image' && !empty($item['icon_image']["url"])){								
-								$icon_image_id=$item['icon_image']['id'];
-								$icon_image= tp_get_image_rander( $icon_image_id,$item['icon_image_thumbnail_size'], [ 'class' => 'tab-icon tab-icon-image' ] );
+							}else if( $IconStyle == 'icon_mind' ){
+								$icons = $item['icons_mind'];									
+							}else if( $IconStyle == 'image' && !empty($item['icon_image']["url"])){								
+								$icon_image_id = $item['icon_image']['id'];
+								$icon_image = tp_get_image_rander( $icon_image_id,$item['icon_image_thumbnail_size'], [ 'class' => 'tab-icon tab-icon-image' ] );
 							}
+
 							if(!empty($icons) || !empty($icon_image)){
 								$tab_content .='<span class="tab-icon-wrap" aria-hidden="true">';
-									if($item['icon_style']!='image'){
-										$tab_content .='<i class="tab-icon '.esc_attr( $icons ).'"></i>';
+									if( $item['icon_style'] != 'image' ){
+										if( $IconStyle == 'font_awesome_5' ){
+											$tab_content .=$icons;
+										} else {
+											$tab_content .='<i class="tab-icon '.esc_attr( $icons ).'"></i>';
+										}
 									}else{
 										$tab_content .=$icon_image;
 									}

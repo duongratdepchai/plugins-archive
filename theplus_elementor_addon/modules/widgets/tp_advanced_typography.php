@@ -645,10 +645,9 @@ class ThePlus_Advanced_Typography extends Widget_Base {
 				],
 			]
 		);
-		$repeater->add_control(
-			'marquee_scrollamount',
+		$repeater->add_control('marquee_scrollamount',
 			[
-				'label' => esc_html__( 'Scroll Amount', 'theplus' ),
+				'label' => esc_html__( 'Speed', 'theplus' ),
 				'type' => Controls_Manager::NUMBER,
 				'min' => 1,
 				'max' => 1000,
@@ -691,18 +690,23 @@ class ThePlus_Advanced_Typography extends Widget_Base {
 		$repeater->add_control(
 			'marquee_text_width',
 			[	
-				'label' => esc_html__( 'Marquee Text Width', 'theplus' ),
+				'label' => esc_html__( 'Width', 'theplus' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => 'px',
+				'size_units' => ['px', 'vw'],
 				'range' => [
 					'px' => [
 						'min' => 0,
 						'max' => 1000,
 						'step' => 2,
 					],
+					'vw' => [
+                        'min' => 0,
+                        'max' => 100,
+						'step' => 1,
+                    ],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} .plus-list-adv-typo-block {{CURRENT_ITEM}} marquee' => 'max-width: {{SIZE}}{{UNIT}};white-space: nowrap;',
+					'{{WRAPPER}} .plus-list-adv-typo-block {{CURRENT_ITEM}} marquee' => 'width: {{SIZE}}{{UNIT}};max-width: {{SIZE}}{{UNIT}};white-space: nowrap;',
 				],
 				'condition' => [
 					'marquee_switch' => 'yes',	
@@ -713,18 +717,23 @@ class ThePlus_Advanced_Typography extends Widget_Base {
 		$repeater->add_control(
 			'marquee_text_width_t',
 			[	
-				'label' => esc_html__( 'Marquee Text Width', 'theplus' ),
+				'label' => esc_html__( 'Width', 'theplus' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => 'px',
+				'size_units' => ['px', 'vw'],
 				'range' => [
 					'px' => [
 						'min' => 0,
 						'max' => 1000,
 						'step' => 2,
 					],
+					'vw' => [
+                        'min' => 0,
+                        'max' => 100,
+						'step' => 1,
+                    ],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} .plus-list-adv-typo-block {{CURRENT_ITEM}}' => 'max-width: {{SIZE}}{{UNIT}};display: inline-block;',
+					'{{WRAPPER}} .plus-list-adv-typo-block {{CURRENT_ITEM}}' => 'width: {{SIZE}}{{UNIT}};max-width: {{SIZE}}{{UNIT}};display: inline-block;',
 				],
 				'condition' => [
 					'marquee_switch' => 'yes',
@@ -2190,10 +2199,9 @@ class ThePlus_Advanced_Typography extends Widget_Base {
 				],
 			]
 		);
-		$this->add_control(
-			'marquee_scrollamount',
+		$this->add_control('marquee_scrollamount',
 			[
-				'label' => esc_html__( 'Scroll Amount', 'theplus' ),
+				'label' => esc_html__( 'Speed', 'theplus' ),
 				'type' => Controls_Manager::NUMBER,
 				'min' => 1,
 				'max' => 1000,
@@ -2229,6 +2237,60 @@ class ThePlus_Advanced_Typography extends Widget_Base {
 				'max' => 100,
 				'step' => 1,				
 				'condition' => [
+					'marquee_switch' => 'yes',
+					'marquee_type' => 'on_transition',
+				],
+			]
+		);
+		$this->add_control('marquee_width_default',
+			[	
+				'label' => esc_html__( 'Width', 'theplus' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => ['px', 'vw'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+						'step' => 2,
+					],
+					'vw' => [
+                        'min' => 0,
+                        'max' => 100,
+						'step' => 1,
+                    ],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .pt_plus_adv_typo_block marquee' => 'width: {{SIZE}}{{UNIT}};max-width: {{SIZE}}{{UNIT}};white-space: nowrap;',
+				],
+				'condition' => [
+					'typography_listing' => 'default',
+					'marquee_switch' => 'yes',	
+					'marquee_type' => 'default',
+				],
+			]
+		);
+		$this->add_control('marquee_width_transition',
+			[	
+				'label' => esc_html__( 'Width', 'theplus' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => ['px', 'vw'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+						'step' => 2,
+					],
+					'vw' => [
+                        'min' => 0,
+                        'max' => 100,
+						'step' => 1,
+                    ],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .pt_plus_adv_typo_block' => 'width: {{SIZE}}{{UNIT}};max-width: {{SIZE}}{{UNIT}};display: inline-block;',
+				],
+				'condition' => [
+					'typography_listing' => 'default',
 					'marquee_switch' => 'yes',
 					'marquee_type' => 'on_transition',
 				],

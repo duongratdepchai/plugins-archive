@@ -5009,6 +5009,11 @@ class ThePlus_Blog_ListOut extends Widget_Base {
 				$css_rule ='<style>'.$css_messy.'</style>';
 			}
 		}
+
+		if (\Elementor\Plugin::$instance->editor->is_edit_mode()) {
+			$output .= $this->Set_Resizelayout($uid, $layout);
+		}
+
 		echo $output.$css_rule;
 		wp_reset_postdata();
 	}
@@ -5300,4 +5305,27 @@ class ThePlus_Blog_ListOut extends Widget_Base {
 		return $data_slider;
 	}
 	
+	Protected function Set_Resizelayout($uid, $layout){
+		$R_PhpClass = ".blog-list.{$uid}";
+			
+		$resize = '<script type="text/javascript">';
+			$resize .= 'function Resizelayout'.$uid.'( duration=1000 ) {';
+				$resize .= 'console.log("aa");';
+				$resize .= 'let blog_R_JsClass = "'. $R_PhpClass .'";';
+				$resize .= 'let blog_R_loadlayout = "'. $layout .'";';
+
+				$resize .= 'if (blog_R_loadlayout == "grid" || blog_R_loadlayout == "masonry") {';
+					$resize .= 'let FindGrid = document.querySelectorAll(`${blog_R_JsClass} .post-inner-loop`);';
+					$resize .= 'if( FindGrid.length ){';
+						$resize .= 'setTimeout(function(){';
+							$resize .= 'jQuery(FindGrid[0]).isotope("reloadItems").isotope();';
+						$resize .= '}, duration);';
+					$resize .= '}';
+				$resize .= '}';
+			$resize .= '}';
+			$resize .= 'Resizelayout'.$uid.'();';
+		$resize .= '</script>';
+		
+		return $resize;
+	}
 }

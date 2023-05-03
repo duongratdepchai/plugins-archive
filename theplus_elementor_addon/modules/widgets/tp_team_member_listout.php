@@ -262,7 +262,7 @@ class ThePlus_Team_Member_ListOut extends Widget_Base {
 				],
 			]
 		);
-		$this->add_control(
+		$this->add_responsive_control(
 			'content_alignment',
 			[
 				'label' => esc_html__( 'Content Alignment', 'theplus' ),
@@ -280,6 +280,9 @@ class ThePlus_Team_Member_ListOut extends Widget_Base {
 						'title' => esc_html__( 'Right', 'theplus' ),
 						'icon' => 'eicon-text-align-right',
 					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .team-member-list .post-content-bottom' => 'text-align: {{VALUE}};',
 				],
 				'default' => 'center',
 				'label_block' => false,

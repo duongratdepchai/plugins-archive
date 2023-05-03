@@ -237,22 +237,7 @@ class Jet_Listing_Item_Document extends Elementor\Core\Base\Document {
 				'label'   => __( 'Add "rel" attr', 'jet-engine' ),
 				'type'    => Elementor\Controls_Manager::SELECT,
 				'default' => '',
-				'options' => array(
-					''           => __( 'No', 'jet-engine' ),
-					'alternate'  => __( 'Alternate', 'jet-engine' ),
-					'author'     => __( 'Author', 'jet-engine' ),
-					'bookmark'   => __( 'Bookmark', 'jet-engine' ),
-					'external'   => __( 'External', 'jet-engine' ),
-					'help'       => __( 'Help', 'jet-engine' ),
-					'license'    => __( 'License', 'jet-engine' ),
-					'next'       => __( 'Next', 'jet-engine' ),
-					'nofollow'   => __( 'Nofollow', 'jet-engine' ),
-					'noreferrer' => __( 'Noreferrer', 'jet-engine' ),
-					'noopener'   => __( 'Noopener', 'jet-engine' ),
-					'prev'       => __( 'Prev', 'jet-engine' ),
-					'search'     => __( 'Search', 'jet-engine' ),
-					'tag'        => __( 'Tag', 'jet-engine' ),
-				),
+				'options' => \Jet_Engine_Tools::get_rel_attr_options(),
 				'condition' => array(
 					'listing_link' => 'yes',
 					'listing_link_source!' => array( 'open_map_listing_popup', 'open_map_listing_popup_hover' ),
@@ -298,35 +283,7 @@ class Jet_Listing_Item_Document extends Elementor\Core\Base\Document {
 	 * @return array
 	 */
 	public function get_meta_fields_for_post_type() {
-
-		$default = array(
-			'label'   => __( 'General', 'jet-engine' ),
-			'options' => array(
-				'_permalink' => __( 'Permalink', 'jet-engine' ),
-			),
-		);
-
-		$result      = array();
-		$meta_fields = array();
-
-		if ( jet_engine()->options_pages ) {
-			$default['options']['options_page'] = __( 'Options', 'jet-engine' );
-		}
-
-		if ( jet_engine()->modules->is_module_active( 'maps-listings' ) ) {
-			$default['options']['open_map_listing_popup']       = __( 'Open Map Listing Popup', 'jet-engine' );
-			$default['options']['open_map_listing_popup_hover'] = __( 'Open Map Listing Popup on Hover', 'jet-engine' );
-		}
-
-		if ( jet_engine()->meta_boxes ) {
-			$meta_fields = jet_engine()->meta_boxes->get_fields_for_select( 'plain' );
-		}
-
-		return apply_filters(
-			'jet-engine/listings/dynamic-link/fields',
-			array_merge( array( $default ), $meta_fields )
-		);
-
+		return jet_engine()->listings->get_listing_link_sources();
 	}
 
 	public function get_preview_as_query_args() {

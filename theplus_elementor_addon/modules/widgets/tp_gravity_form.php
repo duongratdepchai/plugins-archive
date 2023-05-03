@@ -379,7 +379,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper h3.gf_progressbar_title' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gf_progressbar_title' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 				'separator' => 'before',
   			]
@@ -390,7 +390,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'label' => esc_html__( 'Progress Bar Text', 'theplus' ),
 				'type' => Controls_Manager::COLOR,				
 				'selectors' => [					
-					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper h3.gf_progressbar_title' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gf_progressbar_title' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -429,14 +429,14 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'label' => esc_html__( 'Price', 'theplus' ),
 				'type' => Controls_Manager::COLOR,				
 				'selectors' => [					
-					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .ginput_product_price,{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .ginput_shipping_price,{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper span.ginput_total' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .ginput_product_price,{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .ginput_shipping_price,{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .ginput_total' => 'color: {{VALUE}}',
 				],
 			]
 		);
 		$this->add_control(
 			'consent_color',
 			[
-				'label' => esc_html__( 'consent', 'theplus' ),
+				'label' => esc_html__( 'Consent', 'theplus' ),
 				'type' => Controls_Manager::COLOR,				
 				'selectors' => [					
 					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_consent_label' => 'color: {{VALUE}}',
@@ -1061,7 +1061,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'checkbox_text_typography',
-				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_checkbox li label',
+				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_checkbox label',
 			]
 		);
 		
@@ -1071,7 +1071,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'theplus' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_checkbox li label' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_checkbox label' => 'color: {{VALUE}};',
 				],
 				'separator' => 'after',
 			]
@@ -1227,7 +1227,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name' => 'radio_text_typography',
-				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_radio li label',
+				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_radio label',
 			]
 		);
 		$this->add_control(
@@ -1236,7 +1236,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'theplus' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_radio li label' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield_radio label' => 'color: {{VALUE}};',
 				],
 				'separator' => 'after',
 			]
@@ -2081,7 +2081,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%'],
 				'selectors' => [
-					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],				
 			]
 		);
@@ -2092,7 +2092,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%'],
 				'selectors' => [
-					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'separator' => 'after',
 			]
@@ -2109,7 +2109,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				[
 					'name'      => 'oute_r_field_bg',
 					'types'     => [ 'classic', 'gradient' ],
-					'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield',
+					'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield',
 				]
 			);
 			$this->add_group_control(
@@ -2117,7 +2117,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 			[
 				'name' => 'oute_r__border',
 				'label' => esc_html__( 'Border', 'theplus' ),
-				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield',				
+				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield',				
 			]
 			);
 			$this->add_responsive_control(
@@ -2127,7 +2127,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 					'type'       => Controls_Manager::DIMENSIONS,
 					'size_units' => [ 'px', '%' ],
 					'selectors'  => [
-						'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			);
@@ -2135,7 +2135,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'oute_r_shadow',
-				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield',
+				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield',
 			]
 			);
 			$this->end_controls_tab();
@@ -2150,7 +2150,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				[
 					'name'      => 'oute_r_field_bg_hover',
 					'types'     => [ 'classic', 'gradient' ],
-					'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield:hover',
+					'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield:hover',
 				]
 			);
 			$this->add_group_control(
@@ -2158,7 +2158,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 			[
 				'name' => 'oute_r__border_hover',
 				'label' => esc_html__( 'Border', 'theplus' ),
-				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield:hover',
+				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield:hover',
 			]
 			);
 			$this->add_responsive_control(
@@ -2168,7 +2168,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 					'type'       => Controls_Manager::DIMENSIONS,
 					'size_units' => [ 'px', '%' ],
 					'selectors'  => [
-						'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield:hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield:hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			);
@@ -2176,7 +2176,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name'     => 'oute_r_shadow_hover',
-				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper ul li.gfield:hover',
+				'selector' => '{{WRAPPER}} .pt_plus_gravity_form .gform_wrapper .gfield:hover',
 			]
 			);
 			$this->end_controls_tab();
@@ -2429,7 +2429,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .gform_wrapper .validation_message,{{WRAPPER}} .gform_wrapper div.validation_error' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .gform_wrapper li.gfield_error input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]), {{WRAPPER}} .gform_wrapper li.gfield_error textarea' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} .gform_wrapper .gfield_error input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]), {{WRAPPER}} .gform_wrapper .gfield_error textarea,  {{WRAPPER}} .gform_wrapper .gfield_error' => 'border-color: {{VALUE}};',
 					
 					
 					'{{WRAPPER}} .gform_wrapper div.validation_error' => 'border-top-color: {{VALUE}}; border-bottom-color: {{VALUE}};',
@@ -2442,7 +2442,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'label'     => esc_html__( 'Background', 'theplus' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .gform_wrapper li.gfield.gfield_error,{{WRAPPER}} .gform_wrapper li.gfield.gfield_error.gfield_contains_required.gfield_creditcard_warning' => 'background: {{VALUE}};',
+					'{{WRAPPER}} .gform_wrapper .gfield.gfield_error,{{WRAPPER}} .gform_wrapper .gfield.gfield_error.gfield_contains_required.gfield_creditcard_warning' => 'background: {{VALUE}};',
 				],
 			]
 		);		
@@ -2451,7 +2451,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 			[
 				'name' => 'response_validation_border',
 				'label' => esc_html__( 'Border', 'theplus' ),
-				'selector' => '{{WRAPPER}} .gform_wrapper li.gfield.gfield_error,{{WRAPPER}} .gform_wrapper li.gfield.gfield_error.gfield_contains_required.gfield_creditcard_warning',
+				'selector' => '{{WRAPPER}} .gform_wrapper .gfield.gfield_error,{{WRAPPER}} .gform_wrapper .gfield.gfield_error.gfield_contains_required.gfield_creditcard_warning',
 			]
 		);
 		$this->add_responsive_control(
@@ -2461,7 +2461,7 @@ class ThePlus_Gravity_Form extends Widget_Base {
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors'  => [
-					'{{WRAPPER}} .gform_wrapper li.gfield.gfield_error,{{WRAPPER}} .gform_wrapper li.gfield.gfield_error.gfield_contains_required.gfield_creditcard_warning' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .gform_wrapper .gfield.gfield_error,{{WRAPPER}} .gform_wrapper .gfield.gfield_error.gfield_contains_required.gfield_creditcard_warning' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);

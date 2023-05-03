@@ -49,7 +49,9 @@ if ( ! class_exists( 'Jet_Engine_ACF_Package' ) ) {
 
 			// Listing item link.
 			add_action( 'jet-engine/listings/document/custom-link-source-controls', array( $this, 'listing_link_controls' ) );
-			add_filter( 'jet-engine/elementor-views/frontend/custom-listing-url',   array( $this, 'listing_link_render' ), 10, 2 );
+			add_filter( 'jet-engine/listings/frontend/custom-listing-url',          array( $this, 'listing_link_render' ), 10, 2 );
+			add_filter( 'jet-engine/blocks/editor/controls/link-settings',          array( $this, 'blocks_listing_link_controls' ), 10, 2 );
+			add_action( 'jet-engine/blocks/editor/save-settings',                   array( $this, 'save_blocks_editor_settings' ) );
 
 			// Blocks compatibility
 			add_filter( 'jet-engine/blocks-views/editor-data', array( $this, 'localize_fields' ) );
@@ -810,6 +812,38 @@ if ( ! class_exists( 'Jet_Engine_ACF_Package' ) ) {
 				),
 			) );
 
+		}
+
+		public function blocks_listing_link_controls( $link_controls, $settings ) {
+
+			$acf_link_controls = array(
+				'jet_engine_listing_link_acf_field_key' => array(
+					'label'     => __( 'ACF Field', 'jet-engine' ),
+					'groups'    => $this->get_fields_goups( 'links' ),
+					'value'     => ! empty( $settings['acf_field_key'] ) ? $settings['acf_field_key'] : '',
+					'condition' => array(
+						'jet_engine_listing_link'        => 'yes',
+						'jet_engine_listing_link_source' => 'acf_field_groups',
+					),
+				)
+			);
+
+			$link_controls = \Jet_Engine_Tools::array_insert_after( $link_controls, 'jet_engine_listing_link_source', $acf_link_controls );
+
+			return $link_controls;
+		}
+
+		public function save_blocks_editor_settings( $post_id ) {
+
+			if ( ! isset( $_POST['jet_engine_listing_link_acf_field_key'] ) ) {
+				return;
+			}
+
+			$elementor_page_settings = get_post_meta( $post_id, '_elementor_page_settings', true );
+
+			$elementor_page_settings['acf_field_key'] = esc_attr( $_POST[ 'jet_engine_listing_link_acf_field_key' ] );
+
+			update_post_meta( $post_id, '_elementor_page_settings', $elementor_page_settings );
 		}
 
 		public function listing_link_render( $url, $settings ) {

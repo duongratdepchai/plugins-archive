@@ -128,6 +128,7 @@
                                 },
                                 complete: function() {
                                     loadFeed_click.data('requestRunning', false); 
+                                    EqualHeightlayout();
                                 }
                             }).then(function(){ 
                                 if($("."+loadclass).hasClass("list-isotope")){
@@ -230,6 +231,8 @@
                                         },
                                         complete: function() {
                                             lazyFeed_click.data('requestRunning', false);
+                                            
+                                            EqualHeightlayout();
                                         }
                                     }).then(function(){
                                         if($("."+loadclass).hasClass("list-isotope")){
@@ -265,6 +268,14 @@
                             self.innerHTML = '<i class="far fa-copy CopyLoading"></i>';
                         }, 500);
                 });
+
+                /**compatibility with Equal Height*/
+                function EqualHeightlayout() {
+                    var Equalcontainer = jQuery('.elementor-element[data-tp-equal-height-loadded]');
+                    if( Equalcontainer.length > 0 ){
+                        EqualHeightsLoadded();
+                    }
+                }
         });
 	};	
  

@@ -3000,7 +3000,7 @@ class ElementsKit_Widget_Woo_Product_Carousel extends Widget_Base {
 
 		$id = 'ekit-wc-carousel-' . $this->get_id();
 
-		$this->add_render_attribute('wc-carousel', 'class', 'ekit-wc-products-wrapper woocommerce ekit-swiper-container');
+		$this->add_render_attribute('wc-carousel', 'class', 'ekit-wc-products-wrapper woocommerce' . ' ' . (method_exists('\ElementsKit_Lite\Utils', 'swiper_class') ? esc_attr(\ElementsKit_Lite\Utils::swiper_class()) : 'swiper') );
 
 		$this->add_render_attribute('wc-carousel-wrapper', 'class', 'products swiper-wrapper');
 

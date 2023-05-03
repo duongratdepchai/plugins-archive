@@ -568,15 +568,19 @@
 			let GetMobileTitle = container[0].querySelectorAll('.theplus-tabs-content-wrapper .elementor-tab-mobile-title')
 				if( GetMobileTitle.length > 0 ){
 					GetMobileTitle.forEach(function(self){
-						self.addEventListener("click", function(){
-							var currentTabIndex = this.dataset.tab,
-								tabsContainer = this.closest('.theplus-tabs-wrapper'),
-								Connection = tabsContainer.dataset.connection,
-								row_bg_conn = tabsContainer.dataset.rowBgConn,
-								tabsContent = tabsContainer.querySelectorAll('.theplus-tabs-content-wrapper .plus-tab-content'),
-								tabHeader = tabsContainer.querySelectorAll(".theplus-tabs-nav-wrapper .plus-tab-header"),
-								tabTitle = tabsContainer.querySelectorAll("theplus-tabs-content-wrapper .elementor-tab-mobile-title");
+                        var currentTabIndex = self.dataset.tab,
+                            tabsContainer = self.closest('.theplus-tabs-wrapper'),
+                            Connection = tabsContainer.dataset.connection,
+                            row_bg_conn = tabsContainer.dataset.rowBgConn,
+                            tabsContent = tabsContainer.querySelectorAll('.theplus-tabs-content-wrapper .plus-tab-content'),
+                            tabHeader = tabsContainer.querySelectorAll(".theplus-tabs-nav-wrapper .plus-tab-header"),
+                            tabTitle = tabsContainer.querySelectorAll(".theplus-tabs-content-wrapper .elementor-tab-mobile-title");
 
+							if( tabTitle.length > 0 ){
+								tabTitle[0].classList.add('active');
+							}
+                            
+							self.addEventListener("click", function(){
 								if( tabTitle.length > 0 ){
 									tabTitle.forEach(function(self){
 										self.classList.remove('active');
@@ -815,6 +819,14 @@
                     }, 30);
                 }
         }
+
+		function Resizelayout() {
+            let MetroResize = container[0].querySelectorAll('.list-isotope-metro');
+            if( MetroResize.length > 0 ){
+                theplus_setup_packery_portfolio();	
+            }
+        }
+        Resizelayout();
 	};
 
     window.addEventListener('elementor/frontend/init', (event) => {

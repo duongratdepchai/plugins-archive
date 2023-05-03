@@ -31,6 +31,7 @@
     -o-transition: all 0.3s linear;
     -ms-transition: all 0.3s linear;
     transition: all 0.3s linear;
+	background-clip: text;
 	-webkit-background-clip: text;
 }
 
@@ -44,6 +45,7 @@
 }
 .pt_plus_adv_typo_block .text-content-block.typo_gif_based_text,.plus-list-adv-typo-block .listing-typo-text.typo_gif_based_text {
 	color: transparent;
+    background-clip: text;
 	-webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
 }
@@ -299,7 +301,7 @@
     -ms-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-.plus-list-adv-typo-block .plus-adv-text-typo.parallax-scroll {
+.plus-list-adv-typo-block .plus-adv-text-typo.parallax-scroll, .plus-list-adv-typo-block .plus-adv-text-typo.under_overlay {
     display: inline-block;
 }
 .plus-list-adv-typo-block .listing-typo-text {

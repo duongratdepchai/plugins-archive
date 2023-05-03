@@ -12,9 +12,8 @@ if ( ! class_exists( 'Menu_Item_Custom_Fields' ) ) :
 		* @wp_hook action wp_loaded
 		*/
 		public static function load() {
-			add_filter( 'wp_edit_nav_menu_walker', array( __CLASS__, '_filter_walker' ), 99 );
+			add_filter( 'wp_edit_nav_menu_walker', array( __CLASS__, '_filter_walker' ), 0 );
 		}
-
 
 		/**
 		* Replace default menu editor walker with ours

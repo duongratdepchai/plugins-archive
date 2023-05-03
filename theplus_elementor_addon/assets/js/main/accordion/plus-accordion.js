@@ -7,8 +7,8 @@
             Connection = container[0].dataset.connection,
             RBGConnection = container[0].dataset.rowBgConn,
             accrodionList = container[0].querySelectorAll('.theplus-accordion-item'),
-			$PlusAccordionListHeader = container[0].querySelectorAll('.theplus-accordion-item .plus-accordion-header'),
-			
+			$PlusAccordionListHeader = container[0].querySelectorAll('.theplus-accordion-item .plus-accordion-header'),			
+            AccordionHori = container[0].classList.contains('tp-acc-hori'),
 			AccordionSearchLen = container[0].dataset.searchAttrLen,			
 			AccordionhoriTitleWidth = container[0].dataset.horiTitleWidth,
 			Accordionhoriopen = container[0].dataset.horiOpenSpeed,
@@ -21,14 +21,14 @@
             $TabAutoplay = container[0].dataset.tabAutoplay,
             $TabAutoplayDuration = container[0].dataset.tabAutoplayDuration,
             hash = window.location.hash;
-
+            
             if(accrodionList.length > 0){
                 accrodionList.forEach(function(self){
                     let AccHeader = self.querySelector('.plus-accordion-header');
                         if( AccHeader.classList.contains('active-default') ) {
                             let AdContent = self.querySelectorAll('.plus-accordion-content');
                                 AccHeader.classList.add('active');
-                        
+                                
                             if( AdContent.length > 0){
                                 AdContent[0].classList.add('active')
                                 AdContent[0].style.cssText = "display: block;"
@@ -55,7 +55,7 @@
                         }
                 });
             }
-
+           
             if( AccordionType == 'accordion' ) {
                 $PlusAccordionListHeader.forEach(function(self){
                     self.addEventListener("click", function(e){
@@ -66,12 +66,13 @@
                                 this.nextElementSibling.classList.remove('active')
                                 slideUp(this.nextElementSibling, 500)
                             }						
+                            tp_active_classes()
                         }else {
+                            
                             accrodionList.forEach(function(self){
                                 if( self.children[0].classList.contains('active') ){
                                     self.children[0].classList.remove('active')
                                 }
-                                
                                 if( self.children[1] && self.children[1].classList.contains('active') ){
                                     self.children[1].classList.remove('active')
                                     slideUp(self.children[1], 500)
@@ -80,14 +81,13 @@
 
                             this.classList.toggle("active");
                             if(this.nextElementSibling){
+                               
                                 this.nextElementSibling.classList.toggle("active");
                                 if( this.nextElementSibling.style.display != "block" ){
                                     slideDown(this.nextElementSibling, 500);									
 									if(container[0].classList.contains('tp-scrolltopacc')){
                                         setTimeout(() => {
-                                           
                                             jQuery('body, html').animate({
-                                                // scrollTop: jQuery(this).offset().top - AccordionscrollTopOffsetAccr
                                                 scrollTop: (jQuery(this).offset().top - AccordionscrollTopOffsetAccr) - $this.clientHeight
                                             }, AccordionscrollTopSpeedAccr)
                                         }, 400)
@@ -133,8 +133,10 @@
                             if( RBGConnection &&  document.querySelectorAll('#'+RBGConnection).length ){
                                 background_accordion_tabs_conn(tab_index, RBGConnection);
                             }
+                            tp_active_classes()
                         }
                     });	
+                    
                 });	
 
                 let $FindID = container[0].querySelectorAll(`${hash}.plus-accordion-header`);
@@ -148,14 +150,22 @@
                         }
                     });   
                 }
+                tp_active_classes()
             }else if( AccordionType == 'hover' ) {
                 $PlusAccordionListHeader.forEach(function(self){
+                    
                     self.addEventListener("mouseover", function( e ) {
+                        
                         if( this.classList.contains('active') ) {
-                           
-                        }else{
+
+                        }else{  
+                            $PlusAccordionListHeader.forEach(function(item){
+                                item.parentElement.classList.remove('active')
+                            })
+                            self.parentElement.classList.add('active')
                             let ActiveNone = container[0].querySelectorAll('.plus-accordion-header.active'),
                                 tab_index = this.dataset.tab;
+                            
                             if( ActiveNone.length > 0 ){
                                 ActiveNone[0].classList.remove('active')
                                 if(ActiveNone[0].nextElementSibling){
@@ -163,16 +173,15 @@
                                     slideUp(ActiveNone[0].nextElementSibling, 500)
                                 }                            
                             }
-
+                            
                             this.classList.toggle("active");
-                            if(this.nextElementSibling){
+                            if(this.nextElementSibling){   
                                 this.nextElementSibling.classList.toggle("active");
                                 if( this.nextElementSibling.style.display != "block" ){
                                     slideDown(this.nextElementSibling, 500)
                                     if(container[0].classList.contains('tp-scrolltopacc')){
                                         setTimeout(() => {
                                             jQuery('body, html').animate({
-                                                // scrollTop: jQuery(this).offset().top - AccordionscrollTopOffsetAccr
                                                 scrollTop: (jQuery(this).offset().top - AccordionscrollTopOffsetAccr) - $this.clientHeight
                                             }, AccordionscrollTopSpeedAccr)
                                         }, 400)
@@ -224,64 +233,101 @@
             }
             
 			let aecbutton = container[0].querySelectorAll(".tp-aec-button");
-			if(aecbutton.length > 0){
-				 aecbutton[0].querySelector(".tp-toggle-accordion").addEventListener("click", function(e){
-					var ecbtn = this,
-						ectitle = container[0].querySelectorAll(".elementor-tab-title"),
-						ecdesc = container[0].querySelectorAll(".elementor-tab-content");
-						
-						if(ecbtn.classList.contains('active')){	
-							ecbtn.classList.remove('active');
-						}else{
-							ecbtn.classList.add('active');
-						}
-						
-						ectitle.forEach(function(self){
-							if(ecbtn.classList.contains('active')){
-								self.classList.add('active');
-							}else{
-								self.classList.remove('active');
-							}
-						});
-						
-						ecdesc.forEach(function(self){
-							if(ecbtn.classList.contains('active')){	
-								self.classList.add('active');
-								slideDown(self, 500)
-							}else{
-								self.classList.remove('active');
-								slideUp(self, 500)
-							}
-						});
-				  }); 
-			}
-			
-			if( container[0].classList.contains('tp-acc-hori')){
-				let boxwidth = container[0].offsetWidth,
-					titlewidth = container[0].querySelector(".plus-accordion-header").offsetWidth,
-					totalDiv = container[0].querySelectorAll(".theplus-accordion-item").length,
-					totaltitleWidth = Number(totalDiv) * Number(AccordionhoriTitleWidth),
-                    finalwidth = Number(boxwidth) - ( container[0].querySelector(".theplus-accordion-item").clientWidth * Number(totalDiv) );
-					//finalwidth = boxwidth - totaltitleWidth;
+            let tpLivesearch = container[0].querySelectorAll('.tpacsearchinput');   
 
-                    let HAccordianCon = container[0].querySelectorAll(".plus-accordion-content.active"); 
-                    if( HAccordianCon.length > 0 ){
-                        HAccordianCon[0].style.width = `${finalwidth}px`;
-                        HAccordianCon[0].querySelector(".plus-content-editor").style.cssText = `position: absolute;left: ${titlewidth}px; opacity: 1;width: ${finalwidth}px`;
+			if(aecbutton.length > 0){
+                aecbutton[0].querySelector(".tp-toggle-accordion").addEventListener("click", function(e){
+                var ecbtn = this,
+                    ectitle = container[0].querySelectorAll(".elementor-tab-title"),
+                    ecdesc = container[0].querySelectorAll(".elementor-tab-content"),
+                    accHeaderTitle = container[0].querySelectorAll('.plus-accordion-header'),
+                    accContentActive = container[0].querySelectorAll('.plus-accordion-content.active');
+                    
+                if(tpLivesearch.length > 0){
+                    tpLivesearch.forEach(function(search){
+                        if(search.value.length > 0){
+                            ectitle.forEach(function(self){
+                                if(self.style.display == 'flex'){
+                                    ecClassList("tpTitle",ecbtn,self)
+                                }
+                            })
+
+                            ecClassList("ecBtn",ecbtn)
+                            accHeaderTitle.forEach(function(self){
+                                ecClassList("tpClass",ecbtn,self)  
+                            })
+
+                            accContentActive.forEach(function(self){
+                                if(ecbtn.classList.contains('active')){
+                                    self.style.display='flex'
+                                    slideDown(self,500)
+                                } else{
+                                    self.style.display='none';
+                                    slideUp(self,500)
+                                } 
+                            })
+                        }else{
+                            tp_add_accordion_class(ecbtn,ectitle,ecdesc);
+                        }
+                        })
+                }else{
+                        tp_add_accordion_class(ecbtn,ectitle,ecdesc);
+                }
+                    
+                }); 
+			}
+
+            var accActiveHori=document.querySelector(".theplus-accordion-wrapper")
+            var boxwidth = container[0].offsetWidth,
+                titlewidth = container[0].querySelector(".plus-accordion-header").offsetWidth,
+                totalDiv = container[0].querySelectorAll(".theplus-accordion-item").length,
+                totaltitleWidth = Number(totalDiv) * Number(AccordionhoriTitleWidth),
+                finalwidth = Number(boxwidth) - ( container[0].querySelector(".theplus-accordion-item").clientWidth * Number(totalDiv) );
+
+			if(AccordionHori){
+                
+                if(container[0].classList.contains('tp-tab-playloop')){
+                    let getELeSec = $scope.closest('.elementor-top-section')[0]
+                    getELeSec ? getELeSec.style.overflowX='hidden' : '';
+                }
+                
+                window.addEventListener('resize', function(){
+                    let width = accActiveHori.getBoundingClientRect()
+                });
+                
+                let HAccordianCon = container[0].querySelectorAll(".plus-accordion-content.active"); 
+
+                if( HAccordianCon.length > 0 ){
+                    HAccordianCon[0].style.width = `${finalwidth}px`;
+                    HAccordianCon[0].querySelector(".plus-content-editor").style.cssText = `position: absolute;left: ${titlewidth}px; opacity: 1;width: ${finalwidth}px`;
+                    if(container[0].classList.contains('tp-tab-playloop')){
                         HAccordianCon[0].parentElement.classList.add('tp-acc-disable');
                     }
-
-					$scope.find('.theplus-accordion-item').on('click',function(){
-                        container[0].querySelector('.theplus-accordion-item.tp-acc-disable').classList.remove('tp-acc-disable');
-						let sib = $(this).siblings();
-						if(sib){
-                            this.classList.add('tp-acc-disable');
-							$(this).find('.plus-content-editor').css('position','absolute').css('width',finalwidth);
-							$(this).find('.plus-accordion-content').animate({width:finalwidth, opacity: 1},Accordionhoriopen);
-							sib.find('.plus-accordion-content').animate({width:0,opacity: 0},Accordionhoriclose);
-							sib.find('.plus-content-editor').css('width',finalwidth);
-						}
-					 });
+                }else if(HAccordianCon.length == 0){
+                    let HaccContent = container[0].querySelectorAll(".plus-accordion-content"); 
+                    setTimeout(() => {
+                    HaccContent[0].previousElementSibling.classList.add('active')
+                    HaccContent[0].style.width = `${finalwidth}px`;
+                    HaccContent[0].querySelector(".plus-content-editor").style.cssText = `position: absolute;left: ${titlewidth}px; opacity: 1;width: ${finalwidth}px`;
+                    if(container[0].classList.contains('tp-tab-playloop')){
+                        HAccordianCon[0].parentElement.classList.add('tp-acc-disable');
+                    }
+                    HaccContent[0].parentElement.classList.add('active');
+                    }, 50);
+                    
+                }    
+                $scope.find( '.theplus-accordion-item').on('click',function(){
+                    // if(container[0].classList.contains('tp-seachaccr')){
+                        let getAccItem = container[0].querySelectorAll('.theplus-accordion-item')
+                        getAccItem.forEach(function(self){
+                            if(!self.classList.contains('active')){
+                                self.classList.remove('tp-acc-disable')
+                            }
+                        })
+                    // }
+                    tp_horizontal_autoplay('click',this) 
+                });              
+                
 			}
 			
 			if(container[0].classList.contains('tp-stageraccr')){
@@ -315,16 +361,16 @@
 			}
 
             if(container[0].classList.contains('tp-seachaccr')){
+                
                 jQuery.expr[':'].containsCaseInsensitive = function (con, b, ser) {
                     return jQuery(con).text().toUpperCase().indexOf(ser[3].toUpperCase()) >= 0;
                 };
-
                 let liveserach = container[0].querySelectorAll('#tpsb'+AccordionId);
                     if( liveserach.length > 0 ){
                         liveserach[0].addEventListener("change", tp_live_search);
                         liveserach[0].addEventListener("keyup", tp_live_search);
-                        liveserach[0].addEventListener("paste", tp_live_search);
                         liveserach[0].addEventListener("click", tp_live_search);
+                        liveserach[0].addEventListener("paste", tp_live_search);
                     }
             }
 
@@ -339,7 +385,7 @@
                     let windowHeightt = window.innerHeight,
                         elementTopp = container[0].getBoundingClientRect().top,
                         elementVisiblee = 150;
-        
+
                         if (elementTopp < windowHeightt - elementVisiblee) {
                             tp_autoplay_load();
                         }else{
@@ -364,7 +410,7 @@
 
             function tp_autoplay_playpause_btn(){
                 let child1 = container[0].querySelectorAll('.tp-tab-play-pause:nth-child(1)'),
-					child2 = container[0].querySelectorAll('.tp-tab-play-pause:nth-child(2)');
+                    child2 = container[0].querySelectorAll('.tp-tab-play-pause:nth-child(2)');
 
                     if(child1[0].classList.contains('active')) {
                         child1[0].classList.remove('active');
@@ -376,21 +422,27 @@
                         child2[0].classList.remove('active');
                         child1[0].classList.add('active');
                         this.classList.remove('pausecls');
+                        
                         tp_autoplay_button_click();
+                        
                     }
             }
 
             function tp_autoplay_header_click(){
                 clearInterval(AutoplaysetIn);
-
                 let TabActive = container[0].querySelectorAll('.plus-tab-header.active');
+
                 if( TabActive.length > 0 ){
                     TabActive[0].classList.remove('active');
                     tp_playclasslist(TabActive[0], 'remove');
                 }
 
                 if( this.parentElement ){
-                    this.parentElement.classList.add('active');
+                    if(this.parentElement.children[0].classList.contains('active')){
+                        this.parentElement.classList.add('active');
+                    }else{
+                        this.parentElement.classList.remove('active');
+                    }
                 }
 
                 if( container[0].classList.contains('tp-tab-playpause-button') ){
@@ -399,7 +451,7 @@
                         TabWrap[0].classList.remove('pausecls');
 
                         let child1 = container[0].querySelectorAll('.tp-tab-play-pause:nth-child(1)'),
-					        child2 = container[0].querySelectorAll('.tp-tab-play-pause:nth-child(2)');
+                            child2 = container[0].querySelectorAll('.tp-tab-play-pause:nth-child(2)');
                             if(child1.length > 0){
                                 child1[0].classList.remove('active');
                             }
@@ -409,58 +461,128 @@
                     }
                 }
             }
-           
+
             function tp_autoplay_load(){
+                container[0].querySelector(".theplus-accordion-item").classList.add('active');
                 let TabHeader = container[0].querySelectorAll('.theplus-accordion-item.plus-tab-header');
-                if( TabHeader.length > 0 ){
-                    TabHeader[0].classList.add('active');
+                if( TabHeader.length > 0 ){                   
+
+                    TabHeader.forEach(function(self,idx){ 
+                        if(self.firstElementChild.classList.contains('active-default')){
+                            self.classList.add('active')
+                            TabHeader[idx].classList.add('active');
+                        }else{
+                            self.classList.remove('active')
+                        }
+                    })
 
                     AutoplaysetIn = setInterval(function() {
+                        
+                        if( AccordionHori && container[0].classList.contains('tp-tab-playloop')){
+                            tp_horizontal_autoplay('active',TabHeader)
+                        }
+                        
                         let TabActive = container[0].querySelectorAll('.plus-tab-header.active');
                             if( TabActive.length > 0 ){
                                 TabActive[0].classList.remove('active');
                                 tp_playclasslist(TabActive[0], 'remove');
-                                if( TabActive[0].nextElementSibling.classList.contains('plus-tab-header') ){
+                                if( TabActive[0].nextElementSibling && TabActive[0].nextElementSibling.classList.contains('plus-tab-header') ){
                                     TabActive[0].nextElementSibling.classList.add('active')
                                     tp_playclasslist(TabActive[0].nextElementSibling, 'add');
                                 }else{
-                                    clearInterval(AutoplaysetIn);
+                                    TabHeader[0].classList.add('active');
+                                    tp_playclasslist(TabHeader[0], 'add');
                                 }
-                            }else{
-                                clearInterval(AutoplaysetIn);
                             }
-                    }, $TabAutoplayDuration * 1000);                    
-                }
+                        }, $TabAutoplayDuration * 1000);                    
+                    }
 
                 window.removeEventListener("scroll", tp_autoplay_load);
             }
 
+            function tp_horizontal_autoplay(type,item){
+                if(type == 'active'){
+                    setTimeout(() => {
+                        item.forEach(function(self){
+                            if(self.classList.contains('active')){
+                            container[0].querySelector('.theplus-accordion-item.tp-acc-disable').classList.remove('tp-acc-disable');
+                            let sib = $(self).siblings();
+                             if(sib){
+                                self.classList.add('tp-acc-disable');
+                                $(self).find('.plus-content-editor').css('position','absolute').css('width',finalwidth);
+                                $(self).find('.plus-accordion-content').animate({width:finalwidth, opacity: 1},Accordionhoriopen);
+                                sib.find('.plus-accordion-content').animate({width:0,opacity: 0},Accordionhoriclose);
+                                sib.find('.plus-content-editor').css('width',finalwidth);
+                              }
+                            }
+                        })    
+                    }, 50); 
+                } else if(type == 'click'){
+                    let sib = $(item).siblings();
+						if(sib){
+                            item.classList.add('tp-acc-disable');
+							$(item).find('.plus-content-editor').css('position','absolute').css('width',finalwidth);
+							$(item).find('.plus-accordion-content').animate({width:finalwidth, opacity: 1},Accordionhoriopen);
+							sib.find('.plus-accordion-content').animate({width:0,opacity: 0},Accordionhoriclose);
+							sib.find('.plus-content-editor').css('width',finalwidth);
+                        }
+                }
+            }
+            
             function tp_autoplay_button_click(){
-                let TabActive = container[0].querySelectorAll('.plus-tab-header.active');
+                let TabActive = container[0].querySelectorAll('.plus-tab-header.active'),
+                    TabHeader = container[0].querySelectorAll('.plus-tab-header');
+
                     if( TabActive.length > 0 ){
+
+                        if( AccordionHori && container[0].classList.contains('tp-tab-playloop')){
+                            tp_horizontal_autoplay('active',TabHeader)
+                        }
+                        
                         TabActive[0].classList.remove('active');
                         tp_playclasslist(TabActive[0], 'remove');
+                        TabActive[0].nextElementSibling.classList.add('active');
+                        if(!TabActive[0].nextElementSibling.classList.contains('tp-tab-play-pause-wrap')){
+                            tp_playclasslist(TabActive[0].nextElementSibling, 'add');
+                        }else{
+                            tp_add_header_autoplay_class(TabHeader);
+                        } 
 
-                        TabActive[0].nextElementSibling.classList.add('active')
-                        tp_playclasslist(TabActive[0].nextElementSibling, 'add');
+                    }else if( TabActive.length == 0 ){
+                        tp_add_header_autoplay_class( TabHeader );
+
                     }
                     
                     AutoplaysetIn = setInterval(function() {
+                        let TabHeader = container[0].querySelectorAll('.plus-tab-header');
                         let ggTabActive = container[0].querySelectorAll('.plus-tab-header.active');
-                            ggTabActive[0].classList.remove('active');
-                            tp_playclasslist(ggTabActive[0], 'remove');
-                        
+
+                        if( AccordionHori && container[0].classList.contains('tp-tab-playloop') ){
+                            tp_horizontal_autoplay('active',TabHeader)
+                        }
+
+                        if( ggTabActive.length == 0 ){
+                            tp_add_header_autoplay_class(TabHeader);
+                        }else{
+                            ggTabActive[0].classList.remove('active');      
+                            tp_playclasslist(ggTabActive[0], 'remove');  
                             if( ggTabActive[0].nextElementSibling.classList.contains('plus-tab-header') ){
                                 ggTabActive[0].nextElementSibling.classList.add('active')
                                 tp_playclasslist(ggTabActive[0].nextElementSibling, 'add');
-                            }else{
-                                clearInterval(AutoplaysetIn);
+                            }else{   
+                                tp_add_header_autoplay_class(TabHeader);
                             }
-
+                        }  
                     }, $TabAutoplayDuration * 1000);
             }
 
-            function tp_playclasslist(item, type){
+            function tp_add_header_autoplay_class(TabHeader){
+                TabHeader[0].classList.add('active')
+                tp_playclasslist(TabHeader[0], 'add');
+                document.querySelector('.tp-tab-play-pause-wrap').classList.remove('active');
+            }
+
+            function tp_playclasslist(item,type){
                 if( type == 'remove' ){
                     let Header = item.children[0],
                         content = item.children[1];
@@ -492,6 +614,50 @@
                 }
             }
 
+            function tp_add_accordion_class(ecbtn,ectitle,ecdesc){
+                ecClassList("ecBtn",ecbtn)
+                ectitle.forEach(function(self){
+                    ecClassList("tpClass",ecbtn,self)
+                });                                
+                ecdesc.forEach(function(self){
+                    if(ecbtn.classList.contains('active')){	
+                        slideDown(self, 500)
+                        self.classList.remove('active');
+                    }else{
+                        self.classList.add('active');
+                        slideUp(self, 500)
+                    }
+                });
+            }
+
+            function ecClassList(type, ecbtn,self){
+                if(type == 'ecBtn'){
+                    if(ecbtn.classList.contains('active')){	
+                        ecbtn.classList.remove('active');
+                    }else{
+                        ecbtn.classList.add('active');
+                    }
+                }else if(type == 'tpClass'){
+                    if( ecbtn.classList.contains('active')){
+                    self.classList.add('active');
+                    }else{
+                        self.classList.remove('active');
+                    }
+                }
+                if(type=="tpTitle"){
+                    if(ecbtn.classList.contains('active')){
+                        slideUp(self.nextElementSibling,500);
+                        self.nextElementSibling.style.display='none';
+                        self.nextElementSibling.classList.add('active')
+                    }else{
+                        self.nextElementSibling.style.display='flex';
+                        self.nextElementSibling.classList.remove('active')
+                        slideDown(self.nextElementSibling,500);
+                    }
+                }
+                
+            }
+
             function tp_stageraccr_scroll(){
                 let windowHeight = window.innerHeight,
                     elementTop = container[0].getBoundingClientRect().top,
@@ -503,7 +669,6 @@
                         		tp_fadeIn(self, stagerVdAccr);
                         	}, idx * stagerGapAccr);
                         });
-
                         window.removeEventListener("scroll", tp_stageraccr_scroll);
                     }
             }
@@ -578,70 +743,98 @@
                 }
             }   
 
+
             function tp_live_search() {
-                let searchTerm = this.value, 
+                let searchTerm = this.value,
                     plusContent = container[0].querySelectorAll(".theplus-accordion-item .plus-accordion-content"),
                     plusHeader = container[0].querySelectorAll(".theplus-accordion-item .plus-accordion-header");
-
-                if (searchTerm.length >= AccordionSearchLen) {
-                    jQuery('.theplus-accordion-wrapper.tp-seachaccr .theplus-accordion-item .plus-accordion-header').each(function () {
-                        let headid = '#'+this.id,
-                            descid = '#'+this.nextElementSibling.id;
-
-                            this.style.cssText = `display: none`;
-                            this.classList.remove('active','active-default');
-
-                            jQuery(headid + ':not(:containsCaseInsensitive(' + searchTerm + '))').removeClass('active active-default').css("display","none");
-                            jQuery(descid + ':not(:containsCaseInsensitive(' + searchTerm + '))').removeClass('active active-default').css("display","none");
-
-                            jQuery(headid + ':containsCaseInsensitive(' + searchTerm + ')').addClass('active').css("display","flex");                            
-                            jQuery(descid+ ':containsCaseInsensitive(' + searchTerm + ')').addClass('active').css("display","flex");
-                    });
                     
-                    jQuery('.theplus-accordion-wrapper.tp-seachaccr .theplus-accordion-item .plus-accordion-content').each(function () {
-                        let deccon = '#'+this.id,
-                            headcon = '#'+this.previousElementSibling.id;
+                    if( event.type == 'click' ){
+                        if( searchTerm ){
+                            setTimeout(() => {
+                                jQuery(this).click()
+                            }, 250);
 
-                            this.style.cssText = `display: none`;
-                            this.classList.remove('active','active-default');
+                            return false;
+                        }
+                    }
+
+                    if( event.type == 'paste' ){
+                        setTimeout(() => {
+                            this.blur();
+                        }, 250);
+
+                        return false;
+                    }
+
+                    if ( searchTerm.length >= AccordionSearchLen ) {
+                       
+                        if(searchTerm.value != ' '){
+                            aecbutton.forEach(function(self){
+                                self.childNodes[0].classList.add('active');
+                            })
+                        }
+
+                        jQuery('.theplus-accordion-wrapper.tp-seachaccr .theplus-accordion-item .plus-accordion-header',$scope).each(function () {
+                            let headid = '#'+this.id,
+                                descid = '#'+this.nextElementSibling.id,
+                                searchTitle = jQuery(headid + ':containsCaseInsensitive(' + searchTerm + ')'),
+                                searchDes = jQuery(descid+ ':containsCaseInsensitive(' + searchTerm + ')');
+                            
+                                this.style.cssText = `display: none`;
+                                this.classList.remove('active','active-default');
+
+                                searchTitle.removeClass('active active-default').css("display","none");
+                                searchDes.removeClass('active active-default').css("display","none");
+
+                                searchTitle.addClass('active').css("display","flex");
+                                searchDes.addClass('active').css("display","flex");
+                        });
                         
-                            jQuery(deccon + ':not(:containsCaseInsensitive(' + searchTerm + '))').removeClass('active active-default').css("display","none");
-                            jQuery(headcon + ':not(:containsCaseInsensitive(' + searchTerm + '))').removeClass('active active-default').css("display","none");
+                        jQuery('.theplus-accordion-wrapper.tp-seachaccr .theplus-accordion-item .plus-accordion-content',$scope).each(function () {
+                            let deccon = '#'+this.id,
+                                headcon = '#'+this.previousElementSibling.id;
+                                this.style.cssText = `display: none`;
+                                this.classList.remove('active','active-default');
 
-                            jQuery(deccon + ':containsCaseInsensitive(' + searchTerm + ')').addClass('active').css("display","flex");
-                            jQuery(headcon+ ':containsCaseInsensitive(' + searchTerm + ')').addClass('active').css("display","flex");
-                    });
+                                jQuery(deccon + ':not(:containsCaseInsensitive(' + searchTerm + '))').removeClass('active active-default').css("display","none");
+                                jQuery(headcon + ':not(:containsCaseInsensitive(' + searchTerm + '))').removeClass('active active-default').css("display","none");
 
-                    if( plusContent.length > 0 ){
-                        plusContent.forEach(function(content){
-                            if( content.classList.contains('active') ){
-                                content.previousElementSibling.style.cssText = `display: flex`;
-                                content.previousElementSibling.classList.add('active')
-                            }
+                                jQuery(deccon + ':containsCaseInsensitive(' + searchTerm + ')').addClass('active').css("display","flex");
+                                jQuery(headcon+ ':containsCaseInsensitive(' + searchTerm + ')').addClass('active').css("display","flex");
                         });
+                        
+                        if( plusContent.length > 0 ){
+                            plusContent.forEach(function(content){
+                                if( content.classList.contains('active') ){
+                                    content.previousElementSibling.style.cssText = `display: flex`;
+                                    content.previousElementSibling.classList.add('active')
+                                }
+                            });
+                        }
+                        if( plusHeader.length > 0 ){
+                            plusHeader.forEach(function(header){
+                                if( header.classList.contains('active') ){
+                                    header.nextElementSibling.style.cssText = `display: flex`;
+                                    header.nextElementSibling.classList.add('active')
+                                }
+                            });
+                        }
+                    }else {
+                        if( plusContent.length > 0 ){
+                            plusContent.forEach(function(content){
+                                content.style.cssText = `display: none`;
+                                content.classList.remove('active', 'active-default');
+                            });
+                        }
+                        if( plusHeader.length > 0 ){
+                            plusHeader.forEach(function(header){
+                                header.style.cssText = `display: flex`;
+                                header.classList.remove('active', 'active-default');
+                            });
+                        }	 
                     }
-                    if( plusHeader.length > 0 ){
-                        plusHeader.forEach(function(header){
-                            if( header.classList.contains('active') ){
-                                header.nextElementSibling.style.cssText = `display: flex`;
-                                header.nextElementSibling.classList.add('active')
-                            }
-                        });
-                    }
-                }else {
-                    if( plusContent.length > 0 ){
-                        plusContent.forEach(function(content){
-                            content.style.cssText = `display: none`;
-                            content.classList.remove('active', 'active-default');
-                        });
-                    }
-                    if( plusHeader.length > 0 ){
-                        plusHeader.forEach(function(header){
-                            header.style.cssText = `display: flex`;
-                            header.classList.remove('active', 'active-default');
-                        });
-                    }	 
-                }
+                    tp_active_classes()
             }
 
 			function tp_fadeIn(element, duration=600) {
@@ -657,7 +850,7 @@
 				};
 				tick();
 			}
-			
+
             function slideUp (target, duration=500){
                 target.style.transitionProperty = 'height, margin, padding';
                 target.style.transitionDuration = duration + 'ms';
@@ -710,6 +903,21 @@
                         target.style.removeProperty('transition-duration');
                         target.style.removeProperty('transition-property');
                 }, duration);
+            }
+          
+            function tp_active_classes(){
+             let accHeaderTitle = container[0].querySelectorAll('.plus-accordion-header.active'),
+                 aecbutton = container[0].querySelectorAll(".tp-aec-button");
+
+                if(accHeaderTitle.length > 0){
+                    aecbutton.forEach(function(self){
+                        self.children[0].classList.add('active')
+                    })
+                }else if(accHeaderTitle.length == 0){
+                    aecbutton.forEach(function(self){
+                        self.children[0].classList.remove('active')
+                    })
+                }
             }
 	};
 

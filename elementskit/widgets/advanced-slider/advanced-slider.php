@@ -109,6 +109,19 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 			]
 		);
 
+		 /**
+		 * Control: Enable Ajax.
+		 */
+		$this->add_control(
+			'ekit_ajax_template',
+			[
+				'label'         => esc_html__( 'Enable Ajax', 'elementskit' ),
+				'type'          => Controls_Manager::HIDDEN,
+				'prefix_class'  => 'ekit-template-ajax--',
+				'render_type'   => 'template',
+			]
+		);
+
 		$this->add_control(
 			'ekit_slider_effect_style',
 			[
@@ -237,6 +250,22 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 				'default' => '',
 			]
 		);
+		
+		$this->add_control(
+			'ekit_slider_thumbs_scale',
+			[
+				'label' => esc_html__( 'Thumbs Scale', 'elementskit' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'ON', 'elementskit' ),
+				'label_off' => esc_html__( 'OFF', 'elementskit' ),
+				'return_value' => 'yes',
+				'default' => '',
+				'condition' => ['ekit_slider_thumbs_image_show' => 'yes'],
+				'selectors' => [
+					'{{WRAPPER}} .elementskit-advanced-slider .slider-thumbs-yes .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active' => 'transform: scale(.9)',
+				],
+			]
+		);
 
         $this->add_control(
 			'ekit_slider_mouse_scroll',
@@ -259,6 +288,30 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 				'label_off' => esc_html__( 'No', 'elementskit' ),
 				'return_value' => 'yes',
 				'default' => '',
+			]
+		);
+
+		$this->add_control(
+			'ekit_slider_infinite_loop',
+			[
+				'label' => esc_html__( 'Infinite Loop', 'elementskit' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'ON', 'elementskit' ),
+				'label_off' => esc_html__( 'OFF', 'elementskit' ),
+				'return_value' => 'yes',
+				'default' => 'yes',
+			]
+		);
+		
+		$this->add_control(
+			'ekit_slider_speed_time',
+			[
+				'label' => esc_html__( 'Speed (ms)', 'elementskit' ),
+				'type'      => Controls_Manager::NUMBER,
+                'min'       => 300,
+                'max'       => 10000,
+				'step' 		=> 1,
+                'default'   => 600,
 			]
 		);
         
@@ -571,6 +624,36 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 				'toggle' => true,
 				'selectors' => [
 					'{{WRAPPER}} .elementskit-advanced-slider .swiper-container-vertical .ekit-swiper-arrow-button' => '{{VALUE}}',
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-vertical .ekit-swiper-arrow-button' => '{{VALUE}}',
+				],
+                'condition' => ['ekit_slider_show_direction_type' => 'vertical']
+			]
+		);
+
+		$this->add_control(
+			'ekit_slider_arrow_space_between',
+			[
+				'label' => esc_html__( 'Arrow Space Between', 'elementskit' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+						'step' => 1,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 5,
+				],
+				'selectors' => [
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-container-vertical .ekit-swiper-arrow-button' => '--space-between-top:{{SIZE}}{{UNIT}}; --space-between-bottom : -{{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-vertical .ekit-swiper-arrow-button' => '--space-between-top:{{SIZE}}{{UNIT}}; --space-between-bottom : -{{SIZE}}{{UNIT}}',
 				],
                 'condition' => ['ekit_slider_show_direction_type' => 'vertical']
 			]
@@ -579,7 +662,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
         $this->add_responsive_control(
             "ekit_slider_arrow_vertical",
             [
-                'label' => esc_html__( 'Arrow Vertical Align', 'elementskit' ),
+                'label' => esc_html__( 'Arrow Vertical Align (%)', 'elementskit' ),
                 'size_units' => ['%'],
                 'type' => Controls_Manager::SLIDER,
                 'range' => [
@@ -596,6 +679,9 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
                     '{{WRAPPER}} .elementskit-advanced-slider .swiper-container-vertical .ekit-swiper-arrow-button' => 'top: {{SIZE}}%;',
                     '{{WRAPPER}} .elementskit-advanced-slider .swiper-container-horizontal .ekit-swiper-arrow-button .swiper-button-next' => 'top: {{SIZE}}%;',
                     '{{WRAPPER}} .elementskit-advanced-slider .swiper-container-horizontal .ekit-swiper-arrow-button .swiper-button-prev' => 'top: {{SIZE}}%;',
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-vertical .ekit-swiper-arrow-button' => 'top: {{SIZE}}%;',
+                    '{{WRAPPER}} .elementskit-advanced-slider .swiper-horizontal .ekit-swiper-arrow-button .swiper-button-next' => 'top: {{SIZE}}%;',
+                    '{{WRAPPER}} .elementskit-advanced-slider .swiper-horizontal .ekit-swiper-arrow-button .swiper-button-prev' => 'top: {{SIZE}}%;',
                 ],
             ]
         );
@@ -712,6 +798,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 				'toggle' => true,
 				'selectors' => [
 					'{{WRAPPER}} .elementskit-advanced-slider .swiper-container-horizontal .swiper-pagination' => '{{VALUE}}',
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-horizontal .swiper-pagination' => '{{VALUE}}',
 				],
                 'condition' => ['ekit_slider_show_direction_type' => 'horizontal']    
 			]
@@ -736,6 +823,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 				'toggle' => true,
 				'selectors' => [
 					'{{WRAPPER}} .elementskit-advanced-slider .swiper-container-vertical .swiper-pagination' => '{{VALUE}}',
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-vertical .swiper-pagination' => '{{VALUE}}',
 				],
                 'condition' => ['ekit_slider_show_direction_type' => 'vertical']
 			]
@@ -759,6 +847,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 				],
                 'selectors' => [
                     "{{WRAPPER}} .elementskit-advanced-slider .swiper-container-vertical > .swiper-pagination-bullets" => 'top: {{SIZE}}%;',
+					"{{WRAPPER}} .elementskit-advanced-slider .swiper-vertical > .swiper-pagination-bullets" => 'top: {{SIZE}}%;',
                 ],
                 'condition' => ['ekit_slider_show_direction_type' => 'vertical']
             ]
@@ -767,7 +856,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 		$this->add_responsive_control(
 			'ekit_slider_bottom_to_top',
 			[
-				'label' => esc_html__( 'Vertical Align', 'elementskit' ),
+				'label' => esc_html__( 'Vertical Align (%)', 'elementskit' ),
 				'type' => Controls_Manager::SLIDER,
                 'size_units' => ['%'],
                 'range' => [
@@ -779,6 +868,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
                 
 				'selectors' => [
 					'{{WRAPPER}} .elementskit-advanced-slider .swiper-container-horizontal > .swiper-pagination' => 'top: {{SIZE}}%;',
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-horizontal > .swiper-pagination' => 'top: {{SIZE}}%;',
 				],
                 'condition' => ['ekit_slider_show_direction_type' => 'horizontal']
 			]
@@ -929,6 +1019,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
                 ],
                 'selectors' => [
 					'{{WRAPPER}} .elementskit-advanced-slider .swiper-container-vertical > .swiper-pagination-bullets' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .elementskit-advanced-slider .swiper-vertical > .swiper-pagination-bullets' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -986,7 +1077,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
         $this->add_responsive_control(
 			'ekit_slider_thumbs_image_offset',
 			[
-				'label' => esc_html__( 'Offset Gap', 'elementskit' ),
+				'label' => esc_html__( 'Offset Gap (%)', 'elementskit' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ '%'],
 				'range' => [
@@ -1114,7 +1205,7 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
         $this->add_responsive_control(
 			'ekit_slider_progress_bar_bottom_to_top',
 			[
-				'label' => esc_html__( 'Progressbar Vertical Align', 'elementskit' ),
+				'label' => esc_html__( 'Vertical Align (%)', 'elementskit' ),
 				'type' => Controls_Manager::SLIDER,
                 'size_units' => ['%'],
                 'type' => Controls_Manager::SLIDER,
@@ -1161,6 +1252,8 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
                 'sliderThumbsOffset' => $ekit_slider_thumbs_image_offset,
                 'sliderTabItems' => $ekit_slider_tab_items,
                 'progressBar' => $ekit_slider_progress_bar,
+                'speedTime' => $ekit_slider_speed_time,
+                'loopEnable' => $ekit_slider_infinite_loop,
                 'autoPlayDelay' => $ekit_slider_auto_play_delay,
 				'breakpointsOption' => [
 					360 => [
@@ -1185,11 +1278,11 @@ class ElementsKit_Widget_Advanced_Slider extends Widget_Base {
 		?>
 
 		<div <?php $this->print_render_attribute_string( 'advanced-slider-data' ); ?>>
-			<div class="swiper ekit-slider-wrapper">
+			<div class="<?php echo method_exists('\ElementsKit_Lite\Utils', 'swiper_class') ? esc_attr(\ElementsKit_Lite\Utils::swiper_class()) : 'swiper'; ?> ekit-slider-wrapper">
 				<div class="swiper-wrapper ekit-swiper-wrapper">
 					<?php foreach ($ekit_slider_tab_items as $i => $tab) : ?>
 						<div class="swiper-slide ekit-swiper-slide elementor-repeater-item-<?php echo esc_attr( $tab[ '_id' ] ); ?>">
-							<?php echo Widget_Area_Utils::parse( $tab['ekit_slider_tab_content'], $this->get_id(), $tab[ '_id' ], '', ($i + 1) ); ?>     
+							<?php echo Widget_Area_Utils::parse( $tab['ekit_slider_tab_content'], $this->get_id(), $tab[ '_id' ], $ekit_ajax_template, ($i + 1) ); ?>    
 						</div>
 					<?php endforeach; ?>
 				</div>

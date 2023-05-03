@@ -339,7 +339,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 					}
 
 					$description .= sprintf(
-						'<span>%1$s<code class="je-field-name">%2$s</code></span>',
+						'<span>%1$s<span class="je-field-name">%2$s</span></span>',
 						__( 'Name: ', 'jet-engine' ),
 						$field['name']
 					);
@@ -743,10 +743,18 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 					if ( undefined !== navigator.clipboard && undefined !== navigator.clipboard.writeText ) {
 	
 						$( document ).on( 'click', '.je-field-name', function( event ) {
-							var fieldName = $( event.target ).text();
+							var field = $( event.target ),
+								fieldName = field.text();
 	
 							navigator.clipboard.writeText( fieldName ).then( function() {
 								// clipboard successfully set
+								
+								field.addClass( 'je-copied' );
+								
+								setTimeout( function() {
+									field.removeClass( 'je-copied' );
+								}, 1500 );
+							
 							}, function() {
 								// clipboard write failed
 							} );
@@ -884,7 +892,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Meta' ) ) {
 
 				if ( ! $this->hide_field_names ) {
 					$label .= sprintf(
-						' <span>(%1$s<code class="je-field-name">%2$s</code>)</span>',
+						' <span>(%1$s<span class="je-field-name">%2$s</span>)</span>',
 						__( 'name: ', 'jet-engine' ),
 						$field['name']
 					);

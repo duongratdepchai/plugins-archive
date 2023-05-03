@@ -99,7 +99,15 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 				echo '<div class="jet-engine-gallery-slider__item">';
 
 				if ( $args['lightbox'] ) {
-					echo '<a href="' . $img_full . '" class="jet-engine-gallery-slider__item-wrap jet-engine-gallery-item-wrap is-lightbox" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="' . $gallery_id . '">';
+
+					$lightbox_attr = array(
+						'href'  => $img_full,
+						'class' => array( 'jet-engine-gallery-slider__item-wrap', 'jet-engine-gallery-item-wrap', 'is-lightbox' ),
+					);
+
+					$lightbox_attr = apply_filters( 'jet-engine/gallery/lightbox-attr', $lightbox_attr, $img_data, $gallery_id );
+
+					echo '<a ' . Jet_Engine_Tools::get_attr_string( $lightbox_attr ) . '>';
 				} else {
 					echo '<span class="jet-engine-gallery-slider__item-wrap jet-engine-gallery-item-wrap">';
 				}
@@ -189,7 +197,17 @@ if ( ! class_exists( 'Jet_Engine_Img_Gallery' ) ) {
 				echo '<div class="jet-engine-gallery-grid__item">';
 
 				if ( $args['lightbox'] ) {
-					echo '<a href="' . $img_full . '" class="jet-engine-gallery-grid__item-wrap jet-engine-gallery-item-wrap is-lightbox" data-elementor-open-lightbox="yes" data-elementor-lightbox-slideshow="' . $gallery_id . '" data-full-img-width="' . $full_img_width . '" data-full-img-height="' . $full_img_height . '">';
+
+					$lightbox_attr = array(
+						'href'  => $img_full,
+						'class' => array( 'jet-engine-gallery-grid__item-wrap', 'jet-engine-gallery-item-wrap', 'is-lightbox' ),
+						'data-full-img-width'  => $full_img_width,
+						'data-full-img-height' => $full_img_height,
+					);
+
+					$lightbox_attr = apply_filters( 'jet-engine/gallery/lightbox-attr', $lightbox_attr, $img_data, $gallery_id );
+
+					echo '<a ' . Jet_Engine_Tools::get_attr_string( $lightbox_attr ) . '>';
 				} else {
 					echo '<span class="jet-engine-gallery-grid__item-wrap jet-engine-gallery-item-wrap">';
 				}

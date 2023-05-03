@@ -1,178 +1,76 @@
 /* Search Filter */
 (function($) {
 	"use strict";
-	var ajaxfilterMap = new Map();
+	var ajaxfilterMap = new Map();	
 	var WidgetSearchFilterHandler = function($scope, $) {
 		let container = $scope[0].querySelectorAll('.tp-search-filter'),
 			form = container[0].querySelectorAll('.tp-search-form'),
-			DocForm = document.querySelectorAll('.tp-search-form'),
 			tagHandle = document.querySelector('.tp-filter-tag-wrap'),
 			TagHandle = document.querySelectorAll('.tp-filter-tag-wrap'),
 			connId = (container[0].dataset.basic) ? container[0].dataset.connection : 'tp_list',
 			basic = (container[0].dataset.basic) ? JSON.parse(container[0].dataset.basic) : [],
 			delayload = (basic && basic.delayload) ? Number(basic.delayload) * Number(1000) : Number(300),
-			enablearchive = (basic && basic.enablearchive) ? basic.enablearchive : 'false',
+			// enablearchive = (basic && basic.enablearchive) ? basic.enablearchive : 'no',
 			fieldValue = {},
 			$Increment = new Array(),
 			$IncrementLoad = new Array();
-       
+    
 		let	option=[];
 		let seaList = document.querySelectorAll('.'+connId);
 			seaList.forEach(function(item, index) {
 				option[index] = (item.dataset.searchattr) ? JSON.parse(item.dataset.searchattr) : [];
 				option[index]['filtertype'] = 'search_list';
 				option[index]['ajaxButton'] = 1;
-				option[index]['enablearchive'] = enablearchive;
+				// option[index]['enablearchive'] = enablearchive;
 			});
-
-			var fullArray = {
-				search : [],
-				checkBox : [],
-				radio : [],
-				select : [],
-				alphabet : [],
-				date : [],
-				tabbing : [],
-				button : [],
-				image : [],
-				color : [],
-				rating : [],
-				range : [],
-			};
-
-		/**All Filter Merege*/
-		if( DocForm.length > 0 ){
-			DocForm.forEach(function(self) {
-				let seafield = (self && self.dataset && self.dataset.field) ? JSON.parse(self.dataset.field) : [];
-
-					if(seafield.search){
-						seafield.search.forEach(function(item) {
-							fullArray.search.push( item );
-						});
-					}
-
-					if(seafield.alphabet){
-						seafield.alphabet.forEach(function(item) {
-							fullArray.alphabet.push( item );
-						});
-					}
-
-					if(seafield.select){
-						seafield.select.forEach(function(item) {
-							fullArray.select.push( item );
-						});
-					}
-
-					if(seafield.checkBox){
-						seafield.checkBox.forEach(function(item) {
-							fullArray.checkBox.push( item );
-						});
-					}
-
-					if(seafield.radio){
-						seafield.radio.forEach(function(item) {
-							fullArray.radio.push( item );
-						});
-					}
-
-					if(seafield.date){
-						seafield.date.forEach(function(item) {
-							fullArray.date.push( item );
-						});
-					}
-
-					if(seafield.tabbing){
-						seafield.tabbing.forEach(function(item) {
-							fullArray.tabbing.push( item );
-						});
-					}
-
-					if(seafield.button){
-						seafield.button.forEach(function(item) {
-							fullArray.button.push( item );
-						});
-					}
-
-					if(seafield.image){
-						seafield.image.forEach(function(item) {
-							fullArray.image.push( item );
-						});
-					}
-
-					if(seafield.color){
-						seafield.color.forEach(function(item) {
-							fullArray.color.push( item );
-						});
-					}
-
-					if(seafield.rating){
-						seafield.rating.forEach(function(item) {
-							fullArray.rating.push( item );
-						});
-					}
-
-					if(seafield.range){
-						seafield.range.forEach(function(item) {
-							fullArray.range.push( item );
-						});
-					}
-			});
-		}
 
 		if(basic && basic.URLParameter){
 			window.onload = function () {
 				let url = new URL(window.location.href);
 				if(url && url.search){
 					let params = new URLSearchParams(url.search);
-					
+
 					form.forEach(function(self) {
 						let seafield = (self && self.dataset && self.dataset.field) ? JSON.parse(self.dataset.field) : '',
 							Filter_Tags=[];
 
-							if(fullArray.search){
-								let Getsearch = document.querySelectorAll('.tp-search-filter .tp-search-input');
-
-								if( Getsearch.length > 0 ){
-									Getsearch.forEach(function(input){
-										let Geturl = (params) ? params.get(input.id) : '';
-
+							if(seafield.search){
+								let Getsearch = document.querySelectorAll('.tp-search-input');
+								if(Getsearch.length > 0){
+									Getsearch.forEach(function(input,idx){
+										let Geturl = (params) ? params.get('tp-search') : '';
 										if(Geturl){
-											Geturl.split(",").forEach(function(item1){
+											Geturl.split(",").forEach(function(item1, idx1){
 												input.value = item1;
 											});
 										}
 									});
-
-									fieldValue = inputhandle(fullArray.search, Filter_Tags)
+									fieldValue = inputhandle(seafield.search, Getsearch, Filter_Tags)
 								}
 							}
 
-							if(fullArray.alphabet){
+							if(seafield.alphabet){
 								let GetHtml = document.querySelectorAll('.tp-alphabet-wrapper');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item, idx){
-										let GetPrifix = item.getAttribute('data-tpprefix'),
-											Geturl = (params) ? params.get(GetPrifix) : '';
-
+										let Geturl = (params) ? params.get('tp-alphabet') : '';
 										if(Geturl){
-											Geturl.split(",").forEach(function(item1){
-												if( GetHtml[idx].querySelectorAll(`#${GetPrifix}-${item1}`).length > 0 ){
-													if(GetHtml[idx].querySelector(`#${GetPrifix}-${item1}`).parentNode ){
-														GetHtml[idx].querySelector(`#${GetPrifix}-${item1}`).parentNode.classList.add('active');
+											Geturl.split(",").forEach(function(item1, idx1){
+												if( GetHtml[idx].querySelectorAll(`#tp-${item1}`).length > 0 ){
+													if(GetHtml[idx].querySelector(`#tp-${item1}`).parentNode ){
+														GetHtml[idx].querySelector(`#tp-${item1}`).parentNode.classList.add('active');
 													}
 
-													GetHtml[idx].querySelector(`#${GetPrifix}-${item1}`).checked = 1;
+													GetHtml[idx].querySelector(`#tp-${item1}`).checked = 1;
 												}
 											});
-
-											fieldValue = alphabethandle(fullArray.alphabet, Filter_Tags)
-											Filter_Tags = [...new Set(Filter_Tags)];
+											fieldValue = alphabethandle(seafield.alphabet, Filter_Tags)
 										}
 									});
 								}
 							}
 
-							if(fullArray.checkBox){
+							if(seafield.checkBox){
 								let GetHtml = document.querySelectorAll('.tp-wp-checkBox');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item,idx){
@@ -185,13 +83,13 @@
 														GetHtml[idx].querySelector('#'+ TPPrefix + item1).checked = 1;
 													}
 												})
-												fieldValue = checkBoxhandle( fullArray.checkBox, Filter_Tags )
+												fieldValue = checkBoxhandle( seafield.checkBox, Filter_Tags )
 											}
 									});
 								}
 							}
 
-							if(fullArray.radio){
+							if(seafield.radio){
 								let GetHtml1 = document.querySelectorAll('.tp-wp-radio');
 								if(GetHtml1.length > 0){
 									GetHtml1.forEach(function(item,idx){
@@ -204,22 +102,19 @@
 														GetHtml1[idx].querySelector(`#${TPPrefix+item1}`).checked = 1;
 													}
 												})
-												fieldValue = radioHandler(fullArray.radio, Filter_Tags)
+												fieldValue = radioHandler(seafield.radio, Filter_Tags)
 											}
 									});
 								}
 							}
 
-							if(fullArray.select){
-								let GetHtml = document.querySelectorAll('.tp-search-filter .tp-select');
+							if(seafield.select){
+								let GetHtml = document.querySelectorAll('.tp-select');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item,idx){
-										let Getbasic = GetHtml[idx].closest('.tp-search-filter').getAttribute('data-basic'),
-											SelectWidgetid = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).Widgetid : '';
+										let Name = (seafield.select[idx] && seafield.select[idx].name) ? seafield.select[idx].name : '',
+											Geturl = (Name) ? params.get('select_'+Name+'_'+idx) : '';
 
-										let Name = (fullArray.select[idx] && fullArray.select[idx].name) ? fullArray.select[idx].name : '',
-											Geturl = (Name) ? params.get(`select_${Name}_${SelectWidgetid}`) : '';
-										
 											if(Geturl){
 												let GetId = document.getElementById(Geturl),
 													GetTxt = GetId.querySelector('.tp-dd-labletxt').textContent,
@@ -229,48 +124,42 @@
 													getinput.value = Geturl;
 													getinput.dataset.txtval = GetTxt;
 													getSpan.textContent = GetTxt;
-
-													fieldValue = selectHandler( fullArray.select, Filter_Tags )
-													Filter_Tags = [...new Set(Filter_Tags)];
+													
+													fieldValue = selectHandler( seafield.select, Filter_Tags )
 											}
 									});
 								}
 							}
 
-							if(fullArray.date){
+							if(seafield.date){
 								let GetHtml = document.querySelectorAll('.tp-date-wrap');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(datefield, idx){
-										let layout = (fullArray.date[idx] && fullArray.date[idx].layout) ? fullArray.date[idx].layout : '',
-											Keyname = (fullArray.date[idx] && fullArray.date[idx].name) ? fullArray.date[idx].name : '',
-											GetDate = (Keyname) ? params.get(Keyname) : '';
-
+										let layout = (seafield.date[idx] && seafield.date[idx].layout) ? seafield.date[idx].layout : '';
+	
 										if(layout == "style-1"){
+											let GetDate = params.get('date');
 												if(GetDate){
 													let DateVal = GetDate.split(",");
-													datefield.querySelector(`.tp-date #${Keyname}`).value = DateVal[0];
-													datefield.querySelector(`.tp-date1 #${Keyname}`).value = DateVal[1];
+														GetHtml[0].querySelector('.tp-date .tp-datepicker1').value = DateVal[0];
+														GetHtml[0].querySelector('.tp-date1 .tp-datepicker1').value = DateVal[1];
 												}
-
-												fieldValue = dateHandler(fullArray.date, Filter_Tags)
-												Filter_Tags = [...new Set(Filter_Tags)];
+											fieldValue = dateHandler(seafield.date, Filter_Tags)
 										}else if(layout == "style-2"){
-												let DateInput = datefield.querySelectorAll(`#${Keyname}`);
-
+											let GetDate = params.get('date'),
+												DateInput = datefield.querySelectorAll(".tp-datepicker1");
 												if( GetDate && DateInput.length > 0 ){
 													let DateVal = GetDate.split(",");
-														datefield.querySelector(`#${Keyname}`).setAttribute('value', DateVal[0] + '-' + DateVal[1] );
+														datefield.querySelector(".tp-datepicker1").setAttribute('value', DateVal[0] + '-' + DateVal[1] );
 												}
-
-												fieldValue = dateHandler(fullArray.date, Filter_Tags)
-												Filter_Tags = [...new Set(Filter_Tags)];
+											fieldValue = dateHandler(seafield.date, Filter_Tags)
 										}
 
 									});
 								}
 							}
 
-							if(fullArray.color){
+							if(seafield.color){
 								let GetHtml = document.querySelectorAll('.tp-woo-color');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item, idx){
@@ -282,13 +171,13 @@
 														GetHtml[idx].querySelector(`#${TPPrefix+item1}`).checked = 1;
 													}
 												})
-												fieldValue = WooHandle(fullArray.color, Filter_Tags)
+												fieldValue = WooHandle(seafield.color, Filter_Tags)
 											}
 									});
 								}
 							}
 
-							if(fullArray.image){
+							if(seafield.image){
 								let GetHtml = document.querySelectorAll('.tp-woo-image');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item, idx){
@@ -300,77 +189,59 @@
 														GetHtml[idx].querySelector(`#${TPPrefix+item1}`).checked = 1;
 													}
 												})
-
-												fieldValue = WooHandle(fullArray.image, Filter_Tags)
+												fieldValue = WooHandle(seafield.image, Filter_Tags)
 											}
 									});
 								}
 							}
 
-							if(fullArray.button){
+							if(seafield.button){
 								let GetHtml = document.querySelectorAll('.tp-woo-button');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item, idx){
 										let TPPrefix = (item && item.dataset && item.dataset.tpprefix) ? item.dataset.tpprefix : '',
 											Geturl = (params) ? params.get(`tp-${TPPrefix.split("-")[1]}`) : '';
 											if(Geturl){
-												Geturl.split(",").forEach(function( item1 ){
+												Geturl.split(",").forEach(function( item1, idx1 ){
 													if( GetHtml[idx].querySelectorAll(`#${TPPrefix+item1}`).length > 0 ){
 														GetHtml[idx].querySelector(`#${TPPrefix+item1}`).checked = 1;
 													}
 												})
-
-												fieldValue = WooHandle( fullArray.button, Filter_Tags )
+												fieldValue = WooHandle( seafield.button, Filter_Tags )
 											}
 									});
 								}
 							}
 
-							if(fullArray.rating){
+							if(seafield.rating){
 								let GetHtml = document.querySelectorAll('.tp-star-rating');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item, idx){
 										let TPPrefix = (item && item.dataset && item.dataset.tpprefix) ? item.dataset.tpprefix : '',
-											Geturl = (params) ? params.get(TPPrefix) : '';
-
-											if(Geturl){
-												Geturl.split(",").forEach(function( item1 ){
-													if( GetHtml[idx].querySelectorAll(`#${TPPrefix+item1}`).length > 0 ){
-														GetHtml[idx].querySelector(`#${TPPrefix+item1}`).checked = 1;
-													}
-												})
-
-												fieldValue = WooHandle( fullArray.rating, Filter_Tags )
-											}
+											Geturl = (params) ? params.get(`tp-${TPPrefix.split("-")[1]}`) : '';
+										if(Geturl){
+											Geturl.split(",").forEach(function( item1, idx1 ){
+												if( GetHtml[idx].querySelectorAll(`#${TPPrefix+item1}`).length > 0 ){
+													GetHtml[idx].querySelector(`#${TPPrefix+item1}`).checked = 1;
+												}
+											})
+											fieldValue = WooHandle( seafield.rating, Filter_Tags )
+										}
 									});
 								}
 							}
 
-							if(fullArray.tabbing){
-								let GetHtml = document.querySelectorAll('.tp-tabbing');
+							if(seafield.tabbing){
+								let GetHtml = $scope[0].querySelectorAll('.tp-tabbing');
 								if(GetHtml.length > 0){
 									GetHtml.forEach(function(item, idx){
-										let Name = (fullArray.tabbing[idx] && fullArray.tabbing[idx].name) ? fullArray.tabbing[idx].name : '',
-											Geturl = (Name) ? params.get(`tab_${Name}_${idx}`) : '';
-
+										let Name = (seafield.tabbing[idx] && seafield.tabbing[idx].name) ? seafield.tabbing[idx].name : '',
+											Geturl = (Name) ? params.get('tab_'+Name+'_'+idx) : '';
 											if(Geturl){
-												if( Name == 'woo_SgTabbing' ){
-													let WooTabbing = item.querySelectorAll('input.tp-tabbing-input');
-														if( WooTabbing.length > 0 ){
-															WooTabbing.forEach(function(item1){
-																if( Geturl == item1.value ){
-																	item1.checked = true;
-																}
-															});
-														}
-												}else{
-													Geturl.split(",").forEach(function(item1){	
-														GetHtml[idx].querySelector(`#tp-${item1}`).checked = 1;
-													});
-												}
-
-												fieldValue = WooHandle(fullArray.tabbing, Filter_Tags)
-												Filter_Tags = [...new Set(Filter_Tags)];
+												Geturl.split(",").forEach(function(item1){
+													GetHtml[idx].querySelector(`#tp-${item1}`).checked = 1;
+												});
+												fieldValue = WooHandle(seafield.tabbing, Filter_Tags)
 											}
 									});
 								}
@@ -391,32 +262,12 @@
 							}
 
 							if(TagHandle.length > 0){
-								Filter_Tags = [...new Set(Filter_Tags)];
-
 								TagHandle.forEach(function(item) {
 									item.innerHTML = Filter_Tags.join(' ');
                                     RemoveTagHandle('create');
 								});
 							}
 
-							if(fullArray.range){
-								let GetHtml = document.querySelectorAll('.tp-range-silder');
-								if(GetHtml.length > 0){
-									GetHtml.forEach(function(item, idx){
-										let TPPrefix = (item.dataset.tpprefix) ? item.dataset.tpprefix : '',
-											Geturl = (params) ? params.get(TPPrefix) : '',
-											hh = document.querySelectorAll(`#${TPPrefix}`);
-										
-											if(Geturl){
-												hh[0].noUiSlider.set( Geturl.split(",") );
-
-												tp_range(fullArray.range, Filter_Tags);
-											}
-
-									});
-								}
-							}
-							
 							ajaxHandler(fieldValue);
 					});
 
@@ -426,7 +277,7 @@
 
 		MomentDate()
 		Autocomplete()
-		
+
 		let ArchiMore = document.querySelectorAll('.tp-archive-readmore');
 			if(ArchiMore.length > 0){
 				ArchiMore.forEach(function(self) {
@@ -446,19 +297,18 @@
 				});
 			}
 
-		let GetAllGrid = document.querySelectorAll('.tp-searchlist .grid-item');
+		let GetAllGrid = document.querySelectorAll('.grid-item');
 			if(GetAllGrid.length > 0){
 				let GetTR = document.querySelectorAll('.tp-total-results-txt'),
-					total = (seaList[0] && seaList[0].dataset && seaList[0].dataset.totalResult) ? Number(seaList[0].dataset.totalResult) : '';
-				
-                    if(GetTR.length > 0){
-                        GetTR.forEach(function(self, index) {
-                            let One = self.previousElementSibling.textContent.replaceAll('{visible_product_no}', GetAllGrid.length),
-                                Two = One.replaceAll('{total_product_no}', total);
-                                self.style.cssText = "display:block;";
-                                self.innerHTML = Two;
-                        })
-                    }
+					total = (seaList[0] && seaList[0].dataset && seaList[0].dataset.totalResult) ? seaList[0].dataset.totalResult : '';
+				if(GetTR.length > 0){
+					GetTR.forEach(function(self, index) {
+						let One = self.previousElementSibling.textContent.replaceAll('{visible_product_no}', GetAllGrid.length),
+							Two = One.replaceAll('{total_product_no}', total);
+                            self.style.cssText = "display:block;";
+							self.innerHTML = Two;
+					})
+				}
 			}
 
 		let Redmore = container[0].querySelectorAll('.tp-filter-readmore');
@@ -737,88 +587,178 @@
 				});
 			}
 
-			/**Start*/
 			if(form.length > 0){
+				let PriceRange = form[0].querySelectorAll('.tp-range');
+				if( PriceRange.length > 0 ){
+					PriceRange.forEach(function(range,index) { 
+						let rangeattr = JSON.parse(range.dataset.sliderattr),
+							Field = (rangeattr && rangeattr.field) ? rangeattr.field : '';
+
+							noUiSlider.create(range, {
+								start: [ 0, parseInt(rangeattr.maxValue) ],
+								connect: true,
+								tooltips: true,
+								step: parseInt(rangeattr.stepValue),
+								range: { 
+									'min': parseInt(rangeattr.minValue), 
+									'max': parseInt(rangeattr.maxValue),
+								},
+								format: {
+									from: function(value) {
+										return parseInt(value);
+									},
+									to: function(value) {
+										return parseInt(value);
+									}
+								}
+							}, true).on('change', function (values, handle) { 
+								let name = (rangeattr && rangeattr.field) ? rangeattr.field : '',
+									PriceSymbol = (rangeattr && rangeattr.pricesymbol) ? rangeattr.pricesymbol : '',
+									val1 = ( values && values[0] ) ? Math.floor(values[0]) : 0,
+									val2 = ( values && values[1] ) ?  Math.floor(values[1]) : '';
+
+									fieldValue[name] = rangeattr;
+									if(values){
+										fieldValue[name]['value'] = values;
+
+										if(basic && basic.URLParameter){
+											let Urldata = Math.floor(values[0]) + ',' + Math.floor(values[1])
+											urlHandler(name+index, Urldata)
+										}
+
+										let TagVal = `${PriceSymbol} ${val1} - ${PriceSymbol} ${val2}`,
+											TagName = FilterTagTitle( Field, PriceRange[index], TagVal);
+
+										if(Ajax_Button){
+                                            ajaxHandler(fieldValue, range)
+										}
+
+                                        if(tagHandle !== null){
+                                            let priceTag = ('<div class="tp-filter-container"><a class="tp-tag-link" data-type="range" data-name="'+rangeattr.name+'" data-id="'+values+'"><span class="tp-filter-tag"> <i class="fa fa-times" aria-hidden="true"></i> '+TagName+'</span></a>'),
+                                                Findclass = tagHandle.querySelectorAll('.tp-tag-link[data-type=range]'),
+                                                GetTag = document.querySelectorAll('.tp-filter-removetag');
+												
+                                                if(Findclass.length > 0){
+                                                    Findclass[0].parentNode.remove();
+                                                }
+
+                                                if(GetTag.length > 0){
+                                                    if(GetTag[0].classList.contains('start')){
+                                                        $(tagHandle).append(priceTag)
+                                                    }else if(GetTag[0].classList.contains('end')){
+                                                        $(tagHandle).prepend(priceTag)
+                                                    }
+
+                                                    RemoveTagHandle('create')
+                                                }else{
+													$(tagHandle).append(priceTag)
+												}
+                                        }
+									}
+							});
+
+                            mergeTooltips(range, 15, ' - ');   
+					});	
+				}
+
 				form.forEach(function(self) {
 					let seafield = (self && self.dataset && self.dataset.field) ? JSON.parse(self.dataset.field) : [];
-
+					
 						$(form).change(function() {
 							let Filter_Tags=[];
-
+                            
                             if(Ajax_Button){
                                 tpgbSkeleton_filter('visible');
                             }
 
-							if(fullArray.search){
-								fieldValue = inputhandle( fullArray.search, Filter_Tags )
-							}	
-
-							if(fullArray.alphabet){
-								fieldValue = alphabethandle( fullArray.alphabet, Filter_Tags )
-							}
-
-							if(fullArray.checkBox){
-                                tp_checkBox_multipultick( this );
-								fieldValue = checkBoxhandle( fullArray.checkBox, Filter_Tags )
-							}
-
-							if(fullArray.radio){
-								fieldValue = radioHandler( fullArray.radio, Filter_Tags )
-							}
-
-							if(fullArray.select){
-								fieldValue = selectHandler( fullArray.select, Filter_Tags )
-							}
-
-							if(fullArray.date){
-								fieldValue = dateHandler( fullArray.date, Filter_Tags )
-							}
-
-							if(fullArray.color){
-								tp_multiple_widget(this);
-								fieldValue = WooHandle( fullArray.color, Filter_Tags )
-							}
-
-							if(fullArray.image){
-								tp_multiple_widget(this);
-								fieldValue = WooHandle( fullArray.image, Filter_Tags )
-							}
-
-							if(fullArray.button){
-								tp_multiple_widget(this);
-								fieldValue = WooHandle( fullArray.button, Filter_Tags )
-							}
-
-							if(fullArray.tabbing){
-                                tp_multiple_widget(this);
-								fieldValue = WooHandle(fullArray.tabbing, Filter_Tags)
-							}
-
-							if(fullArray.rating){
-								fieldValue = WooHandle(fullArray.rating, Filter_Tags)
-							}
-
-							if(seafield.autocomplete){
-								fieldValue = MapHandle(seafield.autocomplete, Filter_Tags);
-							}
-
-							if(fullArray.range){
-								tp_range(fullArray.range, Filter_Tags);
-							}
-
-							if(TagHandle.length > 0){
-								Filter_Tags = [...new Set(Filter_Tags)];
-								TagHandle.forEach(function(item) {
-									item.innerHTML = Filter_Tags.join("");
-									RemoveTagHandle('create')
-								});
-							}
-
 							setTimeout(function() {
+								let search = self.querySelectorAll('.tp-search-input');
+								if(search.length > 0){
+									fieldValue = inputhandle(seafield.search, search, Filter_Tags)
+								}	
+
+								if(seafield.alphabet){
+									fieldValue = alphabethandle(seafield.alphabet, Filter_Tags)
+								}
+
+								if(seafield.checkBox){
+									fieldValue = checkBoxhandle( seafield.checkBox, Filter_Tags )
+								}
+
+								if(seafield.radio){
+									fieldValue = radioHandler( seafield.radio, Filter_Tags )
+								}
+
+								if(seafield.select){
+									fieldValue = selectHandler( seafield.select, Filter_Tags )
+								}
+
+								if(seafield.date){
+									fieldValue = dateHandler(seafield.date, Filter_Tags)
+								}
+
+								if(seafield.color){
+									fieldValue = WooHandle( seafield.color, Filter_Tags )
+								}
+
+								if(seafield.image){
+									fieldValue = WooHandle( seafield.image, Filter_Tags )
+								}
+
+								if(seafield.button){
+									fieldValue = WooHandle( seafield.button, Filter_Tags )
+								}
+
+								if(seafield.tabbing){
+									fieldValue = WooHandle(seafield.tabbing, Filter_Tags)
+								}
+
+								if(seafield.rating){
+									fieldValue = WooHandle(seafield.rating, Filter_Tags)
+								}
+								
+								if(seafield.autocomplete){
+									fieldValue = MapHandle(seafield.autocomplete, Filter_Tags);
+								}
+								
+								if(PriceRange.length > 0){
+									PriceRange.forEach(function(range,index) { 
+										let rangeattr = (range && range.dataset && range.dataset.sliderattr) ? JSON.parse(range.dataset.sliderattr) : '',
+											MinValue = (rangeattr && rangeattr.minValue) ? Number(rangeattr.minValue) : '',
+											MaxValue = (rangeattr && rangeattr.maxValue) ? Number(rangeattr.maxValue) : '',
+                                            PriceSymbol = (rangeattr && rangeattr.pricesymbol) ? rangeattr.pricesymbol : '',
+                                            Field = (rangeattr && rangeattr.field) ? rangeattr.field : '',
+											OrgMin =  range.querySelectorAll('.noUi-handle-lower'),
+											OrgMax = range.querySelectorAll('.noUi-handle-upper');
+
+											let currentMin=MinValue,
+												currentMax=MaxValue;
+											if(OrgMin.length > 0 && OrgMin[0].ariaValueNow){
+                                                currentMin = Number(OrgMin[0].ariaValueNow);
+											}
+											if(OrgMax.length > 0 && OrgMax[0].ariaValueNow){
+                                                currentMax = Number(OrgMax[0].ariaValueNow);
+											}
+
+                                            let TagVal = `${PriceSymbol} ${currentMin} - ${PriceSymbol} ${currentMax}`,
+											    TagName = FilterTagTitle( Field, PriceRange[index], TagVal);
+                                            if(currentMin || currentMax){
+												Filter_Tags.push(`<div class="tp-filter-container"><a class="tp-tag-link" data-type="range" data-name="range" data-id="price"><span class="tp-filter-tag"> <i class="fa fa-times" aria-hidden="true"></i> ${TagName} </span></a>`);
+											}
+									});
+								}
+
+								if(TagHandle.length > 0){
+									TagHandle.forEach(function(item) {
+										item.innerHTML = Filter_Tags.join("");
+										RemoveTagHandle('create')
+									});
+								}
+
 								if(Ajax_Button){
 									ajaxHandler(fieldValue);
 								}
-							}, 300)
+							}, 400)
 						});
 				});
 			}
@@ -851,84 +791,7 @@
 			return fieldValue;
 		}
 
-		var tp_create_range = function(){
-			let PriceRange = form[0].querySelectorAll('.tp-range');
-				if( PriceRange.length > 0 ){
-					PriceRange.forEach(function(range,index) { 
-						let rangeattr = JSON.parse(range.dataset.sliderattr),
-							Field = (rangeattr && rangeattr.field) ? rangeattr.field : '';
-
-							noUiSlider.create(range, {
-								start: [ 0, parseInt(rangeattr.maxValue) ],
-								connect: true,
-								tooltips: true,
-								step: parseInt(rangeattr.stepValue),
-								range: { 
-									'min': parseInt(rangeattr.minValue), 
-									'max': parseInt(rangeattr.maxValue),
-								},
-								format: {
-									from: function(value) {
-										return parseInt(value);
-									},
-									to: function(value) {
-										return parseInt(value);
-									}
-								}
-							}, true).on('change', function (values, handle) { 
-								jQuery(form[0]).trigger('change');
-							});
-
-                            mergeTooltips(range, 15, ' - ');   
-					});	
-				}
-		}
-		tp_create_range();
-
-		var tp_range = function(data, Filter_Tags){
-			let GetHTML = document.querySelectorAll('.tp-range');
-				data.forEach(function(selft, index) { 
-					let range = (GetHTML[index]) ? GetHTML[index] : '';
-					let rangeattr = (range.dataset.sliderattr) ? JSON.parse(range.dataset.sliderattr) : '',
-						Field = (rangeattr && rangeattr.field) ? rangeattr.field : '';
-
-					let nameold = (rangeattr && rangeattr.field) ? rangeattr.field : '',
-						name = (rangeattr && rangeattr.uniqname) ? rangeattr.uniqname : '',
-						MinValue = (rangeattr && rangeattr.minValue) ? Number(rangeattr.minValue) : '',
-						MaxValue = (rangeattr && rangeattr.maxValue) ? Number(rangeattr.maxValue) : '',
-						PriceSymbol = (rangeattr && rangeattr.pricesymbol) ? rangeattr.pricesymbol : '',
-						values = ( GetHTML[index] ) ? GetHTML[index].noUiSlider.get() : '',
-						val1 = ( values && values[0] ) ? Math.floor(values[0]) : 0,
-						val2 = ( values && values[1] ) ?  Math.floor(values[1]) : '';
-
-
-						fieldValue[name] = rangeattr;
-
-						if(values){
-							let Getbasic = range.closest('.tp-search-filter').getAttribute('data-basic'),
-								SelectURLParameter = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).URLParameter : '';
-
-								fieldValue[name]['value'] = values;
-
-							if( MinValue == val1 && MaxValue == val2){
-
-							}else{
-								let TagVal = `${PriceSymbol} ${val1} - ${PriceSymbol} ${val2}`,
-									TagName = FilterTagTitle( Field, range, TagVal);
-
-									FilterTagHTML(values, name, TagName, Filter_Tags, 'range');
-
-									if( SelectURLParameter ){
-										let Urldata = Math.floor(values[0]) + ',' + Math.floor(values[1])
-											urlHandler(name, Urldata);
-									}		
-							}
-						}
-				});
-		}
-
-		var WooHandle = function(check, checkList){
-
+		var WooHandle = function(check, checkList){	
 			check.map(function(item, index){
 				let Name = item.name ? item.name : '',
 					Type = item.field ? item.field : '';
@@ -936,42 +799,37 @@
 					GetHtml='',
 					chidden='';
 				if(Name){
-
 					if(Type == 'tabbing' || Type == 'woo_SgTabbing'){
 						tagtype = 'tabbing';
-						GetHtml = document.querySelectorAll('.tp-tabbing');
+						GetHtml = $scope[0].querySelectorAll('.tp-tabbing');
 						chidden = (GetHtml && GetHtml[index]) ? GetHtml[index].querySelectorAll(`input[name="${Name}"]:checked`) : '';
-
 						TabbingHandle(GetHtml,index)
 					}else if(Type == 'color'){
 						tagtype = 'color';
-						GetHtml = document.querySelectorAll('.tp-woo-color');
+						GetHtml = $scope[0].querySelectorAll('.tp-woo-color');
 						chidden = (GetHtml && GetHtml[index]) ? GetHtml[index].querySelectorAll(`input[name="${Name}"]:checked`) : '';
 					}else if(Type == 'image'){
 						tagtype = 'image';
-						GetHtml = document.querySelectorAll('.tp-woo-image');
+						GetHtml = $scope[0].querySelectorAll('.tp-woo-image');
 						chidden = (GetHtml && GetHtml[index]) ? GetHtml[index].querySelectorAll(`input[name="${Name}"]:checked`) : '';
 						
 						DuplicateCheck(Type, chidden, Name);
 					}else if(Type == 'button'){
 						tagtype = 'button';
-						GetHtml = document.querySelectorAll('.tp-woo-button');
-						chidden = (GetHtml && GetHtml[index]) ? GetHtml[index].querySelectorAll(`input[name="${Name}"]:checked`) : '';						
+						GetHtml = $scope[0].querySelectorAll('.tp-woo-button');
+						chidden = (GetHtml && GetHtml[index]) ? GetHtml[index].querySelectorAll(`input[name="${Name}"]:checked`) : '';
 					}else if(Type == 'rating'){
 						tagtype = 'rating';
-						GetHtml = document.querySelectorAll('.tp-star-rating');
+						GetHtml = $scope[0].querySelectorAll('.tp-star-rating');
 						chidden = (GetHtml && GetHtml[index]) ? GetHtml[index].querySelectorAll(`input[name="${Name}"]:checked`) : '';
 					}else{
 						// tagtype = 'checkbox';
 						// chidden = $scope[0].querySelectorAll("input[name='"+Name+"']:checked");
 					}
 
-					let Getbasic = GetHtml[index].closest('.tp-search-filter').getAttribute('data-basic'),
-						SelectURLParameter = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).URLParameter : '';
-
 					fieldValue[Name] = item;
 					fieldValue[Name]['value'] = new Array();
-					
+				
 					let Urldata='';
 					if(chidden.length > 0){
 						chidden.forEach(function(item1){
@@ -985,11 +843,11 @@
 						Urldata = fieldValue[Name]['value'].toString();
 					}
 
-					if(SelectURLParameter){
+					if(basic.URLParameter){
 						if(Type == 'tabbing' || Type == 'woo_SgTabbing'){
 							urlHandler('tab_'+Name+'_'+index, Urldata)
 						}else if(Type == 'rating'){
-							urlHandler(`${Name}`, Urldata)
+							urlHandler(`tp-${Name}`, Urldata)
 						}else{
 							urlHandler(`tp-${Name}`, Urldata)
 						}
@@ -1001,100 +859,92 @@
 		}
 
 		var alphabethandle = function(check, checkList){
-			let GetHtml = document.querySelectorAll('.tp-alphabet-wrapper');
-			
+			let GetHtml = $scope[0].querySelectorAll('.tp-alphabet-wrapper');
+
 			check.forEach(function(field, index){
 				let Name = field.name ? field.name : '',
 					Field = field.field ? field.field : '';
-				
+
 					if(Name){
-						let Getbasic = GetHtml[index].closest('.tp-search-filter').getAttribute('data-basic'),
-							SelectWidgetid = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).Widgetid : '',
-							SelectURLParameter = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).URLParameter : '';
-
 						let chidden = GetHtml[index].querySelectorAll(`input[name="${Name}"]:checked`),
-							alphabetAtv = GetHtml[index].querySelectorAll('.tp-alphabet-item.active');
-							
-							fieldValue[Name] = field;
-							fieldValue[Name]['value'] = new Array();
+                            alphabetAtv = GetHtml[index].querySelectorAll('.tp-alphabet-item.active');
 
-							if(alphabetAtv.length > 0){
-								alphabetAtv.forEach(function(self){                                    
-									self.classList.remove('active');
-								});
-							}
+                            fieldValue[Name] = field;
+                            fieldValue[Name]['value'] = new Array();
 
-							if(chidden.length > 0){
-								chidden.forEach(function(item){
+                            if(alphabetAtv.length > 0){
+                                alphabetAtv.forEach(function(self){                                    
+                                    self.classList.remove('active');
+                                });
+                            }
+
+                            if(chidden.length > 0){
+                                chidden.forEach(function(item){
 									let TagVal = item.getAttribute("data-title"),
 										TagName = FilterTagTitle( Field, GetHtml[index], TagVal);
-										
+
 										item.parentNode.classList.add('active')
 										fieldValue[Name]['value'].push(item.value)
 
 										FilterTagHTML(item.value, Name, TagName, checkList, 'alphabet');
-								});
-							}
+                                });
+                            }
 
-							if( SelectURLParameter ){
+							if(basic.URLParameter){
 								let Urldata = fieldValue[Name]['value'].toString();
-								urlHandler(`${Name}`, Urldata)
+								urlHandler(`tp-${Name}`, Urldata)
 							}
 					}
-				});
+            });
 
 			return fieldValue;
 		}
 
         var checkBoxhandle = function(check, checkList){
-			let GetHtml = document.querySelectorAll('.tp-wp-checkBox');
-				check.forEach(function(field, index){
-					let TPPrefix = (GetHtml && GetHtml[index] && GetHtml[index].dataset.tpprefix) ? GetHtml[index].dataset.tpprefix : 'tp-',
-						Name = field.name ? field.name : '',
-						Field = field.field ? field.field : '';
+			let GetHtml = $scope[0].querySelectorAll('.tp-wp-checkBox');
 
-						tp_checkBox_archive();
-						tp_checkBox_tick(GetHtml, index, Name);
+            check.forEach(function(field,index){
+				let TPPrefix = (GetHtml && GetHtml[index] && GetHtml[index].dataset.tpprefix) ? GetHtml[index].dataset.tpprefix : 'tp-',
+					Name = field.name ? field.name : '',
+					Field = field.field ? field.field : '';
 
-						if(Name){
-							let chidden = (GetHtml[index]) ? GetHtml[index].querySelectorAll("input[name='"+Name+"']:checked") : '';
-							let Getbasic = (GetHtml[index]) ? GetHtml[index].closest('.tp-search-filter').getAttribute('data-basic') : '',
-								Ck_URLParameter = (Getbasic && JSON.parse(Getbasic).URLParameter) ? JSON.parse(Getbasic).URLParameter : '';
+					if(Name){
+						let chidden = (GetHtml[index]) ? GetHtml[index].querySelectorAll("input[name='"+Name+"']:checked") : '';
+						if(chidden) {
+							tp_checkBox_tick(GetHtml,index,Name);
 
-							if(chidden) {
-								fieldValue[Name] = field;
-								fieldValue[Name]['value'] = new Array();
+						/* Query */
+						fieldValue[Name] = field;
+						fieldValue[Name]['value'] = new Array();
 
-								chidden.forEach(function(item){
-									let TagVal = (item) ? item.getAttribute("data-title") : '',
-										TagName = FilterTagTitle( Field, GetHtml[index], TagVal);
+						chidden.forEach(function(item){
+							let TagVal = (item) ? item.getAttribute("data-title") : '',
+								TagName = FilterTagTitle( Field, GetHtml[index], TagVal);
+							
+								fieldValue[Name]['value'].push(item.value);
+								FilterTagHTML(item.value, Name, TagName, checkList, 'checkBox');
+						});
 
-										fieldValue[Name]['value'].push(item.value);
-										FilterTagHTML(item.value, Name, TagName, checkList, 'checkBox');
-								});
-
-								if(Ck_URLParameter){
-									let Urldata = fieldValue[Name]['value'].toString();
-										urlHandler(`checkbox-${Name}`, Urldata)
-								}
-							}
+						if(basic.URLParameter){
+							let Urldata = fieldValue[Name]['value'].toString();
+								urlHandler(`checkbox-${Name}`, Urldata)
 						}
-				});
+					}
+                }
+            })
 
             return fieldValue;
         }
 
 		var tp_checkBox_tick = function(GetHtml,index,Name){
 			let ALLPerent = (GetHtml[index]) ? GetHtml[index].querySelectorAll(`.tp-group input[name="${Name}"]`) : '';
-
 				if( ALLPerent.length > 0 ){
 					/* Perent checked */
 					ALLPerent.forEach(function(Pitem){
 						let parentVal = Pitem.checked,
 							closetParent = Pitem.closest('.tp-group'),
 							SubAll = closetParent.parentElement.querySelectorAll(`.tp-child-taxo input[name="${Name}"]`);
-
-							if( SubAll.length > 0 ){
+							if( SubAll.length ){
 								let itemVal = [];
 									SubAll.forEach(function(item,index){
 										itemVal[index] = item.checked;
@@ -1103,28 +953,26 @@
 								let allEqual = arr => arr.every(val => val === arr[0]),
 									result = allEqual(itemVal),
 									unique = [...new Set(itemVal)];
-									
+
 								if( parentVal ){
 									if( itemVal && ((unique.length == 1 && unique[0] == false)) ){
 										/* Sub all checked */
-										Pitem.checked = false;
-										// SubAll.forEach(function(item){
-										// 	item.checked = true;
-										// });
+										SubAll.forEach(function(item){
+											item.checked = true;
+										});
 									}else if(!result && unique.length == 2 ){
-										if( Pitem.classList.contains('tp-active-perent') ){
+										if(Pitem.classList.contains('tp-active-perent')){
 											Pitem.classList.remove('tp-active-perent')
 											Pitem.checked = false;
 										}else{
-											Pitem.checked = false;
-											// SubAll.forEach(function(item){
-											// 	item.checked = true;
-											// });
+											SubAll.forEach(function(item){
+												item.checked = true;
+											});
 										}
 									}
 								}else if( !parentVal ){
 									if( result && unique.length == 1 && unique[0] != false ){
-										parentVal = Pitem.checked = true;
+										parentVal =Pitem.checked = true;
 									}
 									if( !parentVal && result && unique.length == 1 && unique[0] == true ){
 										SubAll.forEach(function(item){
@@ -1137,204 +985,120 @@
 				}
 		}
 
-		var tp_checkBox_archive = function(){
-			let Archivecheck = document.querySelectorAll('input[type="checkbox"].tp-archive-option');
-				if( Archivecheck.length ){
-					Archivecheck.forEach(function(self) {
-						let GetIds = document.querySelectorAll(`#${self.id}`);
-							GetIds.forEach(function( item ) {
-								item.checked = self.checked;
-							});
-					});
-				}
-		}
-
-        var tp_checkBox_multipultick = function($this){
-            if($this){
-                var StoreCk = new Array();
-                var Storetpprefix = new Array();
-                let Current = $this.querySelectorAll('.tp-wp-checkBox');
-                let AllCheckbox = document.querySelectorAll('.tp-wp-checkBox');
-
-                    Current.forEach(function(self, index){
-                        let SetPrefix = (self.dataset.tpprefix) ? self.dataset.tpprefix : '';
-                            Storetpprefix.push(SetPrefix);
-
-                        if( self.parentElement ){
-                            let GetFirst = self.parentElement.querySelectorAll('.tp-checkbox-hidden');
-                                if( GetFirst.length > 0 && GetFirst[0] && GetFirst[0].value ){
-                                    StoreCk.push(GetFirst[0].value);
-                                }
-                        }
-                    });
-                    
-                    if( AllCheckbox.length > 0 ){
-                        AllCheckbox.forEach(function(self){
-                            let SetPrefix = (self.dataset.tpprefix) ? self.dataset.tpprefix : '';
-                            let GetFirst = self.parentElement.querySelectorAll('.tp-checkbox-hidden');
-                            if( GetFirst.length > 0 && GetFirst[0] && GetFirst[0].value ){
-                                if( StoreCk.includes(GetFirst[0].value) && !Storetpprefix.includes(SetPrefix) ){
-                                    Current.forEach(function(item){
-                                        let GetCrFirst = item.parentElement.querySelectorAll('.tp-checkbox-hidden');
-                                        if(GetFirst[0].value == GetCrFirst[0].value){
-                                            let hh = item.querySelectorAll('input[type="checkbox"]');
-                                            let jj = self.querySelectorAll('input[type="checkbox"]');
-
-                                            hh.forEach(function(data){
-                                                let taruee = data.checked;
-                                                let number = data.value;
-
-                                                jj.forEach(function(data1){
-                                                    if(data1.value == number){
-                                                        data1.checked = data.checked;
-                                                    }
-                                                });
-                                            });
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
-
-            }
-        }
-
 		var radioHandler = function(radio, rotag){
-			let GetHtml = document.querySelectorAll('.tp-wp-radio');
+            radio.forEach(function(radiofield, index){
+				let Name = radiofield.name ? radiofield.name : '',
+					type = radiofield.field ? radiofield.field : '';
 
-				radio.forEach(function(radiofield, index){
-					let TPPrefix = (GetHtml && GetHtml[index] && GetHtml[index].dataset.tpprefix) ? GetHtml[index].dataset.tpprefix : 'tp-',
-						Name = radiofield.name ? radiofield.name : '',
-						type = radiofield.field ? radiofield.field : '';
+					if(Name){
+						let rohidden='',
+							GetHtml='',
+							TagName='',
+							TagVal='';
+						if(type == 'radio'){
+							GetHtml = $scope[0].querySelectorAll('.tp-wp-radio');
+							rohidden = (GetHtml && GetHtml[0]) ? GetHtml[0].querySelector(`input[name="${Name}"]:checked`) : '';
 
-						if(Name){
-							let chidden = (GetHtml[index]) ? GetHtml[index].querySelectorAll("input[name='"+Name+"']:checked") : '';
+							TagVal = (rohidden) ? rohidden.getAttribute("data-title") : '';
+							TagName = FilterTagTitle( type, GetHtml[index], TagVal);
+						}
 
-							if(chidden) {
-								let Getbasic = GetHtml[index].closest('.tp-search-filter').getAttribute('data-basic'),
-									RD_URLParameter = (Getbasic && JSON.parse(Getbasic).URLParameter) ? JSON.parse(Getbasic).URLParameter : '';
+						if(rohidden !== null){
+							fieldValue[Name] = radiofield;
+							fieldValue[Name]['value'] = (rohidden.value) ? rohidden.value : '';	
 
-								fieldValue[Name] = radiofield;
-								fieldValue[Name]['value'] = new Array();
+							FilterTagHTML(rohidden.value, Name, TagName, rotag, type);
 
-								chidden.forEach(function(item){
-									let TagVal = (item) ? item.getAttribute("data-title") : '',
-										TagName = FilterTagTitle( type, GetHtml[index], TagVal );
-
-										fieldValue[Name]['value'].push(item.value);
-										FilterTagHTML(item.value, Name, TagName, rotag, type);
-								});
-
-								if(RD_URLParameter){
-									let Urldata = fieldValue[Name]['value'].toString();
-										urlHandler(`radio-${Name}`, Urldata)
+							if(basic.URLParameter){
+								let Urldata = fieldValue[Name]['value'].toString();
+								if(type == 'radio'){
+									urlHandler(`radio-${Name}`, Urldata)
 								}
 							}
 						}
-				});
+					}
+            })
 
             return fieldValue;
         }
 
 		var selectHandler = function(select, seleTag){
-			let GetHtml = document.querySelectorAll('.tp-search-filter .tp-select');
-			
-				select.forEach(function(selectfield, idx){
-					let TagName = '',
-						Name = (selectfield.name) ? selectfield.name : '',
-						Field = (selectfield.field) ? selectfield.field : '';
-					let Getbasic = GetHtml[idx].closest('.tp-search-filter').getAttribute('data-basic'),
-						SelectWidgetid = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).Widgetid : '',
-						SelectURLParameter = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).URLParameter : '';
+			let GetHtml = $scope[0].querySelectorAll('.tp-select');
+			select.forEach(function(selectfield,idx){
+				let TagName = '',
+					Name = (selectfield.name) ? selectfield.name : '',
+					Field = (selectfield.field) ? selectfield.field : '';
 
-						if(Name){
-							let selehidden = GetHtml[idx].querySelectorAll(`#${Name}`)[0],
-								TagVal = (selehidden && selehidden.dataset && selehidden.dataset.txtval) ? selehidden.dataset.txtval : '';
-								fieldValue[Name] = selectfield;
+					if(Name){
+						let selehidden = GetHtml[idx].querySelectorAll('#'+Name)[0],
+							TagVal = (selehidden && selehidden.dataset && selehidden.dataset.txtval) ? selehidden.dataset.txtval : '';
+							fieldValue[Name] = selectfield;
 
-								if(Field == "woo_SgDropDown"){
-									if(selehidden && selehidden.value){
-										TagName = FilterTagTitle( Field, GetHtml[idx], TagVal);
+							if(Field == "woo_SgDropDown"){
+								if(selehidden && selehidden.value){
+									TagName = FilterTagTitle( Field, GetHtml[idx], TagVal);
 
-										fieldValue[Name]['value'] = [selehidden.value];
-										FilterTagHTML(selehidden.value, Name, TagName, seleTag, 'select');
-									}else{
-										fieldValue[Name]['value'] = '';
-									}
+									fieldValue[Name]['value'] = [selehidden.value];
+									FilterTagHTML(selehidden.value, Name, TagName, seleTag, 'select');
+								}else{
+									fieldValue[Name]['value'] = '';
 								}
+							}else{	
+								if(selehidden && selehidden.value){
+									TagName = FilterTagTitle( Field, GetHtml[idx], TagVal);
 
-								if(Field != "woo_SgDropDown"){
-									if(selehidden && selehidden.value){
-										TagName = FilterTagTitle( Field, GetHtml[idx], TagVal);
-
-										fieldValue[Name]['value'] = selehidden.value;
-										FilterTagHTML(selehidden.value, Name, TagName, seleTag, 'select');
-									}else{
-										fieldValue[Name]['value'] = '';
-									}
+									fieldValue[Name]['value'] = selehidden.value;
+									FilterTagHTML(selehidden.value, Name, TagName, seleTag, 'select');
+								}else{
+									fieldValue[Name]['value'] = '';
 								}
+							}
 
-								if( SelectURLParameter ){
-									let Urldata = fieldValue[Name]['value'].toString();
-										urlHandler(`select_${Name}_${SelectWidgetid}`, Urldata)
-								}
+							if(basic.URLParameter){
+								let Urldata = fieldValue[Name]['value'].toString();
+									urlHandler('select_'+Name+'_'+idx, Urldata)
 						}
-				})
+					}
+			})
 
             return fieldValue;
         }
 
-		var inputhandle = function(data, inputTag){
-			let input = document.querySelectorAll('.tp-search-filter .tp-search-input');
-				data.forEach(function(item, index){
-					let Name = item.name ? item.name : '',
-						Field = item.field ? item.field : '',
-						Id = item.id ? item.id : '',
-						GenericData = (input[index] && input[index].dataset.genericfilter) ? JSON.parse(input[index].dataset.genericfilter) : [];
+		var inputhandle = function(data, input, inputTag){
+			data.forEach(function(item, index){
+				let Name = item.name ? item.name : '',
+					Field = item.field ? item.field : '',
+					GenericData = (input[index] && input[index].dataset.genericfilter) ? JSON.parse(input[index].dataset.genericfilter) : [];
+					if(Name){
+						let val = (input[index] && input[index].value) ? input[index].value : '',
+							TagName = FilterTagTitle( Field, input[index], val);
+							fieldValue[Name] = item;
+							fieldValue[Name]['value'] = val;
+							fieldValue[Name]['Generic'] = GenericData;
 
-					let Getbasic = ( input[index] && input[index].closest('.tp-search-filter') ) ? input[index].closest('.tp-search-filter').getAttribute('data-basic') : '',
-						SelectURLParameter = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).URLParameter : '';
-						
-						if(Name){
-							let val = (input[index] && input[index].value) ? input[index].value : '',
-								TagName = FilterTagTitle( Field, input[index], val);
-								fieldValue[Name] = item;
-								fieldValue[Name]['value'] = val;
-								fieldValue[Name]['Generic'] = GenericData;
+							if(val){
+								FilterTagHTML('search', 'search', TagName, inputTag, 'search');
+							}
 
-								if(val){
-									// TagName = FilterTagTitle( Field, GetHtml[idx], TagVal);
-									FilterTagHTML('search', input[index].id, TagName, inputTag, 'search');
-								}
-								
-								if( SelectURLParameter ){
-									urlHandler(`${Name}`, val)
-								}
+						if(basic.URLParameter){
+							urlHandler(`tp-${Name}`,val)
 						}
-				});
-			
+					}
+			});
 			return fieldValue;
 		}
 
 		var dateHandler = function(date, dateTag){
-			let GetHtml = document.querySelectorAll('.tp-date-wrap');
-			
-			date.forEach(function(datefield, index){
-				let Getbasic = GetHtml[index].closest('.tp-search-filter').getAttribute('data-basic'),
-					SelectURLParameter = (Getbasic && JSON.parse(Getbasic)) ? JSON.parse(Getbasic).URLParameter : '';
-				
+			date.map(function(datefield){
 				let Name = (datefield.name) ? datefield.name : '',
 					layout = (datefield.layout) ? datefield.layout : '',
-					datesele = GetHtml[index].querySelectorAll(`#${Name}`);
-
+					datesele = $scope[0].querySelectorAll('#'+Name);
 					fieldValue[Name] = new Array();
 					fieldValue[Name] = datefield;
 					fieldValue[Name]['value'] = new Array();
-					
+
 					if(datesele.length > 0){
-						let start, last, Title='';
-						
+						let start, last, Title='';  
 						if(layout == "style-1"){
 							start = (datesele[0] && datesele[0].value) ? datesele[0].value : '';
 							last = (datesele[1] && datesele[1].value) ? datesele[1].value : '';
@@ -1345,12 +1109,12 @@
 						}
 
 						if(basic.FilterTitle){
-							let GetTitle = datesele[0].parentNode.previousElementSibling.querySelector('.tp-title-text').textContent;
+							let GetTitle = datesele[0].parentNode.parentNode.previousElementSibling.querySelector('.tp-title-text').textContent;
 								Title = GetTitle + ' : '+ start + ' & ' + last;
 						}else{
 							Title = start+' & '+last;
 						}
-						
+
 						if(start && last){
 							fieldValue[Name]['value'].push(start,last);
 
@@ -1358,9 +1122,9 @@
 							FilterTagHTML(id, Name, Title, dateTag, 'date');
 						}
 
-						if(SelectURLParameter){
+						if(basic.URLParameter){
 							let Urldata = fieldValue[Name]['value'].toString();
-								urlHandler( Name, Urldata )
+								urlHandler( 'date', Urldata )
 						}
 					}
 			});
@@ -1370,7 +1134,6 @@
 
 		var TabbingHandle = function(GetHtml,index){
 			let tabTick_wrap = GetHtml[index].querySelectorAll('.tp-tabbing-wrapper');
-
 			if( tabTick_wrap.length > 0 ){
 				tabTick_wrap.forEach(function(self){
 					if( self && self.querySelector('.tp-tabbing-input:checked') ){
@@ -1395,10 +1158,7 @@
 		var FilterTagTitle = function(Field, GetHtml, TagVal){
 			let TagTxt = '';
 
-			let Getbasic = (GetHtml && GetHtml.closest('.tp-search-filter')) ? GetHtml.closest('.tp-search-filter').getAttribute('data-basic') : '',
-				TT_FilterTitle = (Getbasic && JSON.parse(Getbasic).FilterTitle) ? JSON.parse(Getbasic).FilterTitle : '';
-
-				if(TT_FilterTitle){
+				if(basic.FilterTitle){
 					let Titletxt='',
 						listOne = ['alphabet', 'button', 'color' , 'checkBox', 'DropDown', 'woo_SgDropDown', 'image', 'radio', 'rating', 'tabbing', 'woo_SgTabbing'],
 						listTwo = ['range', 'search'];
@@ -1430,61 +1190,9 @@
 			location.push( `<div class="tp-filter-container"><a class="tp-tag-link" data-name="${Name}" data-id="${Id}" data-type="${type}"><span class="tp-filter-tag"><i class="fa fa-times" aria-hidden="true"></i> ${Val} </span></a></div>`);
 		}
 
-		var tp_multiple_widget = function($this){
-            if($this){
-                let GetTabbing = $this.querySelectorAll('.tp-tabbing');
-                if( GetTabbing.length  > 0 ){
-                    let Current = $this.querySelectorAll('.tp-tabbing .tp-tabbing-input'),
-                        AllCheckbox = document.querySelectorAll('.tp-tabbing .tp-tabbing-input');
-
-                        tp_Multipul_widget_ticks(Current, AllCheckbox)
-                }
-
-				let GetButton = $this.querySelectorAll('.tp-woo-button');
-				if( GetButton.length  > 0 ){
-					let Current = $this.querySelectorAll('.tp-woo-button .tp-buttonBox input'),
-                        AllCheckbox = document.querySelectorAll('.tp-woo-button .tp-buttonBox input');
-
-						tp_Multipul_widget_ticks(Current, AllCheckbox)
-				}
-
-				let GetImages = $this.querySelectorAll('.tp-woo-image');
-				if( GetImages.length  > 0 ){
-					let Current = $this.querySelectorAll('.tp-woo-image .tp-imgBox input'),
-                        AllCheckbox = document.querySelectorAll('.tp-woo-image .tp-imgBox input');
-
-						tp_Multipul_widget_ticks(Current, AllCheckbox)
-				}
-
-				let GetColor = $this.querySelectorAll('.tp-woo-color');
-				if( GetColor.length  > 0 ){
-					let Current = $this.querySelectorAll('.tp-woo-color .tp-colorBox input'),
-                        AllCheckbox = document.querySelectorAll('.tp-woo-color .tp-colorBox input');
-
-						tp_Multipul_widget_ticks(Current, AllCheckbox)
-				}
-            }
-        }
-
-		var tp_Multipul_widget_ticks = function(Current, AllCheckbox){
-			if( Current.length > 0 ){
-				Current.forEach(function(self){
-					let ActiveVal = (self && self.value) ? self.value : '',
-						ActiveName = (self && self.name) ? self.name : '',
-						Checkedval = (self && self.checked) ? self.checked : false;
-					
-						AllCheckbox.forEach(function(item){
-							if( item && ActiveVal == item.value && ActiveName == item.name ){
-								item.checked = Checkedval;
-							}
-						});
-				});
-			}
-		}
-
 		var ajaxHandler = function(data, priceRange) {
 			tpgbSkeleton_filter('visible');
-			
+
 			option.forEach(function(item, index) {
 				option[index]['seapara'] = data;
 
@@ -1494,7 +1202,7 @@
 					option[index]['lazyload_sf'] = 0;
 				}
 			});
-            
+
 			setTimeout(function() {
 				jQuery.ajax({
 					url : theplus_ajax_url,
@@ -1669,71 +1377,46 @@
 
                                             fieldValue[key].value.splice(Findidx, 1);
 									}else if(type == 'select'){
-										selectremovetags(close, key, Id, type, 'tag');	
-									}else if(type == 'range'){
-										let GetRange = document.querySelectorAll(`.tp-search-filter #${key}`);
-										if( GetRange.length > 0 ){
-											GetRange[0].noUiSlider.reset();
+										let gethtml = document.getElementById(key),
+											getSpan = gethtml.parentNode.querySelector('.tp-select-dropdown span'),
+											getLi = gethtml.parentNode.querySelectorAll('.tp-sbar-dropdown-menu li')[0].textContent;
 
-											if(GetRange[0].parentElement){
-												let Getprifix = (GetRange[0].parentElement && GetRange[0].parentElement.dataset.tpprefix) ? GetRange[0].parentElement.dataset.tpprefix : '';
-													urlHandler(Getprifix, '')
-											}
-										}
+											gethtml.value = '';
+											gethtml.dataset.txtval = '';
+											getSpan.textContent = getLi;
+
+											fieldValue[key] = [];
+									}else if(type == 'range'){
+                                        if(priceRange && priceRange.noUiSlider){
+                                            priceRange.noUiSlider.reset();
+                                        }
 									}else if(type == 'date'){
 										let date = document.querySelectorAll(`#${key}`);
-											
-											if(date && date[0]){
-												date[0].value = '';
-											}
-											if(date && date[1]){
-												date[1].value = '';
-											}
-
+											date[0].value = '';
+											date[1].value = '';
 											fieldValue[key] = fieldValue[key].toString();
-
-											urlHandler(`${key}`, fieldValue[key]['value']);
 									}else if(type == 'search'){
-										let GetId = document.querySelectorAll(`#${key}`);
-										if( GetId.length > 0 ){
-											GetId[0].value = '';
-
-											FormTrigger( GetId[0], "change");
-										}
+										document.getElementById(key).value = '';
 									}else if(type == 'alphabet'){
-                                        document.getElementById(`${key}-${Id}`).checked = false;
-										document.getElementById(`${key}-${Id}`).parentNode.classList.remove('active');
+                                        document.getElementById('tp-'+Id).checked = false;
+										document.getElementById('tp-'+Id).parentNode.classList.remove('active');
 
                                         let idnum = fieldValue[key]['value'].indexOf(Id);
                                                     fieldValue[key]['value'].splice(idnum, 1);
-
-										urlHandler(`${key}`, fieldValue[key]['value'].toString());
 									}else if(type == 'tabbing'){
-										let GetTabs = document.querySelectorAll(`.tp-tabbing`);
-											GetTabs.forEach(function(self, index){
-												let Getbasic = self.closest('.tp-search-filter').getAttribute('data-basic'),
-													SelectURLParameter = (Getbasic && JSON.parse(Getbasic).URLParameter) ? JSON.parse(Getbasic).URLParameter : '';
-												
-												let GetHtml = self.querySelectorAll(`.tp-tabbing-input[name="${key}"]`);
-												if( GetHtml.length > 0 ){
-													GetHtml.forEach(function(item){
-														if( item.value == Id ){
-															item.checked = false;
-															let gg = item.closest('.tp-tabbing-wrapper');
-															if( gg.classList.contains('active') ){
-																gg.classList.remove('active');
-															}
-
-															let idnum = fieldValue[key]['value'].indexOf(Id);
-																		fieldValue[key]['value'].splice(idnum, 1);
-
-															if(SelectURLParameter){
-																urlHandler(`tab_${key}_${index}`, fieldValue[key]['value'].toString() );
-															}
-														}
-													});
+										let GetHtml = $scope[0].querySelectorAll('.tp-tabbing');
+											GetHtml.forEach(function(item){
+												if(item.classList.contains('tp-wootab-sorting')){
+													item.querySelector('#'+key).parentNode.parentNode.classList.remove('active')
+													item.querySelector('#'+key).checked = false;
+												}else{
+													item.querySelector('#tp-'+Id).parentNode.parentNode.classList.remove('active')
+													item.querySelector('#tp-'+Id).checked = false;
 												}
-											});
+											})
+
+										let idnum = fieldValue[key]['value'].indexOf(Id);
+											fieldValue[key]['value'].splice(idnum, 1);
 									}else if(type == 'button'){
 										let GetHtml = document.querySelectorAll('.tp-woo-button'),
 											GetValues = (fieldValue[key] && fieldValue[key].value) ? Object.values(fieldValue[key].value) : [],
@@ -1807,24 +1490,17 @@
 
 											fieldValue[key].value.splice(Findidx, 1);
 									}else if(type == 'rating'){
-										let GetCurent = document.querySelectorAll(`#${key}${Id}`);
-											if( GetCurent.length > 0 ){
-												GetCurent[0].checked = 0;
-
-												fieldValue[key]['value'] = 0;
-
-												urlHandler(`${key}`, fieldValue[key]['value']);
-											}
+										let GetHtml = $scope[0].querySelectorAll('.tp-star-rating');
+											GetHtml.forEach(function(item){
+												item.querySelector('.stars-'+Id).checked = 0;
+											});
+											fieldValue[key]['value'] = 0;
 									}else if(type == 'radio'){
 										let GetHtml = document.querySelectorAll('.tp-wp-radio');
 											if(GetHtml.length > 0){
-												GetHtml.forEach(function(item){
-													let TPPrefix = (item && item.dataset && item.dataset.tpprefix) ? item.dataset.tpprefix : '',
-														TagRadio = document.querySelectorAll(`#${TPPrefix + Id}`)
-														
-														if( TagRadio.length > 0 ){
-															TagRadio[0].checked = false;
-														}
+												GetHtml.forEach(function(item, idx){
+													let TPPrefix = (item && item.dataset && item.dataset.tpprefix) ? item.dataset.tpprefix : '';
+														document.querySelector(`#${TPPrefix + Id}`).checked = 0;
 												});
 											}
 
@@ -1835,27 +1511,47 @@
 											fieldValue[key].value = [];
 									}else if(type == 'tagremove' || type == 'fix_tagremove' ){
                                         let TagForm = document.querySelectorAll('.tp-search-form');
+                                       
                                             if(TagForm.length > 0){
-												/**DD Select remove*/
-												selectremovetags(close, key, Id, type, 'reset');
-												RangeResetall();
-
                                                 TagForm.forEach(function(item, index) {
                                                     let Number = item.parentNode.querySelectorAll(".tp-filter-tag-wrap");
                                                         if(Number.length > 0 && Number[index]){
                                                             Number[index].innerHTML = '';
                                                     	}
 
-                                                    // let RangeReset = item.querySelectorAll('.tp-range');
-                                                    //     if(RangeReset.length > 0 && priceRange && priceRange.noUiSlider){
-                                                    //         priceRange.noUiSlider.reset();
-                                                    //     }
+													let select = item.querySelectorAll('.tp-select');
+														if(select.length > 0){
+															select.forEach(function(slt, idx) {
+																let getinput = slt.querySelector('input'),
+																	getSpan = slt.querySelector('.tp-select-dropdown span'),
+																	getLi = (slt && 
+																				slt.querySelectorAll('.tp-sbar-dropdown-menu li')[0] &&
+																				slt.querySelectorAll('.tp-sbar-dropdown-menu li')[0].textContent ) ? slt.querySelectorAll('.tp-sbar-dropdown-menu li')[0].textContent : '';
 
-                                                    //     if( RangeReset.length > 0 ){
-                                                    //         RangeReset.forEach(function(slt, idx) {
-                                                    //             urlHandler(`range${idx}`, '')
-                                                    //         });
-                                                    //     }
+																	if(getinput && getinput.value){
+																		getinput.value = '';
+																	}			
+																	if(getinput && getinput.dataset && getinput.dataset.txtval){
+																		getinput.dataset.txtval = '';
+																	}			
+																	if(getSpan && getSpan.textContent){
+																		getSpan.textContent = getLi;
+																	}	
+																	if(getinput && getinput.name){
+																		fieldValue[getinput.name] = [];
+																	}
+															});
+														}
+
+                                                    let RangeReset = item.querySelectorAll('.tp-range');
+                                                        if(RangeReset.length > 0 && priceRange && priceRange.noUiSlider){
+                                                            priceRange.noUiSlider.reset();
+                                                        }
+                                                        if( RangeReset.length > 0 ){
+                                                            RangeReset.forEach(function(slt, idx) {
+                                                                urlHandler(`range${idx}`, '')
+                                                            });
+                                                        }
 
                                                     let RadioReset = item.querySelectorAll('.tp-wp-radio');
                                                         if( RadioReset.length > 0 ){
@@ -1981,7 +1677,7 @@
                                         }else if(layout == 'metro'){
                                             if( MainClass.classList.contains('list-isotope-metro') ){
                                                 setTimeout(function(){	
-                                                    theplus_setup_packery_portfolio();	
+                                                    theplus_setup_packery_portfolio('all');	
                                                 }, delayload);
                                             }
                                         }
@@ -2120,7 +1816,7 @@
                                         }else if(layout == 'metro'){
                                             if( MainClass.classList.contains('list-isotope-metro') ){
                                                 setTimeout(function(){	
-                                                    theplus_setup_packery_portfolio();	
+                                                    theplus_setup_packery_portfolio('all');	
                                                 }, delayload);
                                             }
                                         }
@@ -2136,7 +1832,7 @@
 			Pagin[0].removeAttribute("style")
 			option[index]['Paginate_sf'] = 1;
 			PaginationHtml(Pagin,index,data,option);
-           
+
 			let Buttonajax = Pagin[0].querySelectorAll('.tp-pagelink-'+index);
 				Buttonajax.forEach(function(self) {
 					self.addEventListener("click", function(e){
@@ -2164,7 +1860,6 @@
 											}
 										});
 
-                                        Resizelayout(option);
                                         MetroResize(option, item, index)
 										PaginationHandler(Pagin,item,index,data,option)
 									return;
@@ -2207,8 +1902,7 @@
 											Grid.style.cssText = "display:none";
 										}
 									});
-                                    
-                                    Resizelayout(option);
+
                                     MetroResize(option, item, index)
 									PaginationHandler(Pagin,item,index,data,option)
 								return;
@@ -2252,7 +1946,6 @@
 										}
 									});
 
-                                    Resizelayout(option);
                                     MetroResize(option, item, index)
 									PaginationHandler(Pagin,item,index,data,option)
 								return;
@@ -2286,7 +1979,6 @@
 							Grid.style.cssText = "display:none";
 						});
 
-                        
                         MetroResize(option, item, index)
 				},
 				complete: function() {
@@ -2299,7 +1991,7 @@
                             }, delayload);
                         }else if( layout == 'metro' && MainClass.classList.contains('list-isotope-metro') ){
                             setTimeout(function(){
-                                theplus_setup_packery_portfolio();	
+                                theplus_setup_packery_portfolio('all');	
                             }, delayload);
                         }
 
@@ -2311,8 +2003,6 @@
 		var PaginationHtml = function(Pagin,index,data,option) {
 			let HtmlLoad = option[index].PageHtmlLoad,
 				PageLimit = Math.ceil(data[index].totalrecord / option[index].display_post),
-				PageNext = (option[index].page_next) ? option[index].page_next : '',
-				PagePrev = (option[index].page_prev) ? option[index].page_prev : '',
 				$Number='',
 				$Next='',
 				$Prev='';
@@ -2346,8 +2036,8 @@
 								NTmp = (PageNum == PageLimit) ? ' tp-filter-hide':'';
 							}
 
-							$Next = '<a href="#" class="paginate-next tp-sf-next-'+index + NTmp+'" data-page="'+Number(PageNum)+'">'+PageNext+' <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i></a>',
-							$Prev = '<a href="#" class="paginate-prev tp-sf-prev-'+index + PTmp+'" data-page="'+Number(PageNum)+'"><i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i> '+PagePrev+'</a>';
+							$Next = '<a href="#" class="paginate-next tp-sf-next-'+index + NTmp+'" data-page="'+Number(PageNum)+'">NEXT<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>',
+							$Prev = '<a href="#" class="paginate-prev tp-sf-prev-'+index + PTmp+'" data-page="'+Number(PageNum)+'"><i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i> PREV</a>';
 
 							let GetGrid = seaList[index].querySelectorAll('.grid-item');
 								GetGrid.forEach(function(Grid, idx) {
@@ -2380,8 +2070,8 @@
 							});
 						}
 
-					$Next = '<a href="#" class="paginate-next tp-sf-next-'+index+'" data-page="'+Number(1)+'">'+PageNext+' <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i></a>',
-					$Prev = '<a href="#" class="paginate-prev tp-sf-prev-'+index+' tp-filter-hide" data-page="'+Number(1)+'"><i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i> '+PagePrev+'</a>';
+					$Next = '<a href="#" class="paginate-next tp-sf-next-'+index+'" data-page="'+Number(1)+'">NEXT<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>',
+					$Prev = '<a href="#" class="paginate-prev tp-sf-prev-'+index+' tp-filter-hide" data-page="'+Number(1)+'><i class="fas fa-long-arrow-alt-left" aria-hidden="true"></i> PREV</a>';
 				}
 
 				Pagin[0].innerHTML = $Prev + $Number + $Next;
@@ -2399,65 +2089,6 @@
 
 				url.search = params.toString();
 				window.history.pushState({}, '', url);
-		}
-
-		var selectremovetags = function(close, key, Id, type, clicktype){
-			let select = document.querySelectorAll('.tp-search-filter .tp-select');
-			if(select.length > 0){
-				select.forEach(function(slt) {
-					let Getbasic = slt.closest('.tp-search-filter').getAttribute('data-basic'),
-						SelectWidgetid = (Getbasic && JSON.parse(Getbasic).Widgetid) ? JSON.parse(Getbasic).Widgetid : '',
-						SelectURLParameter = (Getbasic && JSON.parse(Getbasic).URLParameter) ? JSON.parse(Getbasic).URLParameter : '';
-						
-					let URLID = `${type}_${key}_${SelectWidgetid}`,
-						Condition = 0,
-						getinput = slt.querySelector('input'),
-						getSpan = slt.querySelector('.tp-select-dropdown span'),
-						getLi = (slt && slt.querySelectorAll('.tp-sbar-dropdown-menu li')[0] &&
-									slt.querySelectorAll('.tp-sbar-dropdown-menu li')[0].textContent ) ? slt.querySelectorAll('.tp-sbar-dropdown-menu li')[0].textContent : '';
-					
-						if( clicktype == "tag" ){
-							if( getinput.id && getinput.id == key ){
-								Condition = 1;
-							}
-						}else{
-							Condition = 1;
-						}
-
-						if(Condition){
-							if(getinput && getinput.value){
-								getinput.value = '';
-							}
-							if(getinput && getinput.dataset && getinput.dataset.txtval){
-								getinput.dataset.txtval = '';
-							}
-							if(getSpan && getSpan.textContent){
-								getSpan.textContent = getLi;
-							}	
-							if(getinput && getinput.name){
-								fieldValue[getinput.name] = [];
-							}
-						}
-
-						if( SelectURLParameter ){
-							urlHandler(URLID, '')
-						}	
-				});
-			}
-		}
-
-		var RangeResetall = function(){
-			let RangeReset = document.querySelectorAll('.tp-search-filter .tp-range');
-				if( RangeReset.length > 0 ){
-					RangeReset.forEach(function(item) {
-						item.noUiSlider.reset();
-
-						if(item.parentElement){
-							let Getprifix = (item.parentElement && item.parentElement.dataset.tpprefix) ? item.parentElement.dataset.tpprefix : '';
-								urlHandler(Getprifix, '')
-						}
-					});
-				}
 		}
 
         var RemoveTagHandle = function($val){
@@ -2486,9 +2117,8 @@
         }
 
         var SearchTotalResults = function(TotalRecord=0){
-			let Notfound = document.querySelectorAll('.grid-item:not(.theplus-posts-not-found)'),
+			let Notfound = document.querySelectorAll('.grid-item :not(.theplus-posts-not-found)'),
 				GetTR = document.querySelectorAll('.tp-total-results-txt');
-
 				if(Notfound.length == 0){
 					GetTR.forEach(function(self, index) {
 						let One = self.previousElementSibling.textContent.replaceAll('{visible_product_no}', 0),
@@ -2496,7 +2126,7 @@
 							self.innerHTML = Two;
 					})
 				}else{
-					let GetAllGrid = document.querySelectorAll('.tp-searchlist .grid-item > :not(.theplus-posts-not-found)');
+					let GetAllGrid = document.querySelectorAll('.grid-item');
 						GetTR.forEach(function(self, index) {
 							let One = self.previousElementSibling.textContent.replaceAll('{visible_product_no}', GetAllGrid.length),
 								Two = One.replaceAll('{total_product_no}', TotalRecord);
@@ -2593,7 +2223,7 @@
 
         var MetroResize = function(option, Html, idx) {
             if( option && option[idx].layout == 'metro' && Html && Html.parentNode.classList.contains('list-isotope-metro')){
-                theplus_setup_packery_portfolio();	
+                theplus_setup_packery_portfolio('all');	
             }
         };
 
@@ -2608,11 +2238,20 @@
 				}else if(item.layout == 'metro'){
 					if( seaList[index].parentNode.classList.contains('list-isotope-metro') ){
 						setTimeout(function(){
-							theplus_setup_packery_portfolio();	
+							theplus_setup_packery_portfolio('all');	
                         }, delayload);
 					}
 				}
 			});
+
+			EqualHeightlayout();
+		}
+
+		var EqualHeightlayout = function() {
+			var Equalcontainer = jQuery('.elementor-element[data-tp-equal-height-loadded]');
+			if( Equalcontainer.length > 0 ){
+				EqualHeightsLoadded();
+			}
 		}
 
 		var PostsNotFound = function(item, idx) {
@@ -2645,7 +2284,7 @@
 				Pagin[0].style.cssText = "display:none";
 			}
 		}
-		
+
         var AnimationEffect = function(item, option, index) {
 			var c,d;
 			if( item.parentElement.classList.contains('animate-general') ){
@@ -2724,12 +2363,6 @@
 						element.checked = false;
 					});
 				}
-			}
-		}
-
-		var FormTrigger = function(data, event) {
-			if( data ){
-				jQuery(data).trigger(event);
 			}
 		}
 
@@ -2876,14 +2509,12 @@
 		function MomentDate(){
 			let GetDatestyle = container[0].querySelectorAll('.tp-date-wrap.style-2');
 			if( GetDatestyle.length > 0 ){
-				let GetPrifix = (GetDatestyle[0] && GetDatestyle[0].dataset && GetDatestyle[0].dataset.tpprefix ) ? GetDatestyle[0].dataset.tpprefix : ''; 	
-				
-				$(`#${GetPrifix}`).on('cancel.daterangepicker', function(ev, picker) {
+				$('#tp-datepicker1').on('cancel.daterangepicker', function(ev, picker) {
 					$(this).val('');
 					$(this).trigger( "change" )
 				});
 
-				$(`#${GetPrifix}`).on('apply.daterangepicker', function(ev, picker) {
+				$('#tp-datepicker1').on('apply.daterangepicker', function(ev, picker) {
 					$(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
 					$(this).trigger( "change" )
 				});
@@ -3101,4 +2732,4 @@
 		elementorFrontend.hooks.addAction('frontend/element_ready/tp-search-filter.default', WidgetSearchFilterHandler);
 	});
 
-})(jQuery);	
+})(jQuery);

@@ -93,6 +93,7 @@ class Repeater_Query extends Base_Query {
 						$items = json_decode( $items );
 					}
 
+					$items = wp_unslash( $items );
 				}
 
 				$current_object_id = jet_engine()->listings->data->get_current_object_id();
@@ -158,7 +159,7 @@ class Repeater_Query extends Base_Query {
 			}
 
 			$compare = ! empty( $clause['compare'] ) ? $clause['compare'] : '=';
-			$value   = ! empty( $clause['value'] ) ? $clause['value'] : '';
+			$value   = ! \Jet_Engine_Tools::is_empty( $clause['value'] ) ? $clause['value'] : '';
 
 			$matched = false;
 

@@ -1450,9 +1450,9 @@ class ElementsKit_Widget_Stylish_List extends Widget_Base {
 							</div>
 						<?php endif; ?>
 						<div class="ekit-stylish-list-content-text">
-							<span class="ekit-stylish-list-content-title"><?php echo esc_html($list['title']); ?></span>
+							<span class="ekit-stylish-list-content-title"><?php echo wp_kses($list['title'], \ElementsKit_Lite\Utils::get_kses_array())?></span>
 							<?php if (!empty($list['description'])) : ?>
-								<span class="ekit-stylish-list-content-description"><?php echo esc_html($list['description']); ?></span>
+								<span class="ekit-stylish-list-content-description"><?php echo wp_kses($list['description'], \ElementsKit_Lite\Utils::get_kses_array()); ?></span>
 							<?php endif; ?>
 						</div>
 						<?php if ($list['badge_show'] == 'yes') : ?>

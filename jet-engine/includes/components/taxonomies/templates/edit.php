@@ -13,7 +13,7 @@
 				<cx-vui-input
 					:name="'tax_name'"
 					:label="'<?php _e( 'Taxonomy Name', 'jet-engine' ); ?>'"
-					:description="'<?php _e( 'Set unique name for your post type. Eg. `Projects`', 'jet-engine' ); ?>'"
+					:description="'<?php _e( 'Set unique name for your taxonomy. Eg. `Projects`', 'jet-engine' ); ?>'"
 					:wrapper-css="[ 'equalwidth' ]"
 					:size="'fullwidth'"
 					:error="errors.name"
@@ -137,7 +137,7 @@
 				<cx-vui-input
 					:name="'query_var'"
 					:label="'<?php _e( 'Register Query Var', 'jet-engine' ); ?>'"
-					:description="'<?php _e( 'Sets the query_var key for this post type', 'jet-engine' ); ?>'"
+					:description="'<?php _e( 'Sets the query_var key for this taxonomy', 'jet-engine' ); ?>'"
 					:wrapper-css="[ 'equalwidth' ]"
 					:size="'fullwidth'"
 					v-model="advancedSettings.query_var"

@@ -812,7 +812,6 @@ class ThePlus_Navigation_Menu extends Widget_Base {
 						'icon' => 'eicon-text-align-right',
 					],
 				],
-				'separator' => 'before',
 				'default' => 'text-center',
 				'toggle' => true,
 				'label_block' => false,
@@ -826,7 +825,6 @@ class ThePlus_Navigation_Menu extends Widget_Base {
 				'label_on' => esc_html__( 'Show', 'theplus' ),
 				'label_off' => esc_html__( 'Hide', 'theplus' ),				
 				'default' => 'no',
-				'separator' => 'before',
 			]
 		);
 		$this->add_control(

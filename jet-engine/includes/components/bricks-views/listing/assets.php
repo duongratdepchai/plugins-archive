@@ -213,7 +213,7 @@ class Assets extends \Bricks\Assets {
 		if ( ! $active_google_font_urls || ! $active_google_font_families ) {
 			$google_fonts_families_string = \Bricks\Helpers::get_file_contents( BRICKS_URL_ASSETS . 'fonts/google-fonts.min.json' );
 			$google_fonts_families        = json_decode( $google_fonts_families_string, true );
-			$google_fonts_families        = is_array( $google_fonts_families ) ? $google_fonts_families['items'] : [];
+			$google_fonts_families        = is_array( $google_fonts_families ) ? $google_fonts_families : [];
 			$active_google_font_families  = [];
 			$active_google_font_urls      = [];
 

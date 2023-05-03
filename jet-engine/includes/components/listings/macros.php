@@ -17,6 +17,8 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 
 		private $macros_context      = null;
 		private $fallback            = null;
+		private $before              = null;
+		private $after               = null;
 		private $macros_list         = null;
 		private $escaped_macros_list = null;
 
@@ -159,6 +161,22 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 
 		public function get_fallback( $fallback = null ) {
 			return $this->fallback;
+		}
+
+		public function set_before( $before = null ) {
+			$this->before = $before;
+		}
+
+		public function get_before() {
+			return $this->before;
+		}
+
+		public function set_after( $after = null ) {
+			$this->after = $after;
+		}
+
+		public function get_after() {
+			return $this->after;
 		}
 
 		/**
@@ -328,6 +346,10 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 		 */
 		public function do_macros( $string = '', $field_value = null ) {
 
+			if ( empty( $string ) ) {
+				return $string;
+			}
+
 			$macros = $this->get_all();
 
 			return preg_replace_callback(
@@ -367,23 +389,45 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 							$this->set_fallback( $config['fallback'] );
 						}
 
+						if ( ! empty( $config['before'] ) ) {
+							$this->set_before( $config['before'] );
+						}
+
+						if ( ! empty( $config['after'] ) ) {
+							$this->set_after( $config['after'] );
+						}
+
 					}
 					
-					$result = call_user_func( $cb, $field_value, $args );
+					$result   = call_user_func( $cb, $field_value, $args );
 					$fallback = $this->get_fallback();
+					$before   = $this->get_before();
+					$after    = $this->get_after();
 
-					if ( $fallback && empty( $result ) ) {
+					if ( ! empty( $result ) ) {
+
+						if ( is_array( $result ) ) {
+							$result = implode( ',', $result );
+						}
+
+						if ( $before ) {
+							$result = $before . $result;
+						}
+
+						if ( $after ) {
+							$result .= $after;
+						}
+
+					} elseif ( $fallback ) {
 						$result = $fallback;
 					}
 
 					$this->set_fallback( null );
 					$this->set_macros_context( null );
+					$this->set_before( null );
+					$this->set_after( null );
 
-					if ( is_array( $result ) ) {
-						return implode( ',', $result );
-					} else {
-						return $result;
-					}
+					return $result;
 
 				}, $string
 			);

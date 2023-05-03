@@ -129,7 +129,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater->start_controls_tab(
 			'tab_head_content',
 			[
-				'label'     => esc_html__( 'CONTENT', 'theplus' ),
+				'label'     => esc_html__( 'Content', 'theplus' ),
 				'condition' => [
 					'header_content_type' => 'cell',
 				],
@@ -190,7 +190,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater->start_controls_tab(
 			'tab_head_icon',
 			[
-				'label'     => esc_html__( 'ICON / IMAGE', 'theplus' ),
+				'label' => esc_html__( 'Icon / Image', 'theplus' ),
 				'condition' => [
 					'header_content_type' => 'cell',
 				],
@@ -282,7 +282,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater->start_controls_tab(
 			'tab_head_advance',
 			[
-				'label'     => esc_html__( 'ADVANCE', 'theplus' ),
+				'label'     => esc_html__( 'Advance', 'theplus' ),
 				'condition' => [
 					'header_content_type' => 'cell',
 				],
@@ -375,6 +375,34 @@ class ThePlus_Data_Table extends Widget_Base {
 				],
 				'condition' => [
 					'header_content_type' => 'cell',
+				],
+			]
+		);
+
+		$repeater->add_responsive_control('cell_align_head_indi',
+			[
+				'label' => esc_html__( 'Text Alignment', 'theplus' ),
+				'type' => Controls_Manager::CHOOSE,
+				'default' => '',
+				'options' => [
+					'flex-start'   => [
+						'title' => esc_html__( 'Left', 'theplus' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'theplus' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'flex-end'  => [
+						'title' => esc_html__( 'Right', 'theplus' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'condition' => [
+					'header_content_type' => 'cell',
+				],
+				'selectors' => [
+					'{{WRAPPER}} th{{CURRENT_ITEM}} span' => 'justify-content:{{VALUE}};',
 				],
 			]
 		);

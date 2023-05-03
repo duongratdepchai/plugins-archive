@@ -67,7 +67,7 @@
 		 *
 		 * @since 5.3.0
 		 */
-		public function check( $relation, $val, $extra = false ) {
+		public function check( $relation, $val, $custom_page_id = false, $extra = false ) {
 			if ( 'home' === $val ) {
 				return $this->compare( ( is_front_page() && is_home() ), true, $relation );
 			} elseif ( 'static' === $val ) {

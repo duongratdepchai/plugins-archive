@@ -366,7 +366,6 @@ class ThePlus_Accordion extends Widget_Base {
 				'type' => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => theplus_get_numbers(),
-				'separator' => 'before',
 			]
 		);
 		$this->add_control(
@@ -1075,6 +1074,32 @@ class ThePlus_Accordion extends Widget_Base {
 				'label_block' => false,
 			]
 		);
+		$this->add_responsive_control(
+            'title_gap',
+            [
+                'type' => Controls_Manager::SLIDER,
+				'label' => esc_html__('Gap', 'theplus'),
+				'size_units' => ['px'],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 250,
+						'step' => 1,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 68,
+				],
+				'render_type' => 'ui',
+				'selectors' => [
+					'{{WRAPPER}} .theplus-accordion-wrapper .theplus-accordion-item .plus-accordion-header' => 'line-height: {{SIZE}}{{UNIT}};',
+				],				
+				'condition' => [
+					'horizontal_accordion' => 'yes',
+				],
+            ]
+        );
 		$this->start_controls_tabs( 'tabs_title_style' );
 		$this->start_controls_tab(
 			'tab_title_normal',

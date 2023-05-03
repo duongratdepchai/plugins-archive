@@ -24,21 +24,6 @@ function theplus_get_templates() {
 	// }
 }
 
-/*Widget Error Html*/
-function theplus_get_widgetError() {
-	$HTML = '<div class="tp-scroll-Notice">
-				<div class="tp-error-thumb">
-					<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28 0L52.2487 14V42L28 56L3.75129 42V14L28 0Z" fill="#DD4646"/><path d="M7.71539 16.2887L28 4.57735L48.2846 16.2887V39.7113L28 51.4226L7.71539 39.7113V16.2887Z" stroke="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.1016 15C25.9578 15 25.047 15.9575 25.1041 17.0999L25.9516 34.0499C25.9783 34.5822 26.4175 35 26.9504 35H29.0479C29.5807 35 30.02 34.5822 30.0466 34.0499L30.8941 17.0999C30.9513 15.9575 30.0405 15 28.8967 15H27.1016ZM26.9991 38C26.4468 38 25.9991 38.4477 25.9991 39V41C25.9991 41.5523 26.4468 42 26.9991 42H28.9991C29.5514 42 29.9991 41.5523 29.9991 41V39C29.9991 38.4477 29.5514 38 28.9991 38H26.9991Z" fill="white"/></svg>
-				</div>
-				<div class="tp-error-content">
-					<Span>No Images Selected!</Span>
-					<Span>Please select Image from Content Tab to get the desired result</Span>
-				</div>
-		</div>';
-
-	return $HTML;
-}
-
 /*get template*/
 
 //woo out of stock
@@ -721,18 +706,23 @@ function theplus_get_style_list_custom_pro($max=3,$none='') {
     return $options;
 }
 
-function theplus_get_numbers($tabs='')
-{
-	$options=array();
-	
-	if(!empty($tabs)){
+function theplus_get_numbers($tabs='') {
+	$options = array();
+
+	if ( !empty($tabs) && $tabs == "tabs" ){
 		$options[ 'all-open' ] = 'All Close';
 	}else{
 		$options[ 'all-open' ] = 'All Open';
-	}	
-	for( $i=0;$i<=20;$i++) {
-            $options[ $i ] = $i;
-        }
+	}
+
+	for( $i=0; $i<=20; $i++ ) {
+		if( $tabs == "tabs" && $i == 0 ){
+			continue;
+		}
+
+		$options[ $i ] = $i;
+	}
+
     return $options;
 }
 

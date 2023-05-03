@@ -741,16 +741,14 @@ class ThePlus_Clients_ListOut extends Widget_Base {
 				],
 			]
 		);
-		$this->start_controls_tabs( 'tabs_load_more_border_style', 
-			[
-				'condition' => [
-					'layout!' => ['carousel'],
-					'clientContentFrom!' => 'clrepeater',
-					'post_extra_option'    => 'load_more',
-					'load_more_border' => 'yes',
-				],
-			] 
-		);
+		$this->start_controls_tabs( 'tabs_load_more_border_style', [
+			'condition' => [
+				'layout!' => ['carousel'],
+				'clientContentFrom!' => 'clrepeater',
+				'post_extra_option'    => 'load_more',
+				'load_more_border' => 'yes',
+			],
+		] );
 		$this->start_controls_tab(
 			'tab_load_more_border_normal',
 			[

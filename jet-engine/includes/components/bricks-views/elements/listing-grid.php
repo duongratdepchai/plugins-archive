@@ -278,6 +278,16 @@ class Listing_Grid extends Base {
 			]
 		);
 
+		$this->register_jet_control(
+			'not_found_message',
+			[
+				'tab'            => 'content',
+				'label'          => esc_html__( 'Not found message', 'jet-engine' ),
+				'type'           => 'text',
+				'default'        => esc_html__( 'No data was found', 'jet-engine' ),
+				'hasDynamicData' => false,
+			]
+		);
 
 		$this->register_jet_control(
 			'lazy_load',
@@ -1290,13 +1300,15 @@ class Listing_Grid extends Base {
 
 		parent::render();
 
+		$settings = $this->parse_jet_render_attributes( $this->get_jet_settings() );
+
 		$this->set_attribute( '_root', 'class', 'brxe-' . $this->id );
 		$this->set_attribute( '_root', 'class', 'brxe-jet-listing-el' );
 		$this->set_attribute( '_root', 'data-element-id', $this->id );
 		$this->set_attribute( '_root', 'data-listing-type', 'bricks' );
 
 		// STEP: Listing field is empty: Show placeholder text
-		if ( ! $this->get_jet_settings( 'lisitng_id' ) ) {
+		if ( empty( $settings['lisitng_id'] ) ) {
 			return $this->render_element_placeholder(
 				[
 					'title' => esc_html__( 'Please select listing to show.', 'jet-engine' )
@@ -1333,6 +1345,7 @@ class Listing_Grid extends Base {
 		$attrs['arrows']   = $attrs['arrows'] ?? false;
 		$attrs['autoplay'] = $attrs['autoplay'] ?? false;
 		$attrs['infinite'] = $attrs['infinite'] ?? false;
+		$attrs['not_found_message'] = $attrs['not_found_message'] ?? '';
 
 		return $attrs;
 	}

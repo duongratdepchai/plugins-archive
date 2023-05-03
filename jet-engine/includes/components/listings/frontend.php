@@ -301,6 +301,85 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 			return $content;
 		}
 
+		public function add_listing_link_to_content( $content, $settings ) {
+
+			if ( empty( $settings ) || empty( $settings['listing_link'] ) ) {
+				return $content;
+			}
+
+			$url = apply_filters_deprecated(
+				'jet-engine/elementor-views/frontend/custom-listing-url',
+				array( false, $settings ),
+				'2.1.5',
+				'jet-engine/listings/frontend/custom-listing-url'
+			);
+
+			$url = apply_filters(
+				'jet-engine/listings/frontend/custom-listing-url',
+				$url,
+				$settings
+			);
+
+			if ( ! $url ) {
+				$source = ! empty( $settings['listing_link_source'] ) ? $settings['listing_link_source'] : '_permalink';
+
+				if ( '_permalink' === $source ) {
+					$url = jet_engine()->listings->data->get_current_object_permalink();
+				} elseif ( 'open_map_listing_popup' === $source ) {
+					$url = jet_engine()->modules->get_module( 'maps-listings' )->instance->get_action_url();
+				} elseif ( 'open_map_listing_popup_hover' === $source ) {
+					$url = jet_engine()->modules->get_module( 'maps-listings' )->instance->get_action_url( null, 'hover' );
+				} elseif ( 'options_page' === $source ) {
+					$option = ! empty( $settings['listing_link_option'] ) ? $settings['listing_link_option'] : false;
+					$url    = jet_engine()->listings->data->get_option( $option );
+				} elseif ( $source ) {
+					$url = jet_engine()->listings->data->get_meta( $source );
+				}
+			}
+
+			$prefix = isset( $settings['listing_link_prefix'] ) ? $settings['listing_link_prefix'] : '';
+
+			if ( $prefix ) {
+				$url = $prefix . $url;
+			}
+
+			$overlay_attrs = array(
+				'class'    => 'jet-engine-listing-overlay-wrap',
+				'data-url' => $url,
+			);
+
+			$link_attrs = array(
+				'href'  => $url,
+				'class' => 'jet-engine-listing-overlay-link',
+			);
+
+			$open_in_new = isset( $settings['listing_link_open_in_new'] ) ? $settings['listing_link_open_in_new'] : '';
+			$rel_attr    = isset( $settings['listing_link_rel_attr'] ) ? $settings['listing_link_rel_attr'] : '';
+			$aria_label  = isset( $settings['listing_link_aria_label'] ) ? $settings['listing_link_aria_label'] : '';
+
+			if ( $open_in_new ) {
+				$overlay_attrs['data-target'] = '_blank';
+				$link_attrs['target']         = '_blank';
+			}
+
+			if ( $rel_attr ) {
+				$link_attrs['rel'] = $rel_attr;
+			}
+
+			if ( $aria_label ) {
+				$link_attrs['aria-label'] = esc_attr( $aria_label );
+			}
+
+			$link = sprintf( '<a %s></a>', Jet_Engine_Tools::get_attr_string( $link_attrs ) );
+
+			return sprintf(
+				'<div %3$s>%1$s%2$s</div>',
+				$content,
+				$link,
+				Jet_Engine_Tools::get_attr_string( $overlay_attrs )
+			);
+		}
+
 		/**
 		 * Setup data
 		 *

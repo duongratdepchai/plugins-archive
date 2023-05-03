@@ -3346,20 +3346,21 @@ function plus_bgimage_scrollparallax(){
 		}
 		/*caldera form*/
 		/*gravity form*/
-		if($(".pt_plus_gravity_form .gform_wrapper .ginput_container_checkbox").length > 0){
-			$(".pt_plus_gravity_form .gform_wrapper .ginput_container_checkbox ul li label").each(function(){
+		if( $(".pt_plus_gravity_form .gform_wrapper .ginput_container_checkbox").length > 0 ){
+			$(".pt_plus_gravity_form .gform_wrapper .ginput_container_checkbox label").each(function(){
 				var $this=$(this);
-				var g_checkbox_id=$this.find('input[type="checkbox"]');				
+				var g_checkbox_id=$this.find('input[type="checkbox"]');
 				if(g_checkbox_id!=undefined){			
 					$this.append('<span class="gravity_checkbox_label"></span>');
-				}				
+				}
 			});
 		}
-		if($(".pt_plus_gravity_form .gform_wrapper .ginput_container_radio").length > 0){
-			$(".pt_plus_gravity_form .gform_wrapper .ginput_container_radio ul li label").each(function(){
-				var $this=$(this);
-				var g_radio_id=$this.find('input[type="radio"]');				
-				if(g_radio_id!=undefined){			
+
+		if( $(".pt_plus_gravity_form .gform_wrapper .ginput_container_radio").length > 0 ){
+			$(".pt_plus_gravity_form .gform_wrapper .ginput_container_radio label").each(function(){
+				var $this = $(this);
+				var g_radio_id = $this.find('input[type="radio"]');				
+				if(g_radio_id != undefined){			
 					$this.append('<span class="gravity_radio_label"></span>');
 				}
 			});

@@ -2139,7 +2139,7 @@ class ElementsKit_Widget_Content_Ticker extends Widget_Base {
 		] );
 
 		// marquee effect class
-		$ticker = $ekit_content_ticker_effect_style === 'marquee' ? 'ticker': 'swiper';
+		$ticker = $ekit_content_ticker_effect_style === 'marquee' ? 'ticker':  (method_exists('\ElementsKit_Lite\Utils', 'swiper_class') ? esc_attr(\ElementsKit_Lite\Utils::swiper_class()) : 'swiper');
 		$marquee_wrapper = $ekit_content_ticker_effect_style === 'marquee' ? 'marquee-wrapper': 'swiper-wrapper';
 		$ticker_item = $ekit_content_ticker_effect_style === 'marquee' ? 'ticker-item': 'swiper-slide';
 		?>

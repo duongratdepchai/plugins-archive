@@ -376,6 +376,17 @@ class ThePlus_Button extends Widget_Base {
             ]
         );		
 		$this->add_responsive_control(
+			'button_margin',
+			[
+				'label' => esc_html__( 'Margin', 'theplus' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],			
+				'selectors' => [
+					'{{WRAPPER}} .pt_plus_button:not(.button-style-11):not(.button-style-17) .button-link-wrap,{{WRAPPER}} .pt_plus_button.button-style-11 .button-link-wrap > span,{{WRAPPER}} .pt_plus_button.button-style-11 .button-link-wrap::before,.pt_plus_button.button-style-17 .button-link-wrap > span' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],		
+			]
+		);			
+		$this->add_responsive_control(
 			'button_padding',
 			[
 				'label' => esc_html__( 'Padding', 'theplus' ),

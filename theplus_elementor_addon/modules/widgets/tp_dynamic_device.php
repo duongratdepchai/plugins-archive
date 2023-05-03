@@ -1870,11 +1870,14 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
 		$this->add_responsive_control(
 			'image_outer_border_radius',
 			[
-				'label'      => esc_html__( 'Image Outer Border Radius', 'theplus' ),
+				'label'      => esc_html__( 'Scroll Image Outer Border Radius', 'theplus' ),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors'  => [
 					'{{WRAPPER}} .plus-device-wrapper .plus-media-inner .creative-scroll-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition' => [
+					'scroll_image_effect' => 'yes',
 				],
 			]
 		);

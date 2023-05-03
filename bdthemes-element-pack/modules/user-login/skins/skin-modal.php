@@ -379,7 +379,7 @@ class Skin_Modal extends Elementor_Skin_Base {
                     <?php if ( $this->get_instance_value('modal_header') ) : ?>
                         <div class="bdt-modal-header">
                             <h2 class="bdt-modal-title"><span
-                                        class="eicon-user-circle-o"></span> <?php esc_html_e('User Login!', 'bdthemes-element-pack'); ?>
+                                        class="ep-icon-user-circle-o"></span> <?php esc_html_e('User Login!', 'bdthemes-element-pack'); ?>
                             </h2>
                         </div>
                     <?php endif; ?>

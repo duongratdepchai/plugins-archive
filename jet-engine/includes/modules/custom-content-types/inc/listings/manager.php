@@ -169,6 +169,12 @@ class Manager {
 			array( $this, 'setup_preview' )
 		);
 
+		add_filter(
+			'jet-engine/listings/frontend/custom-listing-url',
+			array( $this, 'custom_listing_url' ),
+			10, 2
+		);
+
 	}
 
 	public function get_object_date( $date, $object ) {
@@ -365,7 +371,7 @@ class Manager {
 			$result = $current_object->$field;
 		}
 
-		return $result;
+		return wp_unslash( $result );
 
 	}
 
@@ -841,7 +847,7 @@ class Manager {
 			$result = $current_object->$field;
 		}
 
-		return $result;
+		return wp_unslash( $result );
 	}
 
 	public function get_dynamic_field_repeater_value( $result, $settings ) {
@@ -886,6 +892,21 @@ class Manager {
 		$sources[] = $this->repeater_source;
 
 		return $sources;
+	}
+
+	public function custom_listing_url( $result, $settings ) {
+
+		$url = $this->get_custom_value_by_setting( 'listing_link_source', $settings );
+
+		if ( is_numeric( $url ) ) {
+			$url = get_permalink( $url );
+		}
+
+		if ( ! $url ) {
+			return $result;
+		} else {
+			return $url;
+		}
 	}
 
 }

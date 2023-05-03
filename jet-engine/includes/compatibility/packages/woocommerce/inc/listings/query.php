@@ -26,7 +26,7 @@ class Query {
 		);
 
 		add_filter(
-			'jet-engine/elementor-views/frontend/custom-listing-url',
+			'jet-engine/listings/frontend/custom-listing-url',
 			[ $this, 'set_wc_product_custom_listing_url' ]
 		);
 

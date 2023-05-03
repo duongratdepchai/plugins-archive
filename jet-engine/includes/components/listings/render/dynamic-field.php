@@ -115,6 +115,11 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 
 							$result = get_the_excerpt( $post_object );
 
+							// If a post has excerpt, the filters `excerpt_more` and `excerpt_length` are not applied.
+							if ( has_excerpt( $post_object ) ) {
+								$result = wp_trim_words( $result, $this->excerpt_length, $this->more_string );
+							}
+
 							remove_filter( 'excerpt_more', array( $this, 'excerpt_more' ) );
 
 							if ( $this->excerpt_length ) {

@@ -612,7 +612,7 @@ class ThePlus_Carousel_Remote extends Widget_Base {
 			[
 				'label' => esc_html__( 'Gap/Space', 'theplus' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', '%' ],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -1114,7 +1114,7 @@ class ThePlus_Carousel_Remote extends Widget_Base {
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
 				'label_off' => esc_html__( 'Disable', 'theplus' ),
-				'default' => 'no',
+				'default' => '',
 			]
 		);
 		$this->add_control(

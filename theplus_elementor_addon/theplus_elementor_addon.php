@@ -2,21 +2,23 @@
 /*
 * Plugin Name: The Plus Addons for Elementor - Pro
 * Plugin URI: https://theplusaddons.com/
-* Description: Ultimate collection of Addons for Elementor Page Builder and proudly developed by POSIMYTH Team.
-* Version: 5.1.6
+* Description: Highly Customisable 120+ Advanced Elementor Widgets & Extensions for Performance Driven Website. Keep the free version active to access all of its features.
+* Version: 5.2.3
 * Author: POSIMYTH
 * Author URI: https://posimyth.com/
 * Text Domain: theplus
-* Elementor tested up to: 3.10
-* Elementor Pro tested up to: 3.10
+* Elementor tested up to: 3.12
+* Elementor Pro tested up to: 3.12
 */
+
+update_option( 'theplus_verified', [ 'expire' => 'lifetime', 'license' => 'valid', 'verify' => 1 ] );
+update_option( 'theplus_purchase_code', ['tp_api_key' => '********************'] );
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-defined( 'THEPLUS_VERSION' ) or define( 'THEPLUS_VERSION', '5.1.6' );
-update_option( 'theplus_verified', [ 'expire' => 'lifetime', 'verify' => 1 ] );
-update_option( 'theplus_purchase_code','1415b451be1a13c283ba771ea52d38bb' );
+
+defined( 'THEPLUS_VERSION' ) or define( 'THEPLUS_VERSION', '5.2.3' );
 define( 'THEPLUS_FILE__', __FILE__ );
 
 define( 'THEPLUS_PATH', plugin_dir_path( __FILE__ ) );
@@ -28,7 +30,6 @@ define('THEPLUS_ASSET_PATH', wp_upload_dir()['basedir'] . DIRECTORY_SEPARATOR . 
 define('THEPLUS_ASSET_URL', wp_upload_dir()['baseurl'] . '/theplus-addons');
 define( 'THEPLUS_INCLUDES_URL', THEPLUS_PATH . 'includes/' );
 define( 'THEPLUS_TYPE', 'store' );
-
 
 
 /* theplus language plugins loaded */
@@ -52,9 +53,9 @@ function theplus_pluginsLoaded() {
 }
 add_action( 'plugins_loaded', 'theplus_pluginsLoaded' );
 
- /* theplus update notice */
+/* theplus update notice */
 add_action('in_plugin_update_message-theplus_elementor_addon/theplus_elementor_addon.php','tp_in_plugin_update_message',10,2);
-function tp_in_plugin_update_message($data,$response){			
+function tp_in_plugin_update_message($data,$response){
 	if( isset( $data['upgrade_notice'] ) && !empty($data['upgrade_notice']) ) {
 		printf(
 			'<div class="update-message">%s</div>',
@@ -62,6 +63,7 @@ function tp_in_plugin_update_message($data,$response){
 		);
 	}
 }
+
 /* theplus elementor load notice */
 function theplus_elementor_load_notice() {	
 	$plugin = 'elementor/elementor.php';	
@@ -101,13 +103,13 @@ function theplus_lite_load_notice() {
 */
 function theplus_plugin_updater() {
 	
-    $purchase_key = '1415b451be1a13c283ba771ea52d38bb';
-	$verify_api= 1;
+    $purchase_key = get_option( 'theplus_purchase_code' );
+	$verify_api=theplus_check_api_status();
     // setup the updater
 	if(!empty($purchase_key['tp_api_key']) && !empty($verify_api) && $verify_api==1){
 		$edd_updater = new Theplus_SL_Plugin_Updater( TP_PLUS_SL_STORE_URL, __FILE__, array(
 			'version' => THEPLUS_VERSION,
-			'license' => '1415b451be1a13c283ba771ea52d38bb',		
+			'license' => $purchase_key['tp_api_key'],		
 			'item_id'       => TP_PLUS_SL_ITEM_ID,
 			'author' => 'POSIMYTH Themes',
 			'url'           => home_url(),
@@ -139,6 +141,7 @@ if ( ! function_exists( 'theplus_elementor_activated' ) ) {
 		return isset( $installed_plugins[ $file_path ] );
 	}
 }
+
 /**
 	* The Plus Lite activated or not
 */
@@ -151,6 +154,7 @@ if ( ! function_exists( 'theplus_lite_activated' ) ) {
 		return isset( $installed_plugins[ $file_path ] );
 	}
 }
+
 /**
  * Redirect lite action
  *

@@ -469,7 +469,8 @@ function jet_engine_icon_html( $value = null ) {
 
 	$format = apply_filters(
 		'jet-engine/listings/icon-html-format',
-		'<i class="fa %s"></i>'
+		'<i class="fa %s"></i>',
+		$value
 	);
 
 	return sprintf( $format, $value );

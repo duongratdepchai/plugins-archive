@@ -97,7 +97,7 @@ final class Theplus_Element_Load {
 		
 		require_once THEPLUS_INCLUDES_URL .'plus_addon.php';
 		
-		$megamenu=theplus_get_option('general','check_elements');
+		$megamenu = theplus_get_option('general','check_elements');
 		if(isset($megamenu) && !empty($megamenu) && in_array("tp_navigation_menu", $megamenu) ){
 			include THEPLUS_INCLUDES_URL . 'custom-nav-item/menu-item-custom-fields.php';
 			include THEPLUS_INCLUDES_URL . 'custom-nav-item/plus-navigation-fields.php';
@@ -107,7 +107,6 @@ final class Theplus_Element_Load {
 			require_once THEPLUS_INCLUDES_URL.'plus-options/includes.php';
 		}
 		
-		
 		require_once THEPLUS_INCLUDES_URL .'template-api.php';
 		require THEPLUS_INCLUDES_URL.'theplus_options.php';
 		
@@ -115,17 +114,15 @@ final class Theplus_Element_Load {
 			require THEPLUS_PATH.'modules/theplus-core-cp.php';
 		}
 		
-		
 		require THEPLUS_PATH.'modules/theplus-integration.php';
 		require THEPLUS_PATH.'modules/query-control/module.php';
 		
 		require THEPLUS_PATH.'modules/mobile_detect.php';
 		require_once THEPLUS_PATH .'modules/helper-function.php';
-		
-		
-		if(is_admin()){
+			
+		if( is_admin() ){
 			if( empty( get_option( 'theplus-notice-dismissed' ) ) ) {
-				add_action( 'admin_notices',array($this, 'thepluskey_verify_notify'));
+				add_action( 'admin_notices', array($this, 'thepluskey_verify_notify') );
 			}
 		}
 	}
@@ -134,8 +131,7 @@ final class Theplus_Element_Load {
 	* Widget Include required files
 	*
 	*/
-	public function include_widgets()
-	{			
+	public function include_widgets() {			
 		require_once THEPLUS_PATH.'modules/theplus-include-widgets.php';		
 	}
 	
@@ -149,15 +145,13 @@ final class Theplus_Element_Load {
 		wp_enqueue_script( 'wp-color-picker', THEPLUS_ASSETS_URL . 'js/extra/wp-color-picker-alpha.min.js',array() , THEPLUS_VERSION, true );
 		wp_enqueue_script( 'theplus-admin-js-pro', THEPLUS_ASSETS_URL .'js/admin/theplus-admin.js', array( 'wp-color-picker'),THEPLUS_VERSION,false );
 	}
-		
-		
+
 	/*
 	 * Admin notice text
 	 */
-	public function thepluskey_verify_notify(){
-		$verify_api=theplus_check_api_status();		
-		$verify_api = 1;	
-		if($verify_api!=1){
+	public function thepluskey_verify_notify() {
+		$verify_api = theplus_check_api_status();		
+		if( $verify_api != 1 ){
 			echo '<div class="plus-key-notify notice notice-info is-dismissible">';
 				echo '<h3>'.esc_html('Activation Required.', 'theplus' ) .'</h3>';
 				echo '<p>'. esc_html__( '🤝 Thanks for Installation,', 'theplus' ) .' ';
@@ -184,35 +178,67 @@ final class Theplus_Element_Load {
 
 		return $single_template;
 	}
-	
-	function theplus_settings_links ( $links ) {
-		$setting_link = array(
-				'<a href="' . admin_url( 'admin.php?page=theplus_options' ) . '">'.esc_html__("Settings","theplus").'</a>',
-			);
-		return array_merge( $links, $setting_link );
-	
-	}
-	
-	
+
 	private function hooks() {
-		$theplus_options=get_option('theplus_options');
-		$plus_extras=theplus_get_option('general','extras_elements');
-		
+		$theplus_options = get_option('theplus_options');
+		$plus_extras = theplus_get_option('general','extras_elements');
 		
 		add_action( 'elementor/editor/after_enqueue_styles', [ $this, 'theplus_editor_styles' ] );
 		
 		// Include some backend files
 		add_action( 'admin_enqueue_scripts', [ $this,'theplus_elementor_admin_css'] );
-		add_filter( 'plugin_action_links_' . THEPLUS_PBNAME ,[ $this, 'theplus_settings_links'] );
 		add_filter( 'single_template', [ $this, 'theplus_load_template' ] );
-		
-		
+
+		if( is_admin() ) {
+			add_filter( 'plugin_action_links_' . THEPLUS_PBNAME, array( $this, 'tppro_add_settings_link' ) );
+			add_filter( 'plugin_row_meta', array( $this, 'tppro_extra_links_plugin_row_meta' ), 10, 2 );
+		}
 	}
 	
+	/**
+	 * Adds Links to the plugins page.
+	 * @since 5.1.7
+	 */
+	public function tppro_add_settings_link( $links ) {
+		// Need Help link.
+		$Settings = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=theplus_options' ), __( 'Settings', 'theplus' ) );
+		$need_help = sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url('https://theplusaddons.com/free-vs-pro/?utm_source=wpbackend&utm_medium=pluginpage&utm_campaign=links'), __( 'Need Help?', 'theplus' ) );
+		$license = sprintf( '<a href="%s" style="color:green;font-weight:600;">%s</a>', admin_url( 'admin.php?page=theplus_purchase_code' ), __( 'License', 'theplus' ) );
+		
+		$links = (array) $links;
+		$links[] = $Settings;
+		$links[] = $need_help;
+		$links[] = $license;
+
+		return $links;
+	}
+
+	/**
+	 * Adds Links to the plugins page.
+	 * @since 5.1.7
+	 */
+	public function tppro_extra_links_plugin_row_meta( $plugin_meta, $plugin_file ) {
+
+		if ( strpos( $plugin_file, THEPLUS_PBNAME ) !== false ) {
+			$new_links = array(
+				'docs' => '<a href="'.esc_url('https://theplusaddons.com/docs?utm_source=wpbackend&utm_medium=pluginpage&utm_campaign=links').'" target="_blank" rel="noopener noreferrer" style="color:green;">'.esc_html__( 'Docs', 'tpgbp' ).'</a>',
+				'video-tutorials' => '<a href="'.esc_url('https://www.youtube.com/c/POSIMYTHInnovations/?sub_confirmation=1').'" target="_blank" rel="noopener noreferrer">'.esc_html__( 'Video Tutorials', 'tpgbp' ).'</a>',
+				'join-community' => '<a href="'.esc_url('https://www.facebook.com/groups/1331664136965680').'" target="_blank" rel="noopener noreferrer">'.esc_html__( 'Join Community', 'tpgbp' ).'</a>',
+				'whats-new' => '<a href="'.esc_url('https://roadmap.theplusaddons.com/updates?filter=Pro').'" target="_blank" rel="noopener noreferrer" style="color: orange;">'.esc_html__( 'What\'s New?', 'tpgbp' ).'</a>',
+				'req-feature' => '<a href="'.esc_url('https://roadmap.theplusaddons.com/boards/feature-request').'" target="_blank" rel="noopener noreferrer">'.esc_html__( 'Request Feature', 'tpgbp' ).'</a>',
+				'rate-theme' => '<a href="'.esc_url('https://wordpress.org/support/plugin/the-plus-addons-for-elementor-page-builder/reviews/?filter=5').'" target="_blank" rel="noopener noreferrer">'.esc_html__( 'Share Review', 'tpgbp' ).'</a>'
+			);
+
+			$plugin_meta = array_merge( $plugin_meta, $new_links );
+		}
+			
+		return $plugin_meta;
+	}
+
 	public static function nav_item_load() {
 		add_filter( 'wp_edit_nav_menu_walker', array( __CLASS__, 'plus_filter_walker' ), 99 );
 	}
-		
+
 	/**
 	 * ThePlus_Load constructor.
 	 */
@@ -230,13 +256,11 @@ final class Theplus_Element_Load {
 		
 		$this->include_widgets();		
 		theplus_widgets_include();
-		
 	}
 }
 
-function theplus_addon_load()
-{
+/**Get theplus_addon_load Running*/
+function theplus_addon_load(){
 	return Theplus_Element_Load::instance();
 }
-// Get theplus_addon_load Running
 theplus_addon_load();

@@ -2406,7 +2406,18 @@ class ThePlus_Woo_Single_Pricing extends Widget_Base {
 									?>
 								</div>
 							</div>
-							<?php	
+							<?php
+						}else if($product->get_type() == 'variable' && $product->get_stock_quantity() > 0){ ?>
+							<div class="tp-woo-single-pricing">
+								<div class="tp-woo-stock">
+									<?php 
+										$dis_before = !empty($item['dis_before']) ? $item['dis_before'] : '';
+										$dis_after = !empty($item['dis_after']) ? $item['dis_after'] : '';
+										
+										echo $dis_before . $product->get_stock_quantity() . $dis_after;
+									?>
+								</div>
+							</div> <?php
 						}
 					}
 					/*stock end*/

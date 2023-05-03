@@ -28,7 +28,7 @@ if ( ! class_exists( 'Theplus_Core_Cp' ) ) {
 		public function init() {
 			$plus_extras=theplus_get_option('general','extras_elements');
 			if(!empty($plus_extras) && in_array('plus_cross_cp',$plus_extras)){
-				add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_editor_cp_scripts' ), 100 );
+				add_action( 'elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_editor_cp_scripts' ), 98 );
 				require_once THEPLUS_PATH . 'modules/theplus-cross-copy-paste.php';
 			}
 		}

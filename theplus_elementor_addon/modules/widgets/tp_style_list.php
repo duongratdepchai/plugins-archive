@@ -1222,6 +1222,23 @@ class ThePlus_Style_List extends Widget_Base {
 				],
 			]
 		);
+		$this->add_responsive_control('contant_height',
+			[
+				'label' => esc_html__( 'Height', 'theplus' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'vh' ],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+						'step' => 5,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .plus-stylist-list-wrapper' => 'height:{{SIZE}}{{UNIT}};',
+				],
+			]
+		);
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[

@@ -1658,18 +1658,6 @@ class ThePlus_Wp_Login_Register extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'tp_sl_layout_opt',
-			[
-				'label' => esc_html__( 'Layout', 'theplus' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'tp_sl_layout_opt_1',
-				'options' => [
-					'tp_sl_layout_opt_1'  => esc_html__( 'Layout 1', 'theplus' ),					
-					'tp_sl_layout_opt_2' => esc_html__( 'Layout 2', 'theplus' ),
-				],
-			]
-		);
-		$this->add_control(
 			'tp_sl_facebook',
 			[
 				'label' => esc_html__( 'Facebook', 'theplus' ),
@@ -1679,30 +1667,147 @@ class ThePlus_Wp_Login_Register extends Widget_Base {
 				'default' => 'no',
 			]
 		);
-		$this->add_control(
-			'tp_sl_google',
+		$this->add_control('tp_sl_layout_opt',
+			[
+				'label' => esc_html__( 'Layout', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'tp_sl_layout_opt_1',
+				'options' => [
+					'tp_sl_layout_opt_1'  => esc_html__( 'Layout 1', 'theplus' ),					
+					'tp_sl_layout_opt_2' => esc_html__( 'Layout 2', 'theplus' ),
+				],
+				'condition' => [
+					'tp_sl_facebook' => 'yes'
+				]
+			]
+		);
+		$this->add_control('tp_sl_google',
 			[
 				'label' => esc_html__( 'Google', 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Show', 'theplus' ),
 				'label_off' => esc_html__( 'Hide', 'theplus' ),
-				'default' => 'no',
+				'default' => '',
 				'separator' => 'before',
 			]
 		);
-		$this->add_control(
-			'tp_sl_google_theme',
+		$this->add_control('tp_google_onetap',
 			[
-				'label' => esc_html__( 'Theme', 'theplus' ),
+				'label' => esc_html__( 'Google One Tap Login', 'theplus' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Show', 'theplus' ),
+				'label_off' => esc_html__( 'Hide', 'theplus' ),
+				'default' => '',
+				'separator' => 'before',
+				'condition' => [
+					'tp_sl_google' => 'yes',
+				],
+			]
+		);
+		$this->add_control('gl_onetap_msg',
+			[				
+				'type' => Controls_Manager::RAW_HTML,
+				'raw' => esc_html__( 'Note : By enabling this option, You will be able to use Google Login`s "One Tap Popup" to make google login easy for users.', 'theplus' ),
+				'content_classes' => 'tp-widget-description',
+				'condition' => [
+					'tp_sl_google' => 'yes',
+					'tp_google_onetap' => 'yes'
+				],
+			]
+		);	
+		$this->add_control('tp_sl_google_type',
+			[
+				'label' => esc_html__( 'Type', 'theplus' ),
 				'type' => Controls_Manager::SELECT,
-				'default' => 'dark',
+				'default' => 'standard',
 				'options' => [
-					'dark'  => esc_html__( 'Dark', 'theplus' ),					
-					'Light' => esc_html__( 'Light', 'theplus' ),
+					'standard'  => esc_html__( 'Standard', 'theplus' ),					
+					'icon' => esc_html__( 'Icon', 'theplus' ),
 				],
 				'condition' => [
 					'tp_sl_google' => 'yes',
-					'tp_sl_layout_opt' => 'tp_sl_layout_opt_2',
+					'tp_google_onetap!' => 'yes'
+				],
+			]
+		);
+
+		$this->add_control('tp_sl_google_theme',
+			[
+				'label' => esc_html__( 'Theme', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'outline',
+				'options' => [
+					'outline' => esc_html__( 'Light', 'theplus' ),
+					'filled_blue'  => esc_html__( 'Dark Blue', 'theplus' ),					
+					'filled_black' => esc_html__( 'Dark Black', 'theplus' ),
+				],
+				'condition' => [
+					'tp_sl_google' => 'yes',
+					'tp_google_onetap!' => 'yes',
+				],
+			]
+		);
+		$this->add_control('tp_sl_google_shape',
+			[
+				'label' => esc_html__( 'Shape', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'rectangular',
+				'options' => [
+					'rectangular'  => esc_html__( 'Rectangular', 'theplus' ),					
+					'pill' => esc_html__( 'Pill', 'theplus' ),
+				],
+				'condition' => [
+					'tp_sl_google' => 'yes',
+					'tp_google_onetap!' => 'yes',
+				],
+			]
+		);
+		$this->add_control('tp_sl_google_text',
+			[
+				'label' => esc_html__( 'Text', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'signin_with',
+				'options' => [
+					'signin_with'  => esc_html__( 'Sign in with Google', 'theplus' ),					
+					'signup_with' => esc_html__( 'Sign up with Google', 'theplus' ),
+					'continue_with' => esc_html__( 'Continue with Google', 'theplus' ),
+					'signin' => esc_html__( 'Sign in', 'theplus' ),
+				],
+				'condition' => [
+					'tp_sl_google' => 'yes',
+					'tp_sl_google_type' => 'standard',
+					'tp_google_onetap!' => 'yes',
+				],
+			]
+		);
+		$this->add_control('tp_sl_google_size',
+			[
+				'label' => esc_html__( 'Size', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'large',
+				'options' => [
+					'large'  => esc_html__( 'Large', 'theplus' ),					
+					'medium' => esc_html__( 'Medium', 'theplus' ),
+					'small' => esc_html__( 'Small', 'theplus' ),
+					'custom' => esc_html__( 'Custom', 'theplus' ),
+				],
+				'condition' => [
+					'tp_sl_google' => 'yes',
+					'tp_google_onetap!' => 'yes'
+				],
+			]
+		);
+		$this->add_control('tp_sl_google_custom_width',
+			[
+				'label' => esc_html__( 'Width', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::NUMBER,
+				'min' => 1,
+				'max' => 1000,
+				'step' => 5,
+				'condition' => [
+					'tp_sl_google' => 'yes',
+					'tp_sl_google_size' => 'custom',
+					'tp_google_onetap!' => 'yes',
 				],
 			]
 		);
@@ -1716,7 +1821,6 @@ class ThePlus_Wp_Login_Register extends Widget_Base {
 				'default' => 'yes',
 				'condition' => [
 					'tp_sl_google' => 'yes',
-					'tp_sl_layout_opt' => 'tp_sl_layout_opt_2',
 				],
 			]
 		);
@@ -8588,6 +8692,19 @@ class ThePlus_Wp_Login_Register extends Widget_Base {
 	/*social login start*/	
 	public function user_social_log_reg($type='') {
 		$settings = $this->get_settings();
+		$tp_sl_google = !empty($settings["tp_sl_google"]) ? $settings["tp_sl_google"] : "";
+		$tp_sl_google_type = !empty($settings["tp_sl_google_type"]) ? $settings["tp_sl_google_type"] : "standard";
+		$tp_sl_google_theme = !empty($settings["tp_sl_google_theme"]) ? $settings["tp_sl_google_theme"] : "outline";
+		$tp_sl_google_shape = !empty($settings["tp_sl_google_shape"]) ? $settings["tp_sl_google_shape"] : "rectangular";
+		$tp_sl_google_text = !empty($settings["tp_sl_google_text"]) ? $settings["tp_sl_google_text"] : "signin_with";
+		$tp_sl_google_size = !empty($settings["tp_sl_google_size"]) ? $settings["tp_sl_google_size"] : "large";
+		$tp_sl_google_custom_width = !empty($settings["tp_sl_google_custom_width"]) ? $settings["tp_sl_google_custom_width"] : "100";
+		$tp_google_onetap = !empty($settings["tp_google_onetap"]) ? $settings["tp_google_onetap"] : "";
+		$tp_sl_layout_opt = !empty($settings['tp_sl_layout_opt']) ? $settings['tp_sl_layout_opt'] : '';
+		$tp_sl_google_theme = !empty($settings['tp_sl_google_theme']) ? $settings['tp_sl_google_theme'] : '';
+		$tp_sl_google_longtitle = !empty($settings['tp_sl_google_longtitle']) ? $settings['tp_sl_google_longtitle'] : '';
+		$redirect_url_social = !empty($settings['redirect_url_social']['url']) ? $settings['redirect_url_social']['url'] : '';
+		
 		/*condition*/
 		$id          = 'lr'.$this->get_id();
 		$gid='';
@@ -8718,91 +8835,80 @@ class ThePlus_Wp_Login_Register extends Widget_Base {
 		/*facebook login end*/
 		
 		/*google login start*/			
-			if((!empty($settings['tp_sl_google']) && $settings['tp_sl_google']=='yes') && !is_user_logged_in()){
-				$check_g_appid= get_option( 'theplus_api_connection_data' );
-				$google_clint_id = (!empty($check_g_appid['theplus_google_client_id'])) ? $check_g_appid['theplus_google_client_id'] : '';
-				$nonce = wp_create_nonce( 'ajax-login-nonce' );				
-			
-			if($type=='login'){
-				$action = 'theplus_google_ajax_register';
-				$form_id = 'tp-user-login'.esc_attr($id);
-			}else if($type=='register'){
-				$action = 'theplus_google_ajax_register';
-				$form_id = 'tp-user-register'.esc_attr($id);
-			}
-			
-			$tp_sl_layout_opt = $settings['tp_sl_layout_opt'];
-			$tp_sl_google_theme = $settings['tp_sl_google_theme'];
-			$tp_sl_google_longtitle = $settings['tp_sl_google_longtitle'];
-			
-			
+		if((!empty($settings['tp_sl_google']) && $settings['tp_sl_google']=='yes') && !is_user_logged_in()){
+			$check_g_appid= get_option( 'theplus_api_connection_data' );
+			$google_clint_id = (!empty($check_g_appid['theplus_google_client_id'])) ? $check_g_appid['theplus_google_client_id'] : '';
+			$nonce = wp_create_nonce( 'ajax-login-nonce' );				
+		
+		if($type=='login'){
+			$action = 'theplus_google_ajax_register';
+			$form_id = 'tp-user-login'.esc_attr($id);
+		}else if($type=='register'){
+			$action = 'theplus_google_ajax_register';
+			$form_id = 'tp-user-register'.esc_attr($id);
+		}
+		
+		
 			?>
-			<script src="https://apis.google.com/js/platform.js?onload=init"></script>
+			<script src="https://accounts.google.com/gsi/client"></script>
+			<div class="g-signin2-<?php echo esc_attr($gid); ?>" id="g-signin2-<?php echo esc_attr($gid); ?>" ></div>
+			
 			<script>
-			var redirect_page = "<?php echo esc_url( $settings['redirect_url_social']['url'] ); ?>";
-			var fp_loading='<span class="loading-spinner-reg"><i class="far fa-times-circle" aria-hidden="true"></i></span>';
-				gapi.load( 'auth2', function() {
-					gapi.signin2.render('g-signin2-<?php echo esc_attr($gid); ?>', {
-						'scope': 'profile email',
-						'longtitle': '<?php echo esc_attr( $tp_sl_google_longtitle ); ?>', 
-						'theme': '<?php echo esc_attr( $tp_sl_google_theme ); ?>',
-						'height': 40,
-					});
-					auth2 = gapi.auth2.init({
-						client_id: '<?php echo esc_attr( $google_clint_id ); ?>',
-						cookiepolicy: 'single_host_origin',
-					});
-					auth2.attachClickHandler( 'g-signin2-<?php echo esc_attr($gid); ?>', {},
+				var getbtn = document.querySelector('.g-signin2-<?php echo esc_attr($gid); ?>'),
+					glOnetap = '<?php echo $tp_google_onetap?>',
+					getUrl = '<?php echo $redirect_url_social?>',
+					nonce = '<?php echo wp_create_nonce( 'ajax-login-nonce' )?>';
+				
+				if( glOnetap ){
+					getbtn.innerHTML = '<div id="g_id_onload" data-client_id="482309783738-3fidu9e1025ilhg0uptv1knrbe5bt9gv.apps.googleusercontent.com" data-context="signin"  data-callback="tpae_googleLoginEndpoint" data-nonce="ajax-login-nonce"> </div>';
+				}else{
+					window.onload = function () {
+						google.accounts.id.initialize({
+							client_id: '<?php echo esc_attr( $google_clint_id ); ?>' ,
+							callback: function(response){
+								tpae_googleLoginEndpoint(response , '<?php echo esc_attr( $google_clint_id ); ?>' )
+							}
+						});
+						google.accounts.id.renderButton(getbtn , { type : '<?php echo $tp_sl_google_type ?>' , theme : '<?php echo $tp_sl_google_theme ?>' , shape : '<?php echo $tp_sl_google_shape ?>' , text : '<?php echo $tp_sl_google_text ?>' , size : '<?php echo $tp_sl_google_size ?>' , align : 'left' , width : '<?php echo $tp_sl_google_custom_width ?>' } );
+					}
+				}
 
-						function ( googleUser ) {
-							var profile = googleUser.getBasicProfile();
-							var name =  profile.getName();
-							var email = profile.getEmail();
-							var id_token = googleUser.getAuthResponse().id_token;
-							
-							var google_data = {
-								'nonce': "<?php echo $nonce; ?>",
-								'action' : "<?php echo esc_attr( $action ); ?>",
-								'name' : name,
-								'email' : email,
-								'id_token' : id_token,
-							};
-							
-							jQuery.ajax({
-									url: theplus_ajax_url,
-									method: 'post',
-									data: google_data,
-									dataType: 'json',
-									
-									success: function(data) {
-										if( data.loggedin === true ) {
-											if(redirect_page !=''){
-												window.location = redirect_page;
-											}else{
-												location.reload();
-											}								
-										}else if( data.loggedin === false ) {
-											jQuery("#<?php echo esc_attr($form_id);?> .theplus-notification").addClass("active");
-											jQuery("#<?php echo esc_attr($form_id);?> .theplus-notification .tp-lr-response").html(fp_loading + data.message);
-										}
-									},
-									complete: function(){
-										setTimeout(function(){
-											jQuery("#<?php echo esc_attr($form_id);?> .theplus-notification").removeClass("active");	
-										}, 3200);
-									}
-								});
+				function tpae_googleLoginEndpoint(googleUser , clientId){
+					let gclientId = '';
 
-						}, function( error ) {
-							console.log( JSON.stringify( error, undefined, 2 ) );                            
+					if(clientId){
+						gclientId = clientId;
+					}else{
+						if(googleUser.clientId){
+							gclientId = googleUser.clientId
 						}
-					);
+					}
+					
+					jQuery.ajax({
+						url: theplus_ajax_url,
+						method: 'post',
+						data: {
+							action : 'theplus_google_ajax_register' ,
+							googleCre : googleUser.credential,
+							clientId : gclientId,
+							security : nonce,
+						},
+						dataType: 'json',
+						success: function(data) {
+							if(getUrl){
+								window.location = getUrl;
+							}else{
+								location.reload();
+							}
+						},
+						complete: function(){
 
-				}); 
+						}
+					});
+				}
 			</script>
-				<div class="g-signin2-<?php echo esc_attr($gid); ?>" id="g-signin2-<?php echo esc_attr($gid); ?>" data-width="300" data-height="200" data-longtitle="true" data-onsuccess="onSignIn"></div>
-				<?php
-			}			
+		<?php
+		}			
 		/*google login end*/
 		echo '</div>';		
 		}
@@ -8893,3 +8999,4 @@ class ThePlus_Wp_Login_Register extends Widget_Base {
 		<?php
 	}
 }
+

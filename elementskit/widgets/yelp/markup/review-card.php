@@ -23,7 +23,7 @@
 
             if($thumbnail_badge) { ?>
                 <div class="badge">
-                    <img src="<?php echo esc_url( $handler_url . 'assets/svg/yelp-logo-circle.svg' ); ?>" alt="Yelp badge">
+                    <i aria-hidden="true" class="fab fa-yelp"></i>
                 </div> <?php
             } ?>
         </div>

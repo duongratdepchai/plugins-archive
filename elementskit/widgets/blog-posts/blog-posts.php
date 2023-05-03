@@ -3863,9 +3863,8 @@ class ElementsKit_Widget_Blog_Posts extends Widget_Base {
 
         $this->add_render_attribute( 'blog-carousel', [
             'class' => [
-				'swiper',
+				method_exists('\ElementsKit_Lite\Utils', 'swiper_class') ? esc_attr(\ElementsKit_Lite\Utils::swiper_class()) : 'swiper',
 				'blogCarousel',
-				'swiper-container',
 			],
             'data-settings'	=> wp_json_encode( $carouselSettings ),
         ]);

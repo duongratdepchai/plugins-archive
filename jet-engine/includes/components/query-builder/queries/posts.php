@@ -55,6 +55,8 @@ class Posts_Query extends Base_Query {
 			$raw = $args['tax_query'];
 			$args['tax_query'] = array();
 
+			$custom_tax_query = array();
+
 			if ( ! empty( $args['tax_query_relation'] ) ) {
 				$args['tax_query']['relation'] = $args['tax_query_relation'];
 			}
@@ -80,7 +82,23 @@ class Posts_Query extends Base_Query {
 					continue;
 				}
 
+				if ( ! empty( $query_row['custom'] ) ) {
+					unset( $query_row['custom'] );
+					$custom_tax_query[] = $query_row;
+					continue;
+				}
+
 				$args['tax_query'][] = $query_row;
+			}
+
+			if ( ! empty( $custom_tax_query ) ) {
+
+				if ( ! empty( $args['tax_query_relation'] ) && 'or' === $args['tax_query_relation'] ) {
+					$args['tax_query'] = array_merge( array( $args['tax_query'] ), $custom_tax_query );
+				} else {
+					$args['tax_query'] = array_merge( $args['tax_query'], $custom_tax_query );
+				}
+
 			}
 
 		}

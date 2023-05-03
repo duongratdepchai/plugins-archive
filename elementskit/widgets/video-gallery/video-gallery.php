@@ -260,7 +260,7 @@ class ElementsKit_Widget_Video_Gallery extends Widget_Base {
 					'unit' => 'px',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .ekit-video-gallery.ekit-carousel .slick-slide' => 'margin-right: {{SIZE}}{{UNIT}};margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .ekit-video-gallery.ekit-carousel .slick-slide' => '--ekit_video_right_spacing: {{SIZE}}{{UNIT}}; --ekit_video_left_spacing: {{SIZE}}{{UNIT}};',
                 ],
                 'condition' => [
                     'grid_style' => ['carousel']
@@ -301,7 +301,10 @@ class ElementsKit_Widget_Video_Gallery extends Widget_Base {
                 ],
                 'condition' => [
                     'grid_style' => ['carousel']
-                ]
+				],
+				'selectors' => [
+					'{{WRAPPER}} .ekit-video-gallery.ekit-carousel' => '--ekit_video_slidetoshow: {{SIZE}};',
+                ],
 			]
         );
 
@@ -2170,7 +2173,7 @@ class ElementsKit_Widget_Video_Gallery extends Widget_Base {
 
                 <div <?php echo \ElementsKit_Lite\Utils::render($this->get_render_attribute_string( 'wrapper' )); ?>>
                     <?php if($grid_style == 'carousel') : ?>
-                        <div class="swiper-container">
+                        <div class="<?php echo method_exists('\ElementsKit_Lite\Utils', 'swiper_class') ? esc_attr(\ElementsKit_Lite\Utils::swiper_class()) : 'swiper'; ?>">
                             <div class="slick-list swiper-wrapper">
                     <?php endif; ?>
 
