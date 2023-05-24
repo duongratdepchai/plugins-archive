@@ -90,22 +90,6 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'related_post_by',
-			[
-				'label' => esc_html__( 'Related Post Type', 'theplus' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'both',
-				'options' => [					
-					"category" => esc_html__("Based on Category", 'theplus'),
-					"tags" => esc_html__("Based on Tags", 'theplus'),					
-					"both" => esc_html__("Both", 'theplus'),
-					],
-				'condition' => [
-					'blogs_post_listing' => 'related_post',
-				],
-			]
-		);
-		$this->add_control(
 			'query',
 			[
 				'label' => esc_html__( 'Post Type', 'theplus' ),
@@ -116,7 +100,23 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 					'blogs_post_listing!' => ['acf_repeater','custom_query'],
 				],
 			]
-		);		
+		);
+		$this->add_control('related_post_by',
+			[
+				'label' => esc_html__( 'Related Post Type', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'both',
+				'options' => [					
+					"category" => esc_html__("Based on Category", 'theplus'),
+					"tags" => esc_html__("Based on Tags", 'theplus'),
+					"taxonomy" => esc_html__("Based on taxonomy", 'theplus'),
+					"both" => esc_html__("Both (Category, Tags)", 'theplus'),
+				],
+				'condition' => [
+					'blogs_post_listing' => 'related_post',
+				],
+			]
+		);
 		$this->add_control(
 			'style',
 			[
@@ -6655,7 +6655,10 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 		//Related Posts
 		if(!empty($settings["blogs_post_listing"]) && $settings["blogs_post_listing"]=='related_post'){
 			global $post;
-			
+
+			$RelatedPostBy = !empty($settings["related_post_by"]) ? $settings["related_post_by"] : 'both';
+
+			/**Tags*/
 			if($post->post_type =='product'){
 				$tag_slug = 'slug';
 				$tags = wp_get_post_terms($post->ID,'product_tag');
@@ -6667,7 +6670,7 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 				$tags = wp_get_post_terms($post->ID,$post_taxonomies);
 			}
 			
-			if ($tags && !empty($settings["related_post_by"]) && ($settings["related_post_by"]=='both' || $settings["related_post_by"]=='tags')) {	
+			if ( $tags && !empty($RelatedPostBy) && ($RelatedPostBy == 'both' || $settings["related_post_by"] == 'tags') ) {	
 				$tag_ids = array();
 				foreach($tags as $individual_tag) $tag_ids[] = $individual_tag->$tag_slug;
 				
@@ -6693,6 +6696,7 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 				}
 			}
 			
+			/**Category*/
 			if($post->post_type =='product'){
 				$categories_slug = 'slug';
 				$categories = wp_get_post_terms($post->ID,'product_cat');
@@ -6704,7 +6708,7 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 				$categories = wp_get_post_terms($post->ID,$post_taxonomies);
 			}
 			
-			if ($categories && !empty($settings["related_post_by"]) && ($settings["related_post_by"]=='both' || $settings["related_post_by"]=='category')) {	
+			if ( $categories && !empty($RelatedPostBy) && ($RelatedPostBy == 'both' || $RelatedPostBy == 'category')) {	
 				$category_ids = array();
 				foreach($categories as $category) $category_ids[] = $category->$categories_slug;
 				
@@ -6729,8 +6733,47 @@ class ThePlus_Dynamic_Listing extends Widget_Base {
 					);
 				}
 			}
+
+			/**Custom Taxonomy*/
+			if($post->post_type =='product'){
+				$taxonomy_slug = 'slug';
+				$tags = wp_get_post_terms($post->ID, $post_taxonomies);
+			}else if($post->post_type == 'post'){
+				$taxonomy_slug = 'term_id';
+				$tags = wp_get_post_tags($post->ID);
+			}else{
+				$taxonomy_slug = 'slug';
+				$tags = wp_get_post_terms($post->ID,$post_taxonomies);
+			}
+
+			if ($tags && !empty($RelatedPostBy) &&  $RelatedPostBy == 'taxonomy') {	
+				$tag_ids = array();
+				foreach($tags as $individual_tag) $tag_ids[] = $individual_tag->$taxonomy_slug;
+				
+				$query_args['post__not_in'] = array($post->ID);
+				if($post->post_type =='product'){
+					$query_args['tax_query'] = array(						
+					  array(		
+						'taxonomy' => $post_taxonomies,		
+						'field' => 'slug',		
+						'terms' => $tag_ids,		
+					  ),		
+					);
+				}else if($post->post_type =='post'){
+					$query_args['tag__in'] = $tag_ids;
+				}else{
+					$query_args['tax_query'] = array(						
+					  array(		
+						'taxonomy' => $post_taxonomies,		
+						'field' => 'slug',		
+						'terms' => $tag_ids,		
+					  ),		
+					);
+				}
+			}
+
 		}
-		
+
 		//Archive Posts
 		if(!empty($settings["blogs_post_listing"]) && $settings["blogs_post_listing"]=='archive_listing'){
 			global $wp_query;

@@ -42,7 +42,7 @@ class Interactive_Card extends Module_Base {
         if ($this->ep_is_edit_mode()) {
             return ['ep-styles'];
         } else {
-            return ['ep-interactive-card'];
+            return ['ep-font', 'ep-interactive-card'];
         }
     }
 

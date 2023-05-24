@@ -11,7 +11,7 @@ use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Css_Filter;
 use ElementPack\Modules\Instagram\Skins;
 
-if ( !defined('ABSPATH') ) {
+if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 
@@ -49,7 +49,7 @@ class Instagram extends Module_Base {
         if ($this->ep_is_edit_mode()) {
             return ['ep-scripts'];
         } else {
-            return [ 'ep-instagram' ];
+            return ['ep-instagram'];
         }
     }
 
@@ -895,7 +895,7 @@ class Instagram extends Module_Base {
     }
 
     protected function filter_response($response) {
-        if ( is_wp_error($response) ) {
+        if (is_wp_error($response)) {
             $response = array(
                 'status'  => 422,
                 'message' => $response->get_error_message()
@@ -913,11 +913,13 @@ class Instagram extends Module_Base {
     }
 
     protected function remote_get($url) {
-        $response = wp_remote_get($url,
+        $response = wp_remote_get(
+            $url,
             array(
                 'timeout'    => 100,
                 'user-agent' => $_SERVER['HTTP_USER_AGENT'],
-            ));
+            )
+        );
 
         return $this->filter_response($response);
     }
@@ -930,7 +932,6 @@ class Instagram extends Module_Base {
         $user_token = md5($user_token);
         $user_token = strtolower($user_token);
         return 'ep_instagram_long_lived_access_token_' . $widget_id . '_' . $user_token;
-
     }
 
     protected function get_instagram_account_transit_key($user_token) {
@@ -939,9 +940,6 @@ class Instagram extends Module_Base {
         $user_token = md5($user_token);
         $user_token = strtolower($user_token);
         return 'ep_instagram_account_id_' . $widget_id . '_' . $user_token;
-
-
-        
     }
 
     protected function get_instagram_media_data_transit_key($user_token) {
@@ -950,14 +948,13 @@ class Instagram extends Module_Base {
         $user_token = md5($user_token);
         $user_token = strtolower($user_token);
         return 'ep_instagram_media_data_' . $widget_id . '_' . $user_token;
-
     }
 
     protected function refresh_token($token, $app_secret) {
         $url    = $this->graph_url . "/refresh_access_token?grant_type=ig_refresh_token&access_token=$token";
         $result = $this->remote_get($url);
 
-        if ( $result->status == 200 ) {
+        if ($result->status == 200) {
             return $result->body->access_token;
         }
         return $result;
@@ -967,11 +964,11 @@ class Instagram extends Module_Base {
         $cache_key       = $this->get_access_token_transit_key($user_token);
         $accessTokenData = get_transient($cache_key);
 
-        if ( !$accessTokenData ) {
+        if (!$accessTokenData) {
             $url    = $this->graph_url . "/refresh_access_token?grant_type=ig_refresh_token&&access_token=$user_token";
             $result = $this->remote_get($url);
 
-            if ( $result->status == 200 ) {
+            if ($result->status == 200) {
                 $accessTokenData = $result->body->access_token;
                 $accessTokenData = $accessTokenData . '_bdthemes_' . time();
                 set_transient($cache_key, $accessTokenData);
@@ -982,16 +979,16 @@ class Instagram extends Module_Base {
 
 
         $accessTokenArr = explode('_bdthemes_', $accessTokenData);
-        if ( count($accessTokenArr) == 2 ) {
+        if (count($accessTokenArr) == 2) {
             $access_token  = $accessTokenArr[0];
             $generatedTime = $accessTokenArr[1];
             $now           = time(); // or your date as well
             $datediff      = $now - $generatedTime;
             $totalDays     = round($datediff / (60 * 60 * 24));
 
-            if ( $totalDays > 40 ) {
+            if ($totalDays > 40) {
                 $access_token = $this->refresh_token($access_token, $app_secret);
-                if ( is_string($access_token) ) {
+                if (is_string($access_token)) {
                     $accessTokenData = $access_token . '_bdthemes_' . time();
                     set_transient($cache_key, $accessTokenData);
                 }
@@ -1004,10 +1001,10 @@ class Instagram extends Module_Base {
         $cache_key  = $this->get_instagram_account_transit_key($access_token);
         $account_id = get_transient($cache_key);
 
-        if ( !$account_id ) {
+        if (!$account_id) {
             $url    = $this->graph_url . "/me?fields=id&access_token=$access_token";
             $result = $this->remote_get($url);
-            if ( $result->status == 200 ) {
+            if ($result->status == 200) {
                 $account_id = $result->body->id;
                 set_transient($cache_key, $account_id, DAY_IN_SECONDS * 100);
             } else {
@@ -1025,26 +1022,25 @@ class Instagram extends Module_Base {
         $data       = '';
 
         $isCacheEnabled = isset($settings['cache_gallery']) && $settings['cache_gallery'] == 'yes';
-        if($isCacheEnabled){
+        if ($isCacheEnabled) {
             $data           = get_transient($cache_key);
-        }else{
+        } else {
             delete_transient($cache_key);
         }
 
-        if ( !$data ) {
+        if (!$data) {
             $url    = $this->graph_url . "/$account_id/media?fields=id,media_type,media_url,permalink,username,timestamp&access_token=$access_token&limit=100";
             $result = $this->remote_get($url);
-            if ( $result->status == 200 ) {
+            if ($result->status == 200) {
                 $data       = $result->body;
 
-                if($isCacheEnabled){
+                if ($isCacheEnabled) {
                     $cache_time = isset($settings['cache_time']) ? intval($settings['cache_time']) : 1;
-                    if ( $cache_time < 1 ) {
+                    if ($cache_time < 1) {
                         $cache_time = 1;
                     }
                     set_transient($cache_key, $data, (HOUR_IN_SECONDS * $cache_time));
                 }
-
             } else {
                 return $result;
             }
@@ -1057,9 +1053,9 @@ class Instagram extends Module_Base {
         $settings             = $this->get_settings_for_display();
         $options              = get_option('element_pack_api_settings');
 
-        if ( $settings['instagram_user_token'] ) {
+        if ($settings['instagram_user_token']) {
             $instagram_user_token = $settings['instagram_user_token'];
-        } elseif ( !empty($options['instagram_access_token']) ) {
+        } elseif (!empty($options['instagram_access_token'])) {
             $instagram_user_token = $options['instagram_access_token'];
         } else {
             element_pack_alert('Ops! You did not set Instagram User Token!');
@@ -1067,9 +1063,9 @@ class Instagram extends Module_Base {
         }
 
         $access_token = $this->get_access_token($instagram_user_token, $app_secret);
-        if ( is_string($access_token) && strlen($access_token) > 20 ) {
+        if (is_string($access_token) && strlen($access_token) > 20) {
             $account_id = $this->get_instagram_account_id($access_token);
-            if ( is_string($account_id) && strlen($account_id) > 5 ) {
+            if (is_string($account_id) && strlen($account_id) > 5) {
                 return $this->get_media($access_token, $account_id);
             } else {
                 return $account_id;
@@ -1082,10 +1078,10 @@ class Instagram extends Module_Base {
     public function get_instagram_data($app_secret) {
         $data = $this->get_collect_data($app_secret);
 
-        if ( isset($data->data) ) {
+        if (isset($data->data)) {
             return $data->data;
         } else {
-            if ( isset($data->status) && $data->status == 422 ) {
+            if (isset($data->status) && $data->status == 422) {
                 element_pack_alert($data->message);
             }
         }
@@ -1099,7 +1095,7 @@ class Instagram extends Module_Base {
 
         $instagram_app_secret = (!empty($options['instagram_app_secret'])) ? $options['instagram_app_secret'] : '';
 
-        if ( !$instagram_app_secret ) {
+        if (!$instagram_app_secret) {
             element_pack_alert('Ops! You did not set Instagram App Secret in element pack settings!');
 
             return;
@@ -1126,7 +1122,7 @@ class Instagram extends Module_Base {
         $this->add_render_attribute('instagram', 'class', 'bdt-child-width-1-' . esc_attr($columns_mobile));
 
         $this->add_render_attribute('instagram', 'data-bdt-grid', '');
-        if ( $settings['masonry'] ) {
+        if ($settings['masonry']) {
             $this->add_render_attribute('instagram', 'data-bdt-grid', 'masonry: true;');
         }
 
@@ -1134,12 +1130,12 @@ class Instagram extends Module_Base {
         $this->add_render_attribute('instagram', 'class', 'bdt-instagram-grid');
 
 
-        if ( 'yes' == $settings['show_lightbox'] ) {
+        if ('yes' == $settings['show_lightbox']) {
             $this->add_render_attribute('instagram', 'data-bdt-lightbox', 'animation:' . $settings['lightbox_animation'] . ';');
-            if ( $settings['lightbox_autoplay'] ) {
+            if ($settings['lightbox_autoplay']) {
                 $this->add_render_attribute('instagram', 'data-bdt-lightbox', 'autoplay: 500;');
 
-                if ( $settings['lightbox_pause'] ) {
+                if ($settings['lightbox_pause']) {
                     $this->add_render_attribute('instagram', 'data-bdt-lightbox', 'pause-on-hover: true;');
                 }
             }
@@ -1162,68 +1158,66 @@ class Instagram extends Module_Base {
             ]
         );
 
-        ?>
-      <div <?php echo $this->get_render_attribute_string('instagram-wrapper'); ?>>
+?>
+        <div <?php echo $this->get_render_attribute_string('instagram-wrapper'); ?>>
 
-        <div <?php echo $this->get_render_attribute_string('instagram'); ?>>
+            <div <?php echo $this->get_render_attribute_string('instagram'); ?>>
 
-            <?php
-            // TODO need to fix load more
-            $limit = 1;
-            foreach ( $data as $item ) { ?>
+                <?php
+                // TODO need to fix load more
+                $limit = 1;
+                foreach ($data as $item) { ?>
 
-              <div class="bdt-instagram-item-wrapper feed-type-video bdt-first-column">
-                <div
-                    class="bdt-instagram-item bdt-transition-toggle bdt-position-relative bdt-scrollspy-inview bdt-animation-fade">
-                  <div class="bdt-instagram-thumbnail">
-                      <?php if ('VIDEO' == $item->media_type) : ?>
-                    <video src="<?php echo $item->media_url; ?>" title="Image by: <?php echo $item->username; ?>">
-                        <?php else : ?>
-                          <img src="<?php echo $item->media_url; ?>" alt="Image by: <?php echo $item->username; ?>"
-                               loading="lazy">
-                        <?php endif; ?>
-                  </div>
-
-                    <?php
-                        if ( $settings['show_lightbox'] or $settings['show_link'] ) :
-
-                        $target_href = (isset($settings['show_link']) && ( $settings['show_link'] == 'yes')) ? $item->permalink : $item->media_url;
-                        $target_blank = (isset($settings['target_blank']) && ('yes' == $settings['target_blank'] )) ? '_blank' : '_self';
-
-                        ?>
-                      <a target="<?php echo esc_attr($target_blank ); ?>" href="<?php echo esc_url($target_href); ?>" data-elementor-open-lightbox="no">
-
-                        <?php if ( $settings['show_overlay'] ) : ?>
-                            <div class="bdt-transition-fade bdt-inline-clip bdt-position-cover bdt-overlay bdt-overlay-default ">
-
-                                <?php if ( $settings['show_link_icon'] ) : ?>
-                                    <?php if ( 'VIDEO' == $item->media_type ) : ?>
-                                      <span class='bdt-position-center ep-icon-play'></span>
+                    <div class="bdt-instagram-item-wrapper feed-type-video bdt-first-column">
+                        <div class="bdt-instagram-item bdt-transition-toggle bdt-position-relative bdt-scrollspy-inview bdt-animation-fade">
+                            <div class="bdt-instagram-thumbnail">
+                                <?php if ('VIDEO' == $item->media_type) : ?>
+                                    <video src="<?php echo esc_url($item->media_url); ?>" title="Image by: <?php echo esc_html($item->username); ?>">
                                     <?php else : ?>
-                                      <span class='bdt-position-center ep-icon-plus'></span>
+                                        <img src="<?php echo esc_url($item->media_url); ?>" alt="Image by: <?php echo esc_html($item->username); ?>" loading="lazy">
                                     <?php endif; ?>
-                                <?php endif; ?>
-
                             </div>
-                        <?php endif; ?>
 
-                      </a>
-                    <?php endif; ?>
-                </div>
-              </div>
+                            <?php
+                            if ($settings['show_lightbox'] or $settings['show_link']) :
+
+                                $target_href = (isset($settings['show_link']) && ($settings['show_link'] == 'yes')) ? $item->permalink : $item->media_url;
+                                $target_blank = (isset($settings['target_blank']) && ('yes' == $settings['target_blank'])) ? '_blank' : '_self';
+
+                            ?>
+                                <a target="<?php echo esc_attr($target_blank); ?>" href="<?php echo esc_url($target_href); ?>" data-elementor-open-lightbox="no">
+
+                                    <?php if ($settings['show_overlay']) : ?>
+                                        <div class="bdt-transition-fade bdt-inline-clip bdt-position-cover bdt-overlay bdt-overlay-default ">
+
+                                            <?php if ($settings['show_link_icon']) : ?>
+                                                <?php if ('VIDEO' == $item->media_type) : ?>
+                                                    <span class='bdt-position-center ep-icon-play'></span>
+                                                <?php else : ?>
+                                                    <span class='bdt-position-center ep-icon-plus'></span>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+
+                                        </div>
+                                    <?php endif; ?>
+
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 <?php
 
-                if ( $limit++ == $settings['items']['size'] ) {
-                    break;
+                    if ($limit++ == $settings['items']['size']) {
+                        break;
+                    }
                 }
-            }
 
-            ?>
+                ?>
+
+            </div>
 
         </div>
 
-      </div>
-
-        <?php
+<?php
     }
 }

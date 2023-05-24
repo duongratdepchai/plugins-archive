@@ -2,7 +2,7 @@
 Contributors: wpdevteam, re_enter_rupok, Asif2BD, priyomukul, manzurahammed
 Tags: elementor, elements, widgets, page builder, builder, visual editor, wordpress page builder
 Tested up to: 6.1
-Stable tag: 5.4.5
+Stable tag: 5.4.8
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -88,6 +88,26 @@ List of Extensions :
 * Conditional Display
 
 == Changelog ==
+
+= 5.4.8 - 17/04/2023 =
+
+- Fixed: EA LearnDash Course List | Fixed "No course found!" Transition issue
+- Fixed: EA One Page Navigation | Active status not showing while Scrolling
+- Improved: EA Smart Post List | Added 4 Columns support for List Posts
+- Few minor bug fixes & improvements
+
+= 5.4.7 - 05/04/2023 =
+
+- Fixed: Throwing fatal error when using EA Advanced Data Table with Google Sheet on PHP 8.0 or higher
+- Few minor bug fixes & improvements
+
+= 5.4.6 - 22/03/2023 =
+
+- Fixed: EA Advanced Google Map | Callback parameter issue
+- Fixed: EA Woo Checkout | Validation issue for post code
+- Fixed: EA Woo Product Slider | Added CartZilla theme compatibility
+- Fixed: Critical Error when running Elementor Data Updater
+- Few minor bug fixes & improvements
 
 = 5.4.5 - 07/02/2023 =
 

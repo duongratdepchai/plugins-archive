@@ -2331,7 +2331,8 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 			self::$cachePostContent[$postID] = $post->post_content;
 			
-			$isEditMode = HelperUC::isElementorEditMode();
+			$isEditMode = GlobalsProviderUC::$isInsideEditor;
+			
 			if($isEditMode == false)
 				$content = get_the_content( null, false, $post);
 			else

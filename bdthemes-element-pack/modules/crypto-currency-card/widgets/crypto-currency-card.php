@@ -6,12 +6,12 @@ use ElementPack\Base\Module_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Typography;
+use Elementor\Group_Control_Background;
+use Elementor\Group_Control_Box_Shadow;
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class Crypto_Currency_Card extends Module_Base {
-
-	protected $_has_template_content = false;
 
 	public function get_name() {
 		return 'bdt-crypto-currency-card';
@@ -41,6 +41,10 @@ class Crypto_Currency_Card extends Module_Base {
 		}
 	}
 
+	public function get_script_depends() {
+		return ['ep-crypto-currency-card'];
+	}
+
 	public function get_custom_help_url() {
 		return 'https://youtu.be/TnSjwUKrw00';
 	}
@@ -59,7 +63,6 @@ class Crypto_Currency_Card extends Module_Base {
 				'label'       => __('Crypto Currency', 'bdthemes-element-pack'),
 				'description'       => __('If you want to show any selected crypto currency in your table so type those currency name here. For example: bitcoin,ethereum,litecoin', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'default' 	  => 'bitcoin',
 				'placeholder' => __('bitcoin,ethereum', 'bdthemes-element-pack'),
 				'label_block' => true,
 				'dynamic'     => ['active' => true],
@@ -69,14 +72,36 @@ class Crypto_Currency_Card extends Module_Base {
 		$this->add_control(
 			'currency',
 			[
-				'label'       => __('Currency', 'bdthemes-element-pack'),
-				'type'        => Controls_Manager::TEXT,
-				'default'     => __('usd', 'bdthemes-element-pack'),
-				'placeholder' => __('usd', 'bdthemes-element-pack'),
-				'label_block' => true,
-				'dynamic'     => ['active' => true],
+				'label'   => esc_html__('Currency', 'bdthemes-element-pack'),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'USD',
+				'options' => [
+					'USD' => esc_html__('USD', 'bdthemes-element-pack'),
+					'EUR' => esc_html__('EUR', 'bdthemes-element-pack'),
+					'CRC' => esc_html__('CRC', 'bdthemes-element-pack'),
+					'GBP' => esc_html__('GBP', 'bdthemes-element-pack'),
+					'INR' => esc_html__('INR', 'bdthemes-element-pack'),
+					'JPY' => esc_html__('JPY', 'bdthemes-element-pack'),
+					'KRW' => esc_html__('KRW', 'bdthemes-element-pack'),
+					'NGN' => esc_html__('NGN', 'bdthemes-element-pack'),
+					'PHP' => esc_html__('PHP', 'bdthemes-element-pack'),
+					'PLN' => esc_html__('PLN', 'bdthemes-element-pack'),
+					'PYG' => esc_html__('PYG', 'bdthemes-element-pack'),
+					'THB' => esc_html__('THB', 'bdthemes-element-pack'),
+					'UAH' => esc_html__('UAH', 'bdthemes-element-pack'),
+					'VND' => esc_html__('VND', 'bdthemes-element-pack'),
+				],
 			]
 		);
+
+		// $this->add_control(
+		// 	'limit',
+		// 	[
+		// 		'label'   => esc_html__('Limit', 'bdthemes-element-pack'),
+		// 		'type'    => Controls_Manager::NUMBER,
+		// 		'default' => 1,
+		// 	]
+		// );
 
 		$this->end_controls_section();
 
@@ -114,6 +139,21 @@ class Crypto_Currency_Card extends Module_Base {
 			]
 		);
 
+		// name & short name inline with prefix class
+		$this->add_control(
+			'currency_name_short_name_inline',
+			[
+				'label'   => __('Name & Short Name Inline', 'bdthemes-element-pack'),
+				'type'    => Controls_Manager::SWITCHER,
+				'condition' => [
+					'show_currency_name' => 'yes',
+					'show_currency_short_name' => 'yes',
+				],
+				'prefix_class' => 'ep-crypto-currency-name-short-name-inline-',
+			]
+		);
+
+
 		$this->add_control(
 			'show_currency_current_price',
 			[
@@ -126,9 +166,12 @@ class Crypto_Currency_Card extends Module_Base {
 		$this->add_control(
 			'show_currency_change_price',
 			[
-				'label'   => __('Show Change Price', 'bdthemes-element-pack'),
+				'label'   => __('Show Change Price (%)', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
+				'condition' => [
+					'show_currency_current_price' => 'yes'
+				]
 			]
 		);
 
@@ -153,7 +196,7 @@ class Crypto_Currency_Card extends Module_Base {
 		$this->add_control(
 			'show_currency_total_volume',
 			[
-				'label'   => __('Show 24h Volume', 'bdthemes-element-pack'),
+				'label'   => __('Show Total Volume', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -162,7 +205,7 @@ class Crypto_Currency_Card extends Module_Base {
 		$this->add_control(
 			'show_currency_high_low',
 			[
-				'label'   => __('Show 24h High/Low', 'bdthemes-element-pack'),
+				'label'   => __('Show 24h Change(%)', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -171,6 +214,65 @@ class Crypto_Currency_Card extends Module_Base {
 		$this->end_controls_section();
 
 		//Style
+		$this->start_controls_section(
+			'section_cryptocurrency_item_style',
+			[
+				'label' => __('Crypto Currency Card', 'bdthemes-element-pack'),
+				'tab'       => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			[
+				'name'      => 'item_background',
+				'selector'  => '{{WRAPPER}} .bdt-ep-crypto-currency-card',
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'      => 'item_border',
+				'selector'  => '{{WRAPPER}} .bdt-ep-crypto-currency-card',
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_responsive_control(
+			'item_border_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'bdthemes-element-pack' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-ep-crypto-currency-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'item_padding',
+			[
+				'label'      => __('Padding', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-ep-crypto-currency-card' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'item_box_shadow',
+				'selector' => '{{WRAPPER}} .bdt-ep-crypto-currency-card',
+			]
+		);
+
+		$this->end_controls_section();
+
 		$this->start_controls_section(
 			'section_cryptocurrency_image_style',
 			[
@@ -209,19 +311,15 @@ class Crypto_Currency_Card extends Module_Base {
 			]
 		);
 
+		//margin
 		$this->add_responsive_control(
-			'cryptocurrency_name_spacing',
+			'currency_logo_image_margin',
 			[
-				'label' => esc_html__('Spacing', 'bdthemes-element-pack'),
-				'type'  => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
+				'label' => __('Margin', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%'],
 				'selectors' => [
-					'{{WRAPPER}} .bdt-ep-currency-name' => 'padding-top: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .bdt-ep-currency-image' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -286,6 +384,22 @@ class Crypto_Currency_Card extends Module_Base {
 			]
 		);
 
+		//margin
+		$this->add_responsive_control(
+			'currency_name_margin',
+			[
+				'label' => __('Margin', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-ep-currency-name' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition' => [
+					'show_currency_name' => 'yes'
+				]
+			]
+		);
+
 		$this->add_control(
 			'ccc_shortname_heading',
 			[
@@ -324,19 +438,15 @@ class Crypto_Currency_Card extends Module_Base {
 			]
 		);
 
+		//margin
 		$this->add_responsive_control(
-			'ccc_short_name_spacing',
+			'currency_short_name_margin',
 			[
-				'label' => esc_html__('Spacing', 'bdthemes-element-pack') . BDTEP_NC,
-				'type'  => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
+				'label' => __('Margin', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
 				'selectors' => [
-					'{{WRAPPER}} .bdt-ep-currency-short-name' => 'padding-top: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .bdt-ep-currency-short-name' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition' => [
 					'show_currency_short_name' => 'yes'
@@ -351,19 +461,9 @@ class Crypto_Currency_Card extends Module_Base {
 			[
 				'label' => __('Currency Price', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
-				'conditions'   => [
-					'relation' => 'or',
-					'terms' => [
-						[
-							'name'  => 'show_currency_current_price',
-							'value' => 'yes',
-						],
-						[
-							'name'     => 'show_currency_change_price',
-							'value'    => 'yes',
-						],
-					],
-				],
+				'condition' => [
+					'show_currency_current_price' => 'yes'
+				]
 			]
 		);
 
@@ -406,7 +506,7 @@ class Crypto_Currency_Card extends Module_Base {
 		$this->add_control(
 			'ccc_percentage_heading',
 			[
-				'label' => __('Percentage (Change Price)', 'bdthemes-element-pack'),
+				'label' => __('Percentage (Hourly Change Price)', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -572,138 +672,40 @@ class Crypto_Currency_Card extends Module_Base {
 		$this->end_controls_section();
 	}
 
-	protected function render_coin_api() {
-		$settings        = $this->get_settings_for_display();
-		$id              = $this->get_id();
-		$crypto_currency = ($settings['crypto_currency']) ? $settings['crypto_currency'] : false;
-
-		$api_url = 'https://api.coingecko.com/api/v3/coins/markets';
-
-
-		// Parameters as array of key => value pairs
-		$final_query =  add_query_arg(
-			array(
-				'vs_currency' => strtolower($settings['currency']),
-				'order'       => false, //market_cap_desc
-				'per_page'    => 1, //limit
-				'page'        => 1,
-				'sparkline'   => 'false',
-				'ids'         => $crypto_currency,
-
-			),
-			$api_url
-		);
-
-		$request = wp_remote_get($final_query, array('timeout' => 120));
-
-		if (is_wp_error($request)) {
-			return false; // Bail early
-		}
-
-		$body = wp_remote_retrieve_body($request);
-		$coins = json_decode($body, true);
-
-		$saved_coins = get_transient('element-pack-ccc');
-
-		if (false == $saved_coins) {
-			set_transient('element-pack-ccc', $coins, 5 * MINUTE_IN_SECONDS);
-			$coins = get_transient('element-pack-ccc');
-		}
-
-		return $coins;
-	}
-
 	protected function render() {
-		$settings        = $this->get_settings_for_display();
-		$id              = $this->get_id();
-		$coins           = $this->render_coin_api();
-		$currency        = $settings['currency'];
-		$currency_symbol = element_pack_currency_symbol($settings['currency']);
-		$crypto_currency = ($settings['crypto_currency']) ? $settings['crypto_currency'] : false;
-		$locale          = explode('-', get_bloginfo('language'));
-		$locale          = $locale[0];
+		$settings = $this->get_settings_for_display();
+		$id = 'bdt-crypto-currency-' . $this->get_id();
+
+		$crypto_currency = ($settings['crypto_currency']) ? $settings['crypto_currency'] : 'all';
+
+		$this->add_render_attribute('crypto', [
+			'class'         => 'bdt-ep-crypto-currency-card',
+			'id'            => $id,
+			'data-settings' => wp_json_encode(
+				[
+					'id'         => '#' . $id,
+					'widgetId'   => $id,
+					'ids'        => $crypto_currency,
+					'currency'   => $settings['currency'],
+					'limit'      => 1,
+					'order'      => 'market_cap_desc',
+					'pageLength' =>  1000,
+					'showCurrencyImage' => ('yes' == $settings['show_currency_image']) ? true : false,
+					'showCurrencyName' => ('yes' == $settings['show_currency_name']) ? true : false,
+					'showCurrencyShortName' => ('yes' == $settings['show_currency_short_name']) ? true : false,
+					'showCurrencyCurrentPrice' => ('yes' == $settings['show_currency_current_price']) ? true : false,
+					'showCurrencyChangePrice' => ('yes' == $settings['show_currency_change_price']) ? true : false,
+					'showMarketCapRank' => ('yes' == $settings['show_currency_marketing_rank']) ? true : false,
+					'showMarketCap' => ('yes' == $settings['show_currency_market_cap']) ? true : false,
+					'showTotalVolume' => ('yes' == $settings['show_currency_total_volume']) ? true : false,
+					'showPriceChange' => ('yes' == $settings['show_currency_high_low']) ? true : false,
+				]
+			),
+		]);
 
 ?>
-		<div class="bdt-ep-crypto-currency-card">
-			<div data-bdt-grid>
-
-				<?php foreach ($coins as $coin) : ?>
-
-					<div class="bdt-width-1-1 bdt-width-1-2@s">
-						<div class="bdt-ep-currency">
-
-							<?php if ($settings['show_currency_image']) : ?>
-								<div class="bdt-ep-currency-image">
-									<img alt="bdt-ep-currency-image" src="<?php echo esc_url($coin['image']); ?>" />
-								</div>
-							<?php endif; ?>
-
-							<?php if ($settings['show_currency_name']) : ?>
-								<div class="bdt-ep-currency-name">
-									<span><?php echo esc_html($coin['name']); ?></span>
-								</div>
-							<?php endif; ?>
-
-							<?php if ($settings['show_currency_short_name']) : ?>
-								<div class="bdt-ep-currency-short-name">
-									<span><?php echo esc_attr($coin['symbol']); ?> / <?php echo esc_html($currency); ?></span>
-								</div>
-							<?php endif; ?>
-
-						</div>
-					</div>
-
-					<div class="bdt-width-1-1 bdt-width-1-2@s">
-						<div class="bdt-ep-current-price">
-
-							<?php if ($settings['show_currency_current_price']) : ?>
-								<div class="bdt-price">
-									<?php echo esc_html($currency_symbol); ?><?php echo element_pack_money_format($coin['current_price']); ?>
-								</div>
-							<?php endif; ?>
-
-							<?php if ($settings['show_currency_change_price']) : ?>
-								<div class="bdt-percentage">(<?php echo element_pack_money_format($coin['price_change_24h']); ?>%)</div>
-							<?php endif; ?>
-
-						</div>
-					</div>
-
-					<div class="bdt-width-1-1 bdt-margin-small-top bdt-ep-ccc-atributes">
-
-						<?php if ($settings['show_currency_marketing_rank']) : ?>
-							<div class="bdt-ep-ccc-atribute">
-								<span class="bdt-ep-item-text"><?php esc_html_e('Market Cap Rank: ', 'bdthemes-element-pack'); ?></span>
-								<span>#<?php echo esc_html($coin['market_cap_rank']); ?></span>
-							</div>
-						<?php endif; ?>
-
-						<?php if ($settings['show_currency_market_cap']) : ?>
-							<div class="bdt-ep-ccc-atribute">
-								<span class="bdt-ep-item-text"><?php esc_html_e('Market Cap: ', 'bdthemes-element-pack'); ?></span>
-								<span><?php echo esc_html($currency_symbol); ?><?php echo esc_html($coin['market_cap']); ?></span>
-							</div>
-						<?php endif; ?>
-
-						<?php if ($settings['show_currency_total_volume']) : ?>
-							<div class="bdt-ep-ccc-atribute">
-								<span class="bdt-ep-item-text"><?php esc_html_e('24H Volume: ', 'bdthemes-element-pack'); ?></span>
-								<span><?php echo esc_html($currency_symbol); ?><?php echo esc_html($coin['total_volume']); ?></span>
-							</div>
-						<?php endif; ?>
-
-						<?php if ($settings['show_currency_high_low']) : ?>
-							<div class="bdt-ep-ccc-atribute">
-								<span class="bdt-ep-item-text"><?php esc_html_e('24H High/Low: ', 'bdthemes-element-pack'); ?></span>
-								<span><?php echo esc_html($currency_symbol); ?><?php echo esc_html($coin['high_24h']); ?>/<?php echo esc_html($currency_symbol); ?><?php echo esc_html($coin['low_24h']); ?></span>
-							</div>
-						<?php endif; ?>
-
-					</div>
-
-				<?php endforeach; ?>
-
-			</div>
+		<div <?php $this->print_render_attribute_string('crypto'); ?>>
+		<div><?php echo esc_html('Data Loading...', 'bdthemes-element-pack'); ?></div>
 		</div>
 
 <?php

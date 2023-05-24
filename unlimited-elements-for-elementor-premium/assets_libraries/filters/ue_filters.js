@@ -13,7 +13,8 @@ function UEDynamicFilters(){
 		TERMS_LIST:"terms_list",
 		SEARCH: "search",
 		SELECT: "select",
-		SUMMARY: "summary"
+		SUMMARY: "summary",
+		GENERAL: "general"
 	};
 	
 	var g_vars = {
@@ -31,9 +32,14 @@ function UEDynamicFilters(){
 		EVENT_BEFORE_REFRESH: "uc_before_ajax_refresh",	   //on grid
 		EVENT_AJAX_REFRESHED: "uc_ajax_refreshed",	   //on grid
 		EVENT_AJAX_REFRESHED_BODY: "uc_ajax_refreshed_body",	   //on grid
+		
 		EVENT_INIT_FILTER:"init_filter",
+		EVENT_INIT_FILTER_TYPE:"init_filter_type",
+		EVENT_GET_FILTER_DATA:"get_filter_data",
+		
 		ACTION_REFRESH_GRID: "uc_refresh",	//listen on grid
 		ACTION_GET_FILTERS_URL: "uc_get_filters_url",	//listen on grid
+		ACTION_FILTER_CHANGE: "uc_filter_change",	//listen on grid
 		
 		REFRESH_MODE_PAGINATION: "pagination",
 		REFRESH_MODE_LOADMORE: "loadmore",
@@ -494,7 +500,6 @@ function UEDynamicFilters(){
 			
 		}
 
-		
 		//get layout id
 		var objLayout = objWidget.parents(".elementor");
 		
@@ -554,6 +559,23 @@ function UEDynamicFilters(){
 	
 	
 	function ________FILTERS_______________(){}
+	
+	/**
+	 * get the parent
+	 */
+	function getFiltersParent(objFilters){
+		
+		//init the events
+		var objParent = objFilters.parents(".elementor");
+		
+		if(objParent.length > 1)
+			objParent = jQuery(objParent[0]);
+		
+		if(objParent.length == 0)
+			objParent = objFilters.parents("body");
+		
+		return(objParent);
+	}
 	
 	
 	/**
@@ -888,7 +910,7 @@ function UEDynamicFilters(){
 		var className = "uc-selected";
 		
 		event.preventDefault();
-				
+		
 		var objLink = jQuery(this);
 		
 		if(objLink.hasClass("uc-grid-filter")){
@@ -992,20 +1014,9 @@ function UEDynamicFilters(){
 		if(objSelected.length > 1)
 			objSelected = jQuery(objSelected[0]);
 		
-		var id = objSelected.data("id");
-		var slug = objSelected.data("slug");
-		var taxonomy = objSelected.data("taxonomy");
+		var objTerm = getFilterElementData(objSelected);
 		
-		if(!taxonomy)
-			return(null);
-		
-		var objTerm = {
-			"id": id,
-			"slug": slug,
-			"taxonomy": taxonomy
-		};
-		
-		return(objTerm);
+		return(objTerm);		
 	}
 
 	/**
@@ -1036,11 +1047,21 @@ function UEDynamicFilters(){
 	
 	function ________GENERAL_FILTER_______________(){}
 	
+	/**
+	 * init general filter
+	 */
+	function initGeneralFilter(objFilter){
+		
+		objFilter.on(g_vars.ACTION_FILTER_CHANGE, onGeneralFilterChange);
+		
+		
+	}
+	
 	
 	/**
 	 * on general filter change
 	 */
-	function onFilterChange(){
+	function onGeneralFilterChange(){
 		
 		var objFilter = jQuery(this);
 		
@@ -1156,7 +1177,51 @@ function UEDynamicFilters(){
 	
 	function ________DATA_______________(){}
 	
+	
+	/**
+	 * handle term, add to taxonomy array
+	 */
+	function buildTermsQuery_handleTerm(objTerm, arrTax1){
+		
+		var taxonomy = objTerm["taxonomy"];
+		var slug = objTerm["slug"];
+		
+		var objTax = getVal(arrTax1, taxonomy);
+		if(!objTax)
+			objTax = {};
+		
+		objTax[slug] = true;
+		arrTax1[taxonomy] = objTax;
+		
+		return(arrTax1);
+	}
 	 	
+	/**
+	 * get slugs string
+	 */
+	function buildTermsQuery_getStrSlugs(objSlugs, isGroup){
+		
+		var strSlugs = "";
+		
+		var moreThenOne = false;
+		for (var slug in objSlugs){
+			
+			if(strSlugs){
+				moreThenOne = true;
+				strSlugs += ".";
+			}
+			
+			strSlugs += slug;
+		}
+		
+		//add "and"
+		if(moreThenOne == true && isGroup !== true)
+			strSlugs += ".*";
+		
+		return(strSlugs);
+	}
+	
+	
 	/**
 	 * build terms query
 	 * ucterms=product_cat~shoes.dress;cat~123.43;
@@ -1166,55 +1231,89 @@ function UEDynamicFilters(){
 		var query = "";
 				
 		//break by taxonomy
+		
 		var arrTax = {};
+		var arrGroupTax = {};
+		
 		jQuery.each(arrTerms, function(index, objTerm){
 			
-			var taxonomy = objTerm["taxonomy"];
-			var slug = objTerm["slug"];
+			//group term
+			if(jQuery.isArray(objTerm) && objTerm.length != 0){
+				
+				jQuery.each(objTerm, function(index, groupTerm){
+					arrGroupTax = buildTermsQuery_handleTerm(groupTerm, arrGroupTax);
+				});
+				
+				return(true);
+			}
 			
-			var objTax = getVal(arrTax, taxonomy);
-			if(!objTax)
-				objTax = {};
-			
-			objTax[slug] = true;
-			arrTax[taxonomy] = objTax;
+			arrTax = buildTermsQuery_handleTerm(objTerm, arrTax);
 			
 		});
 		
+		
 		//combine the query
 		
-		if(!arrTax)
+		if(jQuery.isEmptyObject(arrTax) && jQuery.isEmptyObject(arrGroupTax))
 			return(null);
 		
-		jQuery.each(arrTax,function(taxonomy,objSlugs){
+		
+		//build group slugs
+		jQuery.each(arrGroupTax,function(taxonomy, objSlugs){
 			
-			var strSlugs = "";
-						
-			var moreThenOne = false;
-			for (var slug in objSlugs){
+			var strSlugs = buildTermsQuery_getStrSlugs(objSlugs, true);
+			
+			strAdd = "|"+strSlugs+"|";
+			
+			var objTax = getVal(arrTax, taxonomy);
+			if(!objTax){
+				objTax = {};
 				
-				if(strSlugs){
-					moreThenOne = true;
-					strSlugs += ".";
-				}
-				
-				strSlugs += slug;
+				strAdd = strSlugs;	
 			}
 			
-			//add "and"
-			if(moreThenOne == true)
-				strSlugs += ".*";
+			objTax[strSlugs] = true;
+			
+			arrTax[taxonomy] = objTax;
+		});
+				
+		
+		jQuery.each(arrTax,function(taxonomy, objSlugs){
+			
+			var strSlugs = buildTermsQuery_getStrSlugs(objSlugs);
 			
 			var strTax = taxonomy+"~"+strSlugs;
-						
+			
 			if(query)
 				query += ";";
 			
 			query += strTax;
 			
 		});
-				
+		
+		
 		return(query);
+	}
+	
+	/**
+	 * get selected filter element data
+	 */
+	function getFilterElementData(objElement){
+		
+		var id = objElement.data("id");
+		var slug = objElement.data("slug");
+		var taxonomy = objElement.data("taxonomy");
+		
+		if(!taxonomy)
+			return(null);
+		
+		var objTerm = {
+			"id": id,
+			"slug": slug,
+			"taxonomy": taxonomy
+		};
+		
+		return(objTerm);
 	}
 	
 	
@@ -2325,6 +2424,26 @@ function UEDynamicFilters(){
 					search = search.trim();
 					
 				break;
+				case g_types.GENERAL:
+					
+					var filterDataObj = {};
+					objFilter.trigger(g_vars.EVENT_GET_FILTER_DATA, filterDataObj);
+					
+					var filterData = getVal(filterDataObj,"output");
+					
+					//add terms
+					var dataTerms = getVal(filterData,"terms");
+					
+					if(dataTerms && dataTerms.length){
+						
+						if(dataTerms.length == 1)		//single term
+							arrTerms.push(dataTerms[0]);
+						else
+							arrTerms.push(dataTerms);	//multiple (grouping)
+					}
+					
+					
+				break;
 				default:
 					throw new Error("Unknown filter type: "+type);
 				break;
@@ -2646,7 +2765,11 @@ function UEDynamicFilters(){
 			case g_types.SELECT:
 				initSelectFilter(objFilter);
 			break;
+			case g_types.GENERAL:		//general filter events
+				initGeneralFilter(objFilter);
+			break;
 		}
+		
 		
 		objFilter.trigger(g_vars.EVENT_INIT_FILTER);
 		
@@ -2656,17 +2779,11 @@ function UEDynamicFilters(){
 	/**
 	 * init filter events by types
 	 */
-	function initFilterEventsByTypes(arrTypes, objFilters){
+	function initFilterEventsByTypes(arrTypes, arrGeneralTypes, objFilters, objParent){
 		
 		if(!arrTypes || arrTypes.length == 0)
 			return(false);
-		
-		//init the events
-		var objParent = objFilters.parents(".elementor");
-		
-		if(objParent.length > 1)
-			objParent = jQuery(objParent[0]);
-		
+				
 		for(var type in arrTypes){
 						
 			switch(type){
@@ -2696,16 +2813,32 @@ function UEDynamicFilters(){
 					
 				break;
 				case g_types.SUMMARY:
-					
 					//do nothing for now
-					
+				break;
+				case g_types.GENERAL:
+					//the init is from the general types
 				break;
 				default:
 					trace("init by type - unrecognized type: "+type);
 				break;
 			}
 		}
-				
+		
+		if(!arrGeneralTypes || arrGeneralTypes.length == 0)
+			return(false);
+		
+		
+		//init the general types
+		
+		for(var generalType in arrGeneralTypes){
+			
+			var objFirstFilter = arrGeneralTypes[generalType];
+			
+			objFirstFilter.trigger(g_vars.EVENT_INIT_FILTER_TYPE,[objParent]);
+			
+		}
+		
+		
 	}
 	
 	
@@ -2730,6 +2863,9 @@ function UEDynamicFilters(){
 			return(false);
 		
 		var arrTypes = {};
+		var arrGeneralTypes = {};
+		
+		var objParent = getFiltersParent(objFilters);
 		
 		jQuery.each(objFilters, function(index, filter){
 			
@@ -2737,13 +2873,28 @@ function UEDynamicFilters(){
 			var type = getFilterType(objFilter);
 			
 			initFilter(objFilter, type);
-						
+				
+			//collect the general type
+			
 			arrTypes[type] = true;
+			
+			if(type == g_types.GENERAL){
+				var generalType = objFilter.data("generaltype");
+				
+				if(!generalType){
+					trace(objFilter);
+					throw new Error("The filter is missing generaltype data");
+				}
+				
+				if(arrGeneralTypes.hasOwnProperty(generalType) == false)
+					arrGeneralTypes[generalType] = objFilter;
+				
+			}
 			
 		});
 		
 		
-		initFilterEventsByTypes(arrTypes, objFilters);
+		initFilterEventsByTypes(arrTypes, arrGeneralTypes, objFilters, objParent);
 		
 	}
 	
@@ -2799,7 +2950,6 @@ function UEDynamicFilters(){
 			var objGrid = jQuery(this);
 			refreshAjaxGrid(objGrid);
 		});
-		
 		
 		
 		objGrids.on(g_vars.ACTION_GET_FILTERS_URL,function(){
@@ -2957,6 +3107,16 @@ function UEDynamicFilters(){
 		
 	};
 	
+	/**
+	 * get filter element data
+	 */
+	this.getFilterElementData = function(objElement){
+		
+		var objData = getFilterElementData(objElement);
+		
+		return(objData);
+	}
+	
 	
 	/**
 	 * init the class
@@ -2968,11 +3128,14 @@ function UEDynamicFilters(){
 			return(false);
 		}
 		
-		jQuery("document").ready(init);
+		jQuery("document").ready(function(){
+			setTimeout(init, 200);
+		});
 		
 	}
 	
 	construct();
+	
 }
 
 g_ucDynamicFilters = new UEDynamicFilters();

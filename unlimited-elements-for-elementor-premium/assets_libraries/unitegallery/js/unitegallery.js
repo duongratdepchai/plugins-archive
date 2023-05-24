@@ -1,4 +1,4 @@
-//Unite Gallery, Version: 1.7.71, released 26 January 2023
+//Unite Gallery, Version: 1.7.71, released 20 April 2023
 
 //------ ug-common-libraries.js------ 
 
@@ -12602,8 +12602,13 @@ function UGAviaControl(){
     
     //get height of the thumb
     var thumbSize = g_parent.getSizes().thumbSize; 
-    
     var areaSize = g_temp.area_thumb_sizes * thumbSize;
+
+    //add limit in 200px to scroll area
+    var areaSizeLimit = 200;
+
+    if(areaSize > areaSizeLimit)
+    areaSize = areaSizeLimit;
     
     //for horizontal
     if(g_isVertical == false){

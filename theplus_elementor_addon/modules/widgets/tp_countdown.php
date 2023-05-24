@@ -106,12 +106,54 @@ class ThePlus_Countdown extends Widget_Base {
 
 		$this->start_controls_section('section_downcount',
             [
-                'label' => esc_html__('Label', 'theplus'),
+                'label' => esc_html__('Contant Source', 'theplus'),
 				'condition' => [
 					'CDType' => ['normal','scarcity'],
 				],
             ]
         );
+
+		$this->add_control('dayslabels',
+			[
+				'label' => esc_html__( 'Days', 'theplus' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Show', 'theplus' ),
+				'label_off' => esc_html__( 'Hide', 'theplus' ),
+				'default' => 'yes',
+			]
+		);
+
+		$this->add_control('hourslabels',
+			[
+				'label'   => esc_html__( 'Hours', 'theplus' ),
+				'type'    => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Show', 'theplus' ),
+				'label_off' => esc_html__( 'Hide', 'theplus' ),
+				'default' => 'yes',
+			]
+		);
+
+		$this->add_control('minuteslabels',
+			[
+				'label'   => esc_html__( 'Minutes', 'theplus' ),
+				'type'    => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Show', 'theplus' ),
+				'label_off' => esc_html__( 'Hide', 'theplus' ),
+				'default' => 'yes',
+			]
+		);
+
+		$this->add_control('secondslabels',
+			[
+				'label'   => esc_html__( 'Seconds', 'theplus' ),
+				'type'    => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Show', 'theplus' ),
+				'label_off' => esc_html__( 'Hide', 'theplus' ),
+				'default' => 'yes',
+				'separator' => 'after',
+			]
+		);
+
 		$this->add_control(
 			'show_labels',
 			[
@@ -120,6 +162,7 @@ class ThePlus_Countdown extends Widget_Base {
 				'default' => 'yes',
 			]
 		);
+
 		$this->add_control(
 			'show_labels_tag',
 			[
@@ -451,7 +494,7 @@ class ThePlus_Countdown extends Widget_Base {
 						],
 						[
 							'terms' => [
-								[ 'name' => 'CDType', 'operator'=>'===', 'value' => 'scarcity' ],
+								[ 'name' => 'CDType', 'operator'=>'===', 'value' => 'scarcity'],
 								[ 'name' => 'storetype','operator'=>'===','value' => 'cookie' ],
 								[ 'name' => 'expirytype', 'operator'=>'===', 'value' => 'yes' ],
 								[ 'name' => 'countdownExpiry', 'operator'=>'===', 'value' => 'showmsg' ],
@@ -2334,10 +2377,16 @@ class ThePlus_Countdown extends Widget_Base {
 			$templates = Theplus_Element_Load::elementor()->frontend->get_builder_content_for_display( $settings['templates'] );
 		}
 
+		$DaysLabels = !empty($settings['dayslabels']) ? true : false;
+		$HoursLabels = !empty($settings['hourslabels']) ? true : false;
+		$MinutesLabels = !empty($settings['minuteslabels']) ? true : false;
+		$SecondsLabels = !empty($settings['secondslabels']) ? true : false;
+
 		$show_labels = !empty($settings['show_labels']) ? true : false;
 		$text_days = !empty($settings['text_days']) ? $settings['text_days'] : esc_html__('Days','theplus');
 		$text_hours = !empty($settings['text_hours']) ? $settings['text_hours'] : esc_html__('Hours','theplus');
 		$text_minutes = !empty($settings['text_minutes']) ? $settings['text_minutes'] : esc_html__('Minutes','theplus');
+		
 		$text_seconds = !empty($settings['text_seconds']) ? $settings['text_seconds'] : esc_html__('Seconds','theplus');
 		$show_labels_tag = !empty($settings['show_labels_tag']) ? $settings['show_labels_tag'] : 'h6';
 
@@ -2373,6 +2422,11 @@ class ThePlus_Countdown extends Widget_Base {
 				'hours' => $text_hours,
 				'minutes' => $text_minutes,
 				'seconds' => $text_seconds,
+
+				'daysenable' => $DaysLabels,
+				'hoursenable' => $HoursLabels,
+				'minutesenable' => $MinutesLabels,
+				'secondsenable' => $SecondsLabels,
 			);
 		}
 
@@ -2495,30 +2549,41 @@ class ThePlus_Countdown extends Widget_Base {
 							$lz4 = function_exists('tp_has_lazyload') ? tp_bg_lazyLoad($settings['seconds_background_image']) : '';
 
 							$output .= '<ul class="pt_plus_countdown '.esc_attr($uid).' '.esc_attr($inline_style).' '.$animated_class.'" '.$animation_attr.'>';
-								$output .= '<li class="count_1 '.$lz1.'">';
-									$output .= '<span class="days">'.esc_html__('00','theplus').'</span>';
-									if( !empty($show_labels) ){
-										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="days_ref label-ref">'.esc_html($text_days).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-									}
-								$output .= '</li>';
-								$output .= '<li class="count_2 '.$lz2.'">';
-									$output .= '<span class="hours">'.esc_html__('00','theplus').'</span>';
-									if( !empty($show_labels) ){
-										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="hours_ref label-ref">'.esc_html($text_hours).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-									}
-								$output .= '</li>';
-								$output .= '<li class="count_3 '.$lz3.'">';
-									$output .= '<span class="minutes">'.esc_html__('00','theplus').'</span>';
-									if( !empty($show_labels) ){
-										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="minutes_ref label-ref">'.esc_html($text_minutes).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-									}
-								$output .= '</li>';
-								$output .= '<li class="count_4 '.$lz4.'">';
-									$output .= '<span class="seconds last">'.esc_html__('00','theplus').'</span>';
-									if( !empty($show_labels) ){
-										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="seconds_ref label-ref">'.esc_html($text_seconds).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-									}
-								$output .= '</li>';
+								if( !empty($DaysLabels)){
+									$output .= '<li class="count_1 '.$lz1.'">';
+										$output .= '<span class="days">'.esc_html__('00','theplus').'</span>';
+										if( !empty($show_labels) ){
+											$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="days_ref label-ref">'.esc_html($text_days).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+										}
+									$output .= '</li>';
+								}
+
+								if(!empty($HoursLabels)){
+									$output .= '<li class="count_2 '.$lz2.'">';
+										$output .= '<span class="hours">'.esc_html__('00','theplus').'</span>';
+										if( !empty($show_labels) ){
+											$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="hours_ref label-ref">'.esc_html($text_hours).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+										}
+									$output .= '</li>';
+								}
+								
+								if(!empty($MinutesLabels)){
+									$output .= '<li class="count_3 '.$lz3.'">';
+										$output .= '<span class="minutes">'.esc_html__('00','theplus').'</span>';
+										if( !empty($show_labels) ){
+											$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="minutes_ref label-ref">'.esc_html($text_minutes).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+										}
+									$output .= '</li>';
+								}
+							
+								if(!empty($SecondsLabels)){
+									$output .= '<li class="count_4 '.$lz4.'">';
+										$output .= '<span class="seconds last">'.esc_html__('00','theplus').'</span>';
+										if( !empty($show_labels) ){
+											$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="seconds_ref label-ref">'.esc_html($text_seconds).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+										}
+									$output .= '</li>';
+								}
 							$output .= '</ul>';
 						}
 					}
@@ -2526,30 +2591,43 @@ class ThePlus_Countdown extends Widget_Base {
 					$inline_style = ( !empty($settings["inline_style"]) && $settings["inline_style"] == 'yes' ) ? 'count-inline-style' : '';
 					if($style == 'style-1') {
 						$output .= '<ul class="pt_plus_countdown '.esc_attr($uid).' '.esc_attr($inline_style).'">';
-							$output .= '<li class="count_1">';
-								$output .= '<span class="days">'.esc_html__('00','theplus').'</span>';
-								if( !empty($show_labels) ){
-									$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="days_ref">'.esc_html($text_days).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-								}
-							$output .= '</li>';
-							$output .= '<li class="count_2">';
-								$output .= '<span class="hours">'.esc_html__('00','theplus').'</span>';
-								if( !empty($show_labels) ){
-									$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="hours_ref">'.esc_html($text_hours).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-								}
-							$output .= '</li>';
-							$output .= '<li class="count_3">';
-								$output .= '<span class="minutes">'.esc_html__('00','theplus').'</span>';
-								if( !empty($show_labels) ){
-									$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="minutes_ref">'.esc_html($text_minutes).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-								}
-							$output .= '</li>';
-							$output .= '<li class="count_4">';
-								$output .= '<span class="seconds last">'.esc_html__('00','theplus').'</span>';
-								if( !empty($show_labels) ){
-									$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="seconds_ref">'.esc_html($text_seconds).'</'.theplus_validate_html_tag($show_labels_tag).'>';
-								}
-							$output .= '</li>';
+
+							if(!empty($DaysLabels)){
+								$output .= '<li class="count_1">';
+									$output .= '<span class="days">'.esc_html__('00','theplus').'</span>';
+									if( !empty($show_labels) ){
+										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="days_ref">'.esc_html($text_days).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+									}
+								$output .= '</li>';
+							}
+
+							if(!empty($HoursLabels)){
+								$output .= '<li class="count_2">';
+									$output .= '<span class="hours">'.esc_html__('00','theplus').'</span>';
+									if( !empty($show_labels) ){
+										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="hours_ref">'.esc_html($text_hours).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+									}
+								$output .= '</li>';
+							}
+
+							if(!empty($MinutesLabels)){
+								$output .= '<li class="count_3">';
+									$output .= '<span class="minutes">'.esc_html__('00','theplus').'</span>';
+									if( !empty($show_labels) ){
+										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="minutes_ref">'.esc_html($text_minutes).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+									}
+								$output .= '</li>';
+							}
+
+							if(!empty($SecondsLabels)){
+								$output .= '<li class="count_4">';
+									$output .= '<span class="seconds last">'.esc_html__('00','theplus').'</span>';
+									if( !empty($show_labels) ){
+										$output .= '<'.theplus_validate_html_tag($show_labels_tag).' class="seconds_ref">'.esc_html($text_seconds).'</'.theplus_validate_html_tag($show_labels_tag).'>';
+									}
+								$output .= '</li>';
+							}
+							
 						$output .= '</ul>';
 					}
 				}

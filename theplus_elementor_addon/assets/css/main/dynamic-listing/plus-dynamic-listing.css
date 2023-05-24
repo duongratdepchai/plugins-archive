@@ -164,6 +164,7 @@ hr.border-bottom {
     bottom: -3px;
     left: 0;
     content: '';
+    transform: scaleX(0);
     -ms-transform: scaleX(0);
     -webkit-transform: scaleX(0);
     transform-origin: left;

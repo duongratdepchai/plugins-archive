@@ -1,23 +1,21 @@
 <?php
-update_option( 'essential-addons-elementor-license-status', 'valid' );
-update_option( 'essential-addons-elementor-license-key', 'activated' );
-set_transient( 'essential-addons-elementor-license_data', [ 'license' => 'valid' ] );
 /**
  * Plugin Name: Essential Addons for Elementor - Pro
  * Description: Supercharge your Elementor page building experience with Essential Addons PRO. Get your hands on exclusive elements such as Instagram Feed, Protected Content, Smart Post List, and many more.
  * Plugin URI: https://essential-addons.com/elementor/
  * Author: WPDeveloper
- * Version: 5.4.5
+ * Version: 5.4.8
  * Author URI: http://www.wpdeveloper.com
- * Secret Key: 83a5bb0e2ad5164690bc7a42ae592cf5
  * Text Domain: essential-addons-elementor
  * Domain Path: /languages
  *
- * WC tested up to: 7.3.0
- * Elementor tested up to: 3.10.2
- * Elementor Pro tested up to: 3.10.3
+ * WC tested up to: 7.6.0
+ * Elementor tested up to: 3.12.1
+ * Elementor Pro tested up to: 3.12.2
  */
-
+update_option( 'essential-addons-elementor-license-status', 'valid' );
+update_option( 'essential-addons-elementor-license-key', 'activated' );
+set_transient( 'essential-addons-elementor-license_data', [ 'license' => 'valid' ] );
 if (!defined('WPINC')) {
     exit;
 }
@@ -31,7 +29,7 @@ define('EAEL_PRO_PLUGIN_FILE', __FILE__);
 define('EAEL_PRO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('EAEL_PRO_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('EAEL_PRO_PLUGIN_URL', plugins_url('/', __FILE__));
-define('EAEL_PRO_PLUGIN_VERSION', '5.4.5');
+define('EAEL_PRO_PLUGIN_VERSION', '5.4.8');
 define('EAEL_STORE_URL', 'https://api.wpdeveloper.com');
 define('EAEL_SL_ITEM_ID', 4372);
 define('EAEL_SL_ITEM_SLUG', 'essential-addons-elementor');
@@ -124,5 +122,3 @@ add_action('admin_notices', function () {
     $notice = new \Essential_Addons_Elementor\Pro\Classes\Notice;
     $notice->failed_to_load();
 });
-/* Anti-Leecher Indentifier */
-/* Credited By BABIATO-FORUM */

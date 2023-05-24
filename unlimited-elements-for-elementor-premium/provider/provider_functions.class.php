@@ -119,7 +119,9 @@ class UniteProviderFunctionsUC{
 		
 		$arrUploads = wp_upload_dir();
 		
-		
+		if(empty($arrUploads))
+			return(false);
+				
 		$uploadsBaseDir = UniteFunctionsUC::getVal($arrUploads, "basedir");
 		$uploadsBaseUrl = UniteFunctionsUC::getVal($arrUploads, "baseurl");
 
@@ -129,13 +131,14 @@ class UniteProviderFunctionsUC{
 			
 		
 		$urlBase = null;
+		
 		if(is_dir($uploadsBaseDir)){
 			$pathBase = UniteFunctionsUC::addPathEndingSlash($uploadsBaseDir);
 			$urlBase = UniteFunctionsUC::addPathEndingSlash($uploadsBaseUrl);
 		}
 		
-		
-		
+		if(empty($pathBase))
+			return(false);
 		
 		//make base path
 		$pathAssets = $pathBase.$dirAssets."/";
@@ -154,7 +157,7 @@ class UniteProviderFunctionsUC{
 		
 		if(empty($urlAssets))
 			UniteFunctionsUC::throwError("Cannot set assets url");
-			
+						
 		if($returnValues == true){
 			
 			$arrReturn = array();
@@ -271,7 +274,7 @@ class UniteProviderFunctionsUC{
 	 * print some script at some place in the page
 	 * handle meanwhile inactive
 	 */
-	public static function printCustomScript($script, $hardCoded = false, $isModule = false, $handle = null){
+	public static function printCustomScript($script, $hardCoded = false, $isModule = false, $handle = null, $isPutOnce = false){
 		
 		self::$counterScripts++;
 		
@@ -280,10 +283,15 @@ class UniteProviderFunctionsUC{
 				
 		if($isModule == true)
 			$handle = "module_".$handle;
-		
-		if(isset(self::$arrScripts[$handle]))
+				
+		if(isset(self::$arrScripts[$handle])){
+			
+			if($isPutOnce === true)
+				return(false);
+			
 			$handle .= "_". UniteFunctionsUC::getRandomString(5, true);
-		
+		}
+			
 		if($hardCoded == false)
 			self::$arrScripts[$handle] = $script;
 		else{
@@ -574,11 +582,12 @@ class UniteProviderFunctionsUC{
 			$data["uc_lang"] = UniteFunctionsWPUC::getLanguage();
 		}
 		
-    	
-		$isInsideEditor = UniteCreatorElementorIntegrate::$isEditMode;
-				
-		$data["uc_inside_editor"] = $isInsideEditor?"yes":"no";
+		$isInsideEditor = GlobalsProviderUC::$isInsideEditor;
 		
+		$isAdminUser = current_user_can('manage_options');
+		
+		$data["uc_inside_editor"] = $isInsideEditor?"yes":"no";
+		$data["uc_admin_user"] = $isAdminUser?"yes":"no";
 		
 		return($data);
 	}
@@ -600,11 +609,28 @@ class UniteProviderFunctionsUC{
 	 */
 	public static function getNonce(){
 		
-		$nonce = wp_create_nonce(GlobalsUC::PLUGIN_NAME."_actions");
+		$nonceName = self::getNonceName();
+		
+		$nonce = wp_create_nonce($nonceName);
 		
 		return($nonce);
 	}
 	
+	
+	/**
+	 * get nonce name
+	 */
+	public static function getNonceName(){
+		
+		$userID = get_current_user_id();
+		
+		if(empty($userID))
+			$userID = "none";
+		
+		$name = GlobalsUC::PLUGIN_NAME."_actions_{$userID}";
+				
+		return($name);
+	}
 	
 	/**
 	 * veryfy nonce
@@ -620,9 +646,11 @@ class UniteProviderFunctionsUC{
 			UniteFunctionsUC::showTrace();
 			exit();
 		}
+
+		$nonceName = self::getNonceName();
 		
 		
-		$verified = wp_verify_nonce($nonce, GlobalsUC::PLUGIN_NAME."_actions");
+		$verified = wp_verify_nonce($nonce, $nonceName);
 		if($verified == false)
 			UniteFunctionsUC::throwError("Action security failed, please refresh the page and try again.");
 		
@@ -738,13 +766,13 @@ class UniteProviderFunctionsUC{
 	/**
 	 * update option
 	 */
-	public static function updateOption($option, $value, $supportMultisite = false){
+	public static function updateOption($option, $value, $supportMultisite = false,$autoload = null){
 	
 		if($supportMultisite == true && is_multisite()){
 			update_site_option($option, $value);
 		}else
-			update_option($option, $value);
-	
+			update_option($option, $value, $autoload);
+		
 	}
 	
 	

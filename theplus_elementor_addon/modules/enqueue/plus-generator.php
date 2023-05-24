@@ -625,6 +625,12 @@ Class Plus_Generator
 			}
 			
 		}
+
+		if( !empty($widget_name) && $widget_name == "tp-scroll-sequence" ){
+			if( !empty($options['stickySec']) && $options['stickySec'] == 'yes' ){
+				$this->transient_widgets[] = 'plus-key-animations';
+			}
+		}
 	} 
    
 	/**

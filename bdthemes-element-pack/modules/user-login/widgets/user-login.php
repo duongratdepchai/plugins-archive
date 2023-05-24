@@ -2206,7 +2206,7 @@ class User_Login extends Module_Base
 			]
 		);
 
-		$this->add_render_attribute('dropdown-settings', 'class', 'bdt-dropdown bdt-text-left bdt-overflow-hidden');
+		$this->add_render_attribute('dropdown-settings', 'class', 'bdt-dropdown bdt-drop bdt-text-left bdt-overflow-hidden');
 
 	?>
 

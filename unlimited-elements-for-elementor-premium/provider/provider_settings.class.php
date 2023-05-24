@@ -70,6 +70,17 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		
 		$this->addSelect($name."_templateid", $arrTemplates, $title ,"__none__", $params);
 		
+		//get the edit template button
+		
+		
+		$params = array();
+		$params["origtype"] = UniteCreatorDialogParam::PARAM_RAW_HTML;
+		$params["html"] = "<div class='uc-edit-template-button'><a href='javascript:void(0)' class='uc-edit-template-button__link unite-setting-special-select' data-settingtype='template_button' style='display:none' data-selectid='{$name}_templateid' target='_blank'>Edit Template</a></div>";
+		
+		
+		
+		$this->addTextBox($name."_templateid_button", "", $title , $params);
+		
 	}
 	
 	
@@ -2084,6 +2095,7 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		$queryID = UniteFunctionsUC::getVal($value, $name."_queryid");
 		
 		$this->addTextBox($name."_queryid", $queryID, $title, $params);
+				
 		
 		//---- show debug -----
 		
@@ -2672,6 +2684,7 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 	
 	private function __________MULTISOURCE_______(){}
 	
+	
 	/**
 	 * add items multisource
 	 */
@@ -2696,6 +2709,60 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		
 	}
 	
+	private function __________TYPOGRAPHY_______(){}
+	
+	/**
+	 * add all the typographyc settings
+	 */
+	public function addTypographyDialogSettings(){
+		
+		$arrData = HelperUC::getFontPanelData();
+		
+		$arrFontFamily = UniteFunctionsUC::getVal($arrData, "arrFontFamily");
+		
+		$arrFontSize = UniteFunctionsUC::getVal($arrData, "arrFontSize");
+		
+		$arrFontSize = UniteFunctionsUC::arrayToAssoc($arrFontSize);
+		$arrFontSize = UniteFunctionsUC::addArrFirstValue($arrFontSize, "[Default]", "");
+		
+		$arrGoogleFonts = UniteFunctionsUC::getVal($arrData, "arrGoogleFonts");
+		
+		$arrFontWeight = UniteFunctionsUC::getVal($arrData, "arrFontWeight");
+
+		$arrFontWeight = UniteFunctionsUC::arrayToAssoc($arrFontWeight);
+		$arrFontWeight = UniteFunctionsUC::addArrFirstValue($arrFontWeight, "[Default]", "");
+		
+		$arrLineHeight = UniteFunctionsUC::getVal($arrData, "arrLineHeight");
+		
+		$textDecoration = UniteFunctionsUC::getVal($arrData, "arrTextDecoration");
+		
+		
+		//add the settings
+		
+		$arrFontFamily = array_flip($arrFontFamily);
+		$arrFontSize = array_flip($arrFontSize);
+		$arrFontWeight = array_flip($arrFontWeight);
+		
+		//$this->addSelect("font_family", $arrFontFamily, __("Font Family","unlimited-elements-for-elementor"));
+		
+		//font size
+		$params = array();
+		$params["selector"] = "%selector%";
+		$params["selector_value"] = "font-size:{{VALUE}}px;";
+		
+		$this->addSelect("font_size", $arrFontSize, __("Font Size","unlimited-elements-for-elementor"),"", $params);
+		
+		
+		//font weight
+		
+		$params = array();
+		$params["selector"] = "%selector%";
+		$params["selector_value"] = "font-weight:{{VALUE}};";
+		
+		$this->addSelect("font_weight", $arrFontWeight, __("Font Weight","unlimited-elements-for-elementor"),"",$params);
+		
+		
+	}
 	
 	
 }

@@ -179,6 +179,7 @@ class Testimonial_Slider extends Module_Base {
 					],
 				],
 				'default' => 'after',
+				'toggle'  => false,
 			]
 		);
 
@@ -421,7 +422,7 @@ class Testimonial_Slider extends Module_Base {
 				'label'       => esc_html__('Border', 'bdthemes-element-pack'),
 				'placeholder' => '1px',
 				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} .bdt-testimonial-slider .bdt-testimonial-thumb',
+				'selector'    => '{{WRAPPER}} .bdt-testimonial-slider .bdt-testimonial-thumb, {{WRAPPER}} .bdt-testimonial-slider .bdt-testimonial-thumb img',
 				'separator' => 'before'
 			]
 		);
@@ -433,7 +434,7 @@ class Testimonial_Slider extends Module_Base {
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
-					'{{WRAPPER}} .bdt-testimonial-slider .bdt-testimonial-thumb' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .bdt-testimonial-slider .bdt-testimonial-thumb, {{WRAPPER}} .bdt-testimonial-slider .bdt-testimonial-thumb img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -517,7 +518,66 @@ class Testimonial_Slider extends Module_Base {
 				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .bdt-testimonial-text:after' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .bdt-testimonial-text:after, {{WRAPPER}} .bdt-testimonial-slider.skin-single .bdt-testimonial-thumb::after' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+            Group_Control_Background::get_type(),
+            [
+                'name'     => 'quatation_background_color',
+                'selector' => '{{WRAPPER}} .bdt-testimonial-slider.skin-single .bdt-testimonial-thumb::after',
+				'condition' => [
+					'_skin' => 'bdt-single',
+				],
+            ]
+        );
+        
+        $this->add_group_control(
+            Group_Control_Border::get_type(), [
+                'name'        => 'quatation_border',
+                'label'       => esc_html__( 'Border', 'bdthemes-element-pack' ),
+                'placeholder' => '1px',
+                'default'     => '1px',
+                'selector'    => '{{WRAPPER}} .bdt-testimonial-slider.skin-single .bdt-testimonial-thumb::after',
+				'condition' => [
+					'_skin' => 'bdt-single',
+				],
+            ]
+        );
+        
+        $this->add_responsive_control(
+            'quatation_border_radius',
+            [
+                'label'      => esc_html__( 'Border Radius', 'bdthemes-element-pack' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors'  => [
+                    '{{WRAPPER}} .bdt-testimonial-slider.skin-single .bdt-testimonial-thumb::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+				'condition' => [
+					'_skin' => 'bdt-single',
+				],
+            ]
+        );
+        
+		$this->add_responsive_control(
+			'testimonial_quatation_size',
+			[
+				'label'     => esc_html__('Size', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [
+						'min' => 10,
+						'max' => 500,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-testimonial-slider.skin-single .bdt-testimonial-thumb::after' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}; line-height: calc(20px + {{SIZE}}{{UNIT}});',
+				],
+				'condition' => [
+					'_skin' => 'bdt-single',
 				],
 			]
 		);
@@ -526,9 +586,10 @@ class Testimonial_Slider extends Module_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'quatation_typography',
-				'selector' => '{{WRAPPER}} .bdt-testimonial-text:after',
+				'selector' => '{{WRAPPER}} .bdt-testimonial-text:after, {{WRAPPER}} .bdt-testimonial-slider.skin-single .bdt-testimonial-thumb::after',
 			]
 		);
+
 
 		$this->add_control(
             'quatation_offset_toggle',
@@ -1478,14 +1539,14 @@ class Testimonial_Slider extends Module_Base {
 						$testimonial_thumb = $testimonial_thumb[0];
 					}
 
-	?>
-		<div class="bdt-testimonial-thumb-wrap bdt-flex bdt-position-relative">
-			<div class="bdt-testimonial-thumb bdt-position-relative">
-				<img src="<?php echo esc_url($testimonial_thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
-			</div>
-			<?php $this->render_review_platform(get_the_ID()); ?>
-		</div>
-		<?php
+					?>
+						<div class="bdt-testimonial-thumb-wrap bdt-flex bdt-position-relative">
+							<div class="bdt-testimonial-thumb bdt-position-relative">
+								<img src="<?php echo esc_url($testimonial_thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
+							</div>
+							<?php $this->render_review_platform(get_the_ID()); ?>
+						</div>
+				   <?php
 				}
 
 				public function render_excerpt() {

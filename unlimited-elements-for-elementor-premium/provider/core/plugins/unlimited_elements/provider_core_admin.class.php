@@ -156,7 +156,6 @@ class UniteProviderCoreAdminUC_Elementor extends UniteProviderAdminUC{
 		
 		$noticeID = UniteFunctionsUC::getVal($arrNotice, "id");
 		$text = UniteFunctionsUC::getVal($arrNotice, "text");
-		$expire = UniteFunctionsUC::getVal($arrNotice, "expire");
 		$freeOnly = UniteFunctionsUC::getVal($arrNotice, "free_only");
 		$freeOnly = UniteFunctionsUC::strToBool($freeOnly);
 		
@@ -164,7 +163,14 @@ class UniteProviderCoreAdminUC_Elementor extends UniteProviderAdminUC{
 			return(false);
 		
 		$objNotices = new UniteCreatorAdminNotices();
-		$objNotices->setNotice($text, $noticeID, $expire, $arrNotice);		
+		$objNotices->setNotice($text, $noticeID, $arrNotice);		
+
+		$arrNotice2 = GlobalsUnlimitedElements::$arrAdminNotice2;
+		$noticeID = UniteFunctionsUC::getVal($arrNotice2, "id");
+		$text = UniteFunctionsUC::getVal($arrNotice2, "text");
+		
+		$objNotices->setNotice($text, $noticeID, $arrNotice2);	
+
 	}
 	
 	

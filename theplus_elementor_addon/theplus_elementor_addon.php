@@ -3,12 +3,12 @@
 * Plugin Name: The Plus Addons for Elementor - Pro
 * Plugin URI: https://theplusaddons.com/
 * Description: Highly Customisable 120+ Advanced Elementor Widgets & Extensions for Performance Driven Website. Keep the free version active to access all of its features.
-* Version: 5.2.3
+* Version: 5.2.6
 * Author: POSIMYTH
 * Author URI: https://posimyth.com/
 * Text Domain: theplus
-* Elementor tested up to: 3.12
-* Elementor Pro tested up to: 3.12
+* Elementor tested up to: 3.13
+* Elementor Pro tested up to: 3.13
 */
 
 update_option( 'theplus_verified', [ 'expire' => 'lifetime', 'license' => 'valid', 'verify' => 1 ] );
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-defined( 'THEPLUS_VERSION' ) or define( 'THEPLUS_VERSION', '5.2.3' );
+defined( 'THEPLUS_VERSION' ) or define( 'THEPLUS_VERSION', '5.2.6' );
 define( 'THEPLUS_FILE__', __FILE__ );
 
 define( 'THEPLUS_PATH', plugin_dir_path( __FILE__ ) );
@@ -30,11 +30,13 @@ define('THEPLUS_ASSET_PATH', wp_upload_dir()['basedir'] . DIRECTORY_SEPARATOR . 
 define('THEPLUS_ASSET_URL', wp_upload_dir()['baseurl'] . '/theplus-addons');
 define( 'THEPLUS_INCLUDES_URL', THEPLUS_PATH . 'includes/' );
 define( 'THEPLUS_TYPE', 'store' );
-
+define( 'THEPLUS_TPDOC', 'https://theplusaddons.com/docs/' );
 
 /* theplus language plugins loaded */
 function theplus_pluginsLoaded() {
+	
 	load_plugin_textdomain( 'theplus', false, basename( dirname( __FILE__ ) ) . '/lang' ); 
+
 	if ( ! did_action( 'elementor/loaded' ) ) {
 		add_action( 'admin_notices', 'theplus_elementor_load_notice' );
 		return;
@@ -48,7 +50,8 @@ function theplus_pluginsLoaded() {
 	// Elementor widget loader
 	if(THEPLUS_TYPE=='store' && is_admin()){
 		add_action( 'admin_init', 'theplus_plugin_updater', 0 );
-	}	
+	}
+	
     require( THEPLUS_PATH . 'widgets_loader.php' );
 }
 add_action( 'plugins_loaded', 'theplus_pluginsLoaded' );

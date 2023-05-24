@@ -23,7 +23,9 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Data_Table extends Widget_Base {
-		
+	
+	public $TpDoc = THEPLUS_TPDOC;
+
 	public function get_name() {
 		return 'tp-table';
 	}
@@ -36,34 +38,101 @@ class ThePlus_Data_Table extends Widget_Base {
         return 'fa fa-table theplus_backend_icon';
     }
 
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "table";
+
+		return esc_url($DocUrl);
+	}
+
     public function get_categories() {
         return array('plus-essential');
     }
 
     protected function register_controls() {
-		$this->start_controls_section(
-			'section_table',
+		$this->start_controls_section( 'section_table',
 			[
 				'label' => esc_html__( 'Table', 'theplus' ),
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
-		$this->add_control(
-			'table_selection',
+		$this->add_control( 'table_selection',
 			[
-				'label' => esc_html__( 'Content Table', 'theplus' ),
+				'label' => wp_kses_post( "Content Table <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "table-elementor-widget-settings-overview/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'custom',
 				'options' => [
 					'custom'  => esc_html__( 'Custom', 'theplus' ),
 					'csv_file' => esc_html__( 'CSV File', 'theplus' ),
+					'google_sheet' => esc_html__( 'Google Sheet', 'theplus' ),
 				],
 			]
 		);
-		$this->add_control(
-			'file',
+		
+		$this->add_control( 'api_key',
 			[
-				'label' => esc_html__( 'Enter a CSV File URL', 'theplus' ),
+				'label' => esc_html__( 'API Key', 'theplus' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => ['active' => true,],
+				'condition' => [
+					'table_selection' => 'google_sheet',
+				],
+			]
+		);
+		$this->add_control( 'sheet_id',
+			[
+				'label' => esc_html__( 'Sheet ID', 'theplus' ),
+				'type'  => Controls_Manager::TEXT,
+				'dynamic' => ['active' => true,],
+				'condition' => [
+					'table_selection' => 'google_sheet',
+				],
+			]
+		);
+		$this->add_control( 'table_range',
+			[
+				'label' => esc_html__( 'Table Range', 'theplus' ),
+				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true
+				],
+				'condition' => [
+					'table_selection' => 'google_sheet',
+				],
+			]
+		);
+		$this->add_control( 'TimeFrq',
+			[
+				'label' => esc_html__( 'Refresh Time','theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '86400',
+				'options' => [
+					'3600' => esc_html__( '1 hour','theplus' ),	
+					'7200' => esc_html__( '2 hour','theplus' ),
+					'21600' => esc_html__( '6 hour','theplus' ),
+					'86400' => esc_html__( '1 day','theplus' ),
+					'604800' => esc_html__( '1 Week','theplus' ),
+				],
+				'condition' => [
+					'table_selection' => 'google_sheet',
+				],
+			]
+		);
+
+		$this->add_control( 'delete_transient',
+			[
+				'type' => Controls_Manager::RAW_HTML,
+				'raw' => '<span>Delete All Transient </span><a class="tp-table-delete-transient" id="tp-table-delete-transient"> Delete </a>',
+				'content_classes' => 'tp-table-delete-transient-btn',
+				'label_block' => true,
+				'condition' => [
+					'table_selection' => 'google_sheet',
+				],
+			]
+		);
+
+		$this->add_control('file',
+			[
+				'label' => wp_kses_post( "Enter a CSV File URL <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "import-data-from-csv-in-elementor-table/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::URL,
 				'show_external' => false,
 				'label_block' => true,
@@ -76,6 +145,12 @@ class ThePlus_Data_Table extends Widget_Base {
 				'condition'     => [
 					'table_selection' => 'csv_file',
 				],
+			]
+		);
+		$this->add_control('how_it_works',
+			[
+				'label' => wp_kses_post( "<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "comparison-data-table-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> Learn how to create Comparison Table  <i class='eicon-help-o'></i> </a>", 'theplus' ),
+				'type' => Controls_Manager::HEADING,
 			]
 		);
 		$this->end_controls_section();
@@ -129,7 +204,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater->start_controls_tab(
 			'tab_head_content',
 			[
-				'label'     => esc_html__( 'Content', 'theplus' ),
+				'label'     => esc_html__( 'CONTENT', 'theplus' ),
 				'condition' => [
 					'header_content_type' => 'cell',
 				],
@@ -190,7 +265,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater->start_controls_tab(
 			'tab_head_icon',
 			[
-				'label' => esc_html__( 'Icon / Image', 'theplus' ),
+				'label'     => esc_html__( 'ICON / IMAGE', 'theplus' ),
 				'condition' => [
 					'header_content_type' => 'cell',
 				],
@@ -282,7 +357,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater->start_controls_tab(
 			'tab_head_advance',
 			[
-				'label'     => esc_html__( 'Advance', 'theplus' ),
+				'label'     => esc_html__( 'ADVANCE', 'theplus' ),
 				'condition' => [
 					'header_content_type' => 'cell',
 				],
@@ -527,7 +602,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater_row_col->add_control(
 			'cell_display_button',
 			[
-				'label' => esc_html__( 'Button', 'theplus' ),
+				'label' => wp_kses_post( "Button <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "insert-button-inside-elementor-table/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Show', 'theplus' ),
 				'label_off' => esc_html__( 'Hide', 'theplus' ),
@@ -744,13 +819,13 @@ class ThePlus_Data_Table extends Widget_Base {
 		$repeater_row_col->add_control(
 			'image',
 			[
-				'label'     => esc_html__( 'Choose Image', 'theplus' ),
-				'type'      => Controls_Manager::MEDIA,
-				'dynamic'   => [
+				'label' => wp_kses_post( "Choose Image <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "insert-images-in-table-content-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
+				'type' => Controls_Manager::MEDIA,
+				'dynamic' => [
 					'active' => true,
 				],
 				'condition' => [
-					'content_type'            => 'cell',
+					'content_type' => 'cell',
 					'cell_content_icon_image' => 'image',
 				],
 			]
@@ -934,12 +1009,12 @@ class ThePlus_Data_Table extends Widget_Base {
 		$this->add_control(
 			'searchable',
 			[
-				'label'        => esc_html__( 'Table Searchable', 'theplus' ),
-				'type'         => Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'On', 'theplus' ),
-				'label_off'    => esc_html__( 'Off', 'theplus' ),
+				'label' => wp_kses_post( "Table Searchable <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "add-a-search-in-elementor-table/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'On', 'theplus' ),
+				'label_off' => esc_html__( 'Off', 'theplus' ),
 				'return_value' => 'yes',
-				'default'      => 'no',
+				'default' => 'no',
 			]
 		);
 		$this->add_control(
@@ -957,7 +1032,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$this->add_control(
 			'sortable',
 			[
-				'label'        => esc_html__( 'Table Sortable', 'theplus' ),
+				'label' => wp_kses_post( "Table Sortable <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "enable-sorting-in-elementor-tables/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'         => Controls_Manager::SWITCHER,
 				'label_on'     => esc_html__( 'On', 'theplus' ),
 				'label_off'    => esc_html__( 'Off', 'theplus' ),					
@@ -971,7 +1046,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$this->add_control(
 			'show_entries',
 			[
-				'label'        => esc_html__( 'Entry Filter Dropdown', 'theplus' ),
+				'label' => wp_kses_post( "Entry Filter Dropdown <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "limit-the-number-of-rows-in-elementor-table/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'description'  => esc_html__( 'Controls the number of entries in a table.', 'theplus' ),
 				'type'         => Controls_Manager::SWITCHER,
 				'label_on'     => esc_html__( 'On', 'theplus' ),
@@ -984,7 +1059,7 @@ class ThePlus_Data_Table extends Widget_Base {
 		$this->add_control(
 			'mobile_responsive_table',
 			[
-				'label' => esc_html__( 'Mobile Responsive', 'theplus' ),
+				'label' => wp_kses_post( "Mobile Responsive <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "make-data-tables-mobile-responsive-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
@@ -1093,8 +1168,11 @@ class ThePlus_Data_Table extends Widget_Base {
 
 		$this->start_controls_tabs( 'tabs_header_colors_row' );
 
-		
-		$this->start_controls_tab( 'tab_header_colors_row', [ 'label' => esc_html__( 'Normal', 'theplus' ) ] );
+		$this->start_controls_tab( 'tab_header_colors_row', 
+			[ 
+				'label' => esc_html__( 'Normal', 'theplus' ) 
+			] 
+		);
 
 		$this->add_control(
 			'header_cell_color_row',
@@ -1200,7 +1278,11 @@ class ThePlus_Data_Table extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'tab_header_hover_colors_row', [ 'label' => esc_html__( 'Hover', 'theplus' ) ] );
+		$this->start_controls_tab( 'tab_header_hover_colors_row', 
+			[ 
+				'label' => esc_html__( 'Hover', 'theplus' ) 
+			] 
+		);
 
 		$this->add_control(
 			'header_cell_hover_color_row',
@@ -2775,163 +2857,423 @@ class ThePlus_Data_Table extends Widget_Base {
 	}
 	
 	 protected function render() {
-
         $settings = $this->get_settings_for_display();
 		$widget_id   = $this->get_id();
 		$is_editor_mode = \Elementor\Plugin::instance()->editor->is_edit_mode();
 		
+		$mResponsive = !empty($settings["mobile_responsive_table"]) ? $settings["mobile_responsive_table"] : 'default';
+		$sortable = !empty($settings["sortable"]) ? $settings["sortable"] : '';
+		$showEntries = !empty($settings['show_entries']) ? $settings['show_entries'] : '';
+		$searchable = !empty($settings['searchable']) ? $settings['searchable'] : '';
+		$searchableLabel = !empty($settings['searchable_label']) ? $settings['searchable_label'] : '';
+		$tableSelection = !empty($settings['table_selection']) ? $settings['table_selection'] : '';
+
 		$cell_align_head_desktop = !empty($settings["cell_align_head_normal"]) ? $settings["cell_align_head_normal"] : '';
 		$cell_align_head_tablet = !empty($settings["cell_align_head_normal_tablet"]) ? $settings["cell_align_head_normal_tablet"] : '';
 		$cell_align_head_mobile = !empty($settings["cell_align_head_normal_mobile"]) ? $settings["cell_align_head_normal_mobile"] : '';
 		
-		$tmdefaultclass= '';
-		if(!empty($settings["mobile_responsive_table"]) && $settings["mobile_responsive_table"] == 'default' ){
+		$tmdefaultclass = '';
+		if(!empty($mResponsive) && $mResponsive == 'default' ){
 			$tmdefaultclass = ' tp-table-mobresswipe';
 		}
+
 		/*--On Scroll View Animation ---*/
+			
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation-attr.php';
+	
+		ob_start();
 		
-			ob_start();
-			
-			//Table Wrapper
-			$this->add_render_attribute( 'plus_table_wrapper', 'class', 'plus-table-wrapper '.esc_attr($animated_class). ' '.$tmdefaultclass );
+		//Table Wrapper
+		$this->add_render_attribute( 'plus_table_wrapper', 'class', 'plus-table-wrapper '.esc_attr($animated_class). ' '.$tmdefaultclass );
+
+		if( !empty($animation_attr) ){
 			$this->add_render_attribute( 'plus_table_wrapper', $animation_attr );
-			$this->add_render_attribute( 'plus_table_wrapper', 'itemtype', 'http://schema.org/Table' );
-			
-			$this->add_render_attribute( 'plus_table_id', 'id', 'plus-table-id-' . $widget_id );
-			
-			$this->add_render_attribute( 'plus_table_id', 'class', 'plus-table' );
-			
-			$this->add_render_attribute( 'plus_table_id', 'class', 'plus-text-break' );
+		}
 
-			$this->add_render_attribute( 'plus_table_id', 'class', 'plus-column-rules' );
-			
+		$this->add_render_attribute( 'plus_table_wrapper', 'itemtype', 'http://schema.org/Table' );
+		
+		$this->add_render_attribute( 'plus_table_id', 'id', 'plus-table-id-' . $widget_id );
+		$this->add_render_attribute( 'plus_table_id', 'class', 'plus-table' );
+		$this->add_render_attribute( 'plus_table_id', 'class', 'plus-text-break' );
+		$this->add_render_attribute( 'plus_table_id', 'class', 'plus-column-rules' );
+		
 
-			if(!empty($settings["mobile_responsive_table"]) && $settings["mobile_responsive_table"] == 'one-by-one' ){
-				$this->add_render_attribute( 'plus_table_id', 'class', 'plus-table-mob-res' );
-			}
-			
-			// <Tr> (Row).
-			$this->add_render_attribute( 'plus_table_row', 'class', 'plus-table-row' );
-			
-			// Text span.
-			$this->add_render_attribute( 'plus_table__text', 'class', 'plus-table__text' );
-			
-			
-			// Table Sortable.
-			if ( !empty($settings['sortable']) && 'yes' === $settings['sortable'] ) {
-				$this->add_render_attribute( 'plus_table_id', 'data-sort-table', $settings['sortable'] );
-			} else {
-				$this->add_render_attribute( 'plus_table_id', 'data-sort-table', 'no' );
-			}
-			
-			// Table Show entries.
-			if ( !empty($settings['show_entries']) && 'yes' === $settings['show_entries'] ) {
-				$this->add_render_attribute( 'plus_table_id', 'data-show-entry', $settings['show_entries'] );
-			} else {
-				$this->add_render_attribute( 'plus_table_id', 'data-show-entry', 'no' );
-			}
-			
-			//Table Searchable
-			if ( !empty($settings['searchable']) &&  'yes' === $settings['searchable'] ) {
-				$this->add_render_attribute( 'plus_table_id', 'data-searchable', $settings['searchable'] );
-				$this->add_render_attribute( 'plus_table_id', 'data-searchable-label', $settings['searchable_label'] );				
-			} else {
-				$this->add_render_attribute( 'plus_table_id', 'data-searchable', 'no' );
-			}
+		if(!empty($mResponsive) && $mResponsive == 'one-by-one' ){
+			$this->add_render_attribute( 'plus_table_id', 'class', 'plus-table-mob-res' );
+		}
+		
+		// <Tr> (Row).
+		$this->add_render_attribute( 'plus_table_row', 'class', 'plus-table-row' );
+		
+		// Text span.
+		$this->add_render_attribute( 'plus_table__text', 'class', 'plus-table__text' );
 
-			//Table CSV File
-			if(!empty($settings['table_selection']) && $settings['table_selection'] == 'csv_file'){
-			
-				if($settings['file']['url'] != '' ){
-					$ext = pathinfo($settings['file']['url'], PATHINFO_EXTENSION);
-					if($ext!='csv'){
-						echo '<h3 class="theplus-posts-not-found">'.esc_html__("Opps!! Please Enter Only CSV File Extension.",'theplus').'</h3>';
-						return false;
-					}
+		// Table Sortable.
+		if ( !empty($sortable) && 'yes' === $sortable ) {
+			$this->add_render_attribute( 'plus_table_id', 'data-sort-table', $sortable );
+		} else {
+			$this->add_render_attribute( 'plus_table_id', 'data-sort-table', 'no' );
+		}
+		
+		// Table Show entries.
+		if ( !empty($showEntries) && 'yes' == $showEntries ) {
+			$this->add_render_attribute( 'plus_table_id', 'data-show-entry', $showEntries );
+		} else {
+			$this->add_render_attribute( 'plus_table_id', 'data-show-entry', 'no' );
+		}
+		
+		//Table Searchable
+		if ( !empty($searchable) &&  'yes' == $searchable ) {
+			$this->add_render_attribute( 'plus_table_id', 'data-searchable', $searchable );
+			$this->add_render_attribute( 'plus_table_id', 'data-searchable-label', $searchableLabel );				
+		} else {
+			$this->add_render_attribute( 'plus_table_id', 'data-searchable', 'no' );
+		}
+		
+		//Table CSV File
+		if(!empty($tableSelection) && $tableSelection == 'csv_file'){
+			if( !empty($settings['file']['url']) ){
+				$ext = pathinfo($settings['file']['url'], PATHINFO_EXTENSION);
+				if($ext!='csv'){
+					echo '<h3 class="theplus-posts-not-found">'.esc_html__("Opps!! Please Enter Only CSV File Extension.",'theplus').'</h3>';
+					return false;
 				}
-				
-				if($settings['file']['url']){
-					echo '<div itemscope '.$this->get_render_attribute_string( 'plus_table_wrapper' ).'>';
-					echo '<table '.$this->get_render_attribute_string( 'plus_table_id' ).'>';
-						echo theplus_fetch_csv(esc_url($settings['file']['url']),$settings['sortable']);
-					echo '</table></div>';
-				}else{
-					echo '<h3 class="theplus-posts-not-found">'.esc_html__("Opps!! You didn\'t enter any table data or CSV file",'theplus').'</h3>';
-				}
-				
-			}else { ?>
-			<div itemscope <?php echo $this->get_render_attribute_string( 'plus_table_wrapper' ); ?>>
-				
-				<table <?php echo $this->get_render_attribute_string( 'plus_table_id' ); ?>>
+			}
+
+			if($settings['file']['url']){
+				echo '<div itemscope '.$this->get_render_attribute_string( 'plus_table_wrapper' ).'>';
+				echo '<table '.$this->get_render_attribute_string( 'plus_table_id' ).'>';
+					echo theplus_fetch_csv(esc_url($settings['file']['url']),$settings['sortable']);
+				echo '</table></div>';
+			} else {
+				echo '<h3 class="theplus-posts-not-found">'.esc_html__("Opps!! You didn\'t enter any table data or CSV file",'theplus').'</h3>';
+			}
+			
+		} else if(!empty($tableSelection) && $tableSelection == 'google_sheet'){
+			echo '<div itemscope '.$this->get_render_attribute_string( 'plus_table_wrapper' ).'>';
+				echo '<table '.$this->get_render_attribute_string( 'plus_table_id' ).'>';
+					echo $this->tp_google_sheet();
+				echo '</table>';	
+			echo '</div>';
+		} else { ?>
+		<div itemscope <?php echo $this->get_render_attribute_string( 'plus_table_wrapper' ); ?>>
+
+			<table <?php echo $this->get_render_attribute_string( 'plus_table_id' ); ?>>
+				<?php
+				$first_row_th    = true;
+				$cell_col_count = 0;
+				$counter_row      = 1;					
+				$inline_count   = 0;
+				$row_count_tb    = count( (array)$settings['table_headings'] );
+				$data_entry_col     = 0;
+				$header_text    = array();					
+
+				if ( $row_count_tb > 1 ) {
+					?>
+				<thead>
 					<?php
-					$first_row_th    = true;
-					$cell_col_count = 0;
-					$counter_row      = 1;					
-					$inline_count   = 0;
-					$row_count_tb    = count( $settings['table_headings'] );
-					$data_entry_col     = 0;
-					$header_text    = array();					
+					if ( $settings['table_headings'] ) {
+						$headi=0;
+						foreach ( $settings['table_headings'] as $index => $head ) {
+							
+							// Header text prepview editing.
+							$repeater_heading_text = $this->get_repeater_setting_key( 'heading_text', 'table_headings', $inline_count );
+							$this->add_render_attribute( $repeater_heading_text, 'class', 'plus-table__text-inner' );
+							$this->add_inline_editing_attributes( $repeater_heading_text );
+							
+							// TH.
+							if ( true === $first_row_th ) {
+								$this->add_render_attribute( 'current_' . $head['_id'], 'data-sort', $cell_col_count );
+							}
+							
+							$this->add_render_attribute( 'current_' . $head['_id'], 'class', 'sort-this' );
+							$this->add_render_attribute( 'current_' . $head['_id'], 'class', 'elementor-repeater-item-' . $head['_id'] );
+							$this->add_render_attribute( 'current_' . $head['_id'], 'class', 'plus-table-col' );								
+							
+							if ( 1 < $head['heading_col_span'] ) {
+								$this->add_render_attribute( 'current_' . $head['_id'], 'colspan', $head['heading_col_span'] );
+							}
+							if ( 1 < $head['heading_row_span'] ) {
+								$this->add_render_attribute( 'current_' . $head['_id'], 'rowspan', $head['heading_row_span'] );
+							}
+							
+							// Sort Icon.
+							if ( 'yes' === $settings['sortable'] && true === $first_row_th ) {
+								$this->add_render_attribute( 'icon_sort_' . $head['_id'], 'class', 'plus-sort-icon' );
+							}
+							
+							if (!empty($head['icons_image']['url']) ) {
+								$icons_image=$head['icons_image']['id'];
+								$img = wp_get_attachment_image_src($icons_image,$head['icons_image_thumbnail_size']);
+								$icons_image_Src = $img[0];
+								$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'src', $icons_image_Src );
+								$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'class', 'plus-col-img--' . $settings['all_image_align'] );
+								$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'title', get_the_title( $head['icons_image']['id'] ) );
+								$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'alt', get_the_title( $head['icons_image']['id'] ) );
+							}
+							
+							// ICON.								
+							if('icon' === $head['header_content_icon_image'] && $head["icon_font_style"]=='font_awesome'){
+								$this->add_render_attribute( 'plus_heading_icon' . $head['_id'], 'class', $head['icon_fontawesome'] );
+							}else if('icon' === $head['header_content_icon_image'] && $head["icon_font_style"]=='icon_mind'){
+								$this->add_render_attribute( 'plus_heading_icon' . $head['_id'], 'class', $head['icons_mind'] );
+							}
+							$this->add_render_attribute( 'plus_heading_icon_align' . $head['_id'], 'class', 'plus-align-icon--' . $settings['all_icon_align'] );
+							
+							//tooltip
+							$_tooltip='_tooltip_'.$headi;
+							if( $head['heading_show_tooltips'] == 'yes' ) {
+								
+								$this->add_render_attribute( $_tooltip, 'data-tippy', '', true );
 
-					if ( $row_count_tb > 1 ) {
-						?>
-					<thead>
-						<?php
-						if ( $settings['table_headings'] ) {
-							$headi=0;
-							foreach ( $settings['table_headings'] as $index => $head ) {
+								$tooltip_content=$head['heading_tooltip_content'];
+								$this->add_render_attribute( $_tooltip, 'title', $tooltip_content, true );
 								
-								// Header text prepview editing.
-								$repeater_heading_text = $this->get_repeater_setting_key( 'heading_text', 'table_headings', $inline_count );
-								$this->add_render_attribute( $repeater_heading_text, 'class', 'plus-table__text-inner' );
-								$this->add_inline_editing_attributes( $repeater_heading_text );
+								$plus_tooltip_position=($settings["tooltip_common_option_plus_tooltip_position"]!='') ? $settings["tooltip_common_option_plus_tooltip_position"] : 'top';
+								$this->add_render_attribute( $_tooltip, 'data-tippy-placement', $plus_tooltip_position, true );
 								
-								// TH.
-								if ( true === $first_row_th ) {
-									$this->add_render_attribute( 'current_' . $head['_id'], 'data-sort', $cell_col_count );
+								$tooltip_interactive =($settings["tooltip_common_option_plus_tooltip_interactive"]=='' || $settings["tooltip_common_option_plus_tooltip_interactive"]=='yes') ? 'true' : 'false';
+								$this->add_render_attribute( $_tooltip, 'data-tippy-interactive', $tooltip_interactive, true );
+								
+								$plus_tooltip_theme=($settings["tooltip_common_option_plus_tooltip_theme"]!='') ? $settings["tooltip_common_option_plus_tooltip_theme"] : 'dark';
+								$this->add_render_attribute( $_tooltip, 'data-tippy-theme', $plus_tooltip_theme, true );
+								
+								
+								$tooltip_arrow =($settings["tooltip_common_option_plus_tooltip_arrow"]!='none' || $settings["tooltip_common_option_plus_tooltip_arrow"]=='') ? 'true' : 'false';
+								$this->add_render_attribute( $_tooltip, 'data-tippy-arrow', $tooltip_arrow , true );
+								
+								$plus_tooltip_arrow=($settings["tooltip_common_option_plus_tooltip_arrow"]!='') ? $settings["tooltip_common_option_plus_tooltip_arrow"] : 'sharp';
+								$this->add_render_attribute( $_tooltip, 'data-tippy-arrowtype', $plus_tooltip_arrow, true );
+								
+								$plus_tooltip_animation=($settings["tooltip_common_option_plus_tooltip_animation"]!='') ? $settings["tooltip_common_option_plus_tooltip_animation"] : 'shift-toward';
+								$this->add_render_attribute( $_tooltip, 'data-tippy-animation', $plus_tooltip_animation, true );
+								
+								$plus_tooltip_x_offset=($settings["tooltip_common_option_plus_tooltip_x_offset"]!='') ? $settings["tooltip_common_option_plus_tooltip_x_offset"] : 0;
+								$plus_tooltip_y_offset=($settings["tooltip_common_option_plus_tooltip_y_offset"]!='') ? $settings["tooltip_common_option_plus_tooltip_y_offset"] : 0;
+								$this->add_render_attribute( $_tooltip, 'data-tippy-offset', $plus_tooltip_x_offset .','. $plus_tooltip_y_offset, true );
+								
+								$tooltip_duration_in =($settings["tooltip_common_option_plus_tooltip_duration_in"]!='') ? $settings["tooltip_common_option_plus_tooltip_duration_in"] : 250;
+								$tooltip_duration_out =($settings["tooltip_common_option_plus_tooltip_duration_out"]!='') ? $settings["tooltip_common_option_plus_tooltip_duration_out"] : 200;
+								$tooltip_trigger =($settings["tooltip_common_option_plus_tooltip_triggger"]!='') ? $settings["tooltip_common_option_plus_tooltip_triggger"] : 'mouseenter';
+								$tooltip_arrowtype =($settings["tooltip_common_option_plus_tooltip_arrow"]!='') ? $settings["tooltip_common_option_plus_tooltip_arrow"] : 'sharp';
+							}
+
+							$uniqid=uniqid("tooltip");
+					
+							$show_tooltips_on = $head['heading_show_tooltips_on'];
+							$toolbox=$toolicon=$tt_on_icon='';
+							if(!empty($show_tooltips_on) && $show_tooltips_on=='icon'){
+								$toolbox = $this->get_render_attribute_string( 'current_' . $head['_id'] );
+								$toolicon = 'id="'.esc_attr($uniqid).'" class="plus-icon-list-item elementor-repeater-item-'.esc_attr($head['_id']).'" data-local="true" '.$this->get_render_attribute_string( $_tooltip ).'';
+								
+								ob_start();
+								\Elementor\Icons_Manager::render_icon( $settings['tt_on_icon'] , [ 'aria-hidden' => 'true' ]);
+								$tt_on_icon = ob_get_contents();
+								ob_end_clean();
+								
+							}else{									
+								$toolbox = 'id="'.esc_attr($uniqid).'"'.$this->get_render_attribute_string( 'current_' . $head['_id'] ).' data-local="true" '.$this->get_render_attribute_string( $_tooltip ).'';
+							}
+					
+							if ( 'cell' === $head['header_content_type'] ) {
+								?>
+								<th <?php echo $toolbox; ?> scope="col">
+									<span class="sort-style">
+									<span <?php echo $this->get_render_attribute_string( 'plus_table__text' ); ?>>
+										<?php if ( 'icon' === $head['header_content_icon_image'] ) { ?>												
+												<?php if ( 'left' === $settings['all_icon_align'] ) { ?>
+											<span <?php echo $this->get_render_attribute_string( 'plus_heading_icon_align' . $head['_id'] ); ?>>
+												<i <?php echo $this->get_render_attribute_string( 'plus_heading_icon' . $head['_id'] ); ?>></i>
+											</span>
+										<?php } ?>											
+										<?php } else { ?>
+												<?php if ( !empty($head['icons_image']['url']) ) { ?>
+													<?php if ( 'left' == $settings['all_image_align'] ) { ?>
+													<img <?php echo $this->get_render_attribute_string( 'plus_head_col_img' . $head['_id'] ); ?>>
+												<?php } ?>
+												<?php } ?>
+										<?php } ?>
+										<span <?php echo $this->get_render_attribute_string( $repeater_heading_text ); ?>><?php echo $head['heading_text']; ?></span>
+										<?php if ( 'icon' === $head['header_content_icon_image'] ) { ?>												
+												<?php if ( 'right' === $settings['all_icon_align'] ) { ?>
+											<span <?php echo $this->get_render_attribute_string( 'plus_heading_icon_align' . $head['_id'] ); ?>>
+												<i <?php echo $this->get_render_attribute_string( 'plus_heading_icon' . $head['_id'] ); ?>></i>
+											</span>
+										<?php } ?>											
+										<?php } else { ?>
+												<?php if ( !empty($head['icons_image']['url']) ) { ?>
+													<?php if ( 'right' == $settings['all_image_align'] ) { ?>
+													<img <?php echo $this->get_render_attribute_string( 'plus_head_col_img' . $head['_id'] ); ?>>
+												<?php } ?>
+												<?php } ?>
+										<?php } 
+										if(!empty($show_tooltips_on) && $show_tooltips_on=='icon'){
+											echo '<span class="tp-tooltip-on-icon" '.$toolicon.'>'.$tt_on_icon.'</span>';
+										}											
+										?>
+									</span> 
+									
+									<?php
+									if ( 'yes' === $settings['sortable'] && true === $first_row_th ) { ?>
+										<span <?php echo $this->get_render_attribute_string( 'icon_sort_' . $head['_id'] ); ?>></span>
+									<?php } ?>
+									</span>
+								</th>
+								<?php
+								$inline_tippy_js='';
+								if($head['heading_show_tooltips'] == 'yes'){
+									$inline_tippy_js ='jQuery( document ).ready(function() {
+									"use strict";
+										if(typeof tippy === "function"){
+											tippy( "#'.esc_attr($uniqid).'" , {
+												arrowType : "'.esc_attr($tooltip_arrowtype).'",
+												duration : ['.esc_attr($tooltip_duration_in).','.esc_attr($tooltip_duration_out).'],
+												trigger : "'.esc_attr($tooltip_trigger).'",
+												appendTo: document.querySelector("#'.esc_attr($uniqid).'")
+											});
+										}
+									});';
+									echo wp_print_inline_script_tag($inline_tippy_js);
 								}
-								
-								$this->add_render_attribute( 'current_' . $head['_id'], 'class', 'sort-this' );
-								$this->add_render_attribute( 'current_' . $head['_id'], 'class', 'elementor-repeater-item-' . $head['_id'] );
-								$this->add_render_attribute( 'current_' . $head['_id'], 'class', 'plus-table-col' );								
-								
-								if ( 1 < $head['heading_col_span'] ) {
-									$this->add_render_attribute( 'current_' . $head['_id'], 'colspan', $head['heading_col_span'] );
+						
+								$header_text[ $cell_col_count ]['heading_text'] = $head['heading_text'];
+								$header_text[ $cell_col_count ]['icon_image'] = $head['header_content_icon_image'];
+								$header_text[ $cell_col_count ]['plus_heading_icon_align'] = 'plus_heading_icon_align' .$head['_id'];
+								$header_text[ $cell_col_count ]['plus_heading_icon'] = 'plus_heading_icon' . $head['_id'];
+								$header_text[ $cell_col_count ]['icons_image_url'] = !empty($head['icons_image']['url']) ? $head['icons_image']['url'] : '';
+								$header_text[ $cell_col_count ]['plus_head_col_img'] = 'plus_head_col_img' . $head['_id'];
+								$cell_col_count++;
+							} else {
+								if ( $counter_row > 1 && $counter_row < $row_count_tb ) {
+									// Break into new row.
+									?>
+									</tr><tr <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
+									<?php
+									$first_row_th = false;
+								} elseif ( 1 === $counter_row && false === $this->table_first_row() ) {
+									?>
+									<tr <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
+													<?php
 								}
-								if ( 1 < $head['heading_row_span'] ) {
-									$this->add_render_attribute( 'current_' . $head['_id'], 'rowspan', $head['heading_row_span'] );
+								$cell_col_count = 0;
+							}
+							$headi++;
+							$counter_row++;
+							$inline_count++;
+						}
+					}
+					?>
+				</thead>
+				<?php } ?>
+				<tbody>
+					<!-- ROWS -->
+					<?php
+					$cell_counter_c    = 0;
+					$counter           = 1;						
+					$cell_inline_count = 0;
+					$row_count         = count( (array)$settings['table_content'] );						
+					$attr_id='cell';
+					$ij=0;
+					
+					if ( $settings['table_content'] ) {
+						$rowi=0;
+						foreach ( $settings['table_content'] as $index => $row ) {
+							// Cell text inline classes.
+							$ij++;
+							
+							$repeater_cell_text = $this->get_repeater_setting_key( 'cell_text', 'table_content', $cell_inline_count );
+							$this->add_render_attribute( $repeater_cell_text, 'class', 'plus-table__text-inner' );
+							$this->add_inline_editing_attributes( $repeater_cell_text );
+							$this->add_render_attribute( 'plus_cell_icon_align' . $row['_id'], 'class', 'plus-align-icon--' . $settings['all_icon_align'] );
+							
+							$button='';
+							if(!empty($row["cell_display_button"]) && $row["cell_display_button"]=='yes'){
+								$link_key = 'link_' . $ij;
+								if ( ! empty( $row['cell_button_link']['url'] ) ) {
+									$this->add_render_attribute( $link_key, 'href', $row['cell_button_link']['url'] );
+									if ( $row['cell_button_link']['is_external'] ) {
+										$this->add_render_attribute( $link_key, 'target', '_blank' );
+									}
+									if ( $row['cell_button_link']['nofollow'] ) {
+										$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
+									}
 								}
+								$this->add_render_attribute( $link_key, 'class', 'button-link-wrap' );
+								$this->add_render_attribute( $link_key, 'role', 'button' );
 								
-								// Sort Icon.
-								if ( 'yes' === $settings['sortable'] && true === $first_row_th ) {
-									$this->add_render_attribute( 'icon_sort_' . $head['_id'], 'class', 'plus-sort-icon' );
+								/*button attributes start*/
+								$button_custom_attributes=$row["button_custom_attributes"];
+								$custom_attributes=$row["custom_attributes"];
+																	
+								$cst_att='';
+								if((!empty($button_custom_attributes) && $button_custom_attributes=='yes') && !empty($custom_attributes)){
+									$cst_att = $custom_attributes;
 								}
+								/*button attributes end*/
 								
-								if (!empty($head['icons_image']['url']) ) {
-									$icons_image=$head['icons_image']['id'];
-									$img = wp_get_attachment_image_src($icons_image,$head['icons_image_thumbnail_size']);
-									$icons_image_Src = $img[0];
-									$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'src', $icons_image_Src );
-									$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'class', 'plus-col-img--' . $settings['all_image_align'] );
-									$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'title', get_the_title( $head['icons_image']['id'] ) );
-									$this->add_render_attribute( 'plus_head_col_img' . $head['_id'], 'alt', get_the_title( $head['icons_image']['id'] ) );
+								$button_style = $row['cell_button_style'];
+								$button_text = $row['cell_button_text'];
+								$btn_uid=uniqid('btn');
+								$data_class= $btn_uid;
+								$data_class .=' button-'.$button_style.' ';
+								$button .='<div class="pt_plus_button '.esc_attr($data_class).'">';						
+										$button .='<a '.$this->get_render_attribute_string( $link_key ).' '.$cst_att.' >';
+										$button .= esc_html($button_text);
+										$button .='</a>';
+								$button .='</div>';
+							}
+							
+							if('icon' === $row['cell_content_icon_image'] && $row["icon_font_style"]=='font_awesome'){
+								$this->add_render_attribute( 'plus_cell_icon'  . $row['_id'], 'class', $row['cell_icon'] );
+							}else if('icon' === $row['cell_content_icon_image'] && $row["icon_font_style"]=='icon_mind'){
+								$this->add_render_attribute( 'plus_cell_icon'  . $row['_id'], 'class', $row['cell_icons_mind'] );								
+							}
+
+							$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'class', 'plus-table-col' );
+							$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'class', 'elementor-repeater-item-' . $row['_id'] );
+							
+							if ( 1 < $row['cell_span'] ) {
+								$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'colspan', $row['cell_span'] );
+							}
+							if ( 1 < $row['cell_row_span'] ) {
+								$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'rowspan', $row['cell_row_span'] );
+							}
+							
+							if ( !empty($row['image']['url']) ) {
+								$image=$row['image']['id'];
+								$img = wp_get_attachment_image_src($image,$row['image_thumbnail_size']);
+								$image_Src = $img[0];
+							
+								$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'src', $image_Src );
+								$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'class', 'plus-col-img--' . $settings['all_image_align'] );
+								$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'title', get_the_title( $row['image']['id'] ) );
+								$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'alt', get_the_title( $row['image']['id']) );
+							}
+							
+							if ( ! empty( $row['link']['url'] ) ) {
+								$this->add_render_attribute( 'col-link-' . $row['_id'], 'href', $row['link']['url'] );
+								if ( $row['link']['is_external'] ) {
+									$this->add_render_attribute( 'col-link-' . $row['_id'], 'target', '_blank' );
 								}
-								
-								// ICON.								
-								if('icon' === $head['header_content_icon_image'] && $head["icon_font_style"]=='font_awesome'){
-									$this->add_render_attribute( 'plus_heading_icon' . $head['_id'], 'class', $head['icon_fontawesome'] );
-								}else if('icon' === $head['header_content_icon_image'] && $head["icon_font_style"]=='icon_mind'){
-									$this->add_render_attribute( 'plus_heading_icon' . $head['_id'], 'class', $head['icons_mind'] );
+								if ( $row['link']['nofollow'] ) {
+									$this->add_render_attribute( 'col-link-' . $row['_id'], 'rel', 'nofollow' );
 								}
-								$this->add_render_attribute( 'plus_heading_icon_align' . $head['_id'], 'class', 'plus-align-icon--' . $settings['all_icon_align'] );
+								$this->add_render_attribute( 'col-link-' . $row['_id'], 'class', 'tb-col-link' );
+							}
+
+							if ( 'cell' === $row['content_type'] ) {
+								// Fetch corresponding header cell text.
+								if ( isset( $header_text[ $cell_counter_c ]['heading_text'] ) && $header_text[ $cell_counter_c ]['heading_text'] ) {
+									$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'data-title', $header_text[ $cell_counter_c ]['heading_text'] );
+								}
 								
 								//tooltip
-								$_tooltip='_tooltip_'.$headi;
-								if( $head['heading_show_tooltips'] == 'yes' ) {
+								$_tooltip='_tooltip_'.$rowi;
+								if( isset($row['body_show_tooltips']) && $row['body_show_tooltips'] == 'yes' ) {
 									
 									$this->add_render_attribute( $_tooltip, 'data-tippy', '', true );
 
-									$tooltip_content=$head['heading_tooltip_content'];
+									$tooltip_content=$row['body_tooltip_content'];
 									$this->add_render_attribute( $_tooltip, 'title', $tooltip_content, true );
 									
 									$plus_tooltip_position=($settings["tooltip_common_option_plus_tooltip_position"]!='') ? $settings["tooltip_common_option_plus_tooltip_position"] : 'top';
@@ -2965,69 +3307,115 @@ class ThePlus_Data_Table extends Widget_Base {
 
 								$uniqid=uniqid("tooltip");
 						
-								$show_tooltips_on = $head['heading_show_tooltips_on'];
+								$show_tooltips_on = !empty($row['body_show_tooltips_on']) ? $row['body_show_tooltips_on'] : 'box';
 								$toolbox=$toolicon=$tt_on_icon='';
 								if(!empty($show_tooltips_on) && $show_tooltips_on=='icon'){
-									$toolbox = $this->get_render_attribute_string( 'current_' . $head['_id'] );
-									$toolicon = 'id="'.esc_attr($uniqid).'" class="plus-icon-list-item elementor-repeater-item-'.esc_attr($head['_id']).'" data-local="true" '.$this->get_render_attribute_string( $_tooltip ).'';
+									$toolbox = $this->get_render_attribute_string( 'plus_table_col' . $row['_id'] );
+									$toolicon = 'id="'.esc_attr($uniqid).'" '.$this->get_render_attribute_string( 'plus_table_col' . $row['_id'] ).' data-local="true" '.$this->get_render_attribute_string( $_tooltip ).'';
 									
 									ob_start();
 									\Elementor\Icons_Manager::render_icon( $settings['tt_on_icon'] , [ 'aria-hidden' => 'true' ]);
 									$tt_on_icon = ob_get_contents();
 									ob_end_clean();
 									
-								}else{									
-									$toolbox = 'id="'.esc_attr($uniqid).'"'.$this->get_render_attribute_string( 'current_' . $head['_id'] ).' data-local="true" '.$this->get_render_attribute_string( $_tooltip ).'';
-								}
-						
-								if ( 'cell' === $head['header_content_type'] ) {
-									?>
-									<th <?php echo $toolbox; ?> scope="col">
-										<span class="sort-style">
-										<span <?php echo $this->get_render_attribute_string( 'plus_table__text' ); ?>>
-											<?php if ( 'icon' === $head['header_content_icon_image'] ) { ?>												
-													<?php if ( 'left' === $settings['all_icon_align'] ) { ?>
-												<span <?php echo $this->get_render_attribute_string( 'plus_heading_icon_align' . $head['_id'] ); ?>>
-													<i <?php echo $this->get_render_attribute_string( 'plus_heading_icon' . $head['_id'] ); ?>></i>
-												</span>
-											<?php } ?>											
-											<?php } else { ?>
-													<?php if ( !empty($head['icons_image']['url']) ) { ?>
-														<?php if ( 'left' == $settings['all_image_align'] ) { ?>
-														<img <?php echo $this->get_render_attribute_string( 'plus_head_col_img' . $head['_id'] ); ?>>
-													<?php } ?>
-													<?php } ?>
-											<?php } ?>
-											<span <?php echo $this->get_render_attribute_string( $repeater_heading_text ); ?>><?php echo $head['heading_text']; ?></span>
-											<?php if ( 'icon' === $head['header_content_icon_image'] ) { ?>												
+								}else{										
+									$toolbox = 'id="'.esc_attr($uniqid).'"'.$this->get_render_attribute_string( 'plus_table_col' . $row['_id'] ) .$this->get_render_attribute_string( $_tooltip );
+								}								
+							
+								?>
+								<<?php echo esc_attr($row['table_th_td']); ?> <?php echo $toolbox; ?>>
+									<?php if ( ! empty( $row['link']['url'] ) ) { ?>
+									<a <?php echo $this->get_render_attribute_string( 'col-link-' . $row['_id'] ); ?>>
+									<?php } ?>
+										<?php if(!empty($settings["mobile_responsive_table"]) && $settings["mobile_responsive_table"]=='one-by-one'){ ?>
+											<div class="plus-table-mob-wrap">
+											<span class="plus-table-mob-row">
+												<?php if ( 'icon' === $header_text[ $cell_counter_c ]['icon_image'] ) { ?>												
+														<?php if ( 'left' === $settings['all_icon_align'] ) { ?>
+													<span <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon_align'] ); ?>>
+														<i <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon'] ); ?>></i>
+													</span>
+												<?php } ?>											
+												<?php } else { ?>
+														<?php if ( $header_text[ $cell_counter_c ]['icons_image_url'] ) { ?>
+															<?php if ( 'left' == $settings['all_image_align'] ) { ?>
+															<img <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_head_col_img'] ); ?>>
+														<?php } ?>
+														<?php } ?>
+												<?php } ?>
+												<?php if ( isset( $header_text[ $cell_counter_c ]['heading_text'] ) && $header_text[ $cell_counter_c ]['heading_text'] ) {														
+													echo '<span class="mob-heading-text">'.$header_text[ $cell_counter_c ]['heading_text'].'</span>';
+												}
+												?>
+												<?php if ( 'icon' === $header_text[ $cell_counter_c ]['icon_image'] ) { ?>												
 													<?php if ( 'right' === $settings['all_icon_align'] ) { ?>
-												<span <?php echo $this->get_render_attribute_string( 'plus_heading_icon_align' . $head['_id'] ); ?>>
-													<i <?php echo $this->get_render_attribute_string( 'plus_heading_icon' . $head['_id'] ); ?>></i>
-												</span>
-											<?php } ?>											
-											<?php } else { ?>
-													<?php if ( !empty($head['icons_image']['url']) ) { ?>
-														<?php if ( 'right' == $settings['all_image_align'] ) { ?>
-														<img <?php echo $this->get_render_attribute_string( 'plus_head_col_img' . $head['_id'] ); ?>>
-													<?php } ?>
-													<?php } ?>
-											<?php } 
-											if(!empty($show_tooltips_on) && $show_tooltips_on=='icon'){
-												echo '<span class="tp-tooltip-on-icon" '.$toolicon.'>'.$tt_on_icon.'</span>';
-											}											
-											?>
-										</span> 
-										
-										<?php
-										if ( 'yes' === $settings['sortable'] && true === $first_row_th ) { ?>
-											<span <?php echo $this->get_render_attribute_string( 'icon_sort_' . $head['_id'] ); ?>></span>
+													<span <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon_align'] ); ?>>
+														<i <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon'] ); ?>></i>
+													</span>
+												<?php } ?>											
+												<?php } else { ?>
+														<?php if ( $header_text[ $cell_counter_c ]['icons_image_url'] ) { ?>
+															<?php if ( 'right' == $settings['all_image_align'] ) { ?>
+															<img <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_head_col_img'] ); ?>>
+														<?php } ?>
+														<?php } ?>
+												<?php } ?>
+											</span> 
 										<?php } ?>
-										</span>
-									</th>
+											<span <?php echo $this->get_render_attribute_string( 'plus_table__text' ); ?>>
+												<?php if ( 'icon' === $row['cell_content_icon_image'] ) { ?>
+													
+														<?php if ( 'left' === $settings['all_icon_align'] ) { ?>
+													<span <?php echo $this->get_render_attribute_string( 'plus_cell_icon_align' . $row['_id'] ); ?>>
+														<i <?php echo $this->get_render_attribute_string( 'plus_cell_icon' . $row['_id'] ); ?>></i>
+													</span>
+													<?php } ?>
+													
+												<?php } else { ?>
+													<?php if ( !empty($row['image']) && !empty($row['image']['url']) ) { ?>
+														<?php if ( 'left' === $settings['all_image_align'] ) { ?>
+														<img <?php echo $this->get_render_attribute_string( 'plus_col_img' . $row['_id'] ); ?>>
+													<?php } ?>
+													<?php } ?>
+												<?php } ?>
+												<?php if(!empty($row['cell_text'])){ ?>
+													<span <?php echo $this->get_render_attribute_string( $repeater_cell_text ); ?>><?php echo $row['cell_text']; ?></span>
+												<?php } ?>
+												<?php if ( 'icon' === $row['cell_content_icon_image'] ) { ?>
+													
+														<?php if ( 'right' === $settings['all_icon_align'] ) { ?>
+													<span <?php echo $this->get_render_attribute_string( 'plus_cell_icon_align' . $row['_id'] ); ?>>
+														<i <?php echo $this->get_render_attribute_string( 'plus_cell_icon' . $row['_id'] ); ?>></i>
+													</span>
+													<?php } ?>
+													
+												<?php } else { ?>
+													<?php if ( !empty($row['image']['url']) ) { ?>
+														<?php if ( 'right' === $settings['all_image_align'] ) { ?>
+														<img <?php echo $this->get_render_attribute_string( 'plus_col_img' . $row['_id'] ); ?>>
+													<?php } ?>
+													<?php } ?>
+												<?php } ?>
+												<?php echo $button; ?>
+											</span>
+										<?php if(!empty($settings["mobile_responsive_table"]) && $settings["mobile_responsive_table"]=='one-by-one'){ ?>
+											</div>
+										<?php } 
+										if(!empty($show_tooltips_on) && $show_tooltips_on=='icon'){
+											echo '<span class="tp-tooltip-on-icon" '.$toolicon.'>'.$tt_on_icon.'</span>';
+										}											
+										?>
+									<?php if ( ! empty( $row['link']['url'] ) ) { ?>
+									</a>
+									<?php } ?>
+								</<?php echo $row['table_th_td']; ?>>
 									<?php
-									$inline_tippy_js='';
-									if($head['heading_show_tooltips'] == 'yes'){
-										$inline_tippy_js ='jQuery( document ).ready(function() {
+									// Increment to next cell.
+									$cell_counter_c++;
+									
+									$body_inline_tippy_js='';
+									if(isset($row['body_show_tooltips']) && $row['body_show_tooltips'] == 'yes'){
+										$body_inline_tippy_js ='jQuery( document ).ready(function() {
 										"use strict";
 											if(typeof tippy === "function"){
 												tippy( "#'.esc_attr($uniqid).'" , {
@@ -3038,377 +3426,89 @@ class ThePlus_Data_Table extends Widget_Base {
 												});
 											}
 										});';
-										echo wp_print_inline_script_tag($inline_tippy_js);
+										echo wp_print_inline_script_tag($body_inline_tippy_js);
 									}
-							
-									$header_text[ $cell_col_count ]['heading_text'] = $head['heading_text'];
-									$header_text[ $cell_col_count ]['icon_image'] = $head['header_content_icon_image'];
-									$header_text[ $cell_col_count ]['plus_heading_icon_align'] = 'plus_heading_icon_align' .$head['_id'];
-									$header_text[ $cell_col_count ]['plus_heading_icon'] = 'plus_heading_icon' . $head['_id'];
-									$header_text[ $cell_col_count ]['icons_image_url'] = !empty($head['icons_image']['url']) ? $head['icons_image']['url'] : '';
-									$header_text[ $cell_col_count ]['plus_head_col_img'] = 'plus_head_col_img' . $head['_id'];
-									$cell_col_count++;
-								} else {
-									if ( $counter_row > 1 && $counter_row < $row_count_tb ) {
-										// Break into new row.
-										?>
-										</tr><tr <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
-										<?php
-										$first_row_th = false;
-									} elseif ( 1 === $counter_row && false === $this->table_first_row() ) {
-										?>
-										<tr <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
-														<?php
-									}
-									$cell_col_count = 0;
-								}
-								$headi++;
-								$counter_row++;
-								$inline_count++;
-							}
-						}
-						?>
-					</thead>
-					<?php } ?>
-					<tbody>
-						<!-- ROWS -->
-						<?php
-						$cell_counter_c    = 0;
-						$counter           = 1;						
-						$cell_inline_count = 0;
-						$row_count         = count( $settings['table_content'] );						
-						$attr_id='cell';
-						$ij=0;
-						
-						if ( $settings['table_content'] ) {
-							$rowi=0;
-							foreach ( $settings['table_content'] as $index => $row ) {
-								// Cell text inline classes.
-								$ij++;
-								
-								$repeater_cell_text = $this->get_repeater_setting_key( 'cell_text', 'table_content', $cell_inline_count );
-								$this->add_render_attribute( $repeater_cell_text, 'class', 'plus-table__text-inner' );
-								$this->add_inline_editing_attributes( $repeater_cell_text );
-								$this->add_render_attribute( 'plus_cell_icon_align' . $row['_id'], 'class', 'plus-align-icon--' . $settings['all_icon_align'] );
-								
-								$button='';
-								if(!empty($row["cell_display_button"]) && $row["cell_display_button"]=='yes'){
-									$link_key = 'link_' . $ij;
-									if ( ! empty( $row['cell_button_link']['url'] ) ) {
-										$this->add_render_attribute( $link_key, 'href', $row['cell_button_link']['url'] );
-										if ( $row['cell_button_link']['is_external'] ) {
-											$this->add_render_attribute( $link_key, 'target', '_blank' );
-										}
-										if ( $row['cell_button_link']['nofollow'] ) {
-											$this->add_render_attribute( $link_key, 'rel', 'nofollow' );
-										}
-									}
-									$this->add_render_attribute( $link_key, 'class', 'button-link-wrap' );
-									$this->add_render_attribute( $link_key, 'role', 'button' );
-									
-									/*button attributes start*/
-									$button_custom_attributes=$row["button_custom_attributes"];
-									$custom_attributes=$row["custom_attributes"];
-																		
-									$cst_att='';
-									if((!empty($button_custom_attributes) && $button_custom_attributes=='yes') && !empty($custom_attributes)){
-										$cst_att = $custom_attributes;
-									}
-									/*button attributes end*/
-									
-									$button_style = $row['cell_button_style'];
-									$button_text = $row['cell_button_text'];
-									$btn_uid=uniqid('btn');
-									$data_class= $btn_uid;
-									$data_class .=' button-'.$button_style.' ';
-									$button .='<div class="pt_plus_button '.esc_attr($data_class).'">';						
-											$button .='<a '.$this->get_render_attribute_string( $link_key ).' '.$cst_att.' >';
-											$button .= esc_html($button_text);
-											$button .='</a>';
-									$button .='</div>';
-								}
-								
-								if('icon' === $row['cell_content_icon_image'] && $row["icon_font_style"]=='font_awesome'){
-									$this->add_render_attribute( 'plus_cell_icon'  . $row['_id'], 'class', $row['cell_icon'] );
-								}else if('icon' === $row['cell_content_icon_image'] && $row["icon_font_style"]=='icon_mind'){
-									$this->add_render_attribute( 'plus_cell_icon'  . $row['_id'], 'class', $row['cell_icons_mind'] );								
-								}
-
-								$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'class', 'plus-table-col' );
-								$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'class', 'elementor-repeater-item-' . $row['_id'] );
-								
-								if ( 1 < $row['cell_span'] ) {
-									$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'colspan', $row['cell_span'] );
-								}
-								if ( 1 < $row['cell_row_span'] ) {
-									$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'rowspan', $row['cell_row_span'] );
-								}
-								
-								if ( !empty($row['image']['url']) ) {
-									$image=$row['image']['id'];
-									$img = wp_get_attachment_image_src($image,$row['image_thumbnail_size']);
-									$image_Src = $img[0];
-								
-									$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'src', $image_Src );
-									$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'class', 'plus-col-img--' . $settings['all_image_align'] );
-									$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'title', get_the_title( $row['image']['id'] ) );
-									$this->add_render_attribute( 'plus_col_img' . $row['_id'], 'alt', get_the_title( $row['image']['id']) );
-								}
-								
-								if ( ! empty( $row['link']['url'] ) ) {
-									$this->add_render_attribute( 'col-link-' . $row['_id'], 'href', $row['link']['url'] );
-									if ( $row['link']['is_external'] ) {
-										$this->add_render_attribute( 'col-link-' . $row['_id'], 'target', '_blank' );
-									}
-									if ( $row['link']['nofollow'] ) {
-										$this->add_render_attribute( 'col-link-' . $row['_id'], 'rel', 'nofollow' );
-									}
-									$this->add_render_attribute( 'col-link-' . $row['_id'], 'class', 'tb-col-link' );
-								}
-
-								if ( 'cell' === $row['content_type'] ) {
-									// Fetch corresponding header cell text.
-									if ( isset( $header_text[ $cell_counter_c ]['heading_text'] ) && $header_text[ $cell_counter_c ]['heading_text'] ) {
-										$this->add_render_attribute( 'plus_table_col' . $row['_id'], 'data-title', $header_text[ $cell_counter_c ]['heading_text'] );
-									}
-									
-									//tooltip
-									$_tooltip='_tooltip_'.$rowi;
-									if( isset($row['body_show_tooltips']) && $row['body_show_tooltips'] == 'yes' ) {
-										
-										$this->add_render_attribute( $_tooltip, 'data-tippy', '', true );
-
-										$tooltip_content=$row['body_tooltip_content'];
-										$this->add_render_attribute( $_tooltip, 'title', $tooltip_content, true );
-										
-										$plus_tooltip_position=($settings["tooltip_common_option_plus_tooltip_position"]!='') ? $settings["tooltip_common_option_plus_tooltip_position"] : 'top';
-										$this->add_render_attribute( $_tooltip, 'data-tippy-placement', $plus_tooltip_position, true );
-										
-										$tooltip_interactive =($settings["tooltip_common_option_plus_tooltip_interactive"]=='' || $settings["tooltip_common_option_plus_tooltip_interactive"]=='yes') ? 'true' : 'false';
-										$this->add_render_attribute( $_tooltip, 'data-tippy-interactive', $tooltip_interactive, true );
-										
-										$plus_tooltip_theme=($settings["tooltip_common_option_plus_tooltip_theme"]!='') ? $settings["tooltip_common_option_plus_tooltip_theme"] : 'dark';
-										$this->add_render_attribute( $_tooltip, 'data-tippy-theme', $plus_tooltip_theme, true );
-										
-										
-										$tooltip_arrow =($settings["tooltip_common_option_plus_tooltip_arrow"]!='none' || $settings["tooltip_common_option_plus_tooltip_arrow"]=='') ? 'true' : 'false';
-										$this->add_render_attribute( $_tooltip, 'data-tippy-arrow', $tooltip_arrow , true );
-										
-										$plus_tooltip_arrow=($settings["tooltip_common_option_plus_tooltip_arrow"]!='') ? $settings["tooltip_common_option_plus_tooltip_arrow"] : 'sharp';
-										$this->add_render_attribute( $_tooltip, 'data-tippy-arrowtype', $plus_tooltip_arrow, true );
-										
-										$plus_tooltip_animation=($settings["tooltip_common_option_plus_tooltip_animation"]!='') ? $settings["tooltip_common_option_plus_tooltip_animation"] : 'shift-toward';
-										$this->add_render_attribute( $_tooltip, 'data-tippy-animation', $plus_tooltip_animation, true );
-										
-										$plus_tooltip_x_offset=($settings["tooltip_common_option_plus_tooltip_x_offset"]!='') ? $settings["tooltip_common_option_plus_tooltip_x_offset"] : 0;
-										$plus_tooltip_y_offset=($settings["tooltip_common_option_plus_tooltip_y_offset"]!='') ? $settings["tooltip_common_option_plus_tooltip_y_offset"] : 0;
-										$this->add_render_attribute( $_tooltip, 'data-tippy-offset', $plus_tooltip_x_offset .','. $plus_tooltip_y_offset, true );
-										
-										$tooltip_duration_in =($settings["tooltip_common_option_plus_tooltip_duration_in"]!='') ? $settings["tooltip_common_option_plus_tooltip_duration_in"] : 250;
-										$tooltip_duration_out =($settings["tooltip_common_option_plus_tooltip_duration_out"]!='') ? $settings["tooltip_common_option_plus_tooltip_duration_out"] : 200;
-										$tooltip_trigger =($settings["tooltip_common_option_plus_tooltip_triggger"]!='') ? $settings["tooltip_common_option_plus_tooltip_triggger"] : 'mouseenter';
-										$tooltip_arrowtype =($settings["tooltip_common_option_plus_tooltip_arrow"]!='') ? $settings["tooltip_common_option_plus_tooltip_arrow"] : 'sharp';
-									}
-
-									$uniqid=uniqid("tooltip");
-							
-									$show_tooltips_on = !empty($row['body_show_tooltips_on']) ? $row['body_show_tooltips_on'] : 'box';
-									$toolbox=$toolicon=$tt_on_icon='';
-									if(!empty($show_tooltips_on) && $show_tooltips_on=='icon'){
-										$toolbox = $this->get_render_attribute_string( 'plus_table_col' . $row['_id'] );
-										$toolicon = 'id="'.esc_attr($uniqid).'" '.$this->get_render_attribute_string( 'plus_table_col' . $row['_id'] ).' data-local="true" '.$this->get_render_attribute_string( $_tooltip ).'';
-										
-										ob_start();
-										\Elementor\Icons_Manager::render_icon( $settings['tt_on_icon'] , [ 'aria-hidden' => 'true' ]);
-										$tt_on_icon = ob_get_contents();
-										ob_end_clean();
-										
-									}else{										
-										$toolbox = 'id="'.esc_attr($uniqid).'"'.$this->get_render_attribute_string( 'plus_table_col' . $row['_id'] ) .$this->get_render_attribute_string( $_tooltip );
-									}								
-								
+							} else {
+								if ( $counter > 1 && $counter < $row_count ) {
+									// Break into new row.
+									++$data_entry_col;
 									?>
-									<<?php echo esc_attr($row['table_th_td']); ?> <?php echo $toolbox; ?>>
-										<?php if ( ! empty( $row['link']['url'] ) ) { ?>
-										<a <?php echo $this->get_render_attribute_string( 'col-link-' . $row['_id'] ); ?>>
-										<?php } ?>
-											<?php if(!empty($settings["mobile_responsive_table"]) && $settings["mobile_responsive_table"]=='one-by-one'){ ?>
-												<div class="plus-table-mob-wrap">
-												<span class="plus-table-mob-row">
-													<?php if ( 'icon' === $header_text[ $cell_counter_c ]['icon_image'] ) { ?>												
-															<?php if ( 'left' === $settings['all_icon_align'] ) { ?>
-														<span <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon_align'] ); ?>>
-															<i <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon'] ); ?>></i>
-														</span>
-													<?php } ?>											
-													<?php } else { ?>
-															<?php if ( $header_text[ $cell_counter_c ]['icons_image_url'] ) { ?>
-																<?php if ( 'left' == $settings['all_image_align'] ) { ?>
-																<img <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_head_col_img'] ); ?>>
-															<?php } ?>
-															<?php } ?>
-													<?php } ?>
-													<?php if ( isset( $header_text[ $cell_counter_c ]['heading_text'] ) && $header_text[ $cell_counter_c ]['heading_text'] ) {														
-														echo '<span class="mob-heading-text">'.$header_text[ $cell_counter_c ]['heading_text'].'</span>';
-													}
-													?>
-													<?php if ( 'icon' === $header_text[ $cell_counter_c ]['icon_image'] ) { ?>												
-														<?php if ( 'right' === $settings['all_icon_align'] ) { ?>
-														<span <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon_align'] ); ?>>
-															<i <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_heading_icon'] ); ?>></i>
-														</span>
-													<?php } ?>											
-													<?php } else { ?>
-															<?php if ( $header_text[ $cell_counter_c ]['icons_image_url'] ) { ?>
-																<?php if ( 'right' == $settings['all_image_align'] ) { ?>
-																<img <?php echo $this->get_render_attribute_string( $header_text[ $cell_counter_c ]['plus_head_col_img'] ); ?>>
-															<?php } ?>
-															<?php } ?>
-													<?php } ?>
-												</span> 
-											<?php } ?>
-												<span <?php echo $this->get_render_attribute_string( 'plus_table__text' ); ?>>
-													<?php if ( 'icon' === $row['cell_content_icon_image'] ) { ?>
-														
-															<?php if ( 'left' === $settings['all_icon_align'] ) { ?>
-														<span <?php echo $this->get_render_attribute_string( 'plus_cell_icon_align' . $row['_id'] ); ?>>
-															<i <?php echo $this->get_render_attribute_string( 'plus_cell_icon' . $row['_id'] ); ?>></i>
-														</span>
-														<?php } ?>
-														
-													<?php } else { ?>
-														<?php if ( !empty($row['image']) && !empty($row['image']['url']) ) { ?>
-															<?php if ( 'left' === $settings['all_image_align'] ) { ?>
-															<img <?php echo $this->get_render_attribute_string( 'plus_col_img' . $row['_id'] ); ?>>
-														<?php } ?>
-														<?php } ?>
-													<?php } ?>
-													<?php if(!empty($row['cell_text'])){ ?>
-														<span <?php echo $this->get_render_attribute_string( $repeater_cell_text ); ?>><?php echo $row['cell_text']; ?></span>
-													<?php } ?>
-													<?php if ( 'icon' === $row['cell_content_icon_image'] ) { ?>
-														
-															<?php if ( 'right' === $settings['all_icon_align'] ) { ?>
-														<span <?php echo $this->get_render_attribute_string( 'plus_cell_icon_align' . $row['_id'] ); ?>>
-															<i <?php echo $this->get_render_attribute_string( 'plus_cell_icon' . $row['_id'] ); ?>></i>
-														</span>
-														<?php } ?>
-														
-													<?php } else { ?>
-														<?php if ( !empty($row['image']['url']) ) { ?>
-															<?php if ( 'right' === $settings['all_image_align'] ) { ?>
-															<img <?php echo $this->get_render_attribute_string( 'plus_col_img' . $row['_id'] ); ?>>
-														<?php } ?>
-														<?php } ?>
-													<?php } ?>
-													<?php echo $button; ?>
-												</span>
-											<?php if(!empty($settings["mobile_responsive_table"]) && $settings["mobile_responsive_table"]=='one-by-one'){ ?>
-												</div>
-											<?php } 
-											if(!empty($show_tooltips_on) && $show_tooltips_on=='icon'){
-												echo '<span class="tp-tooltip-on-icon" '.$toolicon.'>'.$tt_on_icon.'</span>';
-											}											
-											?>
-										<?php if ( ! empty( $row['link']['url'] ) ) { ?>
-										</a>
-										<?php } ?>
-									</<?php echo $row['table_th_td']; ?>>
-										<?php
-										// Increment to next cell.
-										$cell_counter_c++;
-										
-										$body_inline_tippy_js='';
-										if(isset($row['body_show_tooltips']) && $row['body_show_tooltips'] == 'yes'){
-											$body_inline_tippy_js ='jQuery( document ).ready(function() {
-											"use strict";
-												if(typeof tippy === "function"){
-													tippy( "#'.esc_attr($uniqid).'" , {
-														arrowType : "'.esc_attr($tooltip_arrowtype).'",
-														duration : ['.esc_attr($tooltip_duration_in).','.esc_attr($tooltip_duration_out).'],
-														trigger : "'.esc_attr($tooltip_trigger).'",
-														appendTo: document.querySelector("#'.esc_attr($uniqid).'")
-													});
-												}
-											});';
-											echo wp_print_inline_script_tag($body_inline_tippy_js);
-										}
-								} else {
-									if ( $counter > 1 && $counter < $row_count ) {
-										// Break into new row.
-										++$data_entry_col;
-										?>
-										</tr><tr data-entry="<?php echo esc_attr($data_entry_col); ?>" <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
-									<?php
-									} elseif ( 1 === $counter && false === $this->table_first_row() ) {
-										$data_entry_col = 1;
-										?>
-										<tr data-entry="<?php echo esc_attr($data_entry_col); ?>" <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
-									<?php
-									}
-									$cell_counter_c = 0;
+									</tr><tr data-entry="<?php echo esc_attr($data_entry_col); ?>" <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
+								<?php
+								} elseif ( 1 === $counter && false === $this->table_first_row() ) {
+									$data_entry_col = 1;
+									?>
+									<tr data-entry="<?php echo esc_attr($data_entry_col); ?>" <?php echo $this->get_render_attribute_string( 'plus_table_row' ); ?>>
+								<?php
 								}
-								$rowi++;
-								$counter++;
-								$cell_inline_count++;
+								$cell_counter_c = 0;
 							}
+							$rowi++;
+							$counter++;
+							$cell_inline_count++;
 						}
-						?>
-					</tbody>
-				</table>
-				
-			</div>
-			<?php } ?>
-			<?php
-			$html = ob_get_clean();
+					}
+					?>
+				</tbody>
+			</table>
+
+		</div>
+		<?php } 
+
+		$html = ob_get_clean();
+		
+		echo $html;
+		
+		$css_rule = '<style>';
+		if(!empty($cell_align_head_desktop)){
+			$css_rule .='#plus-table-id-' .esc_attr($widget_id).' th,#plus-table-id-' .esc_attr($widget_id).' th .plus-table__text{ ';			
+				if($cell_align_head_desktop == 'left'){
+					$css_rule .='margin:0 auto;text-align:left;margin-left:0;';
+				}
+				if($cell_align_head_desktop == 'center'){
+					$css_rule .='margin:0 auto;text-align:center;';
+				}
+				if($cell_align_head_desktop == 'right'){
+					$css_rule .='margin:0 auto;text-align:right;margin-right:0;';
+				}
+			$css_rule .='}';
+		}
+
+		if(!empty($cell_align_head_tablet)){
+			$css_rule .='@media (max-width:1024px){#plus-table-id-' .esc_attr($widget_id).' th,#plus-table-id-' .esc_attr($widget_id).' th .plus-table__text{';
 			
-			echo $html;
+				if($cell_align_head_tablet=='left'){
+					$css_rule .='margin:0 auto;text-align:left;margin-left:0;';
+				}
+				if($cell_align_head_tablet=='center'){
+					$css_rule .='margin:0 auto;text-align:center;';
+				}
+				if($cell_align_head_tablet=='right'){
+					$css_rule .='margin:0 auto;text-align:right;margin-right:0;';
+				}			
+			$css_rule .='}}';
+		}
+
+		if(!empty($cell_align_head_mobile)){
+			$css_rule .='@media (max-width:767px){#plus-table-id-' .esc_attr($widget_id).' th,#plus-table-id-' .esc_attr($widget_id).' th .plus-table__text{';
 			
-			$css_rule = '<style>';
-			if(!empty($cell_align_head_desktop)){				
-				$css_rule .='#plus-table-id-' .esc_attr($widget_id).' th,#plus-table-id-' .esc_attr($widget_id).' th .plus-table__text{ ';			
-					if($cell_align_head_desktop == 'left'){
-						$css_rule .='margin:0 auto;text-align:left;margin-left:0;';
-					}
-					if($cell_align_head_desktop == 'center'){
-						$css_rule .='margin:0 auto;text-align:center;';
-					}
-					if($cell_align_head_desktop == 'right'){
-						$css_rule .='margin:0 auto;text-align:right;margin-right:0;';
-					}
-				$css_rule .='}';
-			}
-			if(!empty($cell_align_head_tablet)){
-				$css_rule .='@media (max-width:1024px){#plus-table-id-' .esc_attr($widget_id).' th,#plus-table-id-' .esc_attr($widget_id).' th .plus-table__text{';
-				
-					if($cell_align_head_tablet=='left'){
-						$css_rule .='margin:0 auto;text-align:left;margin-left:0;';
-					}
-					if($cell_align_head_tablet=='center'){
-						$css_rule .='margin:0 auto;text-align:center;';
-					}
-					if($cell_align_head_tablet=='right'){
-						$css_rule .='margin:0 auto;text-align:right;margin-right:0;';
-					}			
-				$css_rule .='}}';
-			}
-			if(!empty($cell_align_head_mobile)){
-				$css_rule .='@media (max-width:767px){#plus-table-id-' .esc_attr($widget_id).' th,#plus-table-id-' .esc_attr($widget_id).' th .plus-table__text{';
-				
-					if($cell_align_head_mobile=='left'){
-						$css_rule .='margin:0 auto;text-align:left;margin-left:0;';
-					}
-					if($cell_align_head_mobile=='center'){
-						$css_rule .='margin:0 auto;text-align:center;';
-					}
-					if($cell_align_head_mobile=='right'){
-						$css_rule .='margin:0 auto;text-align:right;margin-right:0;';
-					}
-				$css_rule .='}}';
-			}
-			$css_rule .='</style>';
-			echo $css_rule;
+				if($cell_align_head_mobile=='left'){
+					$css_rule .='margin:0 auto;text-align:left;margin-left:0;';
+				}
+				if($cell_align_head_mobile=='center'){
+					$css_rule .='margin:0 auto;text-align:center;';
+				}
+				if($cell_align_head_mobile=='right'){
+					$css_rule .='margin:0 auto;text-align:right;margin-right:0;';
+				}
+			$css_rule .='}}';
+		}
+
+		$css_rule .='</style>';
+
+		echo $css_rule;
 	}
+
 	/**
 	 * Function to identify if it is a table first row or not.
 	 *
@@ -3426,6 +3526,119 @@ class ThePlus_Data_Table extends Widget_Base {
 
 		return true;
 	}
+
+	/**
+	 * Function to It is used for Retrieve data for google sheet
+	 *
+	 * @version 5.2.5
+	 */
+	protected function tp_google_sheet() {
+		$WidgetID = $this->get_id();
+		$settings = $this->get_settings();
+
+		$api_key = !empty($settings["api_key"]) ? $settings["api_key"] : '';
+		$sheet_id = !empty($settings["sheet_id"]) ? $settings["sheet_id"] : '';
+		$table_range = !empty($settings["table_range"]) ? $settings["table_range"] : '';
+		$RefreshTime = !empty($settings['TimeFrq']) ? $settings['TimeFrq'] : '3600';
+
+		$TimeFrq = array( 
+			'TimeFrq' => $RefreshTime 
+		);
+
+		$output = '';
+
+		$ErrorTitle = esc_html__('Data Not Found!', 'theplus');
+		$ErrorMassage = esc_html__('Google Sheet Data Not Found', 'theplus');
+		if( $api_key == '' || $sheet_id == '' || $table_range == '' ){
+
+			$output = theplus_get_widgetError($ErrorTitle, $ErrorMassage);
+
+			return $output;
+		} 
+
+		$API = "https://sheets.googleapis.com/v4/spreadsheets/$sheet_id/values/$table_range?key=$api_key";
+
+		$Data=[];
+		$BGetAPI = get_transient("tp-gs-table-url-$WidgetID");
+	    $BGetTime = get_transient("tp-gs-table-time-$WidgetID");
+		if( $BGetAPI != $API || $BGetTime != $TimeFrq ){
+			$Data = $this->tp_table_api($API);
+
+			set_transient("tp-gs-table-url-$WidgetID", $API, $TimeFrq);
+			set_transient("tp-gs-table-time-$WidgetID", $TimeFrq, $TimeFrq);
+			set_transient("tp-gs-table-Data-$WidgetID", $Data, $TimeFrq);
+	    }else{
+	        $Data = get_transient("tp-gs-table-Data-$WidgetID");
+	    }
+
+		if( is_wp_error($Data) ){
+
+			$output = theplus_get_widgetError($ErrorTitle, $ErrorMassage);
+
+			return $output;
+		}
+
+		$SheetData = isset($Data['values']) ? $Data['values'] : [];
+
+		if( empty($SheetData) ){
+
+			$output = theplus_get_widgetError($ErrorTitle, $ErrorMassage);
+
+			return $output;
+		}
+
+		$output = '';
+			$output .= '<thead><tr class="plus-table-row">';
+			foreach ( $SheetData[0] as $key => $th ){
+				$output .= '<th class="sort-this plus-table-col">';
+					// $output .= $th;
+					// if ( $sortable === 'yes') {
+						$output .= '<span class="plus-sort-icon">'.$th.'</span>';
+					// }
+				$output .= '</th>';
+			}
+
+			$output .= '</tr></thead><tbody>';
+			array_shift( $SheetData );
+
+			foreach ( $SheetData as $rows ) {
+				$output .= '<tr class="plus-table-row">';
+				foreach ( $rows as $col ) {
+				$output .= '<td class="plus-table-col">' . htmlentities($col). '</td>';
+				}
+				$output .= '</tr>';
+			}
+
+			$output .= '</tbody>';
+
+		return $output;
+		
+	}
+	
+	/**
+	 * Function to It is use for call api
+	 *
+	 * If yes returns Array Data
+	 *
+	 * @version 5.2.5
+	 */
+	protected function tp_table_api($API){
+		$settings = $this->get_settings_for_display();
+		$Final=[];
+
+		$URL = wp_remote_get($API);
+		$StatusCode = wp_remote_retrieve_response_code($URL);
+		$GetDataOne = wp_remote_retrieve_body($URL);
+		$Statuscode = array( "HTTP_CODE" => $StatusCode );
+
+		$Response = json_decode($GetDataOne, true);
+		if( is_array($Statuscode) && is_array($Response) ){
+			$Final = array_merge($Statuscode, $Response);
+		}
+		
+		return $Final;
+    }
+
     protected function content_template() {
 	
     }

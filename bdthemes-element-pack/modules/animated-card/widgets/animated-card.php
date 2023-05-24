@@ -52,18 +52,19 @@ class Animated_Card extends Module_Base {
 	}
 
 	protected function register_controls() {
+
 		$this->start_controls_section(
 			'section_content_animated_layout',
 			[
-				'label' => __('Animated Card', 'bdthemes-element-pack'),
-				'tab'        => Controls_Manager::TAB_CONTENT,
+				'label' => esc_html__('Animated Card', 'bdthemes-element-pack'),
+				'tab'   => Controls_Manager::TAB_CONTENT,
 			]
 		);
 
 		$this->add_control(
 			'image',
 			[
-				'label'       => __('Image', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Image', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::MEDIA,
 				'default'     => ['url' => BDTEP_ASSETS_URL . 'images/coco-can.svg']
 			]
@@ -72,21 +73,21 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'title_text',
 			[
-				'label'   => __('Title', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Title', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
 				],
 				'label_block' => true,
-				'default'     => __('Animated Card Title', 'bdthemes-element-pack'),
-				'placeholder' => __('Enter your title', 'bdthemes-element-pack'),
+				'default'     => esc_html__('Animated Card Title', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Enter your title', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'title_link_url',
 			[
-				'label'       => __('Title Link URL', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Title Link URL', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::URL,
 				'dynamic'     => ['active' => true],
 				'placeholder' => 'http://your-link.com',
@@ -96,13 +97,13 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'sub_title_text',
 			[
-				'label'   => __('Sub Title', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Sub Title', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
 				],
-				'default'     => __('This is a Label', 'bdthemes-element-pack'),
-				'placeholder' => __('Enter your sub title', 'bdthemes-element-pack'),
+				'default'     => esc_html__('This is a Label', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Enter your sub title', 'bdthemes-element-pack'),
 				'label_block' => true,
 			]
 		);
@@ -110,13 +111,13 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'description_text',
 			[
-				'label'   => __('Text', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Text', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::WYSIWYG,
 				'dynamic' => [
 					'active' => true,
 				],
-				'default'     => __('Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack'),
-				'placeholder' => __('Enter your description', 'bdthemes-element-pack'),
+				'default'     => esc_html__('Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Enter your description', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -125,7 +126,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_additional_settings',
 			[
-				'label' => __('Additional Settings', 'bdthemes-element-pack'),
+				'label' => esc_html__('Additional Settings', 'bdthemes-element-pack'),
 				'tab'        => Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -158,7 +159,7 @@ class Animated_Card extends Module_Base {
 		$this->add_responsive_control(
 			'content_max_width',
 			[
-				'label' => __('Content Max Width', 'bdthemes-element-pack'),
+				'label' => esc_html__('Content Max Width', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -184,17 +185,17 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'layout_direction',
 			[
-				'label'      => __('Image Position', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Image Position', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::CHOOSE,
 				'toggle' => false,
 				'default'    => 'style-1',
 				'options' => [
 					'style-2' => [
-						'title' => __('Left', 'bdthemes-element-pack'),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-left',
 					],
 					'style-1' => [
-						'title' => __('Right', 'bdthemes-element-pack'),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-right',
 					],
 				],
@@ -204,7 +205,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'show_title',
 			[
-				'label'        => __('Show Title', 'bdthemes-element-pack'),
+				'label'        => esc_html__('Show Title', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 				'separator' => 'before'
@@ -214,7 +215,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'title_size',
 			[
-				'label'   => __('Title HTML Tag', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Title HTML Tag', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'h3',
 				'options' => element_pack_title_tags(),
@@ -227,7 +228,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'show_sub_title',
 			[
-				'label'        => __('Show Sub Title', 'bdthemes-element-pack'),
+				'label'        => esc_html__('Show Sub Title', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'separator' => 'before'
@@ -237,7 +238,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'sub_title_size',
 			[
-				'label'   => __('Sub Title HTML Tag', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Sub Title HTML Tag', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'h4',
 				'options' => element_pack_title_tags(),
@@ -250,7 +251,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'show_description',
 			[
-				'label'        => __('Show Text', 'bdthemes-element-pack'),
+				'label'        => esc_html__('Show Text', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 			]
@@ -259,7 +260,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'readmore',
 			[
-				'label'     => __('Show Read More', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Show Read More', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SWITCHER,
 				'default'   => 'yes',
 			]
@@ -268,23 +269,23 @@ class Animated_Card extends Module_Base {
 		$this->add_responsive_control(
 			'text_align',
 			[
-				'label'   => __('Alignment', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __('Left', 'bdthemes-element-pack'),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __('Center', 'bdthemes-element-pack'),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => __('Right', 'bdthemes-element-pack'),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-right',
 					],
 					'justify' => [
-						'title' => __('Justified', 'bdthemes-element-pack'),
+						'title' => esc_html__('Justified', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-justify',
 					],
 				],
@@ -300,7 +301,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_content_readmore',
 			[
-				'label'     => __('Read More', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Read More', 'bdthemes-element-pack'),
 				'tab'        => Controls_Manager::TAB_CONTENT,
 				'condition' => [
 					'readmore' => 'yes',
@@ -311,24 +312,24 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'readmore_text',
 			[
-				'label'       => __('Text', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Text', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
 				'dynamic'     => ['active' => true],
-				'default'     => __('Read More', 'bdthemes-element-pack'),
-				'placeholder' => __('Read More', 'bdthemes-element-pack'),
+				'default'     => esc_html__('Read More', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Read More', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'readmore_link',
 			[
-				'label'     => __('Link to', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Link to', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::URL,
 				'separator' => 'before',
 				'dynamic'   => [
 					'active' => true,
 				],
-				'placeholder' => __('https://your-link.com', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('https://your-link.com', 'bdthemes-element-pack'),
 				'default'     => [
 					'url' => '#',
 				],
@@ -366,7 +367,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'advanced_readmore_icon',
 			[
-				'label'       => __('Icon', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Icon', 'bdthemes-element-pack'),
 				'type'             => Controls_Manager::ICONS,
 				'fa4compatibility' => 'readmore_icon',
 				'separator'   => 'before',
@@ -381,12 +382,12 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'readmore_icon_align',
 			[
-				'label'   => __('Icon Position', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Icon Position', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'right',
 				'options' => [
-					'left'   => __('Left', 'bdthemes-element-pack'),
-					'right'  => __('Right', 'bdthemes-element-pack'),
+					'left'   => esc_html__('Left', 'bdthemes-element-pack'),
+					'right'  => esc_html__('Right', 'bdthemes-element-pack'),
 				],
 				'condition' => [
 					'advanced_readmore_icon[value]!' => '',
@@ -397,7 +398,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'readmore_icon_indent',
 			[
-				'label' => __('Icon Spacing', 'bdthemes-element-pack'),
+				'label' => esc_html__('Icon Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -421,14 +422,14 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'button_css_id',
 			[
-				'label' => __('Button ID', 'bdthemes-element-pack'),
+				'label' => esc_html__('Button ID', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
 				],
 				'default' => '',
-				'title' => __('Add your custom id WITHOUT the Pound key. e.g: my-id', 'bdthemes-element-pack'),
-				'description' => __('Please make sure the ID is unique and not used elsewhere on the page this form is displayed. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'bdthemes-element-pack'),
+				'title' => esc_html__('Add your custom id WITHOUT the Pound key. e.g: my-id', 'bdthemes-element-pack'),
+				'description' => esc_html__('Please make sure the ID is unique and not used elsewhere on the page this form is displayed. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'bdthemes-element-pack'),
 				'separator' => 'before',
 			]
 		);
@@ -439,7 +440,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_style_content',
 			[
-				'label' => __('Content', 'bdthemes-element-pack'),
+				'label' => esc_html__('Content', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -449,7 +450,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_content_normal',
 			[
-				'label' => __('Normal', 'bdthemes-element-pack'),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -498,7 +499,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_content_hover',
 			[
-				'label' => __('Hover', 'bdthemes-element-pack'),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -513,7 +514,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'content_hover_border_color',
 			[
-				'label'     => __('Border Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card:hover .bdt-ep-animated-card-circle::before'  => 'border-color: {{VALUE}};',
@@ -533,7 +534,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_style_animated',
 			[
-				'label'      => __('Image', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Image', 'bdthemes-element-pack'),
 				'tab'        => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -543,7 +544,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_image_normal',
 			[
-				'label' => __('Normal', 'bdthemes-element-pack'),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -584,7 +585,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'image_opacity',
 			[
-				'label' => __('Opacity', 'bdthemes-element-pack'),
+				'label' => esc_html__('Opacity', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -602,7 +603,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'image_hover_transition',
 			[
-				'label' => __('Transition Duration', 'bdthemes-element-pack'),
+				'label' => esc_html__('Transition Duration', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0.3,
@@ -624,7 +625,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_image_hover',
 			[
-				'label' => __('Hover', 'bdthemes-element-pack'),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -688,7 +689,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'image_opacity_hover',
 			[
-				'label' => __('Opacity', 'bdthemes-element-pack'),
+				'label' => esc_html__('Opacity', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -712,7 +713,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_style_title',
 			[
-				'label' => __('Title', 'bdthemes-element-pack'),
+				'label' => esc_html__('Title', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition'	=> [
 					'show_title'	=> 'yes',
@@ -725,14 +726,14 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_title_style_normal',
 			[
-				'label' => __('Normal', 'bdthemes-element-pack'),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_responsive_control(
 			'title_bottom_space',
 			[
-				'label' => __('Spacing', 'bdthemes-element-pack'),
+				'label' => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -749,7 +750,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-title' => 'color: {{VALUE}};',
@@ -777,7 +778,7 @@ class Animated_Card extends Module_Base {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'title_text_shadow',
-				'label' => __('Text Shadow', 'bdthemes-element-pack'),
+				'label' => esc_html__('Text Shadow', 'bdthemes-element-pack'),
 				'selector' => '{{WRAPPER}} .bdt-ep-animated-card-title',
 			]
 		);
@@ -787,14 +788,14 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_title_style_hover',
 			[
-				'label' => __('Hover', 'bdthemes-element-pack'),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'title_color_hover',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-title:hover' => 'color: {{VALUE}};',
@@ -806,7 +807,7 @@ class Animated_Card extends Module_Base {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'title_text_shadow_hover',
-				'label' => __('Text Shadow', 'bdthemes-element-pack'),
+				'label' => esc_html__('Text Shadow', 'bdthemes-element-pack'),
 				'selector' => '{{WRAPPER}} .bdt-ep-animated-card-title:hover',
 			]
 		);
@@ -820,7 +821,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_style_sub_title',
 			[
-				'label' => __('Sub Title', 'bdthemes-element-pack'),
+				'label' => esc_html__('Sub Title', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition'	=> [
 					'show_sub_title'	=> 'yes',
@@ -833,14 +834,14 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_sub_title_style_normal',
 			[
-				'label' => __('Normal', 'bdthemes-element-pack'),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'sub_title_color',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-sub-title' => 'color: {{VALUE}};',
@@ -851,7 +852,7 @@ class Animated_Card extends Module_Base {
 		$this->add_responsive_control(
 			'sub_title_bottom_space',
 			[
-				'label' => __('Spacing', 'bdthemes-element-pack'),
+				'label' => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -878,14 +879,14 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_sub_title_style_hover',
 			[
-				'label' => __('Hover', 'bdthemes-element-pack'),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'sub_title_color_hover',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-sub-title:hover' => 'color: {{VALUE}};',
@@ -902,7 +903,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_style_description',
 			[
-				'label' => __('Text', 'bdthemes-element-pack'),
+				'label' => esc_html__('Text', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition'	  => [
 					'show_description'	=> 'yes',
@@ -913,7 +914,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'description_color',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-text' => 'color: {{VALUE}};',
@@ -924,7 +925,7 @@ class Animated_Card extends Module_Base {
 		$this->add_responsive_control(
 			'desc_bottom_space',
 			[
-				'label' => __('Spacing', 'bdthemes-element-pack'),
+				'label' => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -951,7 +952,7 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_section(
 			'section_style_readmore',
 			[
-				'label'     => __('Read More', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Read More', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'readmore'       => 'yes',
@@ -962,7 +963,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'readmore_attention',
 			[
-				'label' => __('Attention', 'bdthemes-element-pack'),
+				'label' => esc_html__('Attention', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
@@ -979,14 +980,14 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_readmore_normal',
 			[
-				'label' => __('Normal', 'bdthemes-element-pack'),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'readmore_text_color',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-btn' => 'color: {{VALUE}};',
@@ -1016,7 +1017,7 @@ class Animated_Card extends Module_Base {
 		$this->add_responsive_control(
 			'readmore_radius',
 			[
-				'label'      => __('Border Radius', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', '%'],
 				'selectors'  => [
@@ -1036,7 +1037,7 @@ class Animated_Card extends Module_Base {
 		$this->add_responsive_control(
 			'readmore_padding',
 			[
-				'label'      => __('Padding', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
@@ -1058,14 +1059,14 @@ class Animated_Card extends Module_Base {
 		$this->start_controls_tab(
 			'tab_readmore_hover',
 			[
-				'label' => __('Hover', 'bdthemes-element-pack'),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'readmore_hover_text_color',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-btn:hover' => 'color: {{VALUE}};',
@@ -1085,7 +1086,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'readmore_hover_border_color',
 			[
-				'label'     => __('Border Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-animated-card-btn:hover' => 'border-color: {{VALUE}};',
@@ -1107,7 +1108,7 @@ class Animated_Card extends Module_Base {
 		$this->add_control(
 			'readmore_hover_animation',
 			[
-				'label' => __('Hover Animation', 'bdthemes-element-pack'),
+				'label' => esc_html__('Hover Animation', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::HOVER_ANIMATION,
 			]
 		);
@@ -1214,7 +1215,7 @@ class Animated_Card extends Module_Base {
 				<a <?php echo $this->get_render_attribute_string('readmore'); ?>>
 					<?php echo esc_html($settings['readmore_text']); ?>
 					<?php if ($settings['advanced_readmore_icon']['value']) : ?>
-						<span class="bdt-button-icon-align-<?php echo $settings['readmore_icon_align'] ?>">
+						<span class="bdt-button-icon-align-<?php echo esc_attr($settings['readmore_icon_align']); ?>">
 							<?php Icons_Manager::render_icon($settings['advanced_readmore_icon'], ['aria-hidden' => 'true', 'class' => 'fa-fw']); ?>
 						</span>
 					<?php endif; ?>

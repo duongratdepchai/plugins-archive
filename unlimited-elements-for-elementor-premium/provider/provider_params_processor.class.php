@@ -724,19 +724,32 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			
 			//dynamic popup
 			
-			if(!empty($this->dynamicPopupParam)){
+			if(!empty($this->dynamicPopupParams)){
 				
-				if($this->dynamicPopupEnabled == true){
-					$dynamicLinkAddClass = " uc-open-popup";
-					$dynamicLinkAttr = " href='javascrpit:void(0)' data-post-link='{$link}'";
+				foreach($this->dynamicPopupParams as $paramDynamic){
+					
+					$isDynamicEnabled = UniteFunctionsUC::getVal($paramDynamic, "dynamic_popup_enabled");
+					$isDynamicEnabled = UniteFunctionsUC::strToBool($isDynamicEnabled);
+					
+					$dynamicSuffix = UniteFunctionsUC::getVal($paramDynamic, "dynamic_popup_suffix");
+					
+					if(!empty($dynamicSuffix))
+						$dynamicSuffix = "__{$dynamicSuffix}";
+
+					if($isDynamicEnabled == true){
+						$dynamicLinkAddClass = " uc-open-popup";
+						$dynamicLinkAttr = " href='javascrpit:void(0)' data-post-link='{$link}'";
+					}
+					else{
+						$dynamicLinkAddClass = "";
+						$dynamicLinkAttr = "href='{$link}'";
+					}			
+					
+					$arrData["dynamic_popup_link_class{$dynamicSuffix}"] = $dynamicLinkAddClass;
+					$arrData["dynamic_popup_link_attributes{$dynamicSuffix}"] = $dynamicLinkAttr;
 				}
-				else{
-					$dynamicLinkAddClass = "";
-					$dynamicLinkAttr = "href='{$link}'";
-				}			
 				
-				$arrData["dynamic_popup_link_class"] = $dynamicLinkAddClass;
-				$arrData["dynamic_popup_link_attributes"] = $dynamicLinkAttr;
+				
 			}
 			
 			//get intro, intro from excerpt - tags not stripped
@@ -2121,6 +2134,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		$args = $this->getPostListData_getCustomQueryFilters($args, $value, $name, $data);
 		
+		
 		//update by post and get filters
 		$objFiltersProcess = new UniteCreatorFiltersProcess();
 		$args = $objFiltersProcess->processRequestFilters($args, $isFilterable);
@@ -2132,10 +2146,26 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		if($showDebugQuery == true){
 			echo "<div class='uc-debug-query-wrapper'>";	//start debug wrapper
 			
+			
 			dmp("The Query Is:");
 			dmp($args);
 		}
-				
+
+		//disable other hooks: 
+		
+		$disableOtherHooks = UniteFunctionsUC::getVal($value, "{$name}_disable_other_hooks");
+		
+		if($disableOtherHooks === "yes" && GlobalsProviderUC::$isUnderAjax == true){
+			global $wp_filter;
+			$wp_filter = array();
+		
+			if($showDebugQuery == true){
+				dmp("disable third party hooks...");
+			}
+			
+		}
+		
+		
 		//remember last args
 		GlobalsProviderUC::$lastQueryArgs = $args;
 		
@@ -2314,10 +2344,17 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 	 */
 	private function saveLastQueryAndPage($query, $type, $initialOffset = null){
 		
+		
+		/* debug
+			dmp("save query");
+			dmp($query->query);
+			dmp($this->addon->getName());
+		*/
+		
 		GlobalsProviderUC::$lastPostQuery = $query;
 		GlobalsProviderUC::$lastPostQuery_page = 1;
 		GlobalsProviderUC::$lastPostQuery_type = $type;
-
+		
 		//set type for pagination, stay on current if exists
 		if(GlobalsProviderUC::$lastPostQuery_paginationType != GlobalsProviderUC::QUERY_TYPE_CURRENT)
 			GlobalsProviderUC::$lastPostQuery_paginationType = $type;
@@ -3404,6 +3441,197 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 	
 	
 	
+	
+	
+	/**
+	 * get listing data
+	 */
+	private function getListingData($value, $name, $processType, $param, $data){
+		
+		if($processType != self::PROCESS_TYPE_OUTPUT && $processType != self::PROCESS_TYPE_OUTPUT_BACK)
+			return($data);
+	    
+		$useFor = UniteFunctionsUC::getVal($param, "use_for");
+		
+		switch($useFor){
+			case "remote":
+				
+				$data = $this->getRemoteSettingsData($value, $name, $processType, $param, $data);
+				
+				return($data);
+			break;
+			case "items":
+				
+				$data = $this->getMultisourceSettingsData($value, $name, $processType, $param, $data);
+				
+				return($data);
+			break;
+		}
+		
+		$isForGallery = ($useFor == "gallery");
+		
+		$source = UniteFunctionsUC::getVal($value, $name."_source", "posts");
+		
+		if(empty($source) && $isForGallery == true)
+			$source = "gallery";
+		
+		$templateID = UniteFunctionsUC::getVal($value, $name."_template_templateid");
+		
+		$data[$name."_source"] = $source;
+		$data[$name."_templateid"] = $templateID;
+		
+		unset($data[$name]);
+		
+		switch($source){
+			case "posts":
+				
+				$paramPosts = $param;
+				
+				$paramPosts["name"] = $paramPosts["name"]."_posts";
+				$paramPosts["name_listing"] = $name;
+				$paramPosts["use_for_listing"] = true;
+				
+				$data = $this->getPostListData($value, $paramPosts["name"], $processType, $paramPosts, $data);
+				
+				
+			break;
+			case "products":
+								
+				$paramProducts = $param;
+				
+				$paramProducts["name"] = $paramProducts["name"]."_products";
+				$paramProducts["name_listing"] = $name;
+				$paramProducts["use_for_listing"] = true;
+				$paramProducts["for_woocommerce_products"] = true;
+								
+				$data = $this->getPostListData($value, $paramProducts["name"], $processType, $paramProducts, $data);
+				
+			break;
+			case "terms":
+				
+				dmp("get terms");
+				$data[$name."_items"] = array();
+				
+			break;
+			case "gallery":
+				
+				$arrGalleryItems = UniteFunctionsUC::getVal($value, $name."_gallery");
+				
+				$data[$name."_items"] = $arrGalleryItems;
+				
+			break;
+			case "current_post_meta":		//meta field with image id's
+				
+				$data[$name."_items"] = $this->getGroupedData_getArrImageIDsFromMeta($value, $name);
+				
+			break;
+			case "image_video_repeater":
+				
+				$data[$name."_items"] = UniteFunctionsUC::getVal($value, $name."_items");
+				
+				//do nothing, convert later
+				
+			break;
+			case "instagram":
+								
+				$paramInstagram = $param;
+				$paramInstagram["name"] = $paramInstagram["name"]."_instagram";
+				
+				$arrInstagramData = $this->getInstagramData($value, $name."_instagram", $paramInstagram);
+				
+				$error = UniteFunctionsUC::getVal($arrInstagramData, "error");
+				if(!empty($error))
+					UniteFunctionsUC::throwError($error);
+								
+				$arrInstagramItems = UniteFunctionsUC::getVal($arrInstagramData, "items");
+				
+				
+				if(empty($arrInstagramItems))
+					$arrInstagramItems = array();
+				
+				$data[$name."_items"] = $arrInstagramItems;
+							
+			break;
+			default:
+				UniteFunctionsUC::throwError("Wrong dynamic content source: $source");
+			break;
+		}
+		
+		if($isForGallery == true){
+			
+			$arrItems = $data[$name."_items"];
+			
+			$data[$name."_items"] = $this->getGroupedData_convertForGallery($arrItems, $source, $value, $param);
+			
+			
+			return($data);
+		}
+		
+		//modify items output
+		$arrItems = UniteFunctionsUC::getVal($data, $name."_items");
+		
+		
+		if(empty($arrItems))
+			$arrItems = array();
+		
+		//convert listing items
+			
+		foreach($arrItems as $index => $item){
+			
+			$numItem = $index+1;
+			
+			switch($source){
+				case "posts":
+				case "products":
+					$title = $item->post_title;
+					
+					$newItem = array(
+						"index"=>$numItem,
+						"title"=>$title,
+						"object"=>$item
+					);
+					
+				$postData = $this->getPostDataByObj($item);
+				
+				
+				$arrFields = array("id","alias","link","intro","intro_full","date","date_modified","image","image_thumb","image_thumb_large");
+				
+				foreach($arrFields as $fieldKey){
+					
+					if(array_key_exists($fieldKey, $postData) == false)
+						continue;
+					
+					$value = UniteFunctionsUC::getVal($postData, $fieldKey);
+					
+					$newItem[$fieldKey] = $value;
+				}
+				
+				
+				break;
+				case "terms":
+				break;
+				case "gallery":
+					continue(2);
+				break;
+				default:
+					$key = $index++;
+					$title = "item_{$index}";					
+				break;
+			}
+			
+			$arrItems[$index] = $newItem;
+		}
+		
+		
+		$data[$name."_items"] = $arrItems;
+		
+		
+		
+		return($data);
+	}
+
+	protected function z_______________REMOTE____________(){}
+	
 	/**
 	 * get remote parent type data
 	 */
@@ -3411,7 +3639,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		$arrOutput = array();
 		
-		$isInsideEditor = UniteCreatorElementorIntegrate::$isEditMode;
+		$isInsideEditor = GlobalsProviderUC::$isInsideEditor;
 		
 		$isEnable = UniteFunctionsUC::getVal($value, $name."_enable");
 		$isEnable = UniteFunctionsUC::strToBool($isEnable);
@@ -3619,193 +3847,6 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 	}
 	
 	
-	
-	/**
-	 * get listing data
-	 */
-	private function getListingData($value, $name, $processType, $param, $data){
-		
-		if($processType != self::PROCESS_TYPE_OUTPUT && $processType != self::PROCESS_TYPE_OUTPUT_BACK)
-			return($data);
-	    
-		$useFor = UniteFunctionsUC::getVal($param, "use_for");
-		
-		switch($useFor){
-			case "remote":
-				
-				$data = $this->getRemoteSettingsData($value, $name, $processType, $param, $data);
-				
-				return($data);
-			break;
-			case "items":
-				
-				$data = $this->getMultisourceSettingsData($value, $name, $processType, $param, $data);
-				
-				return($data);
-			break;
-		}
-		
-		$isForGallery = ($useFor == "gallery");
-		
-		$source = UniteFunctionsUC::getVal($value, $name."_source", "posts");
-		
-		if(empty($source) && $isForGallery == true)
-			$source = "gallery";
-		
-		$templateID = UniteFunctionsUC::getVal($value, $name."_template_templateid");
-		
-		$data[$name."_source"] = $source;
-		$data[$name."_templateid"] = $templateID;
-		
-		unset($data[$name]);
-		
-		switch($source){
-			case "posts":
-				
-				$paramPosts = $param;
-				
-				$paramPosts["name"] = $paramPosts["name"]."_posts";
-				$paramPosts["name_listing"] = $name;
-				$paramPosts["use_for_listing"] = true;
-				
-				$data = $this->getPostListData($value, $paramPosts["name"], $processType, $paramPosts, $data);
-				
-				
-			break;
-			case "products":
-								
-				$paramProducts = $param;
-				
-				$paramProducts["name"] = $paramProducts["name"]."_products";
-				$paramProducts["name_listing"] = $name;
-				$paramProducts["use_for_listing"] = true;
-				$paramProducts["for_woocommerce_products"] = true;
-								
-				$data = $this->getPostListData($value, $paramProducts["name"], $processType, $paramProducts, $data);
-				
-			break;
-			case "terms":
-				
-				dmp("get terms");
-				$data[$name."_items"] = array();
-				
-			break;
-			case "gallery":
-				
-				$arrGalleryItems = UniteFunctionsUC::getVal($value, $name."_gallery");
-				
-				$data[$name."_items"] = $arrGalleryItems;
-				
-			break;
-			case "current_post_meta":		//meta field with image id's
-				
-				$data[$name."_items"] = $this->getGroupedData_getArrImageIDsFromMeta($value, $name);
-				
-			break;
-			case "image_video_repeater":
-				
-				$data[$name."_items"] = UniteFunctionsUC::getVal($value, $name."_items");
-				
-				//do nothing, convert later
-				
-			break;
-			case "instagram":
-								
-				$paramInstagram = $param;
-				$paramInstagram["name"] = $paramInstagram["name"]."_instagram";
-				
-				$arrInstagramData = $this->getInstagramData($value, $name."_instagram", $paramInstagram);
-				
-				$error = UniteFunctionsUC::getVal($arrInstagramData, "error");
-				if(!empty($error))
-					UniteFunctionsUC::throwError($error);
-								
-				$arrInstagramItems = UniteFunctionsUC::getVal($arrInstagramData, "items");
-				
-				
-				if(empty($arrInstagramItems))
-					$arrInstagramItems = array();
-				
-				$data[$name."_items"] = $arrInstagramItems;
-							
-			break;
-			default:
-				UniteFunctionsUC::throwError("Wrong dynamic content source: $source");
-			break;
-		}
-		
-		if($isForGallery == true){
-			
-			$arrItems = $data[$name."_items"];
-			
-			$data[$name."_items"] = $this->getGroupedData_convertForGallery($arrItems, $source, $value, $param);
-			
-			
-			return($data);
-		}
-		
-		//modify items output
-		$arrItems = UniteFunctionsUC::getVal($data, $name."_items");
-		
-		
-		if(empty($arrItems))
-			$arrItems = array();
-		
-		//convert listing items
-			
-		foreach($arrItems as $index => $item){
-			
-			$numItem = $index+1;
-			
-			switch($source){
-				case "posts":
-				case "products":
-					$title = $item->post_title;
-					
-					$newItem = array(
-						"index"=>$numItem,
-						"title"=>$title,
-						"object"=>$item
-					);
-					
-				$postData = $this->getPostDataByObj($item);
-				
-				
-				$arrFields = array("id","alias","link","intro","intro_full","date","date_modified","image","image_thumb","image_thumb_large");
-				
-				foreach($arrFields as $fieldKey){
-					
-					if(array_key_exists($fieldKey, $postData) == false)
-						continue;
-					
-					$value = UniteFunctionsUC::getVal($postData, $fieldKey);
-					
-					$newItem[$fieldKey] = $value;
-				}
-				
-				
-				break;
-				case "terms":
-				break;
-				case "gallery":
-					continue(2);
-				break;
-				default:
-					$key = $index++;
-					$title = "item_{$index}";					
-				break;
-			}
-			
-			$arrItems[$index] = $newItem;
-		}
-		
-		
-		$data[$name."_items"] = $arrItems;
-		
-		
-		
-		return($data);
-	}
 	
 	protected function z_______________MULTISOURCE____________(){}
 	

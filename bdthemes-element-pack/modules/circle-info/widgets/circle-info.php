@@ -17,33 +17,27 @@ if (!defined('ABSPATH')) {
 }
 
 // Exit if accessed directly
-class Circle_Info extends Module_Base
-{
+class Circle_Info extends Module_Base {
 
-    public function get_name()
-    {
+    public function get_name() {
         return 'bdt-circle-info';
     }
 
-    public function get_title()
-    {
+    public function get_title() {
         return BDTEP . esc_html__('Circle Info', 'bdthemes-element-pack');
     }
 
-    public function get_icon()
-    {
+    public function get_icon() {
         return 'bdt-wi-circle-info';
     }
 
-    public function get_categories()
-    {
+    public function get_categories() {
         return [
             'element-pack',
         ];
     }
 
-    public function get_keywords()
-    {
+    public function get_keywords() {
         return ['circle', 'info'];
     }
 
@@ -59,17 +53,15 @@ class Circle_Info extends Module_Base
         if ($this->ep_is_edit_mode()) {
             return ['ep-scripts'];
         } else {
-            return [ 'ep-circle-info' ];
+            return ['ep-circle-info'];
         }
-	}
+    }
 
-    public function get_custom_help_url()
-    {
+    public function get_custom_help_url() {
         return 'https://youtu.be/PIQ6BJtNpNU';
     }
 
-    protected function register_controls()
-    {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'section_layouts',
@@ -81,24 +73,24 @@ class Circle_Info extends Module_Base
         $repeater = new Repeater();
 
         $repeater->start_controls_tabs(
-			'item_info_tab'
-		);
+            'item_info_tab'
+        );
 
-		$repeater->start_controls_tab(
-			'item_info_tab_content',
-			[
-				'label' => __( 'Content', 'bdthemes-element-pack' ),
-			]
-		);
+        $repeater->start_controls_tab(
+            'item_info_tab_content',
+            [
+                'label' => esc_html__('Content', 'bdthemes-element-pack'),
+            ]
+        );
 
-		 $repeater->add_control(
+        $repeater->add_control(
             'circle_info_item_title',
             [
-                'label'       => __('Title', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Title', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::TEXT,
                 'label_block' => true,
-                'placeholder' => __('Title Item', 'bdthemes-element-pack'),
-                'default'     => __('Title Item', 'bdthemes-element-pack'),
+                'placeholder' => esc_html__('Title Item', 'bdthemes-element-pack'),
+                'default'     => esc_html__('Title Item', 'bdthemes-element-pack'),
                 'dynamic'     => [
                     'active' => true,
                 ],
@@ -108,10 +100,10 @@ class Circle_Info extends Module_Base
         $repeater->add_control(
             'circle_info_item_details',
             [
-                'label'       => __('Details', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Details', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::WYSIWYG,
-                'default'     => __("Default description. Lorem Ipsum is simply dummy text of the printing and typesetting industry.   ", 'bdthemes-element-pack'),
-                'placeholder' => __('Type your description here', 'bdthemes-element-pack'),
+                'default'     => esc_html__("Default description. Lorem Ipsum is simply dummy text of the printing and typesetting industry.   ", 'bdthemes-element-pack'),
+                'placeholder' => esc_html__('Type your description here', 'bdthemes-element-pack'),
                 'dynamic'     => [
                     'active' => true,
                 ],
@@ -121,7 +113,7 @@ class Circle_Info extends Module_Base
         $repeater->add_control(
             'circle_info_item_icon',
             [
-                'label'       => __('Icon', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Icon', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::ICONS,
                 'label_block' => false,
                 'default'     => [
@@ -135,37 +127,37 @@ class Circle_Info extends Module_Base
         $repeater->add_control(
             'circle_info_title_link',
             [
-                'label'       => __('Link', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Link', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::URL,
                 'dynamic'     => [
                     'active' => true,
                 ],
                 'label_block' => true,
-                'placeholder' => __('https://your-link.com', 'bdthemes-element-pack'),
+                'placeholder' => esc_html__('https://your-link.com', 'bdthemes-element-pack'),
             ]
         );
 
-		$repeater->end_controls_tab();
+        $repeater->end_controls_tab();
 
-		$repeater->start_controls_tab(
-			'item_info_tab_bg',
-			[
-				'label' => __( 'Background', 'bdthemes-element-pack' ) . BDTEP_NC,
-			]
-		);
+        $repeater->start_controls_tab(
+            'item_info_tab_bg',
+            [
+                'label' => esc_html__('Background', 'bdthemes-element-pack') . BDTEP_NC,
+            ]
+        );
 
         $repeater->add_group_control(
-			 Group_Control_Background::get_type(),
-			[
-				'name' => 'item_background',
-				'types' => [ 'classic', 'gradient', 'video' ],
-				'selector' => '{{WRAPPER}} {{CURRENT_ITEM}}',
-			]
-		);
+            Group_Control_Background::get_type(),
+            [
+                'name' => 'item_background',
+                'types' => ['classic', 'gradient', 'video'],
+                'selector' => '{{WRAPPER}} {{CURRENT_ITEM}}',
+            ]
+        );
 
-		$repeater->end_controls_tab();
+        $repeater->end_controls_tab();
 
-		$repeater->end_controls_tabs();
+        $repeater->end_controls_tabs();
 
         $this->add_control(
             'circle_info_icon_list',
@@ -177,45 +169,51 @@ class Circle_Info extends Module_Base
                 'default'     => [
                     [
                         'circle_info_item_title'   => esc_html__('List Item #1', 'bdthemes-element-pack'),
-                        'circle_info_item_details' => esc_html__('@1 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack'),
+                        'circle_info_item_details' => '@1 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack', // No need to translate
                         'circle_info_item_icon'    => [
                             'value'   => 'far fa-smile',
-                            'library' => 'fa-regular'],
+                            'library' => 'fa-regular'
+                        ],
                     ],
                     [
                         'circle_info_item_title'   => esc_html__('List Item #2', 'bdthemes-element-pack'),
-                        'circle_info_item_details' => esc_html__('@2 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus meo.', 'bdthemes-element-pack'),
+                        'circle_info_item_details' => '@2 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus meo.', 'bdthemes-element-pack', // No need to translate
                         'circle_info_item_icon'    => [
                             'value'   => 'fas fa-brain',
-                            'library' => 'fa-solid'],
+                            'library' => 'fa-solid'
+                        ],
                     ],
                     [
                         'circle_info_item_title'   => esc_html__('List Item #3', 'bdthemes-element-pack'),
-                        'circle_info_item_details' => esc_html__('@3 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack'),
+                        'circle_info_item_details' => '@3 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack', // No need to translate
                         'circle_info_item_icon'    => [
                             'value'   => 'far fa-check-circle',
-                            'library' => 'fa-regular'],
+                            'library' => 'fa-regular'
+                        ],
                     ],
                     [
                         'circle_info_item_title'   => esc_html__('List Item #4', 'bdthemes-element-pack'),
-                        'circle_info_item_details' => esc_html__('@4 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus meo.', 'bdthemes-element-pack'),
+                        'circle_info_item_details' => '@4 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus meo.', 'bdthemes-element-pack', // No need to translate
                         'circle_info_item_icon'    => [
                             'value'   => 'fas fa-cog',
-                            'library' => 'fa-solid'],
+                            'library' => 'fa-solid'
+                        ],
                     ],
                     [
                         'circle_info_item_title'   => esc_html__('List Item #5', 'bdthemes-element-pack'),
-                        'circle_info_item_details' => esc_html__('@5 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack'),
+                        'circle_info_item_details' => '@5 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack', // No need to translate
                         'circle_info_item_icon'    => [
                             'value'   => 'fas fa-dice-d6',
-                            'library' => 'fa-solid'],
+                            'library' => 'fa-solid'
+                        ],
                     ],
                     [
                         'circle_info_item_title'   => esc_html__('List Item #6', 'bdthemes-element-pack'),
-                        'circle_info_item_details' => esc_html__('@6 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus meo.', 'bdthemes-element-pack'),
+                        'circle_info_item_details' => '@6 Click edit button to change this text. Lorem agaca ipsum dolor sit amet. Ut elit tellus, luctus nec ullam corper mattis, pulvinar dapibus meo.', 'bdthemes-element-pack', // No need to translate
                         'circle_info_item_icon'    => [
                             'value'   => 'fas fa-asterisk',
-                            'library' => 'fa-solid'],
+                            'library' => 'fa-solid'
+                        ],
                     ],
                 ],
                 'title_field' => '{{{ circle_info_item_title }}}',
@@ -231,19 +229,19 @@ class Circle_Info extends Module_Base
             ]
         );
 
-         $this->add_control(
+        $this->add_control(
             'circle_info_layout',
             [
-                'label' => __( 'Layout (Mobile Mode)', 'bdthemes-element-pack' ) . BDTEP_NC,
+                'label' => esc_html__('Layout (Mobile Mode)', 'bdthemes-element-pack') . BDTEP_NC,
                 'type' => Controls_Manager::CHOOSE,
                 'label_block' => false,
                 'options' => [
                     'circle' => [
-                        'title' => __( 'Circle', 'bdthemes-element-pack' ),
+                        'title' => esc_html__('Circle', 'bdthemes-element-pack'),
                         'icon' => 'eicon-circle-o',
                     ],
                     'list' => [
-                        'title' => __( 'List', 'bdthemes-element-pack' ),
+                        'title' => esc_html__('List', 'bdthemes-element-pack'),
                         'icon' => 'eicon-editor-list-ul',
                     ],
                 ],
@@ -258,7 +256,7 @@ class Circle_Info extends Module_Base
         $this->add_responsive_control(
             'circle_info_size',
             [
-                'label'     => __('Circle Size ', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Circle Size ', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SLIDER,
                 'default'   => [
                     'size' => 400,
@@ -278,28 +276,28 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'hide_content',
             [
-                'label' => __('Hide Content', 'bdthemes-element-pack') . BDTEP_NC,
+                'label' => esc_html__('Hide Content', 'bdthemes-element-pack') . BDTEP_NC,
                 'type'  => Controls_Manager::SWITCHER,
-                'prefix_class' => 'bdt-ep-content-hide-', 
+                'prefix_class' => 'bdt-ep-content-hide-',
                 'condition' => ['circle_info_layout' => 'default']
             ]
         );
 
         $this->add_control(
-			'title_tags',
-			[
-				'label'   => __( 'Title HTML Tag', 'bdthemes-element-pack' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'span',
-				'options' => element_pack_title_tags(),
+            'title_tags',
+            [
+                'label'   => esc_html__('Title HTML Tag', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
+                'default' => 'span',
+                'options' => element_pack_title_tags(),
                 'separator' => 'before',
-			]
-		);
+            ]
+        );
 
         $this->add_control(
             'circle_info_custom_margin',
             [
-                'label' => __('Custom Margin', 'bdthemes-element-pack'),
+                'label' => esc_html__('Custom Margin', 'bdthemes-element-pack'),
                 'type'  => Controls_Manager::SWITCHER,
             ]
         );
@@ -307,7 +305,7 @@ class Circle_Info extends Module_Base
         $this->add_responsive_control(
             'circle_info_margin',
             [
-                'label'     => __('Margin', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Margin', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::DIMENSIONS,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-wrap' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
@@ -321,7 +319,7 @@ class Circle_Info extends Module_Base
         $this->add_responsive_control(
             'circle_info_icon_area_size',
             [
-                'label'     => __('Icon Area Size', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Icon Area Size', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SLIDER,
                 'range'     => [
                     'px' => [
@@ -331,7 +329,7 @@ class Circle_Info extends Module_Base
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle, {{WRAPPER}} .bdt-ep-circle-info-icon' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
-                    '{{WRAPPER}}' => '--ep-icon-info-margin: calc({{SIZE}}px + 20px);' 
+                    '{{WRAPPER}}' => '--ep-icon-info-margin: calc({{SIZE}}px + 20px);'
                 ],
             ]
         );
@@ -339,7 +337,7 @@ class Circle_Info extends Module_Base
         $this->add_responsive_control(
             'circle_info_icon_size',
             [
-                'label'     => __('Icon Size', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Icon Size', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SLIDER,
                 'range'     => [
                     'px' => [
@@ -357,20 +355,20 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'circle_info_event',
             [
-                'label'   => __('Select Event ', 'bdthemes-element-pack'),
+                'label'   => esc_html__('Select Event ', 'bdthemes-element-pack'),
                 'type'    => Controls_Manager::SELECT,
                 'default' => 'mouseover',
                 'options' => [
-                    'click'     => __('Click', 'bdthemes-element-pack'),
-                    'mouseover' => __('Hover', 'bdthemes-element-pack'),
+                    'click'     => esc_html__('Click', 'bdthemes-element-pack'),
+                    'mouseover' => esc_html__('Hover', 'bdthemes-element-pack'),
                 ],
             ]
         );
 
-         $this->add_control(
+        $this->add_control(
             'link_on_icon',
             [
-                'label' => __('Link On Icon', 'bdthemes-element-pack'),
+                'label' => esc_html__('Link On Icon', 'bdthemes-element-pack'),
                 'type'  => Controls_Manager::SWITCHER,
             ]
         );
@@ -378,16 +376,16 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'circle_info_auto_mode',
             [
-                'label' => __('Auto Mode', 'bdthemes-element-pack'),
+                'label' => esc_html__('Auto Mode', 'bdthemes-element-pack'),
                 'type'  => Controls_Manager::SWITCHER,
-                'render_type' => 'template', 
+                'render_type' => 'template',
             ]
         );
 
         $this->add_control(
             'circle_info_auto_time',
             [
-                'label'     => __('Time (ms)', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Time (ms)', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SLIDER,
                 'default'   => [
                     'size' => 3000,
@@ -409,7 +407,7 @@ class Circle_Info extends Module_Base
         $this->start_controls_section(
             'circle_info_content_style',
             [
-                'label' => __('Content', 'bdthemes-element-pack'),
+                'label' => esc_html__('Content', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -419,7 +417,7 @@ class Circle_Info extends Module_Base
         $this->start_controls_tab(
             'circle_info_tab_content_normal',
             [
-                'label' => __('Normal  ', 'bdthemes-element-pack'),
+                'label' => esc_html__('Normal  ', 'bdthemes-element-pack'),
             ]
         );
 
@@ -427,16 +425,16 @@ class Circle_Info extends Module_Base
             'content_glassmorphism_effect',
             [
                 'label' => esc_html__('Glassmorphism', 'bdthemes-element-pack') . BDTEP_NC,
-				'type'  => Controls_Manager::SWITCHER,
-				'description' => sprintf( __( 'This feature will not work in the Firefox browser untill you enable browser compatibility so please %1s look here %2s', 'bdthemes-element-pack' ), '<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter#Browser_compatibility" target="_blank">', '</a>' ),
-            
+                'type'  => Controls_Manager::SWITCHER,
+                'description' => sprintf(esc_html__('This feature will not work in the Firefox browser untill you enable browser compatibility so please %1s look here %2s', 'bdthemes-element-pack'), '<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter#Browser_compatibility" target="_blank">', '</a>'),
+
             ]
-		);
-		
-		$this->add_control(
+        );
+
+        $this->add_control(
             'content_glassmorphism_blur_level',
             [
-                'label'       => __('Blur Level', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Blur Level', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::SLIDER,
                 'range'       => [
                     'px' => [
@@ -450,14 +448,14 @@ class Circle_Info extends Module_Base
                 ],
                 'selectors'   => [
                     '{{WRAPPER}} .bdt-ep-circle-info-item' => 'backdrop-filter: blur({{SIZE}}px); -webkit-backdrop-filter: blur({{SIZE}}px);'
-				],
-				'condition' => [
-					'content_glassmorphism_effect' => 'yes',
-				]
+                ],
+                'condition' => [
+                    'content_glassmorphism_effect' => 'yes',
+                ]
             ]
-		);
+        );
 
-         $this->add_group_control(
+        $this->add_group_control(
             Group_Control_Background::get_type(),
             [
                 'name'      => 'circle_info_content_background_normal',
@@ -468,7 +466,7 @@ class Circle_Info extends Module_Base
         $this->add_responsive_control(
             'circle_info_content_padding_normal',
             [
-                'label'     => __('Padding', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::DIMENSIONS,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
@@ -501,7 +499,7 @@ class Circle_Info extends Module_Base
         $this->start_controls_tab(
             'circle_info_tab_content_hover',
             [
-                'label' => __('Hover  ', 'bdthemes-element-pack'),
+                'label' => esc_html__('Hover  ', 'bdthemes-element-pack'),
             ]
         );
 
@@ -536,7 +534,7 @@ class Circle_Info extends Module_Base
         $this->start_controls_section(
             'circle_info_icon_style',
             [
-                'label' => __('Icon', 'bdthemes-element-pack'),
+                'label' => esc_html__('Icon', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -546,14 +544,14 @@ class Circle_Info extends Module_Base
         $this->start_controls_tab(
             'circle_info_tab_icon_normal',
             [
-                'label' => __('Normal  ', 'bdthemes-element-pack'),
+                'label' => esc_html__('Normal  ', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'circle_info_icon_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle, {{WRAPPER}} .bdt-ep-circle-info-icon' => 'color: {{VALUE}}',
@@ -565,7 +563,7 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'circle_info_icon_background',
             [
-                'label'     => __('Background', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle, {{WRAPPER}} .bdt-ep-circle-info-icon' => 'background-color: {{VALUE}} ',
@@ -582,9 +580,10 @@ class Circle_Info extends Module_Base
         );
 
         $this->add_group_control(
-            Group_Control_Box_Shadow::get_type(), [
+            Group_Control_Box_Shadow::get_type(),
+            [
                 'name'     => 'circle_info_icon_box_shadow',
-                'label'    => __('Shadow', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Shadow', 'bdthemes-element-pack'),
                 'selector' => '{{WRAPPER}} .bdt-ep-circle-info-sub-circle, {{WRAPPER}} .bdt-ep-circle-info-icon',
             ]
         );
@@ -593,16 +592,16 @@ class Circle_Info extends Module_Base
             'glassmorphism_effect',
             [
                 'label' => esc_html__('Glassmorphism', 'bdthemes-element-pack') . BDTEP_NC,
-				'type'  => Controls_Manager::SWITCHER,
-				'description' => sprintf( __( 'This feature will not work in the Firefox browser untill you enable browser compatibility so please %1s look here %2s', 'bdthemes-element-pack' ), '<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter#Browser_compatibility" target="_blank">', '</a>' ),
-            
+                'type'  => Controls_Manager::SWITCHER,
+                'description' => sprintf(esc_html__('This feature will not work in the Firefox browser untill you enable browser compatibility so please %1s look here %2s', 'bdthemes-element-pack'), '<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter#Browser_compatibility" target="_blank">', '</a>'),
+
             ]
-		);
-		
-		$this->add_control(
+        );
+
+        $this->add_control(
             'glassmorphism_blur_level',
             [
-                'label'       => __('Blur Level', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Blur Level', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::SLIDER,
                 'range'       => [
                     'px' => [
@@ -616,26 +615,26 @@ class Circle_Info extends Module_Base
                 ],
                 'selectors'   => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle, {{WRAPPER}} .bdt-ep-circle-info-icon' => 'backdrop-filter: blur({{SIZE}}px); -webkit-backdrop-filter: blur({{SIZE}}px);'
-				],
-				'condition' => [
-					'glassmorphism_effect' => 'yes',
-				]
+                ],
+                'condition' => [
+                    'glassmorphism_effect' => 'yes',
+                ]
             ]
-		);
+        );
 
         $this->end_controls_tab();
 
         $this->start_controls_tab(
             'circle_info_tab_icon_hover',
             [
-                'label' => __('Hover  ', 'bdthemes-element-pack'),
+                'label' => esc_html__('Hover  ', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'circle_info_icon_color_hover',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle:hover, {{WRAPPER}} .bdt-ep-circle-info-icon:hover' => 'color: {{VALUE}} ',
@@ -647,7 +646,7 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'circle_info_icon_background_hover',
             [
-                'label'     => __('Background', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle:hover, {{WRAPPER}} .bdt-ep-circle-info-icon:hover' => 'background-color: {{VALUE}} ',
@@ -658,7 +657,7 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'circle_info_icon_border_hover',
             [
-                'label'     => __('Border Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle:hover, {{WRAPPER}} .bdt-ep-circle-info-icon:hover' => 'border-color: {{VALUE}} ',
@@ -673,7 +672,7 @@ class Circle_Info extends Module_Base
             Group_Control_Box_Shadow::get_type(),
             [
                 'name'     => 'circle_info_icon_box_shadow_hover',
-                'label'    => __('Shadow', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Shadow', 'bdthemes-element-pack'),
                 'selector' => '{{WRAPPER}} .bdt-ep-circle-info-sub-circle:hover, {{WRAPPER}} .bdt-ep-circle-info-icon:hover',
 
             ]
@@ -684,14 +683,14 @@ class Circle_Info extends Module_Base
         $this->start_controls_tab(
             'circle_info_tab_icon_active',
             [
-                'label' => __('Active  ', 'bdthemes-element-pack'),
+                'label' => esc_html__('Active  ', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'circle_info_icon_color_active',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle.active, {{WRAPPER}} .bdt-ep-circle-info-icon.active' => 'color: {{VALUE}} ',
@@ -703,7 +702,7 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'circle_info_icon_background_active',
             [
-                'label'     => __('Background', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle.active, {{WRAPPER}} .bdt-ep-circle-info-icon.active' => 'background-color: {{VALUE}} ',
@@ -714,7 +713,7 @@ class Circle_Info extends Module_Base
         $this->add_control(
             'circle_info_icon_border_active',
             [
-                'label'     => __('Border Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-sub-circle:active, {{WRAPPER}} .bdt-ep-circle-info-icon:active' => 'border-color: {{VALUE}} ',
@@ -729,7 +728,7 @@ class Circle_Info extends Module_Base
             Group_Control_Box_Shadow::get_type(),
             [
                 'name'     => 'circle_info_icon_box_shadow_active',
-                'label'    => __('Shadow', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Shadow', 'bdthemes-element-pack'),
                 'selector' => '{{WRAPPER}} .bdt-ep-circle-info-sub-circle.active, {{WRAPPER}} .bdt-ep-circle-info-sub-circle.active',
             ]
         );
@@ -743,7 +742,7 @@ class Circle_Info extends Module_Base
         $this->start_controls_section(
             'circle_info_title_style',
             [
-                'label' => __('Title', 'bdthemes-element-pack'),
+                'label' => esc_html__('Title', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -753,14 +752,14 @@ class Circle_Info extends Module_Base
         $this->start_controls_tab(
             'circle_info_tab_title_normal',
             [
-                'label' => __('Normal  ', 'bdthemes-element-pack'),
+                'label' => esc_html__('Normal  ', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'circle_info_title_color_normal',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#5f6671',
                 'selectors' => [
@@ -780,15 +779,16 @@ class Circle_Info extends Module_Base
         $this->end_controls_tab();
 
         $this->start_controls_tab(
-            'circle_info_tab_title_hover', [
-                'label' => __('Hover  ', 'bdthemes-element-pack'),
+            'circle_info_tab_title_hover',
+            [
+                'label' => esc_html__('Hover  ', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'circle_info_title_color_hover',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#1e87f0',
                 'selectors' => [
@@ -798,7 +798,7 @@ class Circle_Info extends Module_Base
         );
 
         $this->end_controls_tab();
-        
+
         $this->end_controls_tabs();
 
         $this->end_controls_section();
@@ -806,7 +806,7 @@ class Circle_Info extends Module_Base
         $this->start_controls_section(
             'circle_info_description_style',
             [
-                'label' => __('Text', 'bdthemes-element-pack'),
+                'label' => esc_html__('Text', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -816,14 +816,14 @@ class Circle_Info extends Module_Base
         $this->start_controls_tab(
             'circle_info_tab_description_normal',
             [
-                'label' => __('Normal', 'bdthemes-element-pack'),
+                'label' => esc_html__('Normal', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'circle_info_description_color_normal',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'default'   => '#a3adb5',
                 'selectors' => [
@@ -845,14 +845,14 @@ class Circle_Info extends Module_Base
         $this->start_controls_tab(
             'circle_info_tab_description_hover',
             [
-                'label' => __('Hover  ', 'bdthemes-element-pack'),
+                'label' => esc_html__('Hover  ', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'circle_info_description_color_hover',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-circle-info-desc:hover' => 'color: {{VALUE}} ',
@@ -867,129 +867,128 @@ class Circle_Info extends Module_Base
         $this->end_controls_section();
 
 
-	    $this->start_controls_section(
-		    'circle_info_additional_style',
-		    [
-			    'label' => __('Additional', 'bdthemes-element-pack'),
-			    'tab'   => Controls_Manager::TAB_STYLE,
-		    ]
-	    );
+        $this->start_controls_section(
+            'circle_info_additional_style',
+            [
+                'label' => esc_html__('Additional', 'bdthemes-element-pack'),
+                'tab'   => Controls_Manager::TAB_STYLE,
+            ]
+        );
 
 
-	    $this->start_controls_tabs('circle_info_border_style');
+        $this->start_controls_tabs('circle_info_border_style');
 
-	    $this->start_controls_tab(
-		    'circle_info_border_style_1',
-		    [
-			    'label' => __('Border 1', 'bdthemes-element-pack'),
-		    ]
-	    );
+        $this->start_controls_tab(
+            'circle_info_border_style_1',
+            [
+                'label' => esc_html__('Border 1', 'bdthemes-element-pack'),
+            ]
+        );
 
-	    $this->add_control(
-		    'circle_info_border_style1',
-		    [
-			    'label'   => esc_html__( 'Border Style', 'bdthemes-element-pack' ),
-			    'type'    => Controls_Manager::SELECT,
-			    'options' => [
-				    'none'  => esc_html__( 'None', 'bdthemes-element-pack' ),
-				    'solid'  => esc_html__( 'Solid', 'bdthemes-element-pack' ),
-				    'dotted' => esc_html__( 'Dotted', 'bdthemes-element-pack' ),
-				    'dashed' => esc_html__( 'Dashed', 'bdthemes-element-pack' ),
-				    'double' => esc_html__( 'Double', 'bdthemes-element-pack' ),
-				    'groove' => esc_html__( 'Groove', 'bdthemes-element-pack' ),
-			    ],
-			    'default' => 'solid',
-			    'selectors' => [
-				    '{{WRAPPER}} .bdt-ep-circle-info-inner:before' => 'border-style: {{VALUE}} ',
-			    ],
-		    ]
-	    );
+        $this->add_control(
+            'circle_info_border_style1',
+            [
+                'label'   => esc_html__('Border Style', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
+                'options' => [
+                    'none'  => esc_html__('None', 'bdthemes-element-pack'),
+                    'solid'  => esc_html__('Solid', 'bdthemes-element-pack'),
+                    'dotted' => esc_html__('Dotted', 'bdthemes-element-pack'),
+                    'dashed' => esc_html__('Dashed', 'bdthemes-element-pack'),
+                    'double' => esc_html__('Double', 'bdthemes-element-pack'),
+                    'groove' => esc_html__('Groove', 'bdthemes-element-pack'),
+                ],
+                'default' => 'solid',
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-ep-circle-info-inner:before' => 'border-style: {{VALUE}} ',
+                ],
+            ]
+        );
 
-	    $this->add_responsive_control(
-		    'circle_info_border_width1',
-		    [
-			    'label'     => __('Border Width', 'bdthemes-element-pack'),
-			    'type'      => Controls_Manager::DIMENSIONS,
-			    'selectors' => [
-				    '{{WRAPPER}} .bdt-ep-circle-info-inner:before' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
-			    ],
-		    ]
-	    );
+        $this->add_responsive_control(
+            'circle_info_border_width1',
+            [
+                'label'     => esc_html__('Border Width', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::DIMENSIONS,
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-ep-circle-info-inner:before' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+                ],
+            ]
+        );
 
-	    $this->add_control(
-		    'circle_info_border_color1',
-		    [
-			    'label'     => __('Border Color', 'bdthemes-element-pack'),
-			    'type'      => Controls_Manager::COLOR,
-			    'selectors' => [
-				    '{{WRAPPER}} .bdt-ep-circle-info-inner:before' => 'border-color: {{VALUE}} ',
-			    ],
-		    ]
-	    );
+        $this->add_control(
+            'circle_info_border_color1',
+            [
+                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-ep-circle-info-inner:before' => 'border-color: {{VALUE}} ',
+                ],
+            ]
+        );
 
-	    $this->end_controls_tab();
+        $this->end_controls_tab();
 
 
-	    $this->start_controls_tab(
-		    'circle_info_border_style_2',
-		    [
-			    'label' => __('Border 2', 'bdthemes-element-pack'),
-		    ]
-	    );
+        $this->start_controls_tab(
+            'circle_info_border_style_2',
+            [
+                'label' => esc_html__('Border 2', 'bdthemes-element-pack'),
+            ]
+        );
 
-	    $this->add_control(
-		    'circle_info_border_style2',
-		    [
-			    'label'   => esc_html__( 'Border Style', 'bdthemes-element-pack' ),
-			    'type'    => Controls_Manager::SELECT,
-			    'options' => [
-				    'none'  => esc_html__( 'None', 'bdthemes-element-pack' ),
-				    'solid'  => esc_html__( 'Solid', 'bdthemes-element-pack' ),
-				    'dotted' => esc_html__( 'Dotted', 'bdthemes-element-pack' ),
-				    'dashed' => esc_html__( 'Dashed', 'bdthemes-element-pack' ),
-				    'double' => esc_html__( 'Double', 'bdthemes-element-pack' ),
-				    'groove' => esc_html__( 'Groove', 'bdthemes-element-pack' ),
-			    ],
-			    'default' => 'solid',
-			    'selectors' => [
-				    '{{WRAPPER}} .bdt-ep-circle-info-inner:after' => 'border-style: {{VALUE}} ',
-			    ],
-		    ]
-	    );
+        $this->add_control(
+            'circle_info_border_style2',
+            [
+                'label'   => esc_html__('Border Style', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
+                'options' => [
+                    'none'  => esc_html__('None', 'bdthemes-element-pack'),
+                    'solid'  => esc_html__('Solid', 'bdthemes-element-pack'),
+                    'dotted' => esc_html__('Dotted', 'bdthemes-element-pack'),
+                    'dashed' => esc_html__('Dashed', 'bdthemes-element-pack'),
+                    'double' => esc_html__('Double', 'bdthemes-element-pack'),
+                    'groove' => esc_html__('Groove', 'bdthemes-element-pack'),
+                ],
+                'default' => 'solid',
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-ep-circle-info-inner:after' => 'border-style: {{VALUE}} ',
+                ],
+            ]
+        );
 
-	    $this->add_responsive_control(
-		    'circle_info_border_width2',
-		    [
-			    'label'     => __('Border Width', 'bdthemes-element-pack'),
-			    'type'      => Controls_Manager::DIMENSIONS,
-			    'selectors' => [
-				    '{{WRAPPER}} .bdt-ep-circle-info-inner:after' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
-			    ],
-		    ]
-	    );
+        $this->add_responsive_control(
+            'circle_info_border_width2',
+            [
+                'label'     => esc_html__('Border Width', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::DIMENSIONS,
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-ep-circle-info-inner:after' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+                ],
+            ]
+        );
 
-	    $this->add_control(
-		    'circle_info_border_color2',
-		    [
-			    'label'     => __('Border Color', 'bdthemes-element-pack'),
-			    'type'      => Controls_Manager::COLOR,
-			    'selectors' => [
-				    '{{WRAPPER}} .bdt-ep-circle-info-inner:after' => 'border-color: {{VALUE}} ',
-			    ],
-		    ]
-	    );
+        $this->add_control(
+            'circle_info_border_color2',
+            [
+                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-ep-circle-info-inner:after' => 'border-color: {{VALUE}} ',
+                ],
+            ]
+        );
 
-	    $this->end_controls_tab();
+        $this->end_controls_tab();
 
-	    $this->end_controls_tabs();
+        $this->end_controls_tabs();
 
-	    $this->end_controls_section();
-
+        $this->end_controls_section();
     }
 
     protected function render() {
         $settings = $this->get_settings_for_display();
-        
+
         if ($settings['circle_info_auto_mode'] == 'yes') {
             $autoMode = true;
             if ($settings['circle_info_auto_time']['size']) {
@@ -1005,7 +1004,7 @@ class Circle_Info extends Module_Base
         if ($settings['circle_info_event']) {
             $circleInfoEvent = $settings['circle_info_event'];
         } else {
-	        $circleInfoEvent = false;
+            $circleInfoEvent = false;
         }
 
         $this->add_render_attribute(
@@ -1024,7 +1023,7 @@ class Circle_Info extends Module_Base
             ]
         );
 
-        ?> 
+?>
 
         <div <?php echo $this->get_render_attribute_string('circle_info'); ?>>
             <div class="bdt-ep-circle-info-wrap" id="<?php echo 'bdt-ep-circle-info-' . $this->get_id(); ?>">
@@ -1032,7 +1031,7 @@ class Circle_Info extends Module_Base
                 <div class="bdt-ep-circle-info-inner">
                     <?php
                     $i = 1;
-                    foreach ($settings['circle_info_icon_list'] as $index => $item):
+                    foreach ($settings['circle_info_icon_list'] as $index => $item) :
 
                         $this->add_render_attribute('sub_circle', 'class', 'bdt-ep-circle-info-sub-circle', true);
                         if ($i == 1) {
@@ -1040,8 +1039,8 @@ class Circle_Info extends Module_Base
                         }
                         $this->add_render_attribute('sub_circle', 'data-circle-index', $i++, true);
 
-                        
-                         $link_key_lg = 'link_' . $index; 
+
+                        $link_key_lg = 'link_' . $index;
                         if (!empty($item['circle_info_title_link']['url'])) {
 
                             $this->add_render_attribute($link_key_lg, 'href', $item['circle_info_title_link']['url'], true);
@@ -1058,32 +1057,32 @@ class Circle_Info extends Module_Base
                         }
 
 
-                        ?>
+                    ?>
                         <div <?php echo $this->get_render_attribute_string('sub_circle'); ?>>
-                           <?php if($settings['link_on_icon'] == 'yes'): ?> 
-                            <a <?php  echo $this->get_render_attribute_string($link_key_lg); ?> >
-                            <?php endif;?>    
-                                <?php if (!empty($item['circle_info_item_icon']['value'])): ?>
-                                <?php 
-                                    Icons_Manager::render_icon($item['circle_info_item_icon'], ['aria-hidden' => 'true']); 
-                                ?>
-                            <?php endif;?>
-                            
-                            <?php if($settings['link_on_icon'] == 'yes'): ?>
-                            </a>
-                           <?php endif;?>
+                            <?php if ($settings['link_on_icon'] == 'yes') : ?>
+                                <a <?php echo $this->get_render_attribute_string($link_key_lg); ?>>
+                                <?php endif; ?>
+                                <?php if (!empty($item['circle_info_item_icon']['value'])) : ?>
+                                    <?php
+                                    Icons_Manager::render_icon($item['circle_info_item_icon'], ['aria-hidden' => 'true']);
+                                    ?>
+                                <?php endif; ?>
+
+                                <?php if ($settings['link_on_icon'] == 'yes') : ?>
+                                </a>
+                            <?php endif; ?>
 
                         </div>
-                    <?php endforeach;?>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="bdt-ep-circle-info-content">
                     <?php
                     $i = 1;
-                    foreach ($settings['circle_info_icon_list'] as $index => $item):
-                        
-                        $this->add_render_attribute('circle_content', 'class', 'bdt-ep-circle-info-item icci'. $i++ .' elementor-repeater-item-'.esc_attr($item['_id']), true); 
-                    
+                    foreach ($settings['circle_info_icon_list'] as $index => $item) :
+
+                        $this->add_render_attribute('circle_content', 'class', 'bdt-ep-circle-info-item icci' . $i++ . ' elementor-repeater-item-' . esc_attr($item['_id']), true);
+
                         if ($i == 2) {
                             $this->add_render_attribute('circle_content', 'class', 'active');
                         }
@@ -1094,7 +1093,7 @@ class Circle_Info extends Module_Base
                         if (!empty($item['circle_info_title_link']['url'])) {
 
                             $this->add_render_attribute($link_key, 'href', $item['circle_info_title_link']['url'], true);
- 
+
                             if ($item['circle_info_title_link']['is_external']) {
                                 $this->add_render_attribute($link_key, 'target', '_blank', true);
                             }
@@ -1107,23 +1106,23 @@ class Circle_Info extends Module_Base
                         }
 
 
-                        ?>
+                    ?>
 
                         <div <?php echo $this->get_render_attribute_string('circle_content'); ?>>
-    
-                            <?php if (!empty($item['circle_info_item_icon']['value'])): ?>
+
+                            <?php if (!empty($item['circle_info_item_icon']['value'])) : ?>
                                 <div class="bdt-ep-circle-info-icon d-md-none">
-                                    <?php if($settings['link_on_icon'] == 'yes'): ?>
-                                        <a <?php echo $this->get_render_attribute_string($link_key); ?> >
-                                    <?php endif;?>
-                                    <?php 
+                                    <?php if ($settings['link_on_icon'] == 'yes') : ?>
+                                        <a <?php echo $this->get_render_attribute_string($link_key); ?>>
+                                        <?php endif; ?>
+                                        <?php
                                         Icons_Manager::render_icon($item['circle_info_item_icon'], ['aria-hidden' => 'true']);
-                                    ?>
-                                    <?php if($settings['link_on_icon'] == 'yes'): ?>
+                                        ?>
+                                        <?php if ($settings['link_on_icon'] == 'yes') : ?>
                                         </a>
-                                    <?php endif;?>
+                                    <?php endif; ?>
                                 </div>
-                            <?php endif;?>
+                            <?php endif; ?>
 
                             <?php
                             // $link_key
@@ -1131,27 +1130,27 @@ class Circle_Info extends Module_Base
 
                             <div class="bdt-ep-circle-info-content-inner">
                                 <div>
-                                    <a <?php echo $this->get_render_attribute_string($link_key); ?> >
+                                    <a <?php echo $this->get_render_attribute_string($link_key); ?>>
                                         <<?php echo Utils::get_valid_html_tag($settings['title_tags']); ?> <?php echo $this->get_render_attribute_string('circle_title_tags'); ?>>
-                                            <?php echo $item['circle_info_item_title']; ?>
+                                            <?php echo wp_kses_post($item['circle_info_item_title']); ?>
                                         </<?php echo Utils::get_valid_html_tag($settings['title_tags']); ?>>
                                     </a>
                                 </div>
 
                                 <div class="bdt-ep-circle-info-desc">
-                                    <?php echo $item['circle_info_item_details']; ?>
+                                    <?php echo wp_kses_post($item['circle_info_item_details']); ?>
                                 </div>
                             </div>
 
                         </div>
 
-                    <?php endforeach;?>
+                    <?php endforeach; ?>
 
                 </div>
 
             </div>
         </div>
 
-        <?php
+<?php
     }
 }

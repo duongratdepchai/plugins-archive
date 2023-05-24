@@ -1,4 +1,8 @@
 
+version 1.7.71
+
+-limit the scroll avia size
+
 version 1.7.70
 
 - added video close panel handle

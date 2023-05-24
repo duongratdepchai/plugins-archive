@@ -1,3 +1,59 @@
+## 7.0.1 [18th May 2023]
+
+### Fixed
+
+- Post gallery fatal error issue fixed
+- Comparison list Item style issue fixed
+- Future version compatibility notice removed
+- SVG Image widget code improved
+- Cryptocurrency Table width issue fixed
+
+## 7.0.0 [15th May 2023]
+
+### Added
+
+- Marquee widget added
+- SVG maps widget added
+- SVG Blob widget added
+- Icon mobile menu widget added
+- Content switcher widget added
+- Floating Knowledgebase widget added
+- Comparison List widget added
+- Content protector extension added
+- Realistic image shadow extension added
+- AdBlock Detector extension added
+- Crypto currency card widget added
+- Crypto currency table widget added
+- Crypto currency grid widget added
+- Crypto currency list widget added
+- Crypto currency carousel widget added
+- Crypto currency ticker widget added
+- Crypto currency chart widget added
+- Crypto currency chart carousel widget added
+- Fancy List 3d style added
+- Visibility Controls feature improved
+- Testimonial slider single skin design improved
+- Testimonial carousel twyla skin 2 style added
+- Ajax Load More option added in post grid widget
+
+### Fixed
+
+- SVG issue fixed in SVG image widget
+- Query "All" issue fixed in Charitable Campaign widget
+- Lightbox conflict issue fixed (Thanks to Thomas)
+- Skin Dropdown glitch issue fixed in User Login widget (Thanks to Lajos Kovács)
+- Image radius issue fixed in tutor lms course carousel widget
+- Tooltip issue fixed in Image Stack Widget (Thanks to Christos Kovousoglou)
+- JavaScript error issue fixed in Parallax component
+- Tooltip generates duplicate id issue fixed
+- Auto pausing videos issue fixed in Video component
+- Switcher component not initializing properly issue fixed
+- Tooltips are not removed from Dom if showing is prevented issue fixed
+- Toggle component uses anchor element's hash as target fallback issue fixed
+
+
+
+
 ## 6.15.5 [17th April 2023]
 
 ### Added
@@ -23,21 +79,6 @@
 - Fix Parallax component updating too late during slide animation in Filter component
 - Readmore issue fixed in interactive card widget
 
-## 6.15.4 [13th April 2023]
-
-### Added
-
-- Read more text repeater option added in static carousel widget
-- Before after button align, border, box shadow & circle shadow color option added in image compare widget
-
-### Fixed
-
-- Frontend eicon not showing issue fixed
-
-### Improved
-
-- System Improved
-
 ## 6.15.3 [11th April 2023]
 
 ### Added
@@ -48,10 +89,6 @@
 ### Fixed
 
 - Fatal error issue fixed in Post gallery widget all skin
-
-### Updated
-
-- License System Improved
 
 ## 6.15.2 [9th April 2023]
 

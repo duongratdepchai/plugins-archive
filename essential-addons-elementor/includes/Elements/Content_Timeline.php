@@ -1588,7 +1588,7 @@ class Content_Timeline extends Widget_Base
 						if (file_exists($template)) {
 							$query = new \WP_Query($args);
 							if ($query->have_posts()) {
-								if( 'horizontal' === $template_layout && !wp_is_mobile() ) {
+								if( 'horizontal' === $template_layout ) {
 									include($template);
 								} else {
 									while ($query->have_posts()) {

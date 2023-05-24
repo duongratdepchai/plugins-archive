@@ -148,6 +148,7 @@ if ( ! class_exists( 'Theplus_Widgets_Include' ) ) {
 				'tp_process_steps' => '\TheplusAddons\Widgets\ThePlus_Process_Steps',
 				'tp_row_background' => '\TheplusAddons\Widgets\ThePlus_Row_Background',
 				'tp_scroll_navigation' => '\TheplusAddons\Widgets\ThePlus_Scroll_Navigation',
+				'tp_scroll_sequence' => '\TheplusAddons\Widgets\ThePlus_Scroll_Sequence',
 				'tp_search_filter' => '\TheplusAddons\Widgets\ThePlus_Search_Filter',
 				'tp_search_bar' => '\TheplusAddons\Widgets\ThePlus_Search_Bar',
 				'tp_site_logo' => '\TheplusAddons\Widgets\ThePlus_Site_Logo',

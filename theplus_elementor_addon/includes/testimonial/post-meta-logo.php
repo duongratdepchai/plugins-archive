@@ -1,5 +1,6 @@
 <?php 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+// Exit if accessed directly
+if (!defined('ABSPATH')) exit; 
 
 if($tlContentFrom == 'tlrepeater'){
 	$logo_id = $testiLogoId;	
@@ -7,9 +8,9 @@ if($tlContentFrom == 'tlrepeater'){
 		if(!empty($logo_id)){					
 			$testimonial_logo = tp_get_image_rander($logo_id, $thumbnail);
 		}
-	}else{
-		$testimonial_logo = $testiLogo;
 	}
+
+	$testimonial_logo = $testiLogo;
 }else{
 	if($display_thumbnail == 'yes' && !empty($thumbnail)){
 		$testimonial_logo= tp_get_image_rander(get_the_ID(), $thumbnail,[], 'post');		

@@ -10,7 +10,7 @@ use Elementor\Group_Control_Text_Stroke;
 use Elementor\Icons_Manager;
 use Elementor\Repeater;
 
-if ( !defined('ABSPATH') ) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class Fancy_Icons extends Module_Base {
 
@@ -63,7 +63,7 @@ class Fancy_Icons extends Module_Base {
         $repeater = new Repeater();
 
         $repeater->add_control(
-            'social_type', 
+            'social_type',
             [
                 'label'        => esc_html__('Social Type', 'bdthemes-element-pack'),
                 'type'         => Controls_Manager::CHOOSE,
@@ -85,9 +85,9 @@ class Fancy_Icons extends Module_Base {
         );
 
         $repeater->add_control(
-            'social_icon', 
+            'social_icon',
             [
-                'label'     => __('Icon', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Icon', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::ICONS,
                 'fa4compatibility' => 'icon',
                 'condition' => [
@@ -99,12 +99,12 @@ class Fancy_Icons extends Module_Base {
         );
 
         $repeater->add_control(
-            'social_name', 
-             [
-                'label'       => __('Custom Label', 'bdthemes-element-pack'),
+            'social_name',
+            [
+                'label'       => esc_html__('Custom Label', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::TEXT,
                 'dynamic'     => ['active' => true],
-                'default'     => __('Facebook', 'bdthemes-element-pack'),
+                'default'     => esc_html__('Facebook', 'bdthemes-element-pack'),
                 'label_block' => true,
                 'condition'   => [
                     'social_type' => 'text',
@@ -114,8 +114,8 @@ class Fancy_Icons extends Module_Base {
         );
 
         $repeater->add_control(
-            'social_link', 
-             [
+            'social_link',
+            [
                 'label'         => esc_html__('Custom Link', 'bdthemes-element-pack'),
                 'type'          => Controls_Manager::URL,
                 'default'       => ['url' => '#'],
@@ -125,12 +125,12 @@ class Fancy_Icons extends Module_Base {
                     'social_type!' => ''
                 ]
             ]
-        ); 
+        );
 
         $repeater->add_control(
-            'icon_color', 
-             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+            'icon_color',
+            [
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}.bdt-fancy-icons-item a'          => 'color: {{VALUE}};',
@@ -139,9 +139,9 @@ class Fancy_Icons extends Module_Base {
         );
 
         $repeater->add_control(
-            'icon_hover_color', 
-             [
-                'label'     => __('Hover Color', 'bdthemes-element-pack'),
+            'icon_hover_color',
+            [
+                'label'     => esc_html__('Hover Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}.bdt-fancy-icons-item:hover a'          => 'color: {{VALUE}};',
@@ -150,9 +150,9 @@ class Fancy_Icons extends Module_Base {
         );
 
         $repeater->add_control(
-            'icon_background_color', 
-             [
-                'label'     => __('Background', 'bdthemes-element-pack'),
+            'icon_background_color',
+            [
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}}.bdt-fancy-icons-item' => 'background: {{VALUE}};',
@@ -168,19 +168,19 @@ class Fancy_Icons extends Module_Base {
                 'fields' => $repeater->get_controls(),
                 'default'     => [
                     [
-                        'social_name' => __('Facebook', 'bdthemes-element-pack'),
+                        'social_name' => esc_html__('Facebook', 'bdthemes-element-pack'),
                         'social_icon' => ['value' => 'fab fa-facebook-f', 'library' => 'fa-brands'],
                     ],
                     [
-                        'social_name' => __('Twitter', 'bdthemes-element-pack'),
+                        'social_name' => esc_html__('Twitter', 'bdthemes-element-pack'),
                         'social_icon' => ['value' => 'fab fa-twitter', 'library' => 'fa-brands'],
                     ],
                     [
-                        'social_name' => __('Linkedin', 'bdthemes-element-pack'),
+                        'social_name' => esc_html__('Linkedin', 'bdthemes-element-pack'),
                         'social_icon' => ['value' => 'fab fa-linkedin-in', 'library' => 'fa-brands'],
                     ],
                     [
-                        'social_name' => __('Instagram', 'bdthemes-element-pack'),
+                        'social_name' => esc_html__('Instagram', 'bdthemes-element-pack'),
                         'social_icon' => ['value' => 'fab fa-instagram', 'library' => 'fa-brands'],
                     ],
                 ],
@@ -235,7 +235,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_control(
             'background_image',
             [
-                'label'     => __('Background Image', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Background Image', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::MEDIA,
                 'default'   => [
                     'url' => BDTEP_ASSETS_URL . 'images/gallery/item-5.svg',
@@ -317,7 +317,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_control(
             'item_background_color',
             [
-                'label'     => __('Background', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-fancy-icons-item' => 'background: {{VALUE}};',
@@ -328,7 +328,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_control(
             'item_hover_background_color',
             [
-                'label'     => __('Hover Background', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Hover Background', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-fancy-icons-item:hover' => 'background: {{VALUE}};',
@@ -347,7 +347,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_responsive_control(
             'fancy_ixons_item_radius',
             [
-                'label'      => __('Radius', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Radius', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors'  => [
@@ -377,7 +377,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_responsive_control(
             'item_padding',
             [
-                'label'      => __('Padding', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
@@ -398,7 +398,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_control(
             'item_icon_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-fancy-icons-item a.icon'     => 'color: {{VALUE}};',
@@ -410,7 +410,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_control(
             'item_icon_hover_color',
             [
-                'label'     => __('Hover Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Hover Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-fancy-icons-item:hover a.icon' => 'color: {{VALUE}};',
@@ -422,7 +422,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_responsive_control(
             'icon_size',
             [
-                'label'      => __('Size', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Size', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['vw'],
                 'range'      => [
@@ -450,18 +450,18 @@ class Fancy_Icons extends Module_Base {
         );
 
         $this->add_group_control(
-			Group_Control_Text_Stroke::get_type(),
-			[
-				'name' => 'item_text_stroke',
-                'label' => __('Text Stroke', 'bdthemes-element-pack') . BDTEP_NC,
-				'selector' => '{{WRAPPER}} .bdt-fancy-icons-item a.text',
-			]
-		);
+            Group_Control_Text_Stroke::get_type(),
+            [
+                'name' => 'item_text_stroke',
+                'label' => esc_html__('Text Stroke', 'bdthemes-element-pack') . BDTEP_NC,
+                'selector' => '{{WRAPPER}} .bdt-fancy-icons-item a.text',
+            ]
+        );
 
         $this->add_control(
             'item_text_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-fancy-icons-item a.text' => 'color: {{VALUE}};',
@@ -472,7 +472,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_control(
             'item_text_hover_color',
             [
-                'label'     => __('Hover Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Hover Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-fancy-icons-item:hover a.text' => 'color: {{VALUE}}; -webkit-text-stroke-color: {{VALUE}};',
@@ -483,7 +483,7 @@ class Fancy_Icons extends Module_Base {
         $this->add_responsive_control(
             'text_size',
             [
-                'label'      => __('Size', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Size', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['vw'],
                 'range'      => [
@@ -508,11 +508,11 @@ class Fancy_Icons extends Module_Base {
     protected function rendar_item_video($link) {
         $video_src = $link['video_link'];
 
-        ?>
-      <video autoplay loop muted playsinline>
-        <source src="<?php echo $video_src; ?>" type="video/mp4">
-      </video>
-        <?php
+?>
+        <video autoplay loop muted playsinline>
+            <source src="<?php echo esc_html($video_src); ?>" type="video/mp4">
+        </video>
+    <?php
     }
 
     protected function rendar_item_youtube($link) {
@@ -520,9 +520,9 @@ class Fancy_Icons extends Module_Base {
         $id  = (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $link['youtube_link'], $match)) ? $match[1] : false;
         $url = '//www.youtube.com/embed/' . $id . '?autoplay=1&mute=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;modestbranding=1&amp;wmode=transparent&amp;playsinline=1&playlist=' . $id;
 
-        ?>
-      <iframe src="<?php echo esc_url($url); ?>" allowfullscreen></iframe>
-        <?php
+    ?>
+        <iframe src="<?php echo esc_url($url); ?>" allowfullscreen></iframe>
+    <?php
     }
 
     public function render() {
@@ -537,83 +537,78 @@ class Fancy_Icons extends Module_Base {
 
 
 
-        if ( $settings['background_type'] == 'image' ) {
+        if ($settings['background_type'] == 'image') {
 
             $thumb_url = Group_Control_Image_Size::get_attachment_image_src($settings['background_image']['id'], 'thumbnail_size', $settings);
 
-            if ( !$thumb_url ) {
+            if (!$thumb_url) {
                 $thumb_url = $settings['background_image']['url'];
             }
 
 
-            $this->add_render_attribute('advanced-icons', 'style', 'background-image: url(' . esc_url($thumb_url) . '); background-attachment:' . esc_attr($settings['background_attachment']) . ')' );
-
+            $this->add_render_attribute('advanced-icons', 'style', 'background-image: url(' . esc_url($thumb_url) . '); background-attachment:' . esc_attr($settings['background_attachment']) . ')');
         }
 
-        ?>
-      <div <?php echo $this->get_render_attribute_string('advanced-icons'); ?> >
+    ?>
+        <div <?php echo $this->get_render_attribute_string('advanced-icons'); ?>>
 
-        <div class="bdt-fancy-icons-background">
-            <?php if ( ($settings['background_type'] == 'youtube') && $settings['youtube_link'] ) : ?>
-                <?php $this->rendar_item_youtube($settings); ?>
+            <div class="bdt-fancy-icons-background">
+                <?php if (($settings['background_type'] == 'youtube') && $settings['youtube_link']) : ?>
+                    <?php $this->rendar_item_youtube($settings); ?>
 
-            <?php elseif ( ($settings['background_type'] == 'video') && $settings['video_link'] ) : ?>
-                <?php $this->rendar_item_video($settings); ?>
-            <?php endif; ?>
-        </div>
+                <?php elseif (($settings['background_type'] == 'video') && $settings['video_link']) : ?>
+                    <?php $this->rendar_item_video($settings); ?>
+                <?php endif; ?>
+            </div>
 
-        <div
-            class="bdt-grid bdt-grid-collapse bdt-child-width-1-<?php echo esc_attr($mobile_cols); ?> bdt-child-width-1-<?php echo esc_attr($tablet_cols); ?>@s bdt-child-width-1-<?php echo esc_attr($desktop_cols); ?>@l"
-            data-bdt-grid>
+            <div class="bdt-grid bdt-grid-collapse bdt-child-width-1-<?php echo esc_attr($mobile_cols); ?> bdt-child-width-1-<?php echo esc_attr($tablet_cols); ?>@s bdt-child-width-1-<?php echo esc_attr($desktop_cols); ?>@l" data-bdt-grid>
 
-            <?php
-            foreach ( $settings['share_items'] as $item ) :
+                <?php
+                foreach ($settings['share_items'] as $item) :
 
-                $this->add_render_attribute('share-item', 'class', 'bdt-fancy-icons-item bdt-flex bdt-flex-middle bdt-flex-center elementor-repeater-item-' . esc_attr($item['_id']), true);
+                    $this->add_render_attribute('share-item', 'class', 'bdt-fancy-icons-item bdt-flex bdt-flex-middle bdt-flex-center elementor-repeater-item-' . esc_attr($item['_id']), true);
 
-                $this->add_render_attribute('share-link', 'class', [ esc_attr($item['social_type']) ], true);
+                    $this->add_render_attribute('share-link', 'class', [esc_attr($item['social_type'])], true);
 
-                $has_icon = !empty($item['social_icon']);
-                $has_text = !empty($item['social_name']);
+                    $has_icon = !empty($item['social_icon']);
+                    $has_text = !empty($item['social_name']);
 
-                if ( ! empty( $item['social_link']['url'] ) ) {
-                    $this->add_render_attribute( 'share-link', 'href', $item['social_link']['url'], true );
-        
-                    if ( $item['social_link']['is_external'] ) {
-                        $this->add_render_attribute( 'share-link', 'target', '_blank', true );
+                    if (!empty($item['social_link']['url'])) {
+                        $this->add_render_attribute('share-link', 'href', $item['social_link']['url'], true);
+
+                        if ($item['social_link']['is_external']) {
+                            $this->add_render_attribute('share-link', 'target', '_blank', true);
+                        }
+
+                        if ($item['social_link']['nofollow']) {
+                            $this->add_render_attribute('share-link', 'rel', 'nofollow', true);
+                        }
                     }
-        
-                    if ( $item['social_link']['nofollow'] ) {
-                        $this->add_render_attribute( 'share-link', 'rel', 'nofollow', true );
-                    }
-        
-                }
 
                 ?>
-              <div <?php echo $this->get_render_attribute_string('share-item'); ?>>
-                <a <?php echo $this->get_render_attribute_string('share-link'); ?>>
+                    <div <?php echo $this->get_render_attribute_string('share-item'); ?>>
+                        <a <?php echo $this->get_render_attribute_string('share-link'); ?>>
 
-                    <?php if ( $has_icon or $has_text ) : ?>
-                      <span class="bdt-icon-wrapper">
-									<?php if ( $has_icon and 'icon' == $item['social_type'] ) { ?>
+                            <?php if ($has_icon or $has_text) : ?>
+                                <span class="bdt-icon-wrapper">
+                                    <?php if ($has_icon and 'icon' == $item['social_type']) { ?>
 
-                      <?php Icons_Manager::render_icon($item['social_icon'], ['aria-hidden' => 'true']); ?>
+                                        <?php Icons_Manager::render_icon($item['social_icon'], ['aria-hidden' => 'true']); ?>
 
-                  <?php } elseif ( $has_text and 'text' == $item['social_type'] ) { ?>
-                      <?php echo wp_kses($item['social_name'], element_pack_allow_tags('title')); ?>
-                  <?php } ?>
-								</span>
-                    <?php endif; ?>
+                                    <?php } elseif ($has_text and 'text' == $item['social_type']) { ?>
+                                        <?php echo wp_kses($item['social_name'], element_pack_allow_tags('title')); ?>
+                                    <?php } ?>
+                                </span>
+                            <?php endif; ?>
 
-                </a>
+                        </a>
 
-              </div>
-            <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
+
+            </div>
 
         </div>
-
-      </div>
-        <?php
+<?php
     }
-
 }

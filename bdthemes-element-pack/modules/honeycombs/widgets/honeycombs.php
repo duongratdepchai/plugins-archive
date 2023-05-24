@@ -63,21 +63,21 @@ class Honeycombs extends Module_Base {
         $this->start_controls_section(
             'section_honeycombs_item',
             [
-                'label' => __('Layout', 'bdthemes-element-pack'),
+                'label' => esc_html__('Layout', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'honeycomb_style',
             [
-                'label'   => __('HoneyComb Style', 'bdthemes-element-pack'),
+                'label'   => esc_html__('HoneyComb Style', 'bdthemes-element-pack'),
                 'type'    => Controls_Manager::SELECT,
                 'default' => 'default',
                 'options' => [
-                    'default' => __('Default', 'bdthemes-element-pack'),
-                    'radius'  => __('Radius', 'bdthemes-element-pack'),
-                    'radius2' => __('Large Radius', 'bdthemes-element-pack'),
-                    'zigzag'  => __('Zigzag', 'bdthemes-element-pack'),
+                    'default' => esc_html__('Default', 'bdthemes-element-pack'),
+                    'radius'  => esc_html__('Radius', 'bdthemes-element-pack'),
+                    'radius2' => esc_html__('Large Radius', 'bdthemes-element-pack'),
+                    'zigzag'  => esc_html__('Zigzag', 'bdthemes-element-pack'),
                 ],
             ]
         );
@@ -101,14 +101,14 @@ class Honeycombs extends Module_Base {
         $repeater->start_controls_tab(
             'tab_content_front',
             [
-                'label' => __('Front', 'bdthemes-element-pack'),
+                'label' => esc_html__('Front', 'bdthemes-element-pack'),
             ]
         );
 
         $repeater->add_control(
             'honeycombs_item_icon',
             [
-                'label'       => __('Icon', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Icon', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::ICONS,
                 'label_block' => true,
                 'default'     => [
@@ -124,11 +124,11 @@ class Honeycombs extends Module_Base {
         $repeater->add_control(
             'honeycombs_title',
             [
-                'label'       => __('Title', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Title', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::TEXT,
                 'label_block' => true,
-                'placeholder' => __('Title Item', 'bdthemes-element-pack'),
-                'default'     => __('Title Item', 'bdthemes-element-pack'),
+                'placeholder' => esc_html__('Title Item', 'bdthemes-element-pack'),
+                'default'     => esc_html__('Title Item', 'bdthemes-element-pack'),
                 'dynamic'     => [
                     'active' => true,
                 ],
@@ -162,7 +162,7 @@ class Honeycombs extends Module_Base {
         $repeater->add_control(
             'honeycombs_bg_img',
             [
-                'label'       => __('Background Image', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Background Image', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::MEDIA,
                 'dynamic'     => [
                     'active' => true,
@@ -182,17 +182,17 @@ class Honeycombs extends Module_Base {
         $repeater->start_controls_tab(
             'tab_content_back',
             [
-                'label' => __('Back', 'bdthemes-element-pack'),
+                'label' => esc_html__('Back', 'bdthemes-element-pack'),
             ]
         );
 
         $repeater->add_control(
             'honeycombs_content',
             [
-                'label'       => __('Content', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Content', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::WYSIWYG,
-                'default'     => __("Default description. Lorem Ipsum is simply dummy text of the printing and typesetting industry.   ", 'bdthemes-element-pack'),
-                'placeholder' => __('Type your description here', 'bdthemes-element-pack'),
+                'default'     => esc_html__("Default description. Lorem Ipsum is simply dummy text of the printing and typesetting industry.   ", 'bdthemes-element-pack'),
+                'placeholder' => esc_html__('Type your description here', 'bdthemes-element-pack'),
                 'dynamic'     => [
                     'active' => true,
                 ],
@@ -225,7 +225,7 @@ class Honeycombs extends Module_Base {
         $repeater->add_control(
             'honeycombs_bg_img_back',
             [
-                'label'       => __('Background Image', 'bdthemes-element-pack') . BDTEP_NC,
+                'label'       => esc_html__('Background Image', 'bdthemes-element-pack') . BDTEP_NC,
                 'type'        => Controls_Manager::MEDIA,
                 'dynamic'     => [
                     'active' => true,
@@ -247,13 +247,13 @@ class Honeycombs extends Module_Base {
         $repeater->add_control(
             'honeycombs_link',
             [
-                'label'       => __('Link', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Link', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::URL,
                 'dynamic'     => [
                     'active' => true,
                 ],
                 'label_block' => true,
-                'placeholder' => __('https://your-link.com', 'bdthemes-element-pack'),
+                'placeholder' => esc_html__('https://your-link.com', 'bdthemes-element-pack'),
                 'condition' => [
                     'item_invisible' => ''
                 ]
@@ -263,7 +263,7 @@ class Honeycombs extends Module_Base {
         $this->add_control(
             'honeycombs_list',
             [
-                'label'       => __('Items', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Items', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::REPEATER,
                 'fields'      => $repeater->get_controls(),
                 'separator'   => 'before',
@@ -334,7 +334,7 @@ class Honeycombs extends Module_Base {
         $this->start_controls_section(
             'section_honeycombs_additional',
             [
-                'label' => __('Additional', 'bdthemes-element-pack'),
+                'label' => esc_html__('Additional', 'bdthemes-element-pack'),
             ]
         );
 
@@ -382,7 +382,7 @@ class Honeycombs extends Module_Base {
         $this->add_control(
             'title_tag',
             [
-                'label'     => __('Title Tag', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Title Tag', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SELECT,
                 'default'   => 'h3',
                 'options'   => element_pack_heading_size(),
@@ -435,7 +435,7 @@ class Honeycombs extends Module_Base {
         $this->start_controls_section(
             'section_style_items',
             [
-                'label' => __('Item', 'bdthemes-element-pack'),
+                'label' => esc_html__('Item', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -445,7 +445,7 @@ class Honeycombs extends Module_Base {
         $this->start_controls_tab(
             'tab_items_front',
             [
-                'label' => __('Front', 'bdthemes-element-pack'),
+                'label' => esc_html__('Front', 'bdthemes-element-pack'),
             ]
         );
 
@@ -472,7 +472,7 @@ class Honeycombs extends Module_Base {
         $this->start_controls_tab(
             'tab_items_back',
             [
-                'label' => __('Back', 'bdthemes-element-pack'),
+                'label' => esc_html__('Back', 'bdthemes-element-pack'),
             ]
         );
 
@@ -506,7 +506,7 @@ class Honeycombs extends Module_Base {
         $this->start_controls_section(
             'section_style_icon',
             [
-                'label'     => __('Icon', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Icon', 'bdthemes-element-pack'),
                 'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'icon_display' => 'yes',
@@ -549,7 +549,7 @@ class Honeycombs extends Module_Base {
         $this->add_responsive_control(
             'icon_padding',
             [
-                'label'      => __('Padding', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
@@ -566,7 +566,7 @@ class Honeycombs extends Module_Base {
         $this->start_controls_section(
             'section_style_title',
             [
-                'label'     => __('Title', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Title', 'bdthemes-element-pack'),
                 'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'title_display' => 'yes',
@@ -590,7 +590,7 @@ class Honeycombs extends Module_Base {
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'title_typography',
-                'label'    => __('Typography', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
                 'selector' => '{{WRAPPER}} .bdt-honeycombs-area .bdt-honeycombs .bdt-honeycombs-inner-wrapper .bdt-comb .bdt-inner .bdt-wrapper .bdt-title',
             ]
         );
@@ -599,7 +599,7 @@ class Honeycombs extends Module_Base {
         $this->add_responsive_control(
             'title_padding',
             [
-                'label'      => __('Padding', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
@@ -618,7 +618,7 @@ class Honeycombs extends Module_Base {
         $this->start_controls_section(
             'section_style_description',
             [
-                'label'     => __('Description', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Description', 'bdthemes-element-pack'),
                 'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'description_display' => 'yes',
@@ -642,7 +642,7 @@ class Honeycombs extends Module_Base {
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'description_typography',
-                'label'    => __('Typography', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
                 'selector' => '{{WRAPPER}} .bdt-honeycombs-area .bdt-honeycombs .bdt-honeycombs-inner-wrapper .bdt-comb .bdt-inner .bdt-wrapper .bdt-content',
             ]
         );
@@ -651,7 +651,7 @@ class Honeycombs extends Module_Base {
         $this->add_responsive_control(
             'description_padding',
             [
-                'label'      => __('Padding', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors'  => [
@@ -767,14 +767,14 @@ class Honeycombs extends Module_Base {
 
                             <?php if ($settings['title_display'] == 'yes') : ?>
                                 <<?php echo Utils::get_valid_html_tag($titleTag); ?> class="bdt-title">
-                                    <?php echo $item['honeycombs_title']; ?>
+                                    <?php echo wp_kses_post($item['honeycombs_title']); ?>
                                 </<?php echo Utils::get_valid_html_tag($titleTag); ?>>
                             <?php endif; ?>
                         </div>
                         <div class="bdt-back-content">
                             <?php if ($settings['description_display'] == 'yes') : ?>
                                 <div class="bdt-content">
-                                    <?php echo $item['honeycombs_content']; ?>
+                                    <?php echo wp_kses_post($item['honeycombs_content']); ?>
                                 </div>
                             <?php endif; ?>
                         </div>

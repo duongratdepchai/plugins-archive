@@ -10,7 +10,7 @@ trait Enqueue
         if (in_array('adv-google-map', $widgets) && '' != get_option('eael_save_google_map_api')) {
             wp_enqueue_script(
                 'eael-google-map-api',
-                'https://maps.googleapis.com/maps/api/js?key=' . get_option('eael_save_google_map_api') . '',
+                'https://maps.googleapis.com/maps/api/js?key=' . get_option('eael_save_google_map_api') . '&callback=Function.prototype',
                 ['jquery'],
                 $version,
                 false

@@ -3228,7 +3228,7 @@ class ThePlus_Search_Bar extends Widget_Base {
 				'label'=>__('Title Color','theplus'),
 				'type'=>Controls_Manager::COLOR,
 				'selectors'=>[
-					'{{WRAPPER}} .tp-search-bar .tp-search-area:hover .tp-serpost-title'=>'color:{{VALUE}}'
+					'{{WRAPPER}} .tp-search-bar .tp-serpost-title:hover .tp-serpost-title'=>'color:{{VALUE}}'
 				],
 				'condition'=>[
 					'TitleOn'=>'yes',

@@ -24,6 +24,8 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Dynamic_Devices extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-dynamic-device';
@@ -36,6 +38,12 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
     public function get_icon() {
         return 'fa fa-laptop theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "dynamic-device";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-creatives');
@@ -296,7 +304,7 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
 		$this->add_control(
 			'iframe_link',
 			[
-				'label' => esc_html__( 'IFrame URL', 'theplus' ),
+				'label' => wp_kses_post( "IFrame URL <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "live-website-in-mockup-using-iframes-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::URL,
 				'dynamic' => [
 					'active' => true,
@@ -311,7 +319,7 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
 		$this->add_control(
 			'media_image',
 			[
-				'label' => esc_html__( 'Media Image', 'theplus' ),
+				'label' => wp_kses_post( "Media Image <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "create-website-portfolio-showcase-page-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::MEDIA,
 				'default' => [
 					'url' => \Elementor\Utils::get_placeholder_image_src(),
@@ -328,7 +336,7 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
 		$this->add_control(
 			'content_template',
 			[
-				'label'       => esc_html__( 'Elementor Templates', 'theplus' ),
+				'label' => wp_kses_post( "Elementor Templates <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-templates-inside-a-device-mockup/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'        => Controls_Manager::SELECT,
 				'default'     => '0',
 				'options'     => theplus_get_templates(),
@@ -342,7 +350,7 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
 		$this->add_control(
 			'slider_gallery',
 			[
-				'label' => esc_html__( 'Select Multiple Images', 'theplus' ),
+				'label' => wp_kses_post( "Select Multiple Images <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "device-slider-in-elementor-for-smartwatch-tablet-custom-device/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => \Elementor\Controls_Manager::GALLERY,
 				'default' => [],
 				'condition'    => [
@@ -1435,7 +1443,7 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
 		$this->add_responsive_control(
 			'transition_duration',
 			[
-				'label'   => esc_html__( 'Transition Duration', 'theplus' ),
+				'label' => wp_kses_post( "Transition Duration <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "create-website-portfolio-showcase-page-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 4,
@@ -2491,6 +2499,7 @@ class ThePlus_Dynamic_Devices extends Widget_Base {
 
 		/*--On Scroll View Animation ---*/
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
 	
     protected function render() {

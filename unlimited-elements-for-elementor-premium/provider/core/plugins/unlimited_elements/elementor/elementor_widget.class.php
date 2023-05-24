@@ -749,10 +749,11 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	if($conditionOperator == "not_equal")
     		$conditionAttribute .= "!";
     	
+    	if(is_array($conditionValue) && count($conditionValue) == 1)
+    		$conditionValue = $conditionValue[0];
     	
     	$arrCondition[$conditionAttribute] = $conditionValue;
-    	
-    	
+    	    	
     	// add second condition
     	
     	$conditionAttribute2 = UniteFunctionsUC::getVal($param, "condition_attribute2");
@@ -767,7 +768,11 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	
     	if(isset($arrCondition[$conditionAttribute2]))
     		return($arrCondition);
-    	
+
+    	if(is_array($conditionValue2) && count($conditionValue2) == 1)
+    		$conditionValue2 = $conditionValue2[0];
+    		
+    		
     	$arrCondition[$conditionAttribute2] = $conditionValue2;
     	
     	
@@ -803,7 +808,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	
     	//set condition
     	if($enableCondition == true){
-    		$elementorCondition = $this->getControlArrayUC_getCondition($param, $elementorCondition);    		    		
+    		$elementorCondition = $this->getControlArrayUC_getCondition($param, $elementorCondition);   
     	}
     	
     	if(isset($param["value"]))
@@ -979,6 +984,10 @@ class UniteCreatorElementorWidget extends Widget_Base {
     		case UniteCreatorDialogParam::PARAM_TERM_SELECT:
     			$controlType = "uc_select_special";
     		break;
+    		case UniteCreatorDialogParam::PARAM_RAW_HTML:
+    			$controlType = "raw_html";
+    			$arrControl["label_block"] = true;
+    		break;
     		default:
     			
     			$addonTitle = $this->objAddon->getTitle();
@@ -1007,6 +1016,13 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	
     	//add options
     	switch($type){
+    		case UniteCreatorDialogParam::PARAM_RAW_HTML:
+    		
+    			$html = UniteFunctionsUC::getVal($param, "html");
+    			
+    			$arrControl["show_label"] = false;
+    			$arrControl["raw"] = $html;
+    		break;
     		case UniteCreatorDialogParam::PARAM_HEADING:
     			
     			$arrControl["label"] = $defaultValue;
@@ -1720,10 +1736,9 @@ class UniteCreatorElementorWidget extends Widget_Base {
     		$arrControl["label_block"] = true;
 
     	/*
-    	if($type == "uc_gallery"){    		
-    		dmp($arrControl);exit();}
+    	if($name == "another"){//dmp($arrControl);exit();}
     	*/
-    		
+    
     	return($arrControl);
     }
 
@@ -2021,7 +2036,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
      * get addon depends
      */
     protected function ucGetAddonDepents(UniteCreatorAddon $objAddon, $arrHandles=array()){
-
+		
     	$output = new UniteCreatorOutput();
     	$output->initByAddon($objAddon);
     	
@@ -2424,7 +2439,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	    		if(!empty($elementorCondition))
 	    			$arrSectionOptions["condition"] = $elementorCondition;
 	    	}
-         		
+         	
          	$this->start_controls_section($catID, $arrSectionOptions);
          		
 	          if($isGeneralSection == true && $isItemsEnabled == true && $itemsType == "image")
@@ -3700,12 +3715,18 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	    		$this->putAddonNotExistErrorMesssage();
 	    		return(false);
 	    	}
+
 	    	
 	    	$arrValues = $this->getSettingsValuesUC();
 	    	
 	        $widgetID = $this->get_id();
 	    	
 	        $addonTitle = $objAddon->getTitle();
+	    	
+	        if(GlobalsProviderUC::$isUnderNoWidgetsToDisplay == true){
+	        	echo "<!-- skip widget output: {$addonTitle} -->\n";
+	        	return(false);
+	        }
 	        
 	    	HelperUC::addDebug("output widget ($widgetID) - $addonTitle");
 	    	
@@ -3816,7 +3837,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	        
 	        if($isEditMode == true){
 				$arrIncludes = $output->getProcessedIncludes(true, false, "js");
-								
+				
 	        	$jsonIncludes = UniteFunctionsUC::jsonEncodeForClientSide($arrIncludes);
 	        	
 	        	if(empty($arrIncludes))
@@ -3832,7 +3853,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	        }
 	       	
 	        $htmlOutput = $output->getHtmlBody($scriptsHardCoded, $putCssIncludesInBody,true,$params);
-	        	        
+	       	
         	echo UniteProviderFunctionsUC::escCombinedHtml($htmlOutput);
 	        
 	        $htmlExtra = $this->getExtraWidgetHTML($arrValues, $objAddon);

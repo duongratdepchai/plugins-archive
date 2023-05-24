@@ -1829,8 +1829,8 @@ endif;
 					    }
 				    }
 
-				    $results['rowCount']    = $endRow - $results['startRow'];
-				    $results['columnCount'] = $endColumn - $results['startColumn'];
+				    $results['rowCount']    = absint( $endRow ) - $results['startRow'];
+				    $results['columnCount'] = absint( $endColumn ) - $results['startColumn'];
 
 				    if ( isset( $connection['sheets'][0]['merges'] ) && is_array( $connection['sheets'][0]['merges'] ) ) {
 					    $results['mergeData'] = $connection['sheets'][0]['merges'];

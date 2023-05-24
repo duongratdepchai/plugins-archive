@@ -206,20 +206,23 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
         return $result;
     }
 
-    public static function list_tablepress_tables()
-    {
-        $result = [];
-        $tables = \TablePress::$model_table->load_all(true);
+	public static function list_tablepress_tables() {
+		if ( empty( \TablePress::$model_table ) ) {
+			return [];
+		}
 
-        if ($tables) {
-            foreach ($tables as $table) {
-                $table = \TablePress::$model_table->load($table, false, false);
-                $result[$table['id']] = $table['name'];
-            }
-        }
+		$result = [];
+		$tables = \TablePress::$model_table->load_all( true );
 
-        return $result;
-    }
+		if ( $tables ) {
+			foreach ( $tables as $table ) {
+				$table                  = \TablePress::$model_table->load( $table, false, false );
+				$result[ $table['id'] ] = $table['name'];
+			}
+		}
+
+		return $result;
+	}
 
 	/**
 	 * eael_pro_validate_html_tag
@@ -259,7 +262,8 @@ class Helper extends \Essential_Addons_Elementor\Classes\Helper
             );
         }
 
-        $dropdown_options['none'] = esc_html__( 'None', 'essential-addons-elementor' );
+        $dropdown_options['desktop']    = esc_html__( 'Desktop (> 2400px)', 'essential-addons-elementor' );
+        $dropdown_options['none']       = esc_html__( 'None', 'essential-addons-elementor' );
         
         return $dropdown_options;
     }

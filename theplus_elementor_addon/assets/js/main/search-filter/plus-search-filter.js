@@ -770,8 +770,10 @@
 					GetHtml = document.querySelectorAll(`input[name="${Name}"]`);
                     
 					fieldValue[Field] = self;
+
 					if(GetHtml.length > 0){
 						let Getdata = (GetHtml[0] && GetHtml[0].dataset && GetHtml[0].dataset.location) ? JSON.parse(GetHtml[0].dataset.location) : '';
+
 							if(Getdata){
 								let Geovalue = (Getdata && Getdata.geo && Getdata.geo.toString()) ? Getdata.geo.toString() : ""; 
 									fieldValue[Field]['locationdata'] = Getdata;
@@ -779,7 +781,10 @@
 									fieldValue[Field]['value'].push( Geovalue );
 
 								FilterTagHTML(Getdata.name, Name, Getdata.name, Filter_Tags, 'autocomplete');
-							}
+							}else{
+                                fieldValue[Field]['locationdata'] = '';
+                                fieldValue[Field]['value'] = new Array();
+                            }
   
 							if(basic.URLParameter){
 								let Urldata = ( Getdata && Getdata.fullAddress ) ? Getdata.fullAddress : '';
@@ -1190,6 +1195,7 @@
 			location.push( `<div class="tp-filter-container"><a class="tp-tag-link" data-name="${Name}" data-id="${Id}" data-type="${type}"><span class="tp-filter-tag"><i class="fa fa-times" aria-hidden="true"></i> ${Val} </span></a></div>`);
 		}
 
+        /**Ajax Call Here*/
 		var ajaxHandler = function(data, priceRange) {
 			tpgbSkeleton_filter('visible');
 
@@ -1236,18 +1242,10 @@
 										Marks = (data[index].Maplocation.marks) ? data[index].Maplocation.marks : '',
 										Address = (data[index].Maplocation.address) ? [...new Set(data[index].Maplocation.address)] : '',
 										letlong = (data[index].Maplocation.letlong) ? data[index].Maplocation.letlong : '';
-
+                                        
 									if(Marks){
-										// let test = [];
-											// Marks.forEach(function(item, gidx){
-												// if( !test.includes(`${item[0]},${item[1]}`) ){
-												// 	test.push(`${item[0]},${item[1]}`);
-												// }else{
-												// 	Marks.splice(index, gidx);
-												// }
-											// });
 										var map = new google.maps.Map( document.getElementById(item.dataset.id), {
-											zoom: 3,
+											zoom: (MapOptions && MapOptions.zoom) ? Number(MapOptions.zoom) : 0,
 											center: new google.maps.LatLng(letlong[0], letlong[1]),
 											mapTypeId: google.maps.MapTypeId[MapOptions.mapTypeId],
 										});
@@ -1677,7 +1675,7 @@
                                         }else if(layout == 'metro'){
                                             if( MainClass.classList.contains('list-isotope-metro') ){
                                                 setTimeout(function(){	
-                                                    theplus_setup_packery_portfolio('all');	
+                                                    theplus_setup_packery_portfolio("*");	
                                                 }, delayload);
                                             }
                                         }
@@ -1816,7 +1814,7 @@
                                         }else if(layout == 'metro'){
                                             if( MainClass.classList.contains('list-isotope-metro') ){
                                                 setTimeout(function(){	
-                                                    theplus_setup_packery_portfolio('all');	
+                                                    theplus_setup_packery_portfolio("*");	
                                                 }, delayload);
                                             }
                                         }
@@ -1991,7 +1989,7 @@
                             }, delayload);
                         }else if( layout == 'metro' && MainClass.classList.contains('list-isotope-metro') ){
                             setTimeout(function(){
-                                theplus_setup_packery_portfolio('all');	
+                                theplus_setup_packery_portfolio("*");	
                             }, delayload);
                         }
 
@@ -2223,7 +2221,7 @@
 
         var MetroResize = function(option, Html, idx) {
             if( option && option[idx].layout == 'metro' && Html && Html.parentNode.classList.contains('list-isotope-metro')){
-                theplus_setup_packery_portfolio('all');	
+                theplus_setup_packery_portfolio("*");	
             }
         };
 
@@ -2238,7 +2236,7 @@
 				}else if(item.layout == 'metro'){
 					if( seaList[index].parentNode.classList.contains('list-isotope-metro') ){
 						setTimeout(function(){
-							theplus_setup_packery_portfolio('all');	
+							theplus_setup_packery_portfolio("*");	
                         }, delayload);
 					}
 				}
@@ -2453,52 +2451,58 @@
 					let Getinput = container[0].querySelectorAll(`#${fieldId}`);
 					if( Getinput.length > 0 ){
 						Getinput.forEach(function(self) {
-							( autocomplete = new google.maps.places.Autocomplete( self )), { 
-								types: ["geocode"] };
+							( autocomplete = new google.maps.places.Autocomplete( self )), {  types: ["geocode"] };
 
 							google.maps.event.addListener(autocomplete, "place_changed", function() {
-							var place = (autocomplete) ? autocomplete.getPlace() : "",
-								address = ( place && place.address_components ) ? place.address_components : "",
-								lat = ( place && place.geometry && place.geometry.location && place.geometry.location.lat() ) ? place.geometry.location.lat() : "",
-								lng = ( place && place.geometry && place.geometry.location && place.geometry.location.lng() ) ? place.geometry.location.lng() : "";
-								
-								locationInfo.reset();
 
-								locationInfo.geo = [lat, lng];
-								if( address ){
-									for (var i = 0; i < address.length; i++) {
-										var component = address[i].types[0];
-										switch (component) {
-											case "country":
-												locationInfo.country = address[i]["long_name"];
-												break;
-											case "administrative_area_level_1":
-												locationInfo.state = address[i]["long_name"];
-												break;
-											case "locality":
-												locationInfo.city = address[i]["long_name"];
-												break;
-											case "postal_code":
-												locationInfo.postalCode = address[i]["long_name"];
-												break;
-											case "route":
-												locationInfo.street = address[i]["long_name"];
-												break;
-											case "street_number":
-												locationInfo.streetNumber = address[i]["long_name"];
-												break;
-											default:
-												break;
-										}
-									}
-								}
+                                var place = (autocomplete) ? autocomplete.getPlace() : "",
+                                    address = ( place && place.address_components ) ? place.address_components : "",
+                                    lat = ( place && place.geometry && place.geometry.location && place.geometry.location.lat() ) ? place.geometry.location.lat() : "",
+                                    lng = ( place && place.geometry && place.geometry.location && place.geometry.location.lng() ) ? place.geometry.location.lng() : "";
 
-								locationInfo.fullAddress = ( place && place.formatted_address ) ? place.formatted_address : "";
-								locationInfo.name = ( place && place.name ) ? place.name : ""; 
+                                    locationInfo.reset();
 
-								self.dataset.location = "";
-								self.dataset.location = JSON.stringify(locationInfo);
+                                    locationInfo.geo = [lat, lng];
+                                    if( address ){
+                                        for (var i = 0; i < address.length; i++) {
+                                            var component = address[i].types[0];
+                                            switch (component) {
+                                                case "country":
+                                                    locationInfo.country = address[i]["long_name"];
+                                                    break;
+                                                case "administrative_area_level_1":
+                                                    locationInfo.state = address[i]["long_name"];
+                                                    break;
+                                                case "locality":
+                                                    locationInfo.city = address[i]["long_name"];
+                                                    break;
+                                                case "postal_code":
+                                                    locationInfo.postalCode = address[i]["long_name"];
+                                                    break;
+                                                case "route":
+                                                    locationInfo.street = address[i]["long_name"];
+                                                    break;
+                                                case "street_number":
+                                                    locationInfo.streetNumber = address[i]["long_name"];
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                    }
+
+                                    locationInfo.fullAddress = ( place && place.formatted_address ) ? place.formatted_address : "";
+                                    locationInfo.name = ( place && place.name ) ? place.name : ""; 
+
+                                    self.dataset.location = "";
+                                    self.dataset.location = JSON.stringify(locationInfo);
 							});
+
+                            self.addEventListener("change", function() {
+                                if (self.value == "") {
+                                    self.dataset.location = "";
+                                }
+                            });
 						});
 					}
 				}

@@ -2091,6 +2091,32 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		    return $arrErrors;
 		}
 		
+		/**
+		 * validate extracted files for unwanted files like php
+		 */
+		public static function validatePHPInExtracted($path, $isDelete = true){
+			
+			if(is_dir($path) == false)
+				return(false);
+			
+			$arrFiles = self::getFileListTree($path,"php");
+						
+			if(empty($arrFiles))
+				return(false);
+				
+			//if php files found - throw error and delete all files
+				
+			$firstFile = $arrFiles[0];
+			$filename = basename($firstFile);
+			
+			self::throwError("Found some dengerous files in the uploaded like <b>$filename</b>. ");
+			
+			if($isDelete == true)
+				self::deleteDir($path, false);
+			
+		}
+		
+		
 		public static function z________FILE_SYSTEM________(){}
 		
 		
@@ -2330,6 +2356,27 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		public static function clearDirByTime($path, $olderThenSeconds = 60){
 			
 			self::deleteDir($path,false,array(),"",array("olderthen"=>$olderThenSeconds));
+		}
+		
+		/**
+		 * delete list of files
+		 */
+		public static function deleteListOfFiles($arrFiles){
+			
+			if(empty($arrFiles))
+				return(false);
+				
+			if(is_array($arrFiles) == false)
+				return(false);
+			
+			foreach($arrFiles as $filepath){
+				
+				if(file_exists($filepath) == false)
+					continue;
+				
+				unlink($filepath);
+			}
+			
 		}
 		
 		

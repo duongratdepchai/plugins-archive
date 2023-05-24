@@ -70,9 +70,9 @@ class Module extends Element_Pack_Module_Base {
 		$section->add_control(
 			'section_parallax_value',
 			[
-				'label'       => esc_html__('Parallax Y', 'bdthemes-element-pack'),
-				'type'        => Controls_Manager::SLIDER,
-				'range'       => [
+				'label' => esc_html__('Parallax Y', 'bdthemes-element-pack'),
+				'type'  => Controls_Manager::SLIDER,
+				'range' => [
 					'px' => [
 						'min'  => -500,
 						'max'  => 500,
@@ -97,7 +97,7 @@ class Module extends Element_Pack_Module_Base {
 		$section->add_control(
 			'ep_parallax_bg_colors',
 			[
-				'label'       => __('Colors', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Colors', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::POPOVER_TOGGLE,
 				'condition'   => [
 					'section_parallax_on' => 'yes',

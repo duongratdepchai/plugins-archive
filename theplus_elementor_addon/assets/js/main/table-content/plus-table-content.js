@@ -13,17 +13,26 @@
 			if( $scope.find('.tp-table-content.tp-toc-hash-tag').length ){
 				var conselector = settings['contentSelector'],
 				headselector = settings['headingSelector'],
-				hashtagtext = settings['hashtagtext'];
-
+				hashtagtext = settings['hashtagtext'],
+				copyText = settings['copyText']
 				var strarray = headselector.split(',');
 				for (var i = 0; i < strarray.length; i++) {
 					$(conselector+' '+strarray[i]).each(function(){
 						var id = $(this).attr('id');
 						if( $scope.find('.tp-table-content.tp-toc-hash-tag.tp-toc-hash-tag-hover').length ){
-							var data = '<a href="#'+id+'" class="tp-toc-hash-tag tp-on-hover">'+hashtagtext+'</a><span class="tp-copy-hash" style="opacity: 0;">Copied</span>';
+                            if(copyText){
+                                var data = '<a href="#'+id+'" class="tp-toc-hash-tag tp-on-hover">'+hashtagtext+'</a><span class="tp-copy-hash" style="opacity: 0;">Copied</span>';
+                            }else{
+                                var data = '<a href="#'+id+'" class="tp-toc-hash-tag tp-on-hover">'+hashtagtext+'</a>';
+                            }
 						}else{
-							var data = '<a href="#'+id+'" class="tp-toc-hash-tag">'+hashtagtext+'</a><span class="tp-copy-hash" style="opacity: 0;">Copied</span>';
-						}						
+                            if(copyText){
+                                var data = '<a href="#'+id+'" class="tp-toc-hash-tag">'+hashtagtext+'</a><span class="tp-copy-hash" style="opacity: 0;">Copied</span>';
+                            }else{
+                                var data = '<a href="#'+id+'" class="tp-toc-hash-tag">'+hashtagtext+'</a>';
+                            }
+						}
+
 						$(this).append(data);
 					});
 				}

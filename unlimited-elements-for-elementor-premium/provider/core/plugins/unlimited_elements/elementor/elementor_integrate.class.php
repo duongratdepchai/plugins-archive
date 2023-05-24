@@ -831,11 +831,13 @@ class UniteCreatorElementorIntegrate{
 			$location = UniteFunctionsUC::getVal($bgOutput, "location");
 
 			$addClass = "";
-			if($location === "front")
+			if($location === "front" || $location === "body_front" || $location === "layout_front")
 				$addClass = " uc-bg-front";
 			
+			$addData = "data-location=\"$location\"";
+			
 			?>
-			<div class="unlimited-elements-background-overlay<?php echo $addClass?>" data-forid="<?php echo $elementID?>" style="display:none">
+			<div class="unlimited-elements-background-overlay<?php echo $addClass?>" data-forid="<?php echo $elementID?>" <?php echo $addData?> style="display:none">
 				<?php echo $html?>
 			</div>
 			<?php 
@@ -852,20 +854,38 @@ class UniteCreatorElementorIntegrate{
 					
 					if(objBG.length == 0)
 						return(false);
-					
+										
 					objBG.each(function(index, bgElement){
 
 						var objBgElement = jQuery(bgElement);
 
 						var targetID = objBgElement.data("forid");
 
-						var objTarget = jQuery("*[data-id=\""+targetID+"\"]");
+						var location = objBgElement.data("location");
+
+						switch(location){
+							case "body":
+							case "body_front":
+								var objTarget = jQuery("body");
+							break;
+							case "layout":
+							case "layout_front":
+								var objLayout = jQuery("*[data-id=\""+targetID+"\"]");
+								var objTarget = objLayout.parents(".elementor");
+								if(objTarget.length > 1)
+									objTarget = jQuery(objTarget[0]);
+							break;
+							default:
+								var objTarget = jQuery("*[data-id=\""+targetID+"\"]");
+							break;
+						}
+						
 						
 						if(objTarget.length == 0)
 							return(true);
 
 						var objVideoContainer = objTarget.children(".elementor-background-video-container");
-
+						
 						if(objVideoContainer.length == 1)
 							objBgElement.detach().insertAfter(objVideoContainer).show();
 						else
@@ -966,8 +986,12 @@ class UniteCreatorElementorIntegrate{
 				'default' => 'back',
 				'options' => array(
 					'back'  => esc_html__( 'In Background', 'unlimited-elements-for-elementor' ),
-					'front' => esc_html__( 'In Foregroud', 'unlimited-elements-for-elementor' )
-				),
+					'front' => esc_html__( 'In Foregroud', 'unlimited-elements-for-elementor' ),
+					'body' => esc_html__( 'Site Body Background', 'unlimited-elements-for-elementor' ),
+					'body_front' => esc_html__( 'Site Body Foreground', 'unlimited-elements-for-elementor' ),
+					'layout' => esc_html__( 'Layout Background', 'unlimited-elements-for-elementor' ),
+					'layout_front' => esc_html__( 'Layout Foreground', 'unlimited-elements-for-elementor' )
+			),
 				"condition" => array(self::CONTROL_BACKGROUND_TYPE."!" => "{$none}")
 			)
 		);
@@ -1312,7 +1336,7 @@ class UniteCreatorElementorIntegrate{
     		
 	    	$nonce = UniteFunctionsUC::getPostVariable("nonce", "", UniteFunctionsUC::SANITIZE_TEXT_FIELD);
 	    	UniteProviderFunctionsUC::verifyNonce($nonce);
-	    		    	
+	    	
 	    	$arrTempFile = UniteFunctionsUC::getVal($_FILES, "file");
 	    	UniteFunctionsUC::validateNotEmpty($arrTempFile,"import file");
 	    	
@@ -1459,7 +1483,8 @@ class UniteCreatorElementorIntegrate{
 	 */
 	public function onTheContent($content){
 		
-		UniteCreatorOutput::clearIncludesCache();
+		if(GlobalsProviderUC::$isUnderDynamicTemplateLoop == false)
+			UniteCreatorOutput::clearIncludesCache();
 		
 		return($content);
 	}
@@ -1590,7 +1615,7 @@ class UniteCreatorElementorIntegrate{
 	 * check and add dynamic loop styles before render
 	 */
 	public function onBeforeRenderElement($element){
-				
+		
 		if(!empty(GlobalsUnlimitedElements::$renderingDynamicData)){
 			HelperProviderCoreUC_EL::putDynamicLoopElementStyle($element);
 		}
@@ -1653,6 +1678,8 @@ class UniteCreatorElementorIntegrate{
     	
     	//set if edit mode for widget output
     	self::$isEditMode = HelperUC::isElementorEditMode();
+    	
+    	GlobalsProviderUC::$isInsideEditor = self::$isEditMode;
     	
     	$arrSettingsValues = HelperProviderCoreUC_EL::getGeneralSettingsValues();
     	
@@ -1718,7 +1745,7 @@ class UniteCreatorElementorIntegrate{
     	
     	//fix some frontend bug with double render
     	add_filter("elementor/frontend/the_content",array($this, "onTheContent"));
-
+		
 		add_filter( 'pre_handle_404', array($this, 'checkAllowWidgetPagination' ), 11, 2 );
     	
 		//dynamic loop

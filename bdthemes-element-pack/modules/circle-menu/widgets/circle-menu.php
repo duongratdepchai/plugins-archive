@@ -16,35 +16,28 @@ if (!defined('ABSPATH')) {
 }
 // Exit if accessed directly
 
-class Circle_Menu extends Module_Base
-{
-    public function get_name()
-    {
+class Circle_Menu extends Module_Base {
+    public function get_name() {
         return 'bdt-circle-menu';
     }
 
-    public function get_title()
-    {
+    public function get_title() {
         return BDTEP . esc_html__('Circle Menu', 'bdthemes-element-pack');
     }
 
-    public function get_icon()
-    {
+    public function get_icon() {
         return 'bdt-wi-circle-menu';
     }
 
-    public function get_categories()
-    {
+    public function get_categories() {
         return ['element-pack'];
     }
 
-    public function get_keywords()
-    {
+    public function get_keywords() {
         return ['circle', 'menu', 'rounded'];
     }
 
-    public function get_style_depends()
-    {
+    public function get_style_depends() {
         if ($this->ep_is_edit_mode()) {
             return ['tippy', 'ep-styles'];
         } else {
@@ -52,8 +45,7 @@ class Circle_Menu extends Module_Base
         }
     }
 
-    public function get_script_depends()
-    {
+    public function get_script_depends() {
         if ($this->ep_is_edit_mode()) {
             return ['popper', 'tippyjs', 'circle-menu', 'ep-scripts'];
         } else {
@@ -61,13 +53,11 @@ class Circle_Menu extends Module_Base
         }
     }
 
-    public function get_custom_help_url()
-    {
+    public function get_custom_help_url() {
         return 'https://youtu.be/rfW22T-U7Ag';
     }
 
-    protected function register_controls()
-    {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'section_content_iconnav',
@@ -79,33 +69,33 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon',
             [
-                'label' => __('Choose Toggle Icon', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::CHOOSE,
+                'label'       => esc_html__('Choose Toggle Icon', 'bdthemes-element-pack'),
+                'type'        => Controls_Manager::CHOOSE,
                 'label_block' => true,
-                'options' => [
+                'options'     => [
                     'plus' => [
-                        'title' => __('Plus', 'bdthemes-element-pack'),
-                        'icon' => 'fas fa-plus',
+                        'title' => esc_html__('Plus', 'bdthemes-element-pack'),
+                        'icon'  => 'fas fa-plus',
                     ],
                     'plus-circle' => [
-                        'title' => __('Plus Circle', 'bdthemes-element-pack'),
-                        'icon' => 'fas fa-plus-circle',
+                        'title' => esc_html__('Plus Circle', 'bdthemes-element-pack'),
+                        'icon'  => 'fas fa-plus-circle',
                     ],
                     'close' => [
-                        'title' => __('Close', 'bdthemes-element-pack'),
-                        'icon' => 'fas fa-times',
+                        'title' => esc_html__('Close', 'bdthemes-element-pack'),
+                        'icon'  => 'fas fa-times',
                     ],
                     'cog' => [
-                        'title' => __('Settings', 'bdthemes-element-pack'),
-                        'icon' => 'fas fa-cog',
+                        'title' => esc_html__('Settings', 'bdthemes-element-pack'),
+                        'icon'  => 'fas fa-cog',
                     ],
                     'menu' => [
-                        'title' => __('Bars', 'bdthemes-element-pack'),
-                        'icon' => 'fas fa-bars',
+                        'title' => esc_html__('Bars', 'bdthemes-element-pack'),
+                        'icon'  => 'fas fa-bars',
                     ],
                     'custom' => [
-                        'title' => __('Custom', 'bdthemes-element-pack'),
-                        'icon' => 'fas fa-edit',
+                        'title' => esc_html__('Custom', 'bdthemes-element-pack'),
+                        'icon'  => 'fas fa-edit',
                     ],
                 ],
                 'default' => 'plus',
@@ -115,17 +105,17 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'custom_icon',
             [
-                'label' => __('Custom Icon', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::ICONS,
+                'label'   => esc_html__('Custom Icon', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::ICONS,
                 'default' => [
-                    'value' => 'far fa-times-circle',
+                    'value'   => 'far fa-times-circle',
                     'library' => 'fa-regular',
                 ],
                 'condition' => [
                     'toggle_icon' => 'custom',
                 ],
                 'label_block' => false,
-                'skin' => 'inline',
+                'skin'        => 'inline',
             ]
         );
 
@@ -134,8 +124,8 @@ class Circle_Menu extends Module_Base
         $repeater->add_control(
             'title',
             [
-                'label' => esc_html__('Menu Title', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::TEXT,
+                'label'   => esc_html__('Menu Title', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::TEXT,
                 'dynamic' => ['active' => true],
                 'default' => 'Home',
             ]
@@ -144,25 +134,25 @@ class Circle_Menu extends Module_Base
         $repeater->add_control(
             'circle_menu_icon',
             [
-                'label' => esc_html__('Icon', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::ICONS,
+                'label'            => esc_html__('Icon', 'bdthemes-element-pack'),
+                'type'             => Controls_Manager::ICONS,
                 'fa4compatibility' => 'icon',
-                'default' => [
-                    'value' => 'fas fa-home',
+                'default'          => [
+                    'value'   => 'fas fa-home',
                     'library' => 'fa-solid',
                 ],
                 'label_block' => false,
-                'skin' => 'inline',
+                'skin'        => 'inline',
             ]
         );
 
         $repeater->add_control(
             'iconnav_link',
             [
-                'label' => esc_html__('Link', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::URL,
-                'default' => ['url' => '#'],
-                'dynamic' => ['active' => true],
+                'label'       => esc_html__('Link', 'bdthemes-element-pack'),
+                'type'        => Controls_Manager::URL,
+                'default'     => ['url' => '#'],
+                'dynamic'     => ['active' => true],
                 'description' => 'Add your section id WITH the # key. e.g: #my-id also you can add internal/external URL',
             ]
         );
@@ -170,9 +160,9 @@ class Circle_Menu extends Module_Base
         $repeater->add_control(
             'custom_style_popover',
             [
-                'label' => esc_html__('Custom Style', 'bdthemes-element-pack') . BDTEP_NC,
-                'type' => Controls_Manager::POPOVER_TOGGLE,
-                'render_type' => 'ui',
+                'label'        => esc_html__('Custom Style', 'bdthemes-element-pack') . BDTEP_NC,
+                'type'         => Controls_Manager::POPOVER_TOGGLE,
+                'render_type'  => 'ui',
                 'return_value' => 'yes',
             ]
         );
@@ -182,8 +172,8 @@ class Circle_Menu extends Module_Base
         $repeater->add_control(
             'icon_color',
             [
-                'label' => __('Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu {{CURRENT_ITEM}}.bdt-menu-icon a' => 'color: {{VALUE}};',
                 ],
@@ -193,8 +183,8 @@ class Circle_Menu extends Module_Base
         $repeater->add_control(
             'icon_hover_color',
             [
-                'label' => __('Hover Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Hover Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu {{CURRENT_ITEM}}.bdt-menu-icon:hover a' => 'color: {{VALUE}};',
                 ],
@@ -204,8 +194,8 @@ class Circle_Menu extends Module_Base
         $repeater->add_control(
             'icon_background_color',
             [
-                'label' => __('Background', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu {{CURRENT_ITEM}}.bdt-menu-icon' => 'background: {{VALUE}};',
                 ],
@@ -215,8 +205,8 @@ class Circle_Menu extends Module_Base
         $repeater->add_control(
             'icon_hover_background_color',
             [
-                'label' => __('Hover Background', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Hover Background', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu {{CURRENT_ITEM}}.bdt-menu-icon:hover' => 'background: {{VALUE}};',
                 ],
@@ -228,42 +218,42 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'circle_menu',
             [
-                'label' => esc_html__('Circle Menu Items', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::REPEATER,
-                'fields' => $repeater->get_controls(),
+                'label'     => esc_html__('Circle Menu Items', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::REPEATER,
+                'fields'    => $repeater->get_controls(),
                 'separator' => 'before',
-                'default' => [
+                'default'   => [
                     [
                         'circle_menu_icon' => ['value' => 'fas fa-home', 'library' => 'fa-solid'],
-                        'iconnav_link' => [
+                        'iconnav_link'     => [
                             'url' => '#',
                         ],
                         'title' => esc_html__('Home', 'bdthemes-element-pack'),
                     ],
                     [
                         'circle_menu_icon' => ['value' => 'fas fa-shopping-bag', 'library' => 'fa-solid'],
-                        'iconnav_link' => [
+                        'iconnav_link'     => [
                             'url' => '#',
                         ],
                         'title' => esc_html__('Products', 'bdthemes-element-pack'),
                     ],
                     [
                         'circle_menu_icon' => ['value' => 'fas fa-wrench', 'library' => 'fa-solid'],
-                        'iconnav_link' => [
+                        'iconnav_link'     => [
                             'url' => '#',
                         ],
                         'title' => esc_html__('Settings', 'bdthemes-element-pack'),
                     ],
                     [
                         'circle_menu_icon' => ['value' => 'fas fa-book', 'library' => 'fa-solid'],
-                        'iconnav_link' => [
+                        'iconnav_link'     => [
                             'url' => '#',
                         ],
                         'title' => esc_html__('Documentation', 'bdthemes-element-pack'),
                     ],
                     [
                         'circle_menu_icon' => ['value' => 'fas fa-envelope', 'library' => 'fa-solid'],
-                        'iconnav_link' => [
+                        'iconnav_link'     => [
                             'url' => '#',
                         ],
                         'title' => esc_html__('Contact Us', 'bdthemes-element-pack'),
@@ -285,8 +275,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon_position',
             [
-                'label' => __('Toggle Icon Position', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SELECT,
+                'label'   => esc_html__('Toggle Icon Position', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
                 'default' => '',
                 'options' => element_pack_position(),
             ]
@@ -295,20 +285,20 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon_alignment',
             [
-                'label' => esc_html__('Alignment', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::CHOOSE,
+                'label'   => esc_html__('Alignment', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::CHOOSE,
                 'options' => [
                     'flex-start' => [
                         'title' => esc_html__('Left', 'bdthemes-element-pack'),
-                        'icon' => 'eicon-text-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => esc_html__('Center', 'bdthemes-element-pack'),
-                        'icon' => 'eicon-text-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'flex-end' => [
                         'title' => esc_html__('Right', 'bdthemes-element-pack'),
-                        'icon' => 'eicon-text-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -323,16 +313,16 @@ class Circle_Menu extends Module_Base
         $this->add_responsive_control(
             'toggle_icon_x_position',
             [
-                'label' => __('Horizontal Offset', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Horizontal Offset', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 0,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => -500,
+                        'min'  => -500,
                         'step' => 10,
-                        'max' => 500,
+                        'max'  => 500,
                     ],
                 ],
                 'selectors' => [
@@ -344,16 +334,16 @@ class Circle_Menu extends Module_Base
         $this->add_responsive_control(
             'toggle_icon_y_position',
             [
-                'label' => __('Vertical Offset', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Vertical Offset', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 0,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => -500,
+                        'min'  => -500,
                         'step' => 10,
-                        'max' => 500,
+                        'max'  => 500,
                     ],
                 ],
                 'selectors' => [
@@ -374,24 +364,24 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'direction',
             [
-                'label' => __('Menu Direction', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SELECT,
+                'label'   => esc_html__('Menu Direction', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
                 'default' => 'bottom-right',
                 'options' => [
-                    'top' => esc_html__('Top', 'bdthemes-element-pack'),
-                    'right' => esc_html__('Right', 'bdthemes-element-pack'),
-                    'bottom' => esc_html__('Bottom', 'bdthemes-element-pack'),
-                    'left' => esc_html__('Left', 'bdthemes-element-pack'),
-                    'top' => esc_html__('Top', 'bdthemes-element-pack'),
-                    'full' => esc_html__('Full', 'bdthemes-element-pack'),
-                    'top-left' => esc_html__('Top-Left', 'bdthemes-element-pack'),
-                    'top-right' => esc_html__('Top-Right', 'bdthemes-element-pack'),
-                    'top-half' => esc_html__('Top-Half', 'bdthemes-element-pack'),
-                    'bottom-left' => esc_html__('Bottom-Left', 'bdthemes-element-pack'),
+                    'top'          => esc_html__('Top', 'bdthemes-element-pack'),
+                    'right'        => esc_html__('Right', 'bdthemes-element-pack'),
+                    'bottom'       => esc_html__('Bottom', 'bdthemes-element-pack'),
+                    'left'         => esc_html__('Left', 'bdthemes-element-pack'),
+                    'top'          => esc_html__('Top', 'bdthemes-element-pack'),
+                    'full'         => esc_html__('Full', 'bdthemes-element-pack'),
+                    'top-left'     => esc_html__('Top-Left', 'bdthemes-element-pack'),
+                    'top-right'    => esc_html__('Top-Right', 'bdthemes-element-pack'),
+                    'top-half'     => esc_html__('Top-Half', 'bdthemes-element-pack'),
+                    'bottom-left'  => esc_html__('Bottom-Left', 'bdthemes-element-pack'),
                     'bottom-right' => esc_html__('Bottom-Right', 'bdthemes-element-pack'),
-                    'bottom-half' => esc_html__('Bottom-Half', 'bdthemes-element-pack'),
-                    'left-half' => esc_html__('Left-Half', 'bdthemes-element-pack'),
-                    'right-half' => esc_html__('Right-Half', 'bdthemes-element-pack'),
+                    'bottom-half'  => esc_html__('Bottom-Half', 'bdthemes-element-pack'),
+                    'left-half'    => esc_html__('Left-Half', 'bdthemes-element-pack'),
+                    'right-half'   => esc_html__('Right-Half', 'bdthemes-element-pack'),
                 ],
             ]
         );
@@ -399,16 +389,16 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'item_diameter',
             [
-                'label' => __('Circle Menu Size', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Circle Menu Size', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 35,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => 20,
+                        'min'  => 20,
                         'step' => 1,
-                        'max' => 50,
+                        'max'  => 50,
                     ],
                 ],
             ]
@@ -417,16 +407,16 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'circle_radius',
             [
-                'label' => __('Circle Menu Distance', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Circle Menu Distance', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 100,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => 20,
+                        'min'  => 20,
                         'step' => 5,
-                        'max' => 500,
+                        'max'  => 500,
                     ],
                 ],
             ]
@@ -435,16 +425,16 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'speed',
             [
-                'label' => __('Speed', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Speed', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 500,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => 100,
+                        'min'  => 100,
                         'step' => 10,
-                        'max' => 1000,
+                        'max'  => 1000,
                     ],
                 ],
             ]
@@ -453,16 +443,16 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'delay',
             [
-                'label' => __('Delay', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Delay', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 1000,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => 100,
+                        'min'  => 100,
                         'step' => 10,
-                        'max' => 2000,
+                        'max'  => 2000,
                     ],
                 ],
             ]
@@ -471,16 +461,16 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'step_out',
             [
-                'label' => __('Step Out', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Step Out', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 20,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => -200,
+                        'min'  => -200,
                         'step' => 5,
-                        'max' => 200,
+                        'max'  => 200,
                     ],
                 ],
             ]
@@ -489,16 +479,16 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'step_in',
             [
-                'label' => __('Step In', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Step In', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => -20,
                 ],
                 'range' => [
                     'px' => [
-                        'min' => -200,
+                        'min'  => -200,
                         'step' => 5,
-                        'max' => 200,
+                        'max'  => 200,
                     ],
                 ],
             ]
@@ -507,8 +497,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'trigger',
             [
-                'label' => __('Trigger', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SELECT,
+                'label'   => esc_html__('Trigger', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
                 'default' => 'hover',
                 'options' => [
                     'hover' => esc_html__('Hover', 'bdthemes-element-pack'),
@@ -520,8 +510,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_on_trigger',
             [
-                'label' => __('Show Tooltip', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SWITCHER,
+                'label'   => esc_html__('Show Tooltip', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SWITCHER,
                 'default' => 'yes',
             ]
         );
@@ -531,7 +521,7 @@ class Circle_Menu extends Module_Base
         $this->start_controls_section(
             'section_tooltip_settings',
             [
-                'label' => __('Tooltip Settings', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Tooltip Settings', 'bdthemes-element-pack'),
                 'condition' => [
                     'tooltip_on_trigger' => 'yes',
                 ],
@@ -541,25 +531,25 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_text',
             [
-                'label' => esc_html__('Tooltip Text', 'bdthemes-element-pack') . BDTEP_NC,
+                'label'       => esc_html__('Tooltip Text', 'bdthemes-element-pack') . BDTEP_NC,
                 'label_block' => true,
-                'type' => Controls_Manager::TEXT,
-                'default' => esc_html__('Click me to show menus', 'bdthemes-element-pack'),
+                'type'        => Controls_Manager::TEXT,
+                'default'     => esc_html__('Click me to show menus', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'tooltip_animation',
             [
-                'label' => esc_html__('Animation', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SELECT,
+                'label'   => esc_html__('Animation', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
                 'default' => 'shift-toward',
                 'options' => [
-                    'shift-away' => esc_html__('Shift-Away', 'bdthemes-element-pack'),
+                    'shift-away'   => esc_html__('Shift-Away', 'bdthemes-element-pack'),
                     'shift-toward' => esc_html__('Shift-Toward', 'bdthemes-element-pack'),
-                    'fade' => esc_html__('Fade', 'bdthemes-element-pack'),
-                    'scale' => esc_html__('Scale', 'bdthemes-element-pack'),
-                    'perspective' => esc_html__('Perspective', 'bdthemes-element-pack'),
+                    'fade'         => esc_html__('Fade', 'bdthemes-element-pack'),
+                    'scale'        => esc_html__('Scale', 'bdthemes-element-pack'),
+                    'perspective'  => esc_html__('Perspective', 'bdthemes-element-pack'),
                 ],
             ]
         );
@@ -567,8 +557,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_x_offset',
             [
-                'label' => esc_html__('X Offset', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('X Offset', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 0,
                 ],
@@ -578,8 +568,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_y_offset',
             [
-                'label' => esc_html__('Y Offset', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'   => esc_html__('Y Offset', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 0,
                 ],
@@ -590,16 +580,16 @@ class Circle_Menu extends Module_Base
             'tooltip_arrow',
             [
                 'label' => esc_html__('Arrow', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SWITCHER,
+                'type'  => Controls_Manager::SWITCHER,
             ]
         );
 
         $this->add_control(
             'tooltip_trigger',
             [
-                'label' => __('Trigger on Click', 'bdthemes-element-pack'),
-                'description' => __('Don\'t set yes when you set lightbox image with marker.', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SWITCHER,
+                'label'       => esc_html__('Trigger on Click', 'bdthemes-element-pack'),
+                'description' => esc_html__('Don\'t set yes when you set lightbox image with marker.', 'bdthemes-element-pack'),
+                'type'        => Controls_Manager::SWITCHER,
             ]
         );
 
@@ -610,7 +600,7 @@ class Circle_Menu extends Module_Base
             'section_style_toggle_icon',
             [
                 'label' => esc_html__('Toggle Icon', 'bdthemes-element-pack'),
-                'tab' => Controls_Manager::TAB_STYLE,
+                'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
 
@@ -626,8 +616,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon_color',
             [
-                'label' => esc_html__('Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon' => 'color: {{VALUE}};',
                 ],
@@ -637,8 +627,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon_background',
             [
-                'label' => esc_html__('Background', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon' => 'background-color: {{VALUE}};',
                 ],
@@ -648,21 +638,21 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
-                'name' => 'toggle_icon_border',
-                'label' => esc_html__('Border', 'bdthemes-element-pack'),
+                'name'        => 'toggle_icon_border',
+                'label'       => esc_html__('Border', 'bdthemes-element-pack'),
                 'placeholder' => '1px',
-                'default' => '1px',
-                'selector' => '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon',
+                'default'     => '1px',
+                'selector'    => '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon',
             ]
         );
 
         $this->add_responsive_control(
             'toggle_icon_radius',
             [
-                'label' => esc_html__('Border Radius', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::DIMENSIONS,
+                'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
+                'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
-                'selectors' => [
+                'selectors'  => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
                 ],
             ]
@@ -671,8 +661,8 @@ class Circle_Menu extends Module_Base
         $this->add_responsive_control(
             'toggle_icon_padding',
             [
-                'label' => esc_html__('Padding', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::DIMENSIONS,
+                'label'     => esc_html__('Padding', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::DIMENSIONS,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon' => 'padding: {{TOP}}px {{RIGHT}}px {{BOTTOM}}px {{LEFT}}px;',
                 ],
@@ -682,7 +672,7 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'toggle_icon_shadow',
+                'name'     => 'toggle_icon_shadow',
                 'selector' => '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon',
             ]
         );
@@ -691,7 +681,7 @@ class Circle_Menu extends Module_Base
             'toggle_icon_size',
             [
                 'label' => esc_html__('Icon Size', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'type'  => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
                         'min' => 10,
@@ -703,7 +693,7 @@ class Circle_Menu extends Module_Base
                 ],
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon a svg' => 'height: {{SIZE}}px; width: {{SIZE}}px;',
-                    '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon a i' => 'font-size: {{SIZE}}px;',
+                    '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon a i'   => 'font-size: {{SIZE}}px;',
                 ],
             ]
         );
@@ -711,14 +701,14 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'transition_function',
             [
-                'label' => esc_html__('Transition', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SELECT,
+                'label'   => esc_html__('Transition', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
                 'default' => 'ease',
                 'options' => [
-                    'ease' => esc_html__('Ease', 'bdthemes-element-pack'),
-                    'linear' => esc_html__('Linear', 'bdthemes-element-pack'),
-                    'ease-in' => esc_html__('Ease-In', 'bdthemes-element-pack'),
-                    'ease-out' => esc_html__('Ease-Out', 'bdthemes-element-pack'),
+                    'ease'        => esc_html__('Ease', 'bdthemes-element-pack'),
+                    'linear'      => esc_html__('Linear', 'bdthemes-element-pack'),
+                    'ease-in'     => esc_html__('Ease-In', 'bdthemes-element-pack'),
+                    'ease-out'    => esc_html__('Ease-Out', 'bdthemes-element-pack'),
                     'ease-in-out' => esc_html__('Ease-In-Out', 'bdthemes-element-pack'),
                 ],
             ]
@@ -736,8 +726,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon_hover_color',
             [
-                'label' => esc_html__('Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon:hover' => 'color: {{VALUE}};',
                 ],
@@ -747,8 +737,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon_hover_background',
             [
-                'label' => esc_html__('Background Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon:hover' => 'background-color: {{VALUE}};',
                 ],
@@ -758,8 +748,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'toggle_icon_hover_border_color',
             [
-                'label' => esc_html__('Border Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'condition' => [
                     'toggle_icon_border_border!' => '',
                 ],
@@ -772,8 +762,8 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'toggle_icon_shadow_hover',
-                'label' => esc_html__('Box Shadow', 'bdthemes-element-pack') . BDTEP_NC,
+                'name'     => 'toggle_icon_shadow_hover',
+                'label'    => esc_html__('Box Shadow', 'bdthemes-element-pack') . BDTEP_NC,
                 'selector' => '{{WRAPPER}} .bdt-circle-menu li.bdt-toggle-icon:hover',
             ]
         );
@@ -788,7 +778,7 @@ class Circle_Menu extends Module_Base
             'section_style_circle_menu_icon',
             [
                 'label' => esc_html__('Circle Icon', 'bdthemes-element-pack'),
-                'tab' => Controls_Manager::TAB_STYLE,
+                'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
 
@@ -804,10 +794,10 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'circle_menu_icon_color',
             [
-                'label' => esc_html__('Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .bdt-circle-menu-container .bdt-menu-icon a' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .bdt-circle-menu-container .bdt-menu-icon a'   => 'color: {{VALUE}};',
                     '{{WRAPPER}} .bdt-circle-menu-container .bdt-menu-icon svg' => 'fill: {{VALUE}};',
                 ],
             ]
@@ -816,8 +806,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'circle_menu_icon_background',
             [
-                'label' => esc_html__('Background', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-menu-icon' => 'background-color: {{VALUE}};',
                 ],
@@ -827,21 +817,21 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
-                'name' => 'circle_menu_icon_border',
-                'label' => esc_html__('Border', 'bdthemes-element-pack'),
+                'name'        => 'circle_menu_icon_border',
+                'label'       => esc_html__('Border', 'bdthemes-element-pack'),
                 'placeholder' => '1px',
-                'default' => '1px',
-                'selector' => '{{WRAPPER}} .bdt-circle-menu li.bdt-menu-icon',
+                'default'     => '1px',
+                'selector'    => '{{WRAPPER}} .bdt-circle-menu li.bdt-menu-icon',
             ]
         );
 
         $this->add_responsive_control(
             'circle_menu_icon_radius',
             [
-                'label' => esc_html__('Border Radius', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::DIMENSIONS,
+                'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
+                'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
-                'selectors' => [
+                'selectors'  => [
                     '{{WRAPPER}} .bdt-circle-menu li.bdt-menu-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important;',
                 ],
             ]
@@ -861,7 +851,7 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'circle_menu_icon_shadow',
+                'name'     => 'circle_menu_icon_shadow',
                 'selector' => '{{WRAPPER}} .bdt-circle-menu li.bdt-menu-icon',
             ]
         );
@@ -870,12 +860,12 @@ class Circle_Menu extends Module_Base
             'circle_menu_icon_size',
             [
                 'label' => esc_html__('Icon Size', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'type'  => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
-                        'min' => 0,
+                        'min'  => 0,
                         'step' => 1,
-                        'max' => 50,
+                        'max'  => 50,
                     ],
                 ],
                 'selectors' => [
@@ -896,10 +886,10 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'circle_menu_icon_hover_color',
             [
-                'label' => esc_html__('Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .bdt-circle-menu-container .bdt-menu-icon:hover a' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .bdt-circle-menu-container .bdt-menu-icon:hover a'   => 'color: {{VALUE}};',
                     '{{WRAPPER}} .bdt-circle-menu-container .bdt-menu-icon:hover svg' => 'fill: {{VALUE}};',
                 ],
             ]
@@ -908,8 +898,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'circle_menu_icon_hover_background',
             [
-                'label' => esc_html__('Background Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-circle-menu li:hover' => 'background-color: {{VALUE}};',
                 ],
@@ -919,8 +909,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'circle_menu_icon_hover_border_color',
             [
-                'label' => esc_html__('Border Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'condition' => [
                     'circle_menu_icon_border_border!' => '',
                 ],
@@ -939,8 +929,8 @@ class Circle_Menu extends Module_Base
         $this->start_controls_section(
             'section_style_tooltip',
             [
-                'label' => esc_html__('Tooltip', 'bdthemes-element-pack'),
-                'tab' => Controls_Manager::TAB_STYLE,
+                'label'     => esc_html__('Tooltip', 'bdthemes-element-pack'),
+                'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'tooltip_on_trigger' => 'yes',
                 ],
@@ -950,8 +940,8 @@ class Circle_Menu extends Module_Base
         $this->add_responsive_control(
             'tooltip_width',
             [
-                'label' => esc_html__('Width', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SLIDER,
+                'label'      => esc_html__('Width', 'bdthemes-element-pack'),
+                'type'       => Controls_Manager::SLIDER,
                 'size_units' => [
                     'px',
                     'em',
@@ -972,7 +962,7 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Typography::get_type(),
             [
-                'name' => 'tooltip_typography',
+                'name'     => 'tooltip_typography',
                 'selector' => '.tippy-box[data-theme="bdt-tippy-{{ID}}"]',
             ]
         );
@@ -980,8 +970,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_title_color',
             [
-                'label' => esc_html__('Title Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Title Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '.tippy-box[data-theme="bdt-tippy-{{ID}}"] .bdt-title' => 'color: {{VALUE}}',
                 ],
@@ -991,8 +981,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_color',
             [
-                'label' => esc_html__('Text Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Text Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '.tippy-box[data-theme="bdt-tippy-{{ID}}"]' => 'color: {{VALUE}}',
                 ],
@@ -1002,21 +992,21 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_text_align',
             [
-                'label' => esc_html__('Text Alignment', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::CHOOSE,
+                'label'   => esc_html__('Text Alignment', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::CHOOSE,
                 'default' => 'center',
                 'options' => [
                     'left' => [
                         'title' => esc_html__('Left', 'bdthemes-element-pack'),
-                        'icon' => 'eicon-text-align-left',
+                        'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
                         'title' => esc_html__('Center', 'bdthemes-element-pack'),
-                        'icon' => 'eicon-text-align-center',
+                        'icon'  => 'eicon-text-align-center',
                     ],
                     'right' => [
                         'title' => esc_html__('Right', 'bdthemes-element-pack'),
-                        'icon' => 'eicon-text-align-right',
+                        'icon'  => 'eicon-text-align-right',
                     ],
                 ],
                 'selectors' => [
@@ -1028,7 +1018,7 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Background::get_type(),
             [
-                'name' => 'tooltip_background',
+                'name'     => 'tooltip_background',
                 'selector' => '.tippy-box[data-theme="bdt-tippy-{{ID}}"], .tippy-box[data-theme="bdt-tippy-{{ID}}"] .tippy-backdrop',
             ]
         );
@@ -1036,8 +1026,8 @@ class Circle_Menu extends Module_Base
         $this->add_control(
             'tooltip_arrow_color',
             [
-                'label' => esc_html__('Arrow Color', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::COLOR,
+                'label'     => esc_html__('Arrow Color', 'bdthemes-element-pack'),
+                'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '.tippy-box[data-theme="bdt-tippy-{{ID}}"] .tippy-arrow' => 'color: {{VALUE}}',
                 ],
@@ -1047,10 +1037,10 @@ class Circle_Menu extends Module_Base
         $this->add_responsive_control(
             'tooltip_padding',
             [
-                'label' => __('Padding', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::DIMENSIONS,
+                'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
+                'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
-                'selectors' => [
+                'selectors'  => [
                     '.tippy-box[data-theme="bdt-tippy-{{ID}}"] .tippy-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
                 'render_type' => 'template',
@@ -1060,21 +1050,21 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
-                'name' => 'tooltip_border',
-                'label' => esc_html__('Border', 'bdthemes-element-pack'),
+                'name'        => 'tooltip_border',
+                'label'       => esc_html__('Border', 'bdthemes-element-pack'),
                 'placeholder' => '1px',
-                'default' => '1px',
-                'selector' => '.tippy-box[data-theme="bdt-tippy-{{ID}}"]',
+                'default'     => '1px',
+                'selector'    => '.tippy-box[data-theme="bdt-tippy-{{ID}}"]',
             ]
         );
 
         $this->add_responsive_control(
             'tooltip_border_radius',
             [
-                'label' => __('Border Radius', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::DIMENSIONS,
+                'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
+                'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
-                'selectors' => [
+                'selectors'  => [
                     '.tippy-box[data-theme="bdt-tippy-{{ID}}"]' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
@@ -1083,7 +1073,7 @@ class Circle_Menu extends Module_Base
         $this->add_group_control(
             Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'tooltip_box_shadow',
+                'name'     => 'tooltip_box_shadow',
                 'selector' => '.tippy-box[data-theme="bdt-tippy-{{ID}}"]',
             ]
         );
@@ -1091,8 +1081,7 @@ class Circle_Menu extends Module_Base
         $this->end_controls_section();
     }
 
-    public function render_loop_iconnav_list($settings, $list)
-    {
+    public function render_loop_iconnav_list($settings, $list) {
 
         $this->add_render_attribute(
             [
@@ -1164,28 +1153,27 @@ class Circle_Menu extends Module_Base
 
         $this->add_render_attribute('menu-item', 'class', 'bdt-menu-icon elementor-repeater-item-' . esc_attr($list['_id']), true);
 
-        ?>
-		<li <?php echo ($this->get_render_attribute_string('menu-item')); ?>>
-			<a <?php echo $this->get_render_attribute_string('iconnav-link'); ?>>
-				<?php if ($list['circle_menu_icon']['value']): ?>
-					<span>
+?>
+        <li <?php echo ($this->get_render_attribute_string('menu-item')); ?>>
+            <a <?php echo $this->get_render_attribute_string('iconnav-link'); ?>>
+                <?php if ($list['circle_menu_icon']['value']) : ?>
+                    <span>
 
-						<?php if ($is_new || $migrated):
-            Icons_Manager::render_icon($list['circle_menu_icon'], ['aria-hidden' => 'true', 'class' => 'fa-fw']);
-        else: ?>
-							<i class="<?php echo esc_attr($list['icon']); ?>" aria-hidden="true"></i>
-						<?php endif;?>
+                        <?php if ($is_new || $migrated) :
+                            Icons_Manager::render_icon($list['circle_menu_icon'], ['aria-hidden' => 'true', 'class' => 'fa-fw']);
+                        else : ?>
+                            <i class="<?php echo esc_attr($list['icon']); ?>" aria-hidden="true"></i>
+                        <?php endif; ?>
 
-					</span>
+                    </span>
 
-				<?php endif;?>
-			</a>
-		</li>
-	<?php
-}
+                <?php endif; ?>
+            </a>
+        </li>
+    <?php
+    }
 
-    protected function render()
-    {
+    protected function render() {
         $settings = $this->get_settings_for_display();
         $id = 'bdt-circle-menu-' . $this->get_id();
         $toggle_icon = ($settings['toggle_icon']) ?: 'plus';
@@ -1282,29 +1270,29 @@ class Circle_Menu extends Module_Base
 
         $this->add_render_attribute('circle-menu-settings', 'data-settings', $circle_menu_settings);
 
-        ?>
-		<div <?php echo $this->get_render_attribute_string('circle-menu-container'); ?>>
-			<ul class="bdt-circle-menu" <?php echo $this->get_render_attribute_string('circle-menu-settings'); ?>>
-				<li class="bdt-toggle-icon">
+    ?>
+        <div <?php echo $this->get_render_attribute_string('circle-menu-container'); ?>>
+            <ul class="bdt-circle-menu" <?php echo $this->get_render_attribute_string('circle-menu-settings'); ?>>
+                <li class="bdt-toggle-icon">
 
-					<?php if ('custom' == $settings['toggle_icon']) {?>
-						<a <?php echo $this->get_render_attribute_string('toggle-icon'); ?>>
-							<?php Icons_Manager::render_icon($settings['custom_icon'], ['aria-hidden' => 'true']);?>
-						</a>
-					<?php } else {?>
-						<a <?php echo $this->get_render_attribute_string('toggle-icon'); ?>>
-							<i class="ep-icon-<?php echo esc_attr($toggle_icon); ?>" aria-hidden="true"></i>
-						</a>
-					<?php }?>
+                    <?php if ('custom' == $settings['toggle_icon']) { ?>
+                        <a <?php echo $this->get_render_attribute_string('toggle-icon'); ?>>
+                            <?php Icons_Manager::render_icon($settings['custom_icon'], ['aria-hidden' => 'true']); ?>
+                        </a>
+                    <?php } else { ?>
+                        <a <?php echo $this->get_render_attribute_string('toggle-icon'); ?>>
+                            <i class="ep-icon-<?php echo esc_attr($toggle_icon); ?>" aria-hidden="true"></i>
+                        </a>
+                    <?php } ?>
 
-				</li>
-				<?php
-foreach ($settings['circle_menu'] as $key => $nav):
-            $this->render_loop_iconnav_list($settings, $nav);
-        endforeach;
-        ?>
-			</ul>
-		</div>
+                </li>
+                <?php
+                foreach ($settings['circle_menu'] as $key => $nav) :
+                    $this->render_loop_iconnav_list($settings, $nav);
+                endforeach;
+                ?>
+            </ul>
+        </div>
 <?php
-}
+    }
 }

@@ -24,6 +24,8 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Tabs_Tours extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-tabs-tours';
@@ -36,6 +38,12 @@ class ThePlus_Tabs_Tours extends Widget_Base {
     public function get_icon() {
         return 'fa fa-th-list theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "tabs-tours";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-tabbed');
@@ -52,6 +60,15 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);		
+
+		$this->add_control(
+			'how_it_works',
+			[
+				'label' => wp_kses_post( "<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "tabs-tours-elementor-widget-settings-overview/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> Learn How it works  <i class='eicon-help-o'></i> </a>", 'theplus' ),
+				'type' => Controls_Manager::HEADING,
+			]
+		);
+
 		$repeater = new \Elementor\Repeater();
 
 		$repeater->add_control(
@@ -94,7 +111,7 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$repeater->add_control(
 			'content_template_type',
 			[
-				'label' => esc_html__( 'Templates', 'theplus' ),
+				'label' => wp_kses_post( "Templates<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-template-inside-tabs-widget/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'dropdown',
 				'options' => [
@@ -137,7 +154,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$repeater->add_control(
-			'backend_preview_template',[
+			'backend_preview_template',
+			[
 				'label'   => esc_html__( 'Backend Visibility', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -174,8 +192,9 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$repeater->add_control(
-			'display_icon',[
-				'label'   => esc_html__( 'Show Inner Icon', 'theplus' ),
+			'display_icon',
+			[
+				'label' => wp_kses_post( "Show Inner Icon<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "add-icons-to-elementor-tabs/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'label_on' => esc_html__( 'Show', 'theplus' ),
@@ -271,8 +290,9 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$repeater->add_control(
-			'display_icon1',[
-				'label'   => esc_html__( 'Show Outer Icon', 'theplus' ),
+			'display_icon1',
+			[
+				'label' => wp_kses_post( "Show Outer Icon<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "add-icons-to-elementor-tabs/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Show', 'theplus' ),
@@ -326,7 +346,7 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$repeater->add_control(
 			'tab_hashid',
 			[
-				'label' => esc_html__( 'Unique ID', 'theplus' ),
+				'label' => wp_kses_post( "Unique ID<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "anchor-link-a-tab-item-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'dynamic' => [
@@ -368,7 +388,7 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$this->add_control(
 			'tabs_type',
 			[
-				'label' => esc_html__( 'Layout', 'theplus' ),
+				'label' => wp_kses_post( ' Layout ', 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'horizontal',
 				'options' => [
@@ -404,7 +424,7 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$this->add_control(
 			'tabs_align_vertical',
 			[
-				'label' => esc_html__( 'Navigation Position', 'theplus' ),
+				'label' => wp_kses_post( "Navigation Position <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "vertical-tabs-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
@@ -424,8 +444,9 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'tabs_swiper',[
-				'label'   => esc_html__( 'Swiper Effect', 'theplus' ),
+			'tabs_swiper',
+			[
+				'label' => wp_kses_post( "Swiper Effect<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "swipe-or-slide-effect-on-elementor-tabs/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'On', 'theplus' ),
@@ -453,7 +474,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'swiper_loop',[
+			'swiper_loop',
+			[
 				'label'   => esc_html__( 'Loop', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -480,7 +502,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'swiper_centermode',[
+			'swiper_centermode',
+			[
 				'label'   => esc_html__( 'Center Mode', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -496,7 +519,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$this->add_control(
 			'default_active_tab',
 			[
-				'label' => esc_html__( 'Default Active Tab', 'theplus' ),
+				'label' => wp_kses_post( "Default Active Tab <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "openclose-specific-tab-by-default-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
+
 				'type' => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => theplus_get_numbers('tabs'),
@@ -504,8 +528,9 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);		
 		$this->add_control(
-			'on_hover_tabs',[
-				'label'   => esc_html__( 'On Hover Tab', 'theplus' ),
+			'on_hover_tabs',
+			[
+				'label' => wp_kses_post( "On Hover Tab <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-tab-on-hover/' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -514,7 +539,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'second_click_close',[
+			'second_click_close',
+			[
 				'label'   => esc_html__( 'On Second Click Closed', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,				
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -523,7 +549,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'on_tabs_arrow',[
+			'on_tabs_arrow',
+			[
 				'label'   => esc_html__( 'Arrow', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -533,7 +560,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-            'on_tabs_arrow_type', [
+            'on_tabs_arrow_type', 
+			[
                 'type' => Controls_Manager::SELECT,
                 'label' => esc_html__('Type', 'theplus'),
                 'default' => 'out',
@@ -559,7 +587,7 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$this->add_control(
 			'connection_unique_id',
 			[
-				'label' => esc_html__( 'Carousel Connection ID', 'theplus' ),
+				'label' => wp_kses_post( "Carousel Connection ID <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "multiple-columned-elementor-carousel-slider/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'description' => 'Note : This option is to connect Tabs with Anything Carousel widget. Use same id both places for deep connection.',
@@ -568,7 +596,7 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$this->add_control(
 			'tabs_columns',
 			[
-				'label' => esc_html__( 'Tab Columns', 'theplus' ),
+				'label' => wp_kses_post( "Tab Columns <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "divide-elementor-tabs-into-multiple-columns/' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
 				'label_off' => esc_html__( 'Disable', 'theplus' ),
@@ -616,7 +644,7 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$this->add_control(
 			'tabs_autoplay',
 			[
-				'label' => esc_html__( 'Tab Autoplay', 'theplus' ),
+				'label' => wp_kses_post( "Tab Autoplay <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-tabs-autoplay/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
 				'label_off' => esc_html__( 'Disable', 'theplus' ),
@@ -790,7 +818,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'full_icon',[
+			'full_icon',
+			[
 				'label'   => esc_html__( 'Full Width Icon', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -858,7 +887,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'res_outer_icon',[
+			'res_outer_icon',
+			[
 				'label'   => esc_html__( 'Hide on Mobile', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -3527,7 +3557,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		$this->end_controls_tabs();
 		
 		$this->add_control(
-			'fat_tablet',[
+			'fat_tablet',
+			[
 				'label'   => esc_html__( 'First Tab Active in Tablet', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -3553,7 +3584,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		);
 		
 		$this->add_control(
-			'fat_close_tablet',[
+			'fat_close_tablet',
+			[
 				'label'   => esc_html__( 'Force All Close in Tablet', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -3566,7 +3598,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 			]
 		);
 		$this->add_control(
-			'fat_close_mobile',[
+			'fat_close_mobile',
+			[
 				'label'   => esc_html__( 'Force All Close in Mobile', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -3579,7 +3612,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 		);
 		
 		$this->add_control(
-			'description_field_show',[
+			'description_field_show',
+			[
 				'label'   => esc_html__( 'Description Field Show on Active Tab', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
@@ -3604,6 +3638,8 @@ class ThePlus_Tabs_Tours extends Widget_Base {
 
 		/*--On Scroll View Animation ---*/
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
+
 	}
 	
     protected function render() {

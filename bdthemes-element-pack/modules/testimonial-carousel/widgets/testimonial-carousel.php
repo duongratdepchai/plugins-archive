@@ -93,6 +93,23 @@ class Testimonial_Carousel extends Module_Base
             ]
         );
 
+        $this->add_control(
+			'layout_style',
+			[
+				'label'   => esc_html__('Layout Style', 'bdthemes-element-pack') . BDTEP_NC,
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'style-1',
+				'options' => [
+					'style-1'  => '01',
+					'style-2'  => '02',
+					'style-3'  => '03',
+				],
+				'condition' => [
+					'_skin' => 'bdt-twyla',
+				],
+			]
+		);
+
         $this->add_responsive_control(
             'columns',
             [
@@ -347,6 +364,22 @@ class Testimonial_Carousel extends Module_Base
             [
                 'label' => esc_html__('Items', 'bdthemes-element-pack'),
                 'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        // content padding
+        $this->add_responsive_control(
+            'content_padding',
+            [
+                'label' => esc_html__('Content Padding', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .skin-twyla .bdt-twyla-content-wrap' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+                'condition' => [
+                    '_skin' => 'bdt-twyla',
+                ],
             ]
         );
 
@@ -1169,6 +1202,100 @@ class Testimonial_Carousel extends Module_Base
 
         $this->end_controls_section();
 
+        $this->start_controls_section(
+			'section_style_quatation',
+			[
+				'label' => esc_html__('Quatation', 'bdthemes-element-pack') . BDTEP_NC,
+				'tab'   => Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    '_skin' => 'bdt-twyla',
+                ],
+			]
+            
+		);
+
+		$this->add_control(
+			'quatation_color',
+			[
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .skin-twyla .testimonial-item-header::after' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+            Group_Control_Background::get_type(),
+            [
+                'name'     => 'quatation_background_color',
+                'selector' => '{{WRAPPER}} .skin-twyla .testimonial-item-header::after',
+            ]
+        );
+        
+        $this->add_group_control(
+            Group_Control_Border::get_type(), [
+                'name'        => 'quatation_border',
+                'label'       => esc_html__( 'Border', 'bdthemes-element-pack' ),
+                'placeholder' => '1px',
+                'default'     => '1px',
+                'selector'    => '{{WRAPPER}} .skin-twyla .testimonial-item-header::after',
+            ]
+        );
+        
+        $this->add_responsive_control(
+            'quatation_border_radius',
+            [
+                'label'      => esc_html__( 'Border Radius', 'bdthemes-element-pack' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors'  => [
+                    '{{WRAPPER}} .skin-twyla .testimonial-item-header::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        
+		$this->add_responsive_control(
+			'testimonial_quatation_size',
+			[
+				'label'     => esc_html__('Size', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [
+						'min' => 10,
+						'max' => 500,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .skin-twyla .testimonial-item-header::after' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}; line-height: calc(20px + {{SIZE}}{{UNIT}});',
+				],
+			]
+		);
+
+        $this->add_responsive_control(
+            'quatation_margin',
+            [
+                'label'      => esc_html__( 'Margin', 'bdthemes-element-pack' ),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors'  => [
+                    '{{WRAPPER}} .skin-twyla .testimonial-item-header::after' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'quatation_typography',
+				'selector' => '{{WRAPPER}} .skin-twyla .testimonial-item-header::after',
+			]
+		);
+
+
+		$this->end_controls_section();
+
+
         //Navigation Style
         $this->start_controls_section(
             'section_style_navigation',
@@ -1332,7 +1459,8 @@ if (has_excerpt()) {
         //Global Function
         $this->render_swiper_header_attribute('testimonial-carousel');
 
-        $this->add_render_attribute('carousel', 'class', 'bdt-testimonial-carousel skin-' . $skin);
+        $this->add_render_attribute('carousel', 'class', 'bdt-testimonial-carousel bdt-testimonials-twyla-'.$settings['layout_style'].' skin-' . $skin);
+        
 
         if ('yes' == $settings['item_match_height']) {
             $this->add_render_attribute('carousel', 'data-bdt-height-match', 'target: > div > div > div > div > .bdt-testimonial-carousel-text');

@@ -14,33 +14,27 @@ if (!defined('ABSPATH')) {
 	exit;
 } // Exit if accessed directly
 
-class Advanced_Calculator extends Module_Base
-{
+class Advanced_Calculator extends Module_Base {
 
 	protected $_has_template_content = false;
 
-	public function get_name()
-	{
+	public function get_name() {
 		return 'bdt-advanced-calculator';
 	}
 
-	public function get_title()
-	{
+	public function get_title() {
 		return BDTEP . esc_html__('Advanced Calculator', 'bdthemes-element-pack');
 	}
 
-	public function get_icon()
-	{
+	public function get_icon() {
 		return 'bdt-wi-advanced-calculator';
 	}
 
-	public function get_categories()
-	{
+	public function get_categories() {
 		return ['element-pack'];
 	}
 
-	public function get_keywords()
-	{
+	public function get_keywords() {
 		return ['custom', 'advanced', 'calculator', 'math', 'formula'];
 	}
 
@@ -48,44 +42,42 @@ class Advanced_Calculator extends Module_Base
 		if ($this->ep_is_edit_mode()) {
 			return ['ep-styles'];
 		} else {
-			return [ 'ep-advanced-calculator' ];
+			return ['ep-advanced-calculator'];
 		}
 	}
 
 	public function get_script_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['jstat', 'formula', 'ep-scripts'];
-        } else {
+		if ($this->ep_is_edit_mode()) {
+			return ['jstat', 'formula', 'ep-scripts'];
+		} else {
 			return ['jstat', 'formula', 'ep-advanced-calculator'];
-        }
+		}
 	}
 
-	public function get_custom_help_url()
-	{
+	public function get_custom_help_url() {
 		return 'https://youtu.be/vw28HW6duXE';
 	}
 
-	protected function register_controls()
-	{
+	protected function register_controls() {
 
 
 		$this->start_controls_section(
 			'section_form_fields',
 			[
-				'label' => __('Form Fields', 'bdthemes-element-pack'),
+				'label' => esc_html__('Form Fields', 'bdthemes-element-pack'),
 			]
 		);
 
 		$repeater = new Repeater();
 
 		$field_types = [
-			'text'     => __('Text', 'bdthemes-element-pack'),
-			'number'   => __('Number', 'bdthemes-element-pack'),
-			'hidden'   => __('Hidden', 'bdthemes-element-pack'),
-			'disabled' => __('Disabled', 'bdthemes-element-pack'),
-			'select'   => __('Select', 'bdthemes-element-pack'),
-			'radio' => __('Radio', 'bdthemes-element-pack'),
-			// 'checkbox' => __('Checkbox', 'bdthemes-element-pack'),
+			'text'     => esc_html__('Text', 'bdthemes-element-pack'),
+			'number'   => esc_html__('Number', 'bdthemes-element-pack'),
+			'hidden'   => esc_html__('Hidden', 'bdthemes-element-pack'),
+			'disabled' => esc_html__('Disabled', 'bdthemes-element-pack'),
+			'select'   => esc_html__('Select', 'bdthemes-element-pack'),
+			'radio' => esc_html__('Radio', 'bdthemes-element-pack'),
+			// 'checkbox' => esc_html__('Checkbox', 'bdthemes-element-pack'),
 		];
 
 		$repeater->start_controls_tabs('form_fields_tabs');
@@ -93,14 +85,14 @@ class Advanced_Calculator extends Module_Base
 		$repeater->start_controls_tab(
 			'form_fields_content_tab',
 			[
-				'label' => __('Content', 'bdthemes-element-pack'),
+				'label' => esc_html__('Content', 'bdthemes-element-pack'),
 			]
 		);
 
 		$repeater->add_control(
 			'field_type',
 			[
-				'label'   => __('Type', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Type', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'options' => $field_types,
 				'default' => 'number',
@@ -110,7 +102,7 @@ class Advanced_Calculator extends Module_Base
 		$repeater->add_control(
 			'field_label',
 			[
-				'label'   => __('Label', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Label', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::TEXT,
 				'default' => '',
 				'dynamic'     => ['active' => true],
@@ -120,7 +112,7 @@ class Advanced_Calculator extends Module_Base
 		$repeater->add_control(
 			'placeholder',
 			[
-				'label'      => __('Placeholder', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Placeholder', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::TEXT,
 				'default'    => '',
 				'dynamic'     => ['active' => true],
@@ -142,10 +134,10 @@ class Advanced_Calculator extends Module_Base
 		$repeater->add_control(
 			'field_options',
 			[
-				'label'       => __('Options', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Options', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXTAREA,
 				'default'     => '',
-				'description' => __('Enter each option in a separate line. To differentiate between label and value, separate them with a pipe char ("|"). For example: First Name|f_name', 'bdthemes-element-pack'),
+				'description' => esc_html__('Enter each option in a separate line. To differentiate between label and value, separate them with a pipe char ("|"). For example: First Name|f_name', 'bdthemes-element-pack'),
 				'dynamic'     => ['active' => true],
 				'conditions'  => [
 					'terms' => [
@@ -166,7 +158,7 @@ class Advanced_Calculator extends Module_Base
 		$repeater->add_control(
 			'inline_list',
 			[
-				'label'      => __('Inline List', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Inline List', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::SWITCHER,
 				'conditions' => [
 					'terms' => [
@@ -186,10 +178,10 @@ class Advanced_Calculator extends Module_Base
 		$repeater->add_responsive_control(
 			'width',
 			[
-				'label'      => __('Column Width', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Column Width', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::SELECT,
 				'options'    => [
-					''    => __('Default', 'bdthemes-element-pack'),
+					''    => esc_html__('Default', 'bdthemes-element-pack'),
 					'100' => '100%',
 					'80'  => '80%',
 					'75'  => '75%',
@@ -226,14 +218,14 @@ class Advanced_Calculator extends Module_Base
 		$repeater->start_controls_tab(
 			'form_fields_advanced_tab',
 			[
-				'label' => __('Advanced', 'bdthemes-element-pack'),
+				'label' => esc_html__('Advanced', 'bdthemes-element-pack'),
 			]
 		);
 
 		$repeater->add_control(
 			'field_value',
 			[
-				'label'      => __('Default Value', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Default Value', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::TEXT,
 				'default'    => '',
 				'dynamic'    => [
@@ -259,9 +251,9 @@ class Advanced_Calculator extends Module_Base
 		// $repeater->add_control(
 		// 	'custom_id',
 		// 	[
-		// 		'label' => __('ID', 'bdthemes-element-pack'),
+		// 		'label' => esc_html__('ID', 'bdthemes-element-pack'),
 		// 		'type' => Controls_Manager::TEXT,
-		// 		'description' => __('Please make sure the ID is unique and not used elsewhere in this form. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'bdthemes-element-pack'),
+		// 		'description' => esc_html__('Please make sure the ID is unique and not used elsewhere in this form. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'bdthemes-element-pack'),
 		// 		'render_type' => 'none',
 		// 		'required' => true,
 		// 	]
@@ -279,15 +271,15 @@ class Advanced_Calculator extends Module_Base
 					[
 						// 'custom_id' => 'value1',
 						'field_type'  => 'number',
-						'field_label' => __('First Value', 'bdthemes-element-pack'),
-						'placeholder' => __('Enter your value', 'bdthemes-element-pack'),
+						'field_label' => esc_html__('First Value', 'bdthemes-element-pack'),
+						'placeholder' => esc_html__('Enter your value', 'bdthemes-element-pack'),
 						'width'       => '100',
 					],
 					[
 						// 'custom_id' => 'value2',
 						'field_type'  => 'number',
-						'field_label' => __('Second Value', 'bdthemes-element-pack'),
-						'placeholder' => __('Enter your value', 'bdthemes-element-pack'),
+						'field_label' => esc_html__('Second Value', 'bdthemes-element-pack'),
+						'placeholder' => esc_html__('Enter your value', 'bdthemes-element-pack'),
 						'width'       => '100',
 					],
 				],
@@ -456,10 +448,10 @@ class Advanced_Calculator extends Module_Base
 		$this->add_control(
 			'form_formula',
 			[
-				'label'       => __('Formula', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Formula', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::CODE,
 				'dynamic'     => ['active' => true],
-				'default'     => __('SUM(f1 + f2)', 'bdthemes-element-pack'),
+				'default'     => esc_html__('SUM(f1 + f2)', 'bdthemes-element-pack'),
 				'label_block' => true,
 			]
 		);
@@ -468,7 +460,7 @@ class Advanced_Calculator extends Module_Base
 			'form_formula_note',
 			[
 				'type'            => Controls_Manager::RAW_HTML,
-				'raw'             => __(
+				'raw'             => esc_html__(
 					'It\'s one of the most amazing features of this widget. There are lots of math formulas available for you. The fields will automatically detect their own indexing. If you insert 2 fields and want to add them then the formula would be <b>SUM(f1+f2)</b>.
 				<br/>If you want to know details about formulas, please visit <a href="https://formulajs.info/functions/" target="_blank">Here</a>.',
 					'bdthemes-element-pack'
@@ -489,12 +481,12 @@ class Advanced_Calculator extends Module_Base
 		$this->add_control(
 			'form_result_show',
 			[
-				'label'   => __('Result Show', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Result Show', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'submit',
 				'options' => [
-					'submit'    => __('On Submit', 'bdthemes-element-pack'),
-					'change' => __('On Change', 'bdthemes-element-pack'),
+					'submit'    => esc_html__('On Submit', 'bdthemes-element-pack'),
+					'change' => esc_html__('On Change', 'bdthemes-element-pack'),
 				],
 			]
 		);
@@ -502,12 +494,12 @@ class Advanced_Calculator extends Module_Base
 		$this->add_control(
 			'form_result_position',
 			[
-				'label'   => __('Result Position', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Result Position', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'bottom',
 				'options' => [
-					'top'    => __('Top', 'bdthemes-element-pack'),
-					'bottom' => __('Bottom', 'bdthemes-element-pack'),
+					'top'    => esc_html__('Top', 'bdthemes-element-pack'),
+					'bottom' => esc_html__('Bottom', 'bdthemes-element-pack'),
 				],
 			]
 		);
@@ -515,23 +507,23 @@ class Advanced_Calculator extends Module_Base
 		$this->add_responsive_control(
 			'result_alignment',
 			[
-				'label'       => __('Alignment', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::CHOOSE,
 				'options'     => [
 					'left'    => [
-						'title' => __('Left', 'bdthemes-element-pack'),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-left',
 					],
 					'center'  => [
-						'title' => __('Center', 'bdthemes-element-pack'),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-center',
 					],
 					'right'   => [
-						'title' => __('Right', 'bdthemes-element-pack'),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-right',
 					],
 					'justify' => [
-						'title' => __('Justify', 'bdthemes-element-pack'),
+						'title' => esc_html__('Justify', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-justify',
 					],
 				],
@@ -547,11 +539,11 @@ class Advanced_Calculator extends Module_Base
 		$this->add_control(
 			'form_result_text',
 			[
-				'label'       => __('Result Text', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Result Text', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXTAREA,
 				'dynamic'     => ['active' => true],
-				'description' => __('HTML also allowed.', 'bdthemes-element-pack'),
-				'default'     => __('Result is: ', 'bdthemes-element-pack'),
+				'description' => esc_html__('HTML also allowed.', 'bdthemes-element-pack'),
+				'default'     => esc_html__('Result is: ', 'bdthemes-element-pack'),
 				'label_block' => true,
 			]
 		);
@@ -559,11 +551,11 @@ class Advanced_Calculator extends Module_Base
 		$this->add_control(
 			'form_result_error',
 			[
-				'label'       => __('Error Text', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Error Text', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXTAREA,
 				'dynamic'     => ['active' => true],
-				'description' => __('This message will appear when user will do something wrong.', 'bdthemes-element-pack'),
-				'default'     => __('Error, invalid data format. please fix the data format and send again. thanks!', 'bdthemes-element-pack'),
+				'description' => esc_html__('This message will appear when user will do something wrong.', 'bdthemes-element-pack'),
+				'default'     => esc_html__('Error, invalid data format. please fix the data format and send again. thanks!', 'bdthemes-element-pack'),
 				'label_block' => true,
 			]
 		);
@@ -1102,8 +1094,7 @@ class Advanced_Calculator extends Module_Base
 		$this->end_controls_section();
 	}
 
-	public function form_fields_render_attributes()
-	{
+	public function form_fields_render_attributes() {
 		$settings = $this->get_settings_for_display();
 		$id       = $this->get_id();
 
@@ -1140,18 +1131,15 @@ class Advanced_Calculator extends Module_Base
 		);
 	}
 
-	public function get_attribute_name($item)
-	{
+	public function get_attribute_name($item) {
 		return "form_fields[{$item['custom_id']}]";
 	}
 
-	public function get_attribute_id($item)
-	{
+	public function get_attribute_id($item) {
 		return $item['custom_id'];
 	}
 
-	protected function make_select_field($item, $item_index)
-	{
+	protected function make_select_field($item, $item_index) {
 		$this->add_render_attribute(
 			[
 				'select-wrapper' . $item_index => [
@@ -1182,7 +1170,7 @@ class Advanced_Calculator extends Module_Base
 ?>
 		<?php if ($this->get_settings_for_display('show_labels')) : ?>
 			<label for="<?php echo $this->get_attribute_id($item) ?>" class="bdt-form-label bdt-display-block bdt-margin-small-bottom">
-				<?php echo $item['field_label']; ?>
+				<?php echo esc_html($item['field_label']); ?>
 			</label>
 		<?php endif; ?>
 		<div <?php echo $this->get_render_attribute_string('select-wrapper' . $item_index); ?>>
@@ -1220,8 +1208,7 @@ class Advanced_Calculator extends Module_Base
 	}
 
 
-	protected function make_radio_checkbox_field($item, $item_index, $type)
-	{
+	protected function make_radio_checkbox_field($item, $item_index, $type) {
 		$options = preg_split("/\\r\\n|\\r|\\n/", $item['field_options']);
 		$html    = '';
 		if ($this->get_settings_for_display('show_labels')) {
@@ -1255,7 +1242,7 @@ class Advanced_Calculator extends Module_Base
 					$this->add_render_attribute($element_id, 'checked', 'checked');
 				}
 
-				$html .= '<label id="'.$html_id.'" class="elementor-field-option"><input ' . $this->get_render_attribute_string($element_id) . '> <span for="' . $html_id . '">' . $option_label . '</span></label>';
+				$html .= '<label id="' . $html_id . '" class="elementor-field-option"><input ' . $this->get_render_attribute_string($element_id) . '> <span for="' . $html_id . '">' . $option_label . '</span></label>';
 			}
 			$html .= '</div>';
 		}
@@ -1263,20 +1250,18 @@ class Advanced_Calculator extends Module_Base
 		return $html;
 	}
 
-	private function render_result()
-	{
+	private function render_result() {
 		$settings = $this->get_settings_for_display();
 	?>
 		<div class="bdt-ep-advanced-calculator-field-wrap bdt-field-group bdt-width-1-1 bdt-first-column">
 			<div class="bdt-margin-small-top bdt-ep-advanced-calculator-result">
-				<?php echo $settings['form_result_text']; ?> <span></span>
+				<?php echo wp_kses_post($settings['form_result_text']); ?> <span></span>
 			</div>
 		</div>
 	<?php
 	}
 
-	public function render()
-	{
+	public function render() {
 		$settings   = $this->get_settings_for_display();
 		$id         = $this->get_id();
 		$element_id = 'bdt-ep-advanced-calculator-' . $id;
@@ -1409,17 +1394,17 @@ class Advanced_Calculator extends Module_Base
 						</div>
 					<?php endforeach; ?>
 
-					<?php if($settings['form_result_show'] == 'submit'):?>
+					<?php if ($settings['form_result_show'] == 'submit') : ?>
 
-					<div class="bdt-ep-advanced-calculator-field-wrap bdt-field-group bdt-width-1-1 bdt-first-column">
-						<div class="elementor-field-type-submit bdt-margin-small-top bdt-flex">
-							<button <?php echo $this->get_render_attribute_string('button'); ?> type="submit">
-								<?php
-								echo $settings['button_text'];
-								?>
-							</button>
+						<div class="bdt-ep-advanced-calculator-field-wrap bdt-field-group bdt-width-1-1 bdt-first-column">
+							<div class="elementor-field-type-submit bdt-margin-small-top bdt-flex">
+								<button <?php echo $this->get_render_attribute_string('button'); ?> type="submit">
+									<?php
+									echo esc_html($settings['button_text']);
+									?>
+								</button>
+							</div>
 						</div>
-					</div>
 
 					<?php endif; ?>
 

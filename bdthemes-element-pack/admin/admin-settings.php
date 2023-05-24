@@ -11,8 +11,7 @@ use ElementPack\Utils;
  * Element Pack Admin Settings Class
  */
 
-class ElementPack_Admin_Settings
-{
+class ElementPack_Admin_Settings {
 
     public static $modules_list = null;
     public static $modules_names = null;
@@ -32,8 +31,7 @@ class ElementPack_Admin_Settings
     public $showMessage = false;
     private $is_activated = false;
 
-    public function __construct()
-    {
+    public function __construct() {
 
         $this->settings_api = new ElementPack_Settings_API;
 
@@ -52,9 +50,8 @@ class ElementPack_Admin_Settings
             add_action('admin_menu', [$this, 'admin_menu'], 201);
         }
 
-        if (isset($_GET['notice']) && $_GET['notice'] == 'v6') {
-            add_action('admin_notices', [$this, 'v6_activate_notice'], 10, 3);
-        }
+
+        //add_action('admin_notices', [$this, 'free_v_require_notice'], 10, 3);
 
         if (function_exists('bdt_license_validation') && true == bdt_license_validation()) {
             if (!Tracker::is_allow_track() && (isset($_GET['page']) && 'element_pack_options' != $_GET['page'])) {
@@ -120,8 +117,7 @@ class ElementPack_Admin_Settings
      * @since 6.0.0
      *
      */
-    public static function get_used_widgets()
-    {
+    public static function get_used_widgets() {
 
         $used_widgets = array();
 
@@ -161,8 +157,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_used_only_widgets()
-    {
+    public static function get_used_only_widgets() {
 
         $used_widgets = array();
 
@@ -204,8 +199,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_used_only_3rdparty()
-    {
+    public static function get_used_only_3rdparty() {
 
         $used_widgets = array();
 
@@ -247,8 +241,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_unused_widgets()
-    {
+    public static function get_unused_widgets() {
 
         if (!current_user_can('install_plugins')) {
             die();
@@ -272,8 +265,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_unused_only_widgets()
-    {
+    public static function get_unused_only_widgets() {
 
         if (!current_user_can('install_plugins')) {
             die();
@@ -297,8 +289,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_unused_only_3rdparty()
-    {
+    public static function get_unused_only_3rdparty() {
 
         if (!current_user_can('install_plugins')) {
             die();
@@ -322,8 +313,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_ep_widgets_names()
-    {
+    public static function get_ep_widgets_names() {
         $names = self::$modules_names;
 
         if (null === $names) {
@@ -347,8 +337,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_ep_only_widgets()
-    {
+    public static function get_ep_only_widgets() {
         $names = self::$modules_names_only_widgets;
 
         if (null === $names) {
@@ -372,8 +361,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_ep_only_3rdparty_names()
-    {
+    public static function get_ep_only_3rdparty_names() {
         $names = self::$modules_names_only_3rdparty;
 
         if (null === $names) {
@@ -395,8 +383,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public static function get_url()
-    {
+    public static function get_url() {
         return admin_url('admin.php?page=' . self::PAGE_ID);
     }
 
@@ -407,8 +394,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public function admin_init()
-    {
+    public function admin_init() {
 
         //set the settings
         $this->settings_api->set_sections($this->get_settings_sections());
@@ -425,8 +411,7 @@ class ElementPack_Admin_Settings
      *
      */
 
-    public function admin_menu()
-    {
+    public function admin_menu() {
         add_menu_page(
             BDTEP_TITLE . ' ' . esc_html__('Dashboard', 'bdthemes-element-pack'),
             BDTEP_TITLE,
@@ -502,8 +487,7 @@ class ElementPack_Admin_Settings
      * @return string
      */
 
-    public function element_pack_icon()
-    {
+    public function element_pack_icon() {
         return 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHdpZHRoPSIyMzAuN3B4IiBoZWlnaHQ9IjI1NC44MXB4IiB2aWV3Qm94PSIwIDAgMjMwLjcgMjU0LjgxIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyMzAuNyAyNTQuODE7Ig0KCSB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQoJLnN0MHtmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02MS4wOSwyMjkuMThIMjguOTVjLTMuMTcsMC01Ljc1LTIuNTctNS43NS01Ljc1bDAtMTkyLjA3YzAtMy4xNywyLjU3LTUuNzUsNS43NS01Ljc1aDMyLjE0DQoJYzMuMTcsMCw1Ljc1LDIuNTcsNS43NSw1Ljc1djE5Mi4wN0M2Ni44MywyMjYuNjEsNjQuMjYsMjI5LjE4LDYxLjA5LDIyOS4xOHoiLz4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yMDcuNSwzMS4zN3YzMi4xNGMwLDMuMTctMi41Nyw1Ljc1LTUuNzUsNS43NUg5MC4wNGMtMy4xNywwLTUuNzUtMi41Ny01Ljc1LTUuNzVWMzEuMzcNCgljMC0zLjE3LDIuNTctNS43NSw1Ljc1LTUuNzVoMTExLjcyQzIwNC45MywyNS42MiwyMDcuNSwyOC4yLDIwNy41LDMxLjM3eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTIwNy41LDExMS4zM3YzMi4xNGMwLDMuMTctMi41Nyw1Ljc1LTUuNzUsNS43NUg5MC4wNGMtMy4xNywwLTUuNzUtMi41Ny01Ljc1LTUuNzV2LTMyLjE0DQoJYzAtMy4xNywyLjU3LTUuNzUsNS43NS01Ljc1aDExMS43MkMyMDQuOTMsMTA1LjU5LDIwNy41LDEwOC4xNiwyMDcuNSwxMTEuMzN6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjA3LjUsMTkxLjN2MzIuMTRjMCwzLjE3LTIuNTcsNS43NS01Ljc1LDUuNzVIOTAuMDRjLTMuMTcsMC01Ljc1LTIuNTctNS43NS01Ljc1VjE5MS4zDQoJYzAtMy4xNywyLjU3LTUuNzUsNS43NS01Ljc1aDExMS43MkMyMDQuOTMsMTg1LjU1LDIwNy41LDE4OC4xMywyMDcuNSwxOTEuM3oiLz4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xNjkuNjIsMjUuNjJoMzIuMTRjMy4xNywwLDUuNzUsMi41Nyw1Ljc1LDUuNzV2MTEyLjFjMCwzLjE3LTIuNTcsNS43NS01Ljc1LDUuNzVoLTMyLjE0DQoJYy0zLjE3LDAtNS43NS0yLjU3LTUuNzUtNS43NVYzMS4zN0MxNjMuODcsMjguMiwxNjYuNDQsMjUuNjIsMTY5LjYyLDI1LjYyeiIvPg0KPC9zdmc+DQo=';
     }
 
@@ -514,8 +498,7 @@ class ElementPack_Admin_Settings
      * @return array
      */
 
-    public function get_settings_sections()
-    {
+    public function get_settings_sections() {
         $sections = [
             [
                 'id' => 'element_pack_active_modules',
@@ -549,8 +532,7 @@ class ElementPack_Admin_Settings
      * @return array
      */
 
-    protected function element_pack_admin_settings()
-    {
+    protected function element_pack_admin_settings() {
 
         return ModuleService::get_widget_settings(function ($settings) {
             $settings_fields = $settings['settings_fields'];
@@ -570,14 +552,13 @@ class ElementPack_Admin_Settings
      * @return void
      */
 
-    public function element_pack_welcome()
-    {
+    public function element_pack_welcome() {
         $track_nw_msg = '';
         if (!Tracker::is_allow_track()) {
             $track_nw = esc_html__('This feature is not working because the Elementor Usage Data Sharing feature is Not Enabled.', 'bdthemes-element-pack');
             $track_nw_msg = 'bdt-tooltip="' . $track_nw . '"';
         }
-        ?>
+?>
 
         <div class="ep-dashboard-panel" bdt-scrollspy="target: > div > div > .bdt-card; cls: bdt-animation-slide-bottom-small; delay: 300">
 
@@ -586,9 +567,9 @@ class ElementPack_Admin_Settings
                     <div class="ep-widget-status bdt-card bdt-card-body" <?php echo $track_nw_msg; ?> <?php echo $track_nw_msg; ?>>
 
                         <?php
-$used_widgets = count(self::get_used_widgets());
-        $un_used_widgets = count(self::get_unused_widgets());
-        ?>
+                        $used_widgets = count(self::get_used_widgets());
+                        $un_used_widgets = count(self::get_unused_widgets());
+                        ?>
 
 
                         <div class="ep-count-canvas-wrap bdt-flex bdt-flex-between">
@@ -612,9 +593,9 @@ $used_widgets = count(self::get_used_widgets());
                     <div class="ep-widget-status bdt-card bdt-card-body" <?php echo $track_nw_msg; ?>>
 
                         <?php
-$used_only_widgets = count(self::get_used_only_widgets());
-        $unused_only_widgets = count(self::get_unused_only_widgets());
-        ?>
+                        $used_only_widgets = count(self::get_used_only_widgets());
+                        $unused_only_widgets = count(self::get_unused_only_widgets());
+                        ?>
 
 
                         <div class="ep-count-canvas-wrap bdt-flex bdt-flex-between">
@@ -638,9 +619,9 @@ $used_only_widgets = count(self::get_used_only_widgets());
                     <div class="ep-widget-status bdt-card bdt-card-body" <?php echo $track_nw_msg; ?>>
 
                         <?php
-$used_only_3rdparty = count(self::get_used_only_3rdparty());
-        $unused_only_3rdparty = count(self::get_unused_only_3rdparty());
-        ?>
+                        $used_only_3rdparty = count(self::get_used_only_3rdparty());
+                        $unused_only_3rdparty = count(self::get_unused_only_3rdparty());
+                        ?>
 
 
                         <div class="ep-count-canvas-wrap bdt-flex bdt-flex-between">
@@ -702,7 +683,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
                 <div class="bdt-width-2-3@m">
                     <div class="bdt-card bdt-card-body ep-system-requirement">
                         <h1 class="ep-feature-title bdt-margin-small-bottom">System Requirement</h1>
-                        <?php $this->element_pack_system_requirement();?>
+                        <?php $this->element_pack_system_requirement(); ?>
                     </div>
                 </div>
             </div>
@@ -738,7 +719,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
 
 
     <?php
-}
+    }
 
     /**
      * Get License Key
@@ -747,8 +728,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
      * @return string
      */
 
-    public static function get_license_key()
-    {
+    public static function get_license_key() {
         return trim(get_option('element_pack_license_key'));
     }
 
@@ -759,8 +739,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
      * @return string
      */
 
-    public static function get_license_email()
-    {
+    public static function get_license_email() {
         return trim(get_option('element_pack_license_email', get_bloginfo('admin_email')));
     }
 
@@ -771,8 +750,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
      * @return string
      */
 
-    public static function set_license_key($license_key)
-    {
+    public static function set_license_key($license_key) {
         return update_option('element_pack_license_key', $license_key);
     }
 
@@ -783,8 +761,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
      * @return string
      */
 
-    public static function set_license_email($license_email)
-    {
+    public static function set_license_email($license_email) {
         return update_option('element_pack_license_email', $license_email);
     }
 
@@ -794,8 +771,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
      * @access public
      */
 
-    public function license_page()
-    {
+    public function license_page() {
 
         if ($this->is_activated) {
 
@@ -816,8 +792,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
      * @return void
      */
 
-    public function element_pack_system_requirement()
-    {
+    public function element_pack_system_requirement() {
         $php_version = phpversion();
         $max_execution_time = ini_get('max_execution_time');
         $memory_limit = ini_get('memory_limit');
@@ -829,7 +804,7 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
 
         $environment = Utils::get_environment_info();
 
-        ?>
+    ?>
         <ul class="check-system-status bdt-grid bdt-child-width-1-2@m bdt-grid-small ">
             <li>
                 <div>
@@ -837,14 +812,14 @@ $used_only_3rdparty = count(self::get_used_only_3rdparty());
                     <span class="label1">PHP Version: </span>
 
                     <?php
-if (version_compare($php_version, '7.0.0', '<')) {
-            echo $no_icon;
-            echo '<span class="label2" title="Min: 7.0 Recommended" bdt-tooltip>Currently: ' . $php_version . '</span>';
-        } else {
-            echo $yes_icon;
-            echo '<span class="label2">Currently: ' . $php_version . '</span>';
-        }
-        ?>
+                    if (version_compare($php_version, '7.0.0', '<')) {
+                        echo $no_icon;
+                        echo '<span class="label2" title="Min: 7.0 Recommended" bdt-tooltip>Currently: ' . $php_version . '</span>';
+                    } else {
+                        echo $yes_icon;
+                        echo '<span class="label2">Currently: ' . $php_version . '</span>';
+                    }
+                    ?>
                 </div>
             </li>
 
@@ -853,14 +828,14 @@ if (version_compare($php_version, '7.0.0', '<')) {
                     <span class="label1">Max execution time: </span>
 
                     <?php
-if ($max_execution_time < '90') {
-            echo $no_icon;
-            echo '<span class="label2" title="Min: 90 Recommended" bdt-tooltip>Currently: ' . $max_execution_time . '</span>';
-        } else {
-            echo $yes_icon;
-            echo '<span class="label2">Currently: ' . $max_execution_time . '</span>';
-        }
-        ?>
+                    if ($max_execution_time < '90') {
+                        echo $no_icon;
+                        echo '<span class="label2" title="Min: 90 Recommended" bdt-tooltip>Currently: ' . $max_execution_time . '</span>';
+                    } else {
+                        echo $yes_icon;
+                        echo '<span class="label2">Currently: ' . $max_execution_time . '</span>';
+                    }
+                    ?>
                 </div>
             </li>
             <li>
@@ -868,14 +843,14 @@ if ($max_execution_time < '90') {
                     <span class="label1">Memory Limit: </span>
 
                     <?php
-if (intval($memory_limit) < '812') {
-            echo $no_icon;
-            echo '<span class="label2" title="Min: 812M Recommended" bdt-tooltip>Currently: ' . $memory_limit . '</span>';
-        } else {
-            echo $yes_icon;
-            echo '<span class="label2">Currently: ' . $memory_limit . '</span>';
-        }
-        ?>
+                    if (intval($memory_limit) < '812') {
+                        echo $no_icon;
+                        echo '<span class="label2" title="Min: 812M Recommended" bdt-tooltip>Currently: ' . $memory_limit . '</span>';
+                    } else {
+                        echo $yes_icon;
+                        echo '<span class="label2">Currently: ' . $memory_limit . '</span>';
+                    }
+                    ?>
                 </div>
             </li>
 
@@ -884,14 +859,14 @@ if (intval($memory_limit) < '812') {
                     <span class="label1">Max Post Limit: </span>
 
                     <?php
-if (intval($post_limit) < '32') {
-            echo $no_icon;
-            echo '<span class="label2" title="Min: 32M Recommended" bdt-tooltip>Currently: ' . $post_limit . '</span>';
-        } else {
-            echo $yes_icon;
-            echo '<span class="label2">Currently: ' . $post_limit . '</span>';
-        }
-        ?>
+                    if (intval($post_limit) < '32') {
+                        echo $no_icon;
+                        echo '<span class="label2" title="Min: 32M Recommended" bdt-tooltip>Currently: ' . $post_limit . '</span>';
+                    } else {
+                        echo $yes_icon;
+                        echo '<span class="label2">Currently: ' . $post_limit . '</span>';
+                    }
+                    ?>
                 </div>
             </li>
 
@@ -900,12 +875,12 @@ if (intval($post_limit) < '32') {
                     <span class="label1">Uploads folder writable: </span>
 
                     <?php
-if (!is_writable($upload_path)) {
-            echo $no_icon;
-        } else {
-            echo $yes_icon;
-        }
-        ?>
+                    if (!is_writable($upload_path)) {
+                        echo $no_icon;
+                    } else {
+                        echo $yes_icon;
+                    }
+                    ?>
                 </div>
             </li>
 
@@ -914,14 +889,14 @@ if (!is_writable($upload_path)) {
                     <span class="label1">MultiSite: </span>
 
                     <?php
-if ($environment['wp_multisite']) {
-            echo $yes_icon;
-            echo '<span class="label2">MultiSite</span>';
-        } else {
-            echo $yes_icon;
-            echo '<span class="label2">No MultiSite </span>';
-        }
-        ?>
+                    if ($environment['wp_multisite']) {
+                        echo $yes_icon;
+                        echo '<span class="label2">MultiSite</span>';
+                    } else {
+                        echo $yes_icon;
+                        echo '<span class="label2">No MultiSite </span>';
+                    }
+                    ?>
                 </div>
             </li>
 
@@ -930,12 +905,12 @@ if ($environment['wp_multisite']) {
                     <span class="label1">GZip Enabled: </span>
 
                     <?php
-if ($environment['gzip_enabled']) {
-            echo $yes_icon;
-        } else {
-            echo $no_icon;
-        }
-        ?>
+                    if ($environment['gzip_enabled']) {
+                        echo $yes_icon;
+                    } else {
+                        echo $no_icon;
+                    }
+                    ?>
                 </div>
             </li>
 
@@ -943,14 +918,14 @@ if ($environment['gzip_enabled']) {
                 <div>
                     <span class="label1">Debug Mode: </span>
                     <?php
-if ($environment['wp_debug_mode']) {
-            echo $no_icon;
-            echo '<span class="label2">Currently Turned On</span>';
-        } else {
-            echo $yes_icon;
-            echo '<span class="label2">Currently Turned Off</span>';
-        }
-        ?>
+                    if ($environment['wp_debug_mode']) {
+                        echo $no_icon;
+                        echo '<span class="label2">Currently Turned On</span>';
+                    } else {
+                        echo $yes_icon;
+                        echo '<span class="label2">Currently Turned Off</span>';
+                    }
+                    ?>
                 </div>
             </li>
 
@@ -962,7 +937,7 @@ if ($environment['wp_debug_mode']) {
             cases so make sure you added more memory for others addon too.
         </div>
     <?php
-}
+    }
 
     /**
      * Display Plugin Page
@@ -971,37 +946,36 @@ if ($environment['wp_debug_mode']) {
      * @return void
      */
 
-    public function plugin_page()
-    {
+    public function plugin_page() {
 
         echo '<div class="wrap element-pack-dashboard">';
         echo '<h1>' . BDTEP_TITLE . ' Settings</h1>';
 
         $this->settings_api->show_navigation();
 
-        ?>
+    ?>
 
 
         <div class="bdt-switcher bdt-tab-container bdt-container-xlarge">
             <div id="element_pack_welcome_page" class="ep-option-page group">
-                <?php $this->element_pack_welcome();?>
+                <?php $this->element_pack_welcome(); ?>
 
                 <?php if (!defined('BDTEP_WL')) {
-            $this->footer_info();
-        }?>
+                    $this->footer_info();
+                } ?>
             </div>
 
             <?php
-$this->settings_api->show_forms();
-        ?>
+            $this->settings_api->show_forms();
+            ?>
 
             <div id="element_pack_license_settings_page" class="ep-option-page group">
 
-                <?php $this->license_page();?>
+                <?php $this->license_page(); ?>
 
                 <?php if (!defined('BDTEP_WL')) {
-            $this->footer_info();
-        }?>
+                    $this->footer_info();
+                } ?>
             </div>
         </div>
 
@@ -1014,15 +988,14 @@ $this->settings_api->show_forms();
         ?>
 
     <?php
-}
+    }
 
     /**
      * License Activate Action
      * @access public
      */
 
-    public function action_activate_license()
-    {
+    public function action_activate_license() {
         check_admin_referer('el-license');
 
         $licenseKey = !empty($_POST['element_pack_license_key']) ? sanitize_text_field($_POST['element_pack_license_key']) : "";
@@ -1039,8 +1012,7 @@ $this->settings_api->show_forms();
      * @access public
      */
 
-    public function action_deactivate_license()
-    {
+    public function action_deactivate_license() {
 
         check_admin_referer('el-license');
         if (Element_Pack_Base::RemoveLicenseKey(BDTEP__FILE__, $message)) {
@@ -1056,74 +1028,73 @@ $this->settings_api->show_forms();
      * @return void
      */
 
-    public function license_activated()
-    {
-        ?>
+    public function license_activated() {
+    ?>
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <input type="hidden" name="action" value="element_pack_deactivate_license" />
             <div class="el-license-container bdt-card bdt-card-body">
 
 
-                <h3 class="el-license-title"><span class="dashicons dashicons-admin-network"></span> <?php _e("Element Pack License Information", 'bdthemes-element-pack');?>
+                <h3 class="el-license-title"><span class="dashicons dashicons-admin-network"></span> <?php _e("Element Pack License Information", 'bdthemes-element-pack'); ?>
                 </h3>
 
                 <ul class="element-pack-license-info bdt-list bdt-list-divider">
                     <li>
                         <div>
-                            <span class="license-info-title"><?php _e('Status', 'bdthemes-element-pack');?></span>
+                            <span class="license-info-title"><?php _e('Status', 'bdthemes-element-pack'); ?></span>
 
-                            <?php if (Element_Pack_Base::GetRegisterInfo()->is_valid): ?>
+                            <?php if (Element_Pack_Base::GetRegisterInfo()->is_valid) : ?>
                                 <span class="license-valid">Valid License</span>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <span class="license-valid">Invalid License</span>
-                            <?php endif;?>
+                            <?php endif; ?>
                         </div>
                     </li>
 
                     <li>
                         <div>
-                            <span class="license-info-title"><?php _e('License Type', 'bdthemes-element-pack');?></span>
+                            <span class="license-info-title"><?php _e('License Type', 'bdthemes-element-pack'); ?></span>
                             <?php echo Element_Pack_Base::GetRegisterInfo()->license_title; ?>
                         </div>
                     </li>
 
                     <li>
                         <div>
-                            <span class="license-info-title"><?php _e('License Expired on', 'bdthemes-element-pack');?></span>
+                            <span class="license-info-title"><?php _e('License Expired on', 'bdthemes-element-pack'); ?></span>
                             <?php echo Element_Pack_Base::GetRegisterInfo()->expire_date; ?>
                         </div>
                     </li>
 
                     <li>
                         <div>
-                            <span class="license-info-title"><?php _e('Support Expired on', 'bdthemes-element-pack');?></span>
+                            <span class="license-info-title"><?php _e('Support Expired on', 'bdthemes-element-pack'); ?></span>
                             <?php echo Element_Pack_Base::GetRegisterInfo()->support_end; ?>
                         </div>
                     </li>
 
                     <li>
                         <div>
-                            <span class="license-info-title"><?php _e('License Email', 'bdthemes-element-pack');?></span>
+                            <span class="license-info-title"><?php _e('License Email', 'bdthemes-element-pack'); ?></span>
                             <?php echo self::get_license_email(); ?>
                         </div>
                     </li>
 
                     <li>
                         <div>
-                            <span class="license-info-title"><?php _e('Your License Key', 'bdthemes-element-pack');?></span>
+                            <span class="license-info-title"><?php _e('Your License Key', 'bdthemes-element-pack'); ?></span>
                             <span class="license-key"><?php echo esc_attr(substr(Element_Pack_Base::GetRegisterInfo()->license_key, 0, 9) . "XXXXXXXX-XXXXXXXX" . substr(Element_Pack_Base::GetRegisterInfo()->license_key, -9)); ?></span>
                         </div>
                     </li>
                 </ul>
 
                 <div class="el-license-active-btn">
-                    <?php wp_nonce_field('el-license');?>
-                    <?php submit_button('Deactivate License');?>
+                    <?php wp_nonce_field('el-license'); ?>
+                    <?php submit_button('Deactivate License'); ?>
                 </div>
             </div>
         </form>
     <?php
-}
+    }
 
     /**
      * Display License Form
@@ -1132,31 +1103,30 @@ $this->settings_api->show_forms();
      * @return void
      */
 
-    public function license_form()
-    {
-        ?>
+    public function license_form() {
+    ?>
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <input type="hidden" name="action" value="element_pack_activate_license" />
             <div class="el-license-container bdt-card bdt-card-body">
 
                 <?php
-if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
-            ?>
+                if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
+                ?>
                     <div class="notice notice-error is-dismissible">
                         <p><?php echo $this->licenseMessage; ?></p>
                     </div>
                 <?php
-}
-        ?>
+                }
+                ?>
 
                 <h3 class="bdt-text-large">
-                    <strong><?php _e('Enter your license key here, to activate Element Pack Pro, and get full feature updates and premium support.', 'bdthemes-element-pack');?></strong>
+                    <strong><?php _e('Enter your license key here, to activate Element Pack Pro, and get full feature updates and premium support.', 'bdthemes-element-pack'); ?></strong>
                 </h3>
 
                 <ol class="bdt-text-default">
-                    <li><?php printf(__('Log in to your <a href="%1s" target="_blank">bdthemes fastspring</a> or <a href="%2s" target="_blank">envato</a> account to get your license key.', 'bdthemes-element-pack'), 'https://bdthemes.onfastspring.com/account', 'https://codecanyon.net/downloads');?></li>
-                    <li><?php printf(__('If you don\'t yet have a license key, <a href="%s" target="_blank">get Element Pack Pro now</a>.', 'bdthemes-element-pack'), 'https://elementpack.pro/pricing/');?></li>
-                    <li><?php _e('Copy the license key from your account and paste it below for work element pack properly.', 'bdthemes-element-pack');?></li>
+                    <li><?php printf(__('Log in to your <a href="%1s" target="_blank">bdthemes fastspring</a> or <a href="%2s" target="_blank">envato</a> account to get your license key.', 'bdthemes-element-pack'), 'https://bdthemes.onfastspring.com/account', 'https://codecanyon.net/downloads'); ?></li>
+                    <li><?php printf(__('If you don\'t yet have a license key, <a href="%s" target="_blank">get Element Pack Pro now</a>.', 'bdthemes-element-pack'), 'https://elementpack.pro/pricing/'); ?></li>
+                    <li><?php _e('Copy the license key from your account and paste it below for work element pack properly.', 'bdthemes-element-pack'); ?></li>
                 </ol>
 
                 <div class="bdt-ep-license-field">
@@ -1173,22 +1143,21 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
 
 
                 <div class="el-license-active-btn">
-                    <?php wp_nonce_field('el-license');?>
-                    <?php submit_button('Activate License');?>
+                    <?php wp_nonce_field('el-license'); ?>
+                    <?php submit_button('Activate License'); ?>
                 </div>
             </div>
         </form>
     <?php
-}
+    }
 
     /**
      * Tabbable JavaScript codes & Initiate Color Picker
      *
      * This code uses localstorage for displaying active tabs
      */
-    public function script()
-    {
-        ?>
+    public function script() {
+    ?>
         <script>
             jQuery(document).ready(function() {
                 jQuery('.ep-no-result').removeClass('bdt-animation-shake');
@@ -1341,7 +1310,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
                     event.preventDefault();
 
                     bdtUIkit.notification({
-                        message: '<div bdt-spinner></div> <?php esc_html_e('Please wait, Saving settings...', 'bdthemes-element-pack')?>',
+                        message: '<div bdt-spinner></div> <?php esc_html_e('Please wait, Saving settings...', 'bdthemes-element-pack') ?>',
                         timeout: false
                     });
 
@@ -1349,14 +1318,14 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
                         success: function() {
                             bdtUIkit.notification.closeAll();
                             bdtUIkit.notification({
-                                message: '<span class="dashicons dashicons-yes"></span> <?php esc_html_e('Settings Saved Successfully.', 'bdthemes-element-pack')?>',
+                                message: '<span class="dashicons dashicons-yes"></span> <?php esc_html_e('Settings Saved Successfully.', 'bdthemes-element-pack') ?>',
                                 status: 'primary'
                             });
                         },
                         error: function(data) {
                             bdtUIkit.notification.closeAll();
                             bdtUIkit.notification({
-                                message: '<span bdt-icon=\'icon: warning\'></span> <?php esc_html_e('Unknown error, make sure access is correct!', 'bdthemes-element-pack')?>',
+                                message: '<span bdt-icon=\'icon: warning\'></span> <?php esc_html_e('Unknown error, make sure access is correct!', 'bdthemes-element-pack') ?>',
                                 status: 'warning'
                             });
                         }
@@ -1368,7 +1337,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
             });
         </script>
     <?php
-}
+    }
 
     /**
      * Display Footer
@@ -1377,9 +1346,8 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
      * @return void
      */
 
-    public function footer_info()
-    {
-        ?>
+    public function footer_info() {
+    ?>
 
         <div class="element-pack-footer-info bdt-margin-medium-top">
 
@@ -1402,7 +1370,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
         </div>
 
 <?php
-}
+    }
 
     /**
      * License Active Error
@@ -1410,8 +1378,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
      * @access public
      */
 
-    public function license_activate_error_notice()
-    {
+    public function license_activate_error_notice() {
 
         Notices::add_notice(
             [
@@ -1431,8 +1398,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
      * @access public
      */
 
-    public function license_activate_notice()
-    {
+    public function license_activate_notice() {
         Notices::add_notice(
             [
                 'id' => 'license-issue',
@@ -1446,22 +1412,20 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
     }
 
     /**
-     * v6 Notice
+     * Free V Require Notice
      * This notice is very important to show minimum 3 to 5 next update released version.
      *
      * @access public
      */
 
-    public function v6_activate_notice()
-    {
-
+    public function free_v_require_notice() {
         Notices::add_notice(
             [
-                'id' => 'version-6',
-                'type' => 'warning',
-                'dismissible' => true,
-                'dismissible-time' => 43200,
-                'message' => __('There are very important changes in our major version <strong>v6.0.0</strong>. If you are continuing with the Element Pack plugin from an earlier version of v6.0.0 then you must read this article carefully <a href="https://bdthemes.com/knowledge-base/read-before-upgrading-to-element-pack-pro-version-6-0" target="_blank">from here</a>. <br> And if you are using this plugin from v6.0.0 there is nothing to worry about you. Thank you.', 'bdthemes-element-pack'),
+                'id'               => 'free-version-require',
+                'type'             => 'warning',
+                'dismissible'      => true,
+                'dismissible-time' => DAY_IN_SECONDS * 15,
+                'message'          => __('From version <strong>v7.5.0</strong>, the Pro/Premium versions of <strong>Element Pack</strong> would require the installation of the Free Version plugin. Please install the Free version if you are using the Element Pack Pro <strong>v7.5.0</strong> version so we can troubleshoot any issues faster. Thank you.', 'bdthemes-element-pack'),
             ]
         );
     }
@@ -1474,8 +1438,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
      * @access public
      */
 
-    public function el_use_mini_cart()
-    {
+    public function el_use_mini_cart() {
         Notices::add_notice(
             [
                 'id' => 'ep-el-use-mini-cart',
@@ -1496,8 +1459,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
      * @access public
      */
 
-    public function allow_tracker_activate_notice()
-    {
+    public function allow_tracker_activate_notice() {
 
         Notices::add_notice(
             [
@@ -1519,8 +1481,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
      * @access public
      */
 
-    public function allow_tracker_dashboard_notice()
-    {
+    public function allow_tracker_dashboard_notice() {
 
         Notices::add_notice(
             [
@@ -1539,8 +1500,7 @@ if (!empty($this->showMessage) && !empty($this->licenseMessage)) {
      *
      * @return array page names with key value pairs
      */
-    public function get_pages()
-    {
+    public function get_pages() {
         $pages = get_pages();
         $pages_options = [];
         if ($pages) {

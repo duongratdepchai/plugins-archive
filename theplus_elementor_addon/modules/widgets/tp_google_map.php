@@ -656,6 +656,7 @@ class ThePlus_Google_Map extends Widget_Base {
 				$gmap_content .='</div>';
 			}
 		$gmap_content .='</div>';
+
 		echo $gmap_content;
 	}
  

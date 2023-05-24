@@ -345,7 +345,7 @@ class UniteCreatorAssetsWork extends UniteCreatorAssets{
 		$filename = UniteFunctionsUC::getVal($data, "filename");
 		
 		$this->unzipFile($path, $filename);
-		
+				
 		//set checked file
 		$this->setCheckedFiles($path, $filename);
 		

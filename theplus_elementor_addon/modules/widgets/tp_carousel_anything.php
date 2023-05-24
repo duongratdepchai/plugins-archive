@@ -22,8 +22,10 @@ use TheplusAddons\Theplus_Element_Load;
 if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
  
- 
+		
 class ThePlus_Carousel_Anything extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
  
 	public function get_name() {
 		return 'tp-carousel-anything';
@@ -36,6 +38,12 @@ class ThePlus_Carousel_Anything extends Widget_Base {
     public function get_icon() {
         return 'fa fa-sliders theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "carousel-anything";
+
+		return esc_url($DocUrl);
+	}
  
     public function get_categories() {
         return array('plus-creatives');
@@ -78,7 +86,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$repeater->add_control(
 			'content_template',
 			[
-				'label'       => esc_html__( 'Select Content', 'theplus' ),
+				'label' => wp_kses_post( "Select Content <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "connect-carousel-remote-with-carousel-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'        => Controls_Manager::SELECT,
 				'default'     => '0',
 				'options'     => theplus_get_templates(),
@@ -135,7 +143,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'carousel_unique_id',
 			[
-				'label' => esc_html__( 'Unique Carousel ID', 'theplus' ),
+				'label' => wp_kses_post( "Unique Carousel ID <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "connect-infobox-with-carousel-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'separator' => 'before',
@@ -180,6 +188,16 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 				'options' => [
 					'horizontal'  => esc_html__( 'Horizontal', 'theplus' ),
 					'vertical' => esc_html__( 'Vertical', 'theplus' ),
+				],
+			]
+		);
+		$this->add_control(
+			'how_vertical_works',
+			[
+				'label' => wp_kses_post( "<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "tabs-tours-elementor-widget-settings-overview/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> How vertical works <i class='eicon-help-o'></i> </a>", 'theplus' ),
+				'type' => Controls_Manager::HEADING,
+				'condition' => [
+					'slider_direction' => 'vertical',
 				],
 			]
 		);
@@ -251,7 +269,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_desktop_column',
 			[
-				'label'   => esc_html__( 'Desktop Columns', 'theplus' ),
+				'label' => wp_kses_post( "Desktop Columns <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "multiple-columned-elementor-carousel-slider/' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => theplus_carousel_desktop_columns(),
@@ -315,7 +333,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_infinite',
 			[
-				'label'   => esc_html__( 'Infinite Mode', 'theplus' ),
+				'label' => wp_kses_post( "Infinite Mode <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "carousel-infinite-loop-scroll-in-elementor-slider/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -345,7 +363,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_autoplay',
 			[
-				'label'   => esc_html__( 'Autoplay', 'theplus' ),
+				'label' => wp_kses_post( "Autoplay <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-carousel-slider-autoplay/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -378,7 +396,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_dots',
 			[
-				'label'   => esc_html__( 'Show Dots', 'theplus' ),
+				'label' => wp_kses_post( "Show Dots <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "showhide-arrows-dots-in-elementor-carousel/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -629,7 +647,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_arrows',
 			[
-				'label'   => esc_html__( 'Show Arrows', 'theplus' ),
+				'label' => wp_kses_post( "Show Arrows <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "showhide-arrows-dots-in-elementor-carousel/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -768,7 +786,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_center_mode',
 			[
-				'label'   => esc_html__( 'Center Mode', 'theplus' ),
+				'label' => wp_kses_post( "Center Mode <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "increase-center-slide-in-elementor-carousel/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -938,7 +956,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_tablet_column',
 			[
-				'label'   => esc_html__( 'Tablet Columns', 'theplus' ),
+				'label' => wp_kses_post( "Tablet Columns <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "multiple-columned-elementor-carousel-slider/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => theplus_carousel_tablet_columns(),
@@ -984,7 +1002,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'tablet_slider_infinite',
 			[
-				'label'   => esc_html__( 'Infinite Mode', 'theplus' ),
+				'label' => wp_kses_post( "Infinite Mode <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "carousel-infinite-loop-scroll-in-elementor-slider/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -997,7 +1015,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'tablet_slider_autoplay',
 			[
-				'label'   => esc_html__( 'Autoplay', 'theplus' ),
+				 'label' => wp_kses_post( "Autoplay <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-carousel-slider-autoplay/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -1103,7 +1121,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'slider_mobile_column',
 			[
-				'label'   => esc_html__( 'Mobile Columns', 'theplus' ),
+				'label' => wp_kses_post( "Mobile Columns <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "multiple-columned-elementor-carousel-slider/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => theplus_carousel_mobile_columns(),
@@ -1149,7 +1167,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'mobile_slider_infinite',
 			[
-				'label'   => esc_html__( 'Infinite Mode', 'theplus' ),
+				'label' => wp_kses_post( "Infinite Mode <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "carousel-infinite-loop-scroll-in-elementor-slider/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -1162,7 +1180,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
 		$this->add_control(
 			'mobile_slider_autoplay',
 			[
-				'label'   => esc_html__( 'Autoplay', 'theplus' ),
+				'label' => wp_kses_post( "Autoplay <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-carousel-slider-autoplay/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'On', 'theplus' ),
 				'label_off' => esc_html__( 'Off', 'theplus' ),				
@@ -1265,6 +1283,7 @@ class ThePlus_Carousel_Anything extends Widget_Base {
  
 		/*--On Scroll View Animation ---*/
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
  
     protected function render() {

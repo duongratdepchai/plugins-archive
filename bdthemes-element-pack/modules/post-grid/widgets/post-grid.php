@@ -53,6 +53,13 @@ class Post_Grid extends Module_Base {
 			return ['ep-font', 'ep-post-grid'];
 		}
 	}
+	public function get_script_depends() {
+		if ($this->ep_is_edit_mode()) {
+			return ['ep-scripts'];
+		} else {
+			return ['ep-post-grid'];
+		}
+	}
 
 	public function get_custom_help_url() {
 		return 'https://youtu.be/z3gWwPIsCkg';
@@ -623,7 +630,63 @@ class Post_Grid extends Module_Base {
 				'separator' => 'before'
 			]
 		);
+		$this->add_control(
+			'post_grid_ajax_loadmore',
+			[
+				'label' => esc_html__('Ajax Load More', 'bdthemes-element-pack') . BDTEP_NC,
+				'type'  => Controls_Manager::SWITCHER,
+				'separator' => 'before',
+				'condition' => [
+					'show_pagination!' => 'yes',
+					'_skin' => '',
+				],
+				'frontend_available' => true,
+			]
+		);
+		$this->add_control(
+			'post_grid_ajax_loadmore_items',
+			[
+				'label' => esc_html__('Load More Items', 'bdthemes-element-pack'),
+				'type'  => Controls_Manager::NUMBER,
+				'default' => 3,
+				'condition' => [
+					'show_pagination!' => 'yes',
+					'post_grid_ajax_loadmore' => 'yes',
+					'_skin' => '',
+				],
+				// 'frontend_available' => true,
+			]
+		);
+		$this->add_control(
+			'post_grid_show_loadmore',
+			[
+				'label' => esc_html__('Load More Button', 'bdthemes-element-pack'),
+				'type'  => Controls_Manager::SWITCHER,
+				'separator' => 'before',
+				'condition' => [
+					'show_pagination!' => 'yes',
+					'post_grid_ajax_loadmore' => 'yes',
+					'_skin' => '',
+				],
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
 
+		$this->add_control(
+			'post_grid_show_infinite_scroll',
+			[
+				'label' => esc_html__('Infinite Scroll', 'bdthemes-element-pack'),
+				'type'  => Controls_Manager::SWITCHER,
+				'condition' => [
+					'show_pagination!' => 'yes',
+					'post_grid_show_loadmore!' => 'yes',
+					'post_grid_ajax_loadmore' => 'yes',
+					'_skin' => '',
+				],
+				'frontend_available' => true,
+			]
+		);
 		$this->end_controls_section();
 
 		//New Query Builder Settings
@@ -803,7 +866,7 @@ class Post_Grid extends Module_Base {
 			'strip_shortcode',
 			[
 				'label'   => esc_html__('Strip Shortcode', 'bdthemes-element-pack'),
-				'description' => __( 'Remove the shortcodes from the post description text and vice versa.', 'bdthemes-element-pack' ),
+				'description' => __('Remove the shortcodes from the post description text and vice versa.', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'condition'   => [
@@ -912,65 +975,65 @@ class Post_Grid extends Module_Base {
 			]
 		);
 
-        $this->add_responsive_control(
-            'content_padding',
-            [
-                'label'      => __('Content Padding', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors'  => [
-                    '{{WRAPPER}} .bdt-post-grid-desc' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
+		$this->add_responsive_control(
+			'content_padding',
+			[
+				'label'      => __('Content Padding', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-post-grid-desc' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
 				// 'condition' => [
 				// 	'_skin!' => ['bdt-carmie'],
 				// ],
-            ]
-        );
+			]
+		);
 
-        // $this->add_responsive_control(
-        //     'skin_content_padding',
-        //     [
-        //         'label'      => __('Content Padding', 'bdthemes-element-pack'),
-        //         'type'       => Controls_Manager::DIMENSIONS,
-        //         'size_units' => ['px', 'em', '%'],
-        //         'selectors'  => [
-        //             '{{WRAPPER}} .bdt-post-grid-desc' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-        //         ],
+		// $this->add_responsive_control(
+		//     'skin_content_padding',
+		//     [
+		//         'label'      => __('Content Padding', 'bdthemes-element-pack'),
+		//         'type'       => Controls_Manager::DIMENSIONS,
+		//         'size_units' => ['px', 'em', '%'],
+		//         'selectors'  => [
+		//             '{{WRAPPER}} .bdt-post-grid-desc' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+		//         ],
 		// 		'condition' => [
 		// 			'_skin' => ['bdt-carmie'],
 		// 		],
-        //     ]
-        // );
+		//     ]
+		// );
 
-        $this->add_responsive_control(
-            'content_margin',
-            [
-                'label'      => __('Content Margin', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors'  => [
-                    '{{WRAPPER}} .bdt-post-grid-desc' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
+		$this->add_responsive_control(
+			'content_margin',
+			[
+				'label'      => __('Content Margin', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-post-grid-desc' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
 				'condition' => [
 					'_skin!' => ['bdt-carmie', 'bdt-trosia'],
 				],
-            ]
-        );
+			]
+		);
 
-        $this->add_responsive_control(
-            'skin_content_margin',
-            [
-                'label'      => __('Content Margin', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors'  => [
-                    '{{WRAPPER}} .bdt-post-grid-desc > .bdt-position-medium ' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
+		$this->add_responsive_control(
+			'skin_content_margin',
+			[
+				'label'      => __('Content Margin', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-post-grid-desc > .bdt-position-medium ' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
 				'condition' => [
 					'_skin' => ['bdt-carmie', 'bdt-trosia'],
 				],
-            ]
-        );
+			]
+		);
 
 		$this->start_controls_tabs('tabs_item_style');
 
@@ -1001,25 +1064,25 @@ class Post_Grid extends Module_Base {
 		);
 
 		$this->add_responsive_control(
-            'overlay_opacity',
-            [
-                'label'     => __('Overlay Opacity', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::SLIDER,
-                'range'     => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 1,
-                        'step' => 0.1,
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .bdt-post-grid-item .bdt-custom-overlay' => 'opacity: {{SIZE}};',
-                ],
+			'overlay_opacity',
+			[
+				'label'     => __('Overlay Opacity', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [
+						'min' => 0,
+						'max' => 1,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-post-grid-item .bdt-custom-overlay' => 'opacity: {{SIZE}};',
+				],
 				'condition' => [
 					'_skin!' => ['bdt-harold', 'bdt-reverse', 'bdt-alter', 'bdt-alite'],
 				],
-            ]
-        );
+			]
+		);
 
 		$this->add_group_control(
 			Group_Control_Background::get_type(),
@@ -1056,36 +1119,36 @@ class Post_Grid extends Module_Base {
 		);
 
 		$this->add_responsive_control(
-            'item_radius',
-            [
-                'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors'  => [
-                    '{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
+			'item_radius',
+			[
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
 
-        $this->add_responsive_control(
-            'item_padding',
-            [
-                'label'      => __('Padding', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors'  => [
-                    '{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
+		$this->add_responsive_control(
+			'item_padding',
+			[
+				'label'      => __('Padding', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
 
 		$this->add_group_control(
-            Group_Control_Box_Shadow::get_type(),
-            [
-                'name'     => 'item_box_shadow',
-                'selector' => '{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item'
-            ]
-        );
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'item_box_shadow',
+				'selector' => '{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item'
+			]
+		);
 
 		$this->end_controls_tab();
 
@@ -1116,30 +1179,30 @@ class Post_Grid extends Module_Base {
 		);
 
 		$this->add_responsive_control(
-            'overlay_hover_opacity',
-            [
-                'label'     => __('Overlay Opacity', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::SLIDER,
-                'range'     => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 1,
-                        'step' => 0.1,
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .bdt-post-grid-item:hover .bdt-custom-overlay' => 'opacity: {{SIZE}};',
-                ],
+			'overlay_hover_opacity',
+			[
+				'label'     => __('Overlay Opacity', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [
+						'min' => 0,
+						'max' => 1,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-post-grid-item:hover .bdt-custom-overlay' => 'opacity: {{SIZE}};',
+				],
 				'condition' => [
 					'_skin!' => ['bdt-harold', 'bdt-reverse', 'bdt-alter', 'bdt-alite'],
 				],
-            ]
-        );
+			]
+		);
 
 		$this->add_control(
 			'item_hover_border_color',
 			[
-				'label'     => esc_html__( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => [
 					'item_border_border!' => '',
@@ -1151,12 +1214,12 @@ class Post_Grid extends Module_Base {
 		);
 
 		$this->add_group_control(
-            Group_Control_Box_Shadow::get_type(),
-            [
-                'name'     => 'item_box_shadow_hover',
-                'selector' => '{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item:hover'
-            ]
-        );
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'item_box_shadow_hover',
+				'selector' => '{{WRAPPER}} .bdt-post-grid .bdt-post-grid-item:hover'
+			]
+		);
 
 		$this->end_controls_tab();
 
@@ -1220,7 +1283,7 @@ class Post_Grid extends Module_Base {
 		);
 
 		$this->end_controls_tab();
-		
+
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
@@ -2509,6 +2572,148 @@ class Post_Grid extends Module_Base {
 		);
 
 		$this->end_controls_section();
+		$this->start_controls_section(
+			'section_style_loadmore',
+			[
+				'label'     => esc_html__('Load More', 'bdthemes-element-pack'),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'post_grid_ajax_loadmore' => 'yes',
+					'post_grid_show_loadmore' => 'yes',
+				],
+			]
+		);
+
+		$this->start_controls_tabs('tabs_load_button_style');
+
+		$this->start_controls_tab(
+			'tab_load_button_normal',
+			[
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
+			]
+		);
+
+		$this->add_control(
+			'load_button_color',
+			[
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .bdt-loadmore-container .bdt-button' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_button_background',
+			[
+				'label'     => esc_html__('Background', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .bdt-loadmore-container .bdt-button' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'        => 'load_button_border',
+				'selector'    => '{{WRAPPER}} .bdt-loadmore-container .bdt-button',
+			]
+		);
+
+		$this->add_responsive_control(
+			'load_button_border_radius',
+			[
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-loadmore-container .bdt-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'load_button_shadow',
+				'selector' => '{{WRAPPER}} .bdt-loadmore-container .bdt-button',
+			]
+		);
+
+		$this->add_responsive_control(
+			'load_button_padding',
+			[
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-loadmore-container .bdt-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'separator' => 'before',
+			]
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'load_button_typography',
+				'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
+				'selector' => '{{WRAPPER}} .bdt-loadmore-container .bdt-button',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_load_button_hover',
+			[
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
+			]
+		);
+
+		$this->add_control(
+			'load_button_hover_color',
+			[
+				'label'     => esc_html__('Text Color', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .bdt-loadmore-container .bdt-button:hover' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_button_hover_background',
+			[
+				'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .bdt-loadmore-container .bdt-button:hover' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'load_button_hover_border_color',
+			[
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::COLOR,
+				'condition' => [
+					'load_button_border_border!' => '',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-loadmore-container .bdt-button:hover' => 'border-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
 	}
 
 	public function get_taxonomies() {
@@ -2791,8 +2996,65 @@ class Post_Grid extends Module_Base {
 			return;
 		}
 
+		$this->add_render_attribute('bdt-post-grid', 'id', 'bdt-post-grid-' . esc_html($id) . '', true);
+		$this->add_render_attribute('bdt-post-grid', 'class', ['bdt-post-grid', 'bdt-post-grid-skin-default'], true);
+		// $this->add_render_attribute('bdt-post-grid', 'class', ['bdt-post-grid', 'bdt-post-grid-skin-default'], true);
+		// if ($settings['post_grid_show_loadmore'] == 'yes') {
+		$this->add_render_attribute(
+			[
+				'bdt-post-grid' => [
+					'data-settings' => [
+						wp_json_encode(array_filter([
+							'posts_source' => $settings['posts_source'],
+							'posts_per_page' => $settings['default_item_limit']['size'],
+							'ajax_item_load' => isset($settings['post_grid_ajax_loadmore_items']) ? $settings['post_grid_ajax_loadmore_items'] : 3,
+							// 'ajax_item_load' => $settings['ajax_item_load'],
+							'posts_selected_ids' => $settings['posts_selected_ids'],
+							'posts_include_by' => $settings['posts_include_by'],
+							'posts_include_author_ids' => $settings['posts_include_author_ids'],
+							'posts_include_term_ids' => $settings['posts_include_term_ids'],
+							'posts_exclude_by' => $settings['posts_exclude_by'],
+							'posts_exclude_ids' => $settings['posts_exclude_ids'],
+							'posts_exclude_author_ids' => $settings['posts_exclude_author_ids'],
+							'posts_exclude_term_ids' => $settings['posts_exclude_term_ids'],
+							'posts_offset' => $settings['posts_offset'],
+							'posts_select_date' => $settings['posts_select_date'],
+							'posts_date_before' => $settings['posts_date_before'],
+							'posts_date_after' => $settings['posts_date_after'],
+							'posts_orderby' => $settings['posts_orderby'],
+							'posts_order' => $settings['posts_order'],
+							'posts_ignore_sticky_posts' => $settings['posts_ignore_sticky_posts'],
+							'posts_only_with_featured_image' => $settings['posts_only_with_featured_image'],
+							// 'totalPages' => $totalPages,
+							'show_readmore' => $settings['show_readmore'],
+
+						]))
+
+					]
+				]
+			]
+		);
+		// }
+		if ($settings['show_readmore'] === 'yes') :
+			$this->add_render_attribute(
+				[
+					'bdt-post-grid' => [
+						'data-settings-button' => [
+							wp_json_encode(array_filter([
+								'post_grid_icon' => $settings['post_grid_icon'],
+								'readmore_text' => $settings['readmore_text'],
+								'readmore_icon_align' => $settings['icon_align'],
+								'readmore_hover_animation' => $settings['readmore_hover_animation'],
+							]))
+
+						]
+					]
+				]
+			);
+		endif;
+
 	?>
-		<div id="bdt-post-grid-<?php echo esc_attr($id); ?>" class="bdt-post-grid bdt-post-grid-skin-default">
+		<div <?php $this->print_render_attribute_string('bdt-post-grid'); ?>>
 			<div class="bdt-grid bdt-grid-<?php echo esc_attr($settings['column_gap']); ?>" data-bdt-grid>
 
 				<?php $bdt_count = 0;
@@ -2823,10 +3085,18 @@ class Post_Grid extends Module_Base {
 				<?php endwhile; ?>
 			</div>
 		</div>
+		<?php if ($settings['post_grid_show_loadmore'] == 'yes' || $settings['post_grid_show_infinite_scroll'] == 'yes') { ?>
+			<div class="bdt-loadmore-container bdt-text-center bdt-margin-medium">
+				<?php if ($settings['post_grid_show_infinite_scroll'] == 'yes') : ?>
+					<span class="bdt-loadmore" bdt-spinner style="display:none;"></span>
+				<?php else : ?>
+					<span class="bdt-loadmore bdt-button bdt-button-primary"><?php esc_html_e('Load More', 'bdthemes-element-pack'); ?></span>
+				<?php endif; ?>
+			</div>
+		<?php } ?>
 
-		<?php
 
-		if ($settings['show_pagination']) { ?>
+		<?php if ($settings['show_pagination']) { ?>
 			<div class="ep-pagination">
 				<?php element_pack_post_pagination($wp_query); ?>
 			</div>

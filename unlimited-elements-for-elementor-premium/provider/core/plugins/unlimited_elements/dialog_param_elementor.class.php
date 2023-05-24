@@ -962,6 +962,21 @@ class UniteCreatorDialogParamElementor extends UniteCreatorDialogParam{
 	 		    
 			</div>
 
+ 		    <div class="<?php echo $optionsClass?>" data-control="dynamic_popup" style="display:none">
+				
+				<div class="unite-inputs-label">
+			 		    <?php _e("Attribute Suffix","unlimited-elements-for-elementor")?>		
+				</div>
+ 		    	
+ 		    	<input type="text" name="dynamic_popup_suffix" value="" placeholder="Example: title">
+	 		    
+				<div class="unite-dialog-description-left">
+					<?php _e("For the button leave it empty.", "unlimited-elements-for-elementor")?>
+				</div>
+	 		    
+	 		    
+			</div>
+
 			
 		<?php 
 	}

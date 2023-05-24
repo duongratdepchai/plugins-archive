@@ -1,11 +1,18 @@
-( function( $ ) {
+(function($) {
 	"use strict";
 	var WidgetStyleListHandler = function ($scope, $) {
 		var $target = $('.plus-stylist-list-wrapper', $scope);
 		var $hover_inverse = $('.plus-stylist-list-wrapper.hover-inverse-effect', $scope);
 		var $hover_inverse_global = $('.plus-stylist-list-wrapper.hover-inverse-effect-global', $scope);
-		
+
 		if($target.length){
+
+			window.addEventListener('resize', function(event) {
+				respLayout()
+			});
+
+			respLayout();
+
 			var $read_more =$target.find(".read-more-options");
 			if($read_more.length){				
 				var default_load =$target.find(".read-more-options").data("default-load");
@@ -51,7 +58,6 @@
 			});
 		}
 		if($target.hasClass("hover-inverse-effect-global")){
-			
 			$('.plus-icon-list-items > li',$hover_inverse_global).on({
 				mouseenter: function () {
 					$('body').addClass("hover-stylist-global");
@@ -65,8 +71,37 @@
 				}
 			});
 		}
+
+		function respLayout(){
+			let layout = ($target[0] && $target[0].dataset && $target[0].dataset.layout) ? JSON.parse($target[0].dataset.layout) : [],
+				desktop_layout = (layout && layout['desktop']) ? layout['desktop'] : "",
+				tablet_layout = (layout && layout['desktop']) ? layout['tablet'] : "",
+				mobile_layout = (layout && layout['desktop']) ? layout['mobile'] : "",
+				body = document.querySelector('body'),
+				device = body.dataset.elementorDeviceMode;
+	
+			classCheck();
+			if(device == 'desktop' && desktop_layout == 'tp_sl_l_horizontal'){
+				classCheck();
+				$target[0].classList.add('tp-sl-l-horizontal');
+			} else if(device == 'tablet' && tablet_layout == 'tp_sl_l_horizontal'){
+				classCheck();
+				$target[0].classList.add('tp-sl-l-horizontal');
+			} else if(device == 'mobile' && mobile_layout == 'tp_sl_l_horizontal'){
+				classCheck();
+				$target[0].classList.add('tp-sl-l-horizontal');
+			}
+		}
+
+		function classCheck(){
+			if($target[0].classList.contains('tp-sl-l-horizontal')){
+				$target[0].classList.remove('tp-sl-l-horizontal');
+			}
+		}
+
 	};
 	$(window).on('elementor/frontend/init', function () {
 		elementorFrontend.hooks.addAction('frontend/element_ready/tp-style-list.default', WidgetStyleListHandler);
 	});
+
 })(jQuery);

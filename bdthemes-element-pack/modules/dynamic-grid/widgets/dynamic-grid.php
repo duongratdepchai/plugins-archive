@@ -6,7 +6,6 @@ use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Background;
-use Elementor\Group_Control_Typography;
 use ElementPack\Base\Module_Base;
 use ElementPack\Element_Pack_Loader;
 use ElementPack\Traits\Global_Widget_Controls;
@@ -161,14 +160,6 @@ class Dynamic_Grid extends Module_Base {
                 ]
             ]
         );
-        $this->add_control(
-            'show_pagination',
-            [
-                'label'     => esc_html__('Pagination', 'bdthemes-element-pack') . BDTEP_NC,
-                'type'      => Controls_Manager::SWITCHER,
-                'separator' => 'before',
-            ]
-        );
 
         $this->end_controls_section();
 
@@ -295,213 +286,6 @@ class Dynamic_Grid extends Module_Base {
         $this->end_controls_tabs();
 
         $this->end_controls_section();
-        $this->render_style_controls_pagination();
-    }
-
-    /**
-     * Render dynamic grid pagination controls.
-     */
-    public function render_style_controls_pagination() {
-        $this->start_controls_section(
-            'section_style_pagination',
-            [
-                'label'     => esc_html__('Pagination', 'bdthemes-element-pack') . BDTEP_NC,
-                'tab'       => Controls_Manager::TAB_STYLE,
-                'condition' => [
-                    'show_pagination' => 'yes',
-                ],
-            ]
-        );
-
-
-        $this->start_controls_tabs('tabs_pagination_style');
-
-        $this->start_controls_tab(
-            'tab_pagination_normal',
-            [
-                'label' => esc_html__('Normal', 'bdthemes-element-pack'),
-            ]
-        );
-
-        $this->add_control(
-            'pagination_color',
-            [
-                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li a, {{WRAPPER}} ul.bdt-pagination li span' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'      => 'pagination_background',
-                'types'     => ['classic', 'gradient'],
-                'selector'  => '{{WRAPPER}} ul.bdt-pagination li a',
-                'separator' => 'after',
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Border::get_type(),
-            [
-                'name'        => 'pagination_border',
-                'label'       => esc_html__('Border', 'bdthemes-element-pack'),
-                'selector'    => '{{WRAPPER}} ul.bdt-pagination li a',
-            ]
-        );
-
-        $this->add_responsive_control(
-            'pagination_offset',
-            [
-                'label'     => esc_html__('Offset', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .bdt-pagination' => 'margin-top: {{SIZE}}px;',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'pagination_space',
-            [
-                'label'     => esc_html__('Spacing', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} .bdt-pagination' => 'margin-left: {{SIZE}}px;',
-                    '{{WRAPPER}} .bdt-pagination > *' => 'padding-left: {{SIZE}}px;',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'pagination_padding',
-            [
-                'label'     => esc_html__('Padding', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::DIMENSIONS,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li a' => 'padding: {{TOP}}px {{RIGHT}}px {{BOTTOM}}px {{LEFT}}px;',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'pagination_radius',
-            [
-                'label'     => esc_html__('Radius', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::DIMENSIONS,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li a' => 'border-radius: {{TOP}}px {{RIGHT}}px {{BOTTOM}}px {{LEFT}}px;',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'pagination_arrow_size',
-            [
-                'label'     => esc_html__('Arrow Size', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::SLIDER,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li a svg' => 'height: {{SIZE}}px; width: auto;',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name'     => 'pagination_typography',
-                'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
-                'selector' => '{{WRAPPER}} ul.bdt-pagination li a, {{WRAPPER}} ul.bdt-pagination li span',
-            ]
-        );
-
-        $this->end_controls_tab();
-
-        $this->start_controls_tab(
-            'tab_pagination_hover',
-            [
-                'label' => esc_html__('Hover', 'bdthemes-element-pack'),
-            ]
-        );
-
-        $this->add_control(
-            'pagination_hover_color',
-            [
-                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li a:hover' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'pagination_hover_border_color',
-            [
-                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li a:hover' => 'border-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'      => 'pagination_hover_background',
-                'types'     => ['classic', 'gradient'],
-                'selector'  => '{{WRAPPER}} ul.bdt-pagination li a:hover',
-            ]
-        );
-
-        $this->end_controls_tab();
-
-        $this->start_controls_tab(
-            'tab_pagination_active',
-            [
-                'label' => esc_html__('Active', 'bdthemes-element-pack'),
-            ]
-        );
-
-        $this->add_control(
-            'pagination_active_color',
-            [
-                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li.bdt-active a' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'pagination_active_border_color',
-            [
-                'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
-                'type'      => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} ul.bdt-pagination li.bdt-active a' => 'border-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'     => 'pagination_active_background',
-                'selector' => '{{WRAPPER}} ul.bdt-pagination li.bdt-active a',
-            ]
-        );
-
-        $this->end_controls_tab();
-
-        $this->end_controls_tabs();
-
-        $this->end_controls_section();
     }
 
     /**
@@ -548,6 +332,7 @@ class Dynamic_Grid extends Module_Base {
                     $this->render_posts();
                 }
             }
+            wp_reset_postdata();
         }
     }
 
@@ -557,15 +342,6 @@ class Dynamic_Grid extends Module_Base {
             <div class="bdt-dynamic-grid">
                 <?php $this->render_posts_loop(); ?>
             </div>
-            <div class="ep-pagination">
-                <?php
-                if ($settings['show_pagination']) {
-                    $query = $this->get_query();
-                    element_pack_post_pagination($query);
-                }
-                ?>
-            </div>
-            <?php wp_reset_postdata(); ?>
         <?php
         } else {
             echo '<div class="bdt-alert-warning" bdt-alert>oops!! There is no template selected, please select a template first.<div>';

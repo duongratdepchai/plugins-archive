@@ -78,6 +78,9 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		const PARAM_CLASSADD = "classAdd";		//add some class
 		const PARAM_NOTEXT = "unite_setting_notext";			//don't set a text
 		
+		const TAB_CONTENT = "content";
+		const TAB_STYLE = "style";
+		
 		
 		//view defaults:
 		protected $settingsType = null;
@@ -766,21 +769,29 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		 * 
 		 * add saporator
 		 */
-		public function addSap($text, $name="", $opened = false, $icon="", $params = array()){
+		public function addSap($text, $name="", $tab = null, $params = array()){
+			
+			if(empty($tab))
+				$tab = self::TAB_CONTENT;
 			
 			if(empty($text))
 				UniteFunctionsUC::throwError("sap $name must have a text");
+			
+			
+			$opened = UniteFunctionsUC::getVal($params, "opened");
+			$icon = UniteFunctionsUC::getVal($params, "icon");
 			
 			//create sap array
 			$sap = array();
 			$sap["name"] = $name; 
 			$sap["text"] = $text; 
 			$sap["icon"] = $icon;
+			$sap["tab"] = $tab;
 			
 			if(!empty($params))
 				$sap = array_merge($sap, $params);
 			
-			if($opened == true) 
+			if($opened === true) 
 				$sap["opened"] = true;
 			
 			$this->arrSaps[] = $sap;
@@ -932,7 +943,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		}
 		
 		
-		private function a_CONTROLS(){}
+		private function a___________CONTROLS____________(){}
 		
 		/**
 		 * add child control with parent name
@@ -1359,7 +1370,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 		}
 		
-		private function a_OTHERS(){}
+		private function a_______OTHERS______(){}
 		
 		
 		/**
@@ -1675,9 +1686,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		
 		
 		
-		
-		
-		private function a_UPDATE(){}
+		private function a__________UPDATE____________(){}
 		
 		
 		/**

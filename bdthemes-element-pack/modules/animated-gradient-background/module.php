@@ -23,7 +23,7 @@ class Module extends Element_Pack_Module_Base {
         $element->start_controls_section(
             'element_pack_agbg_section',
             [
-                'tab' => Controls_Manager::TAB_STYLE,
+                'tab'   => Controls_Manager::TAB_STYLE,
                 'label' => BDTEP_CP . esc_html__('Animated Gradient Background', 'bdthemes-element-pack'),
             ]
         );
@@ -35,20 +35,22 @@ class Module extends Element_Pack_Module_Base {
         $section->add_control(
             'element_pack_agbg_show',
             [
-                'label' => __('Use Animated Gradient BG', 'bdthemes-element-pack'),
-                'type' => Controls_Manager::SWITCHER,
+                'label'              => esc_html__('Use Animated Gradient BG', 'bdthemes-element-pack'),
+                'type'               => Controls_Manager::SWITCHER,
                 'frontend_available' => true,
-                'render_type' => 'template',
-                'prefix_class' => 'element-pack-agbg-',
-                'return_value' => 'yes',
-                'default' => '',
+                'render_type'        => 'template',
+                'prefix_class'       => 'element-pack-agbg-',
+                'return_value'       => 'yes',
+                'default'            => '',
             ]
         );
+
         $repeater = new Repeater();
+
         $repeater->add_control(
             'start_color',
             [
-                'label'   => __('Start Color', 'bdthemes-element-pack'),
+                'label'   => esc_html__('Start Color', 'bdthemes-element-pack'),
                 'default' => '#0591F9',
                 'type'    => Controls_Manager::COLOR,
             ]
@@ -56,111 +58,115 @@ class Module extends Element_Pack_Module_Base {
         $repeater->add_control(
             'end_color',
             [
-                'label'   => __('End Color', 'bdthemes-element-pack'),
+                'label'   => esc_html__('End Color', 'bdthemes-element-pack'),
                 'default' => '#fefefe',
                 'type'    => Controls_Manager::COLOR,
             ]
         );
+
         $section->add_control(
             'element_pack_agbg_color_list',
             [
-                'label'   => __('Color List', 'bdthemes-element-pack'),
-                'type'    => Controls_Manager::REPEATER,
-                'fields'  => $repeater->get_controls(),
+                'label'              => esc_html__('Color List', 'bdthemes-element-pack'),
+                'type'               => Controls_Manager::REPEATER,
+                'fields'             => $repeater->get_controls(),
                 'frontend_available' => true,
-                'render_type' => 'none',
-                'default' => [
+                'render_type'        => 'none',
+                'default'            => [
                     [
-                        'start_color'   => __('#0591F9', 'bdthemes-element-pack'),
-                        'end_color'   => __('#fefefe', 'bdthemes-element-pack'),
+                        'start_color' => esc_html__('#0591F9', 'bdthemes-element-pack'),
+                        'end_color'   => esc_html__('#fefefe', 'bdthemes-element-pack'),
                     ],
                     [
-                        'start_color'   => __('#567445', 'bdthemes-element-pack'),
-                        'end_color'   => __('#1D1BE0', 'bdthemes-element-pack'),
+                        'start_color' => esc_html__('#567445', 'bdthemes-element-pack'),
+                        'end_color'   => esc_html__('#1D1BE0', 'bdthemes-element-pack'),
                     ],
                 ],
                 'title_field' => '{{start_color}}',
-                'condition' => [
+                'condition'   => [
                     'element_pack_agbg_show' => 'yes'
                 ]
             ]
         );
+
         $section->add_control(
             'element_pack_agbg_blending_mode',
             [
-                'label'      => __('Blend Mode', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::SELECT,
-                'default'    => 'hue',
-                'options'    => [
-                    'multiply'    => __('Multiply', 'bdthemes-element-pack'),
-                    'screen'      => __('Screen', 'bdthemes-element-pack'),
-                    'normal'      => __('Normal', 'bdthemes-element-pack'),
-                    'overlay'     => __('Overlay', 'bdthemes-element-pack'),
-                    'darken'      => __('Darken', 'bdthemes-element-pack'),
-                    'lighten'     => __('Lighten', 'bdthemes-element-pack'),
-                    'color-dodge' => __('Color Dodge', 'bdthemes-element-pack'),
-                    'color-burn'  => __('Color Burn', 'bdthemes-element-pack'),
-                    'hard-light'  => __('Hard Light', 'bdthemes-element-pack'),
-                    'soft-light'  => __('Soft Light', 'bdthemes-element-pack'),
-                    'difference'  => __('Difference', 'bdthemes-element-pack'),
-                    'exclusion'   => __('Exclusion', 'bdthemes-element-pack'),
-                    'hue'         => __('Hue', 'bdthemes-element-pack'),
-                    'saturation'  => __('Saturation', 'bdthemes-element-pack'),
-                    'color'       => __('Color', 'bdthemes-element-pack'),
-                    'luminosity'  => __('Luminosity', 'bdthemes-element-pack'),
+                'label'   => esc_html__('Blend Mode', 'bdthemes-element-pack'),
+                'type'    => Controls_Manager::SELECT,
+                'default' => 'hue',
+                'options' => [
+                    'multiply'    => esc_html__('Multiply', 'bdthemes-element-pack'),
+                    'screen'      => esc_html__('Screen', 'bdthemes-element-pack'),
+                    'normal'      => esc_html__('Normal', 'bdthemes-element-pack'),
+                    'overlay'     => esc_html__('Overlay', 'bdthemes-element-pack'),
+                    'darken'      => esc_html__('Darken', 'bdthemes-element-pack'),
+                    'lighten'     => esc_html__('Lighten', 'bdthemes-element-pack'),
+                    'color-dodge' => esc_html__('Color Dodge', 'bdthemes-element-pack'),
+                    'color-burn'  => esc_html__('Color Burn', 'bdthemes-element-pack'),
+                    'hard-light'  => esc_html__('Hard Light', 'bdthemes-element-pack'),
+                    'soft-light'  => esc_html__('Soft Light', 'bdthemes-element-pack'),
+                    'difference'  => esc_html__('Difference', 'bdthemes-element-pack'),
+                    'exclusion'   => esc_html__('Exclusion', 'bdthemes-element-pack'),
+                    'hue'         => esc_html__('Hue', 'bdthemes-element-pack'),
+                    'saturation'  => esc_html__('Saturation', 'bdthemes-element-pack'),
+                    'color'       => esc_html__('Color', 'bdthemes-element-pack'),
+                    'luminosity'  => esc_html__('Luminosity', 'bdthemes-element-pack'),
                 ],
                 'selectors' => [
                     '{{WRAPPER}}.element-pack-agbg-yes .bdt-animated-gradient-background' => 'mix-blend-mode:{{VALUE}}'
                 ],
                 'conditions' => [
                     'relation' => 'and',
-                    'terms' => [
+                    'terms'    => [
                         [
-                            'name' => 'background_background',
+                            'name'     => 'background_background',
                             'operator' => '!==',
-                            'value' => '',
+                            'value'    => '',
                         ],
                         [
-                            'name' => 'element_pack_agbg_show',
+                            'name'     => 'element_pack_agbg_show',
                             'operator' => '===',
-                            'value' => 'yes',
+                            'value'    => 'yes',
                         ],
                     ],
                 ],
             ]
         );
+
         $section->add_control(
             'element_pack_agbg_direction',
             [
-                'label'      => __('Direction', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::SELECT,
-                'default'    => 'diagonal',
-                'separator'    => 'before',
+                'label'              => esc_html__('Direction', 'bdthemes-element-pack'),
+                'type'               => Controls_Manager::SELECT,
+                'default'            => 'diagonal',
+                'separator'          => 'before',
                 'frontend_available' => true,
-                'render_type' => 'none',
-                'options'    => [
-                    'diagonal'   => __('Diagonal', 'bdthemes-element-pack'),
-                    'left-right'     => __('Left Right', 'bdthemes-element-pack'),
-                    'top-bottom'     => __('Top Bottom', 'bdthemes-element-pack'),
-                    'radial'    => __('Radial', 'bdthemes-element-pack'),
+                'render_type'        => 'none',
+                'options'            => [
+                    'diagonal'   => esc_html__('Diagonal', 'bdthemes-element-pack'),
+                    'left-right' => esc_html__('Left Right', 'bdthemes-element-pack'),
+                    'top-bottom' => esc_html__('Top Bottom', 'bdthemes-element-pack'),
+                    'radial'     => esc_html__('Radial', 'bdthemes-element-pack'),
                 ],
                 'condition' => [
                     'element_pack_agbg_show' => 'yes'
                 ]
             ]
         );
+
         $section->add_control(
             'element_pack_agbg_transitionSpeed',
             [
-                'label'         => __('Transition Speed', 'bdthemes-element-pack'),
-                'type'          => Controls_Manager::SLIDER,
+                'label'              => esc_html__('Transition Speed', 'bdthemes-element-pack'),
+                'type'               => Controls_Manager::SLIDER,
                 'frontend_available' => true,
-                'render_type' => 'none',
-                'range'         => [
+                'render_type'        => 'none',
+                'range'              => [
                     'px'        => [
-                        'min'   => 100,
-                        'max'   => 10000,
-                        'step'  => 100,
+                        'min'  => 100,
+                        'max'  => 10000,
+                        'step' => 100,
                     ]
                 ],
                 'condition' => [

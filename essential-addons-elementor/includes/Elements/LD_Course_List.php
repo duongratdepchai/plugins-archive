@@ -2428,7 +2428,7 @@ class LD_Course_List extends Widget_Base
             $html = $this->get_course_filter_tabs($settings);
         }
 
-        $no_course_found_label_text = ! empty( $settings['eael_course_filter_not_found_label_text'] ) ? Helper::eael_wp_kses( $settings['eael_course_filter_not_found_label_text'] ) : esc_html( 'No Courses Found!', 'essential-addons-elementor' );
+        $no_course_found_label_text = ! empty( $settings['eael_course_filter_not_found_label_text'] ) ? Helper::eael_wp_kses( $settings['eael_course_filter_not_found_label_text'] ) : esc_html__( 'No Courses Found!', 'essential-addons-elementor' );
         $no_course_found_label_class = ! empty( $courses ) ? 'eael-d-none' : 'eael-d-block';
 
         ob_start();
@@ -2440,6 +2440,11 @@ class LD_Course_List extends Widget_Base
             foreach ($courses as $course) {
                 $legacy_meta = get_post_meta($course->ID, '_sfwd-courses', true);
                 $users = get_post_meta($course->ID, 'course_access_list', true);
+
+                if( function_exists( 'learndash_get_course_users_access_from_meta' ) ){
+                    $users = learndash_get_course_users_access_from_meta($course->ID);
+                }
+                
 	            if ( ! is_array( $users ) ) {
 		            $users = explode( ',', $users );
 	            }

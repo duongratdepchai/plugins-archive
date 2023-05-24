@@ -13,35 +13,28 @@ use ElementPack\Element_Pack_Loader;
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-class Age_Gate extends Module_Base
-{
-	public function get_name()
-	{
+class Age_Gate extends Module_Base {
+	public function get_name() {
 		return 'bdt-age-gate';
 	}
 
-	public function get_title()
-	{
+	public function get_title() {
 		return BDTEP . esc_html__('Age Gate', 'bdthemes-element-pack');
 	}
 
-	public function get_icon()
-	{
+	public function get_icon() {
 		return 'bdt-wi-age-gate';
 	}
 
-	public function get_categories()
-	{
+	public function get_categories() {
 		return ['element-pack'];
 	}
 
-	public function get_keywords()
-	{
+	public function get_keywords() {
 		return ['age-gate', 'lightbox', 'popup'];
 	}
 
-	public function get_script_depends()
-	{
+	public function get_script_depends() {
 		if ($this->ep_is_edit_mode()) {
 			return ['ep-scripts'];
 		} else {
@@ -49,13 +42,11 @@ class Age_Gate extends Module_Base
 		}
 	}
 
-	public function get_custom_help_url()
-	{
+	public function get_custom_help_url() {
 		return 'https://youtu.be/I32wKLfNIes';
 	}
 
-	protected function register_controls()
-	{
+	protected function register_controls() {
 
 		$this->start_controls_section(
 			'section_modal_form',
@@ -79,7 +70,7 @@ class Age_Gate extends Module_Base
 			'age_input_note',
 			[
 				'type' => Controls_Manager::RAW_HTML,
-				'raw' => __('Note: example - 18. That means the user can view this webpage only if he is at least 18 years old.', 'bdthemes-element-pack'),
+				'raw' => esc_html__('Note: example - 18. That means the user can view this webpage only if he is at least 18 years old.', 'bdthemes-element-pack'),
 				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 			]
 		);
@@ -140,7 +131,7 @@ class Age_Gate extends Module_Base
 			'redirect_link_note',
 			[
 				'type'            => Controls_Manager::RAW_HTML,
-				'raw'             => __('Note: If the condition not match with user age, then it will redirect them to this link.', 'bdthemes-element-pack'),
+				'raw'             => esc_html__('Note: If the condition not match with user age, then it will redirect them to this link.', 'bdthemes-element-pack'),
 				'content_classes' => 'elementor-panel-alert elementor-panel-alert-warning',
 			]
 		);
@@ -185,9 +176,9 @@ class Age_Gate extends Module_Base
 		$this->add_control(
 			'display_times_expire',
 			[
-				'label' => __('Times Expiry (Hour)', 'bdthemes-element-pack') . BDTEP_NC,
+				'label' => esc_html__('Times Expiry (Hour)', 'bdthemes-element-pack') . BDTEP_NC,
 				'type' => Controls_Manager::NUMBER,
-				'description' => __('Default 72 hours.', 'bdthemes-element-pack'),
+				'description' => esc_html__('Default 72 hours.', 'bdthemes-element-pack'),
 				'default' => 72,
 			]
 		);
@@ -202,7 +193,7 @@ class Age_Gate extends Module_Base
 		$this->add_control(
 			'show_modal_header',
 			[
-				'label'       => __('Show Modal Header', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Show Modal Header', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::SWITCHER,
 				'default'     => 'yes',
 			]
@@ -211,7 +202,7 @@ class Age_Gate extends Module_Base
 		$this->add_control(
 			'show_modal_footer',
 			[
-				'label'       => __('Show Modal Footer', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Show Modal Footer', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::SWITCHER,
 				'default'     => 'yes',
 			]
@@ -387,7 +378,7 @@ class Age_Gate extends Module_Base
 		$this->add_control(
 			'close_btn_delay_show',
 			[
-				'label'       => __('Close Button Delay Show', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Close Button Delay Show', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::SWITCHER,
 			]
 		);
@@ -1206,8 +1197,7 @@ class Age_Gate extends Module_Base
 		$this->end_controls_section();
 	}
 
-	public function render()
-	{
+	public function render() {
 		$settings  = $this->get_settings_for_display();
 		$id        = 'bdt-age-gate-' . $this->get_id();
 		$edit_mode = Element_Pack_Loader::elementor()->editor->is_edit_mode();
@@ -1286,13 +1276,13 @@ class Age_Gate extends Module_Base
 							<div class="bdt-margin-top">
 								<input class="bdt-input bdt-form-width-small bdt-age-input" type="number" placeholder="<?php echo $settings['form_placeholder']; ?>">
 								<button <?php echo $this->get_render_attribute_string('button'); ?>>
-									<?php echo $settings['button_text']; ?>
+									<?php echo esc_html($settings['button_text']); ?>
 								</button>
 							</div>
 						</div>
 						<div <?php echo $this->get_render_attribute_string('modal-msg-text'); ?>>
 							<?php
-								echo wp_kses_post($settings['age_invalid_msg']);
+							echo wp_kses_post($settings['age_invalid_msg']);
 							?>
 						</div>
 					</div>

@@ -23,6 +23,8 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Carousel_Remote extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-carousel-remote';
@@ -35,6 +37,12 @@ class ThePlus_Carousel_Remote extends Widget_Base {
     public function get_icon() {
         return 'fa fa-bluetooth-b theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "carousel-remote";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-creatives');
@@ -52,7 +60,7 @@ class ThePlus_Carousel_Remote extends Widget_Base {
 		$this->add_control(
 			'carousel_unique_id',
 			[
-				'label' => esc_html__( 'Unique Connection ID', 'theplus' ),
+				'label' => wp_kses_post( "Desktop Columns <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "carousel-remote-elementor-widget-settings-overview/' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'description' => esc_html__('Enter the value of ID of carousel/Switcher, which you want to remotely connect with this.','theplus'),
@@ -81,7 +89,7 @@ class ThePlus_Carousel_Remote extends Widget_Base {
 		);
 		$this->add_control(
 			'nxtprvbtn',[
-				'label'   => esc_html__( 'Next/Prev Button', 'theplus' ),
+				'label' => esc_html__( 'Next/Prev', 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'label_on' => esc_html__( 'Show', 'theplus' ),
@@ -1253,6 +1261,7 @@ class ThePlus_Carousel_Remote extends Widget_Base {
 		
 		/*--On Scroll View Animation ---*/
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
 	
 	 protected function render() {

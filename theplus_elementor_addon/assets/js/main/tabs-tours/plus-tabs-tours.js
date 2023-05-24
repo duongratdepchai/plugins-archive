@@ -62,7 +62,7 @@
 
 							if( FindMetro.length > 0 ){
 								setTimeout(function(){ 
-									theplus_setup_packery_portfolio('all');	
+									theplus_setup_packery_portfolio('*');	
 								}, 10);
 							}else if( FindGrid.length > 0 ){
 								setTimeout(function(){ 
@@ -823,7 +823,7 @@
 		function Resizelayout() {
             let MetroResize = container[0].querySelectorAll('.list-isotope-metro');
             if( MetroResize.length > 0 ){
-                theplus_setup_packery_portfolio();	
+                theplus_setup_packery_portfolio("*");	
             }
         }
         Resizelayout();

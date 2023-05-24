@@ -50,6 +50,7 @@ class Module extends Element_Pack_Module_Base
     const URL_GROUP             = 'url';
     const POST_GROUP            = 'post';
     const WOOCOMMERCE_GROUP     = 'woocommerce';
+    const ACF_GROUP             = 'acf';
 
     public function get_groups() {
         return [
@@ -70,6 +71,9 @@ class Module extends Element_Pack_Module_Base
             ],
             self::WOOCOMMERCE_GROUP => [
                 'label' => __( 'WooCommerce', 'bdthemes-element-pack' ),
+            ],
+            self::ACF_GROUP => [
+                'label' => __( 'Advanced Custom Fields', 'bdthemes-element-pack' ),
             ],
         ];
     }
@@ -93,7 +97,9 @@ class Module extends Element_Pack_Module_Base
             'ex_url',
             'search_engine_url',
             'visit_count',
-            'session_count'
+            'session_count',
+            'language',
+            'country'
         ];
 
         if ( class_exists( 'WooCommerce' ) ) {				
@@ -106,7 +112,19 @@ class Module extends Element_Pack_Module_Base
                 'purchased_item_number',
 				'single_product_price',
 				'single_product_stock',
-				'single_product_category'
+				'single_product_category',
+				'single_product_downloadable',
+				'single_product_virtual',
+                'single_product_featured',
+                'single_product_backorder',
+                'single_product_onsale',
+                'single_product_sold_individually',
+                'single_product_type'
+            );
+        }
+        if ( class_exists( 'ACF' ) ) {				
+            array_push($included_conditions,
+                'acf_boolean'
             );
         }
 
@@ -163,7 +181,7 @@ class Module extends Element_Pack_Module_Base
             $val            = $condition['ep_condition_' . $key . '_value'];
 
             $custom_page_id = $condition['ep_condition_custom_page_id'];
-            $extra          = $custom_page_id; 
+            $extra          = isset($condition['ep_condition_' . $key . '_name']) ? $condition['ep_condition_' . $key . '_name'] : ''; 
 
             $_condition = $this->get_conditions($key);
 
@@ -173,7 +191,7 @@ class Module extends Element_Pack_Module_Base
 
             $_condition->set_element_id($id);
 
-            $check = $_condition->check($relation, $val, $extra);
+            $check = $_condition->check($relation, $val, $custom_page_id, $extra);
 
             $this->conditions[$id][$key . '_' . $condition['_id']] = $check;
         }

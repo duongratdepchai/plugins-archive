@@ -340,6 +340,13 @@ function UERemoteGeneralAPI(){
 		objItems.on(g_vars.trigger_event, function(event){
 			
 			var objItem = jQuery(this);
+			
+			var objElement = jQuery(event.target);
+			var isLink = objElement.is("a");
+			
+			if(isLink == true)
+				return(true);
+			
 			objItems.not(objItem).removeClass(g_vars.class_active);
 			
 			objItem.addClass(g_vars.class_active);
@@ -946,6 +953,9 @@ function UESyncObject(){
 	 */
 	function mapAPIs(func, objElement){
 		
+		if(typeof ucRemoteDebugEnabled != "undefined")
+			g_vars.show_debug = true;
+		
 		var elementID = null;
 		
 		if(objElement){
@@ -1205,7 +1215,6 @@ function UERemoteWidgets(){
 		widget_id:null,
 		init_options:null,
 		is_parent_mode: false,
-		is_debug: false,
 		syncid:null,
 		options_api:null,
 		show_connection_debug:false,
@@ -1524,6 +1533,10 @@ function UERemoteWidgets(){
 	 * init api variable
 	 */
 	function initAPI(){
+				
+		if(g_vars.trace_debug == true){
+			trace("start init api function");
+		}
 		
 		//set type and related objects
 		if(!g_api){
@@ -1615,13 +1628,14 @@ function UERemoteWidgets(){
 		//init the debug related
 		
 		var isDebug = g_objWidget.data("debug");
-		if(isDebug === true){
+		if(isDebug === true || typeof ucRemoteDebugEnabled != "undefined"){
 			
 			if(g_vars.show_trace_when_debug_on == true)
 				g_vars.trace_debug = true;
 			
 			g_vars.show_connection_debug = true;
 		}
+				
 		
 		g_vars.is_inited = initParent();
 		
@@ -2360,17 +2374,29 @@ function UERemoteWidgets(){
 		
 		var syncID = g_objParent.data("syncid");
 		
-		if(!syncID)
+		
+		if(g_vars.trace_debug == true){
+			trace("Start parent sync");
+			trace(g_objParent);
+		}
+		
+		if(!syncID){
+			
+			if(g_vars.trace_debug == true){
+				trace("no sync id");
+			}
+			
 			return(false);
+		}
 		
 		var objSync = g_remoteConnection.getSyncObject(syncID);
-				
+		
 		var isEditorMode = isInsideEditor();
 				
 		objSync.setOptions(syncID, isEditorMode);
-		
+				
 		var isInited = initAPI();
-		
+				
 		if(isInited == false){
 			
 			var widgetID = g_objParent.attr("id");
@@ -2393,7 +2419,7 @@ function UERemoteWidgets(){
 		g_vars.syncid = syncID;
 		
 		//add debug event listener
-		if(g_vars.is_debug === true)
+		if(g_vars.trace_debug === true)
 			objSync.on("update_debug", updateSyncDebug);
 		
 		g_objSync = objSync;
@@ -2433,8 +2459,11 @@ function UERemoteWidgets(){
 			
 			var isDebug = g_objParent.data("debug");
 			
-			g_vars.is_debug = isDebug;
-						
+			if(typeof ucRemoteDebugEnabled != "undefined")
+				isDebug = true;
+			
+			g_vars.trace_debug = isDebug;
+							
 			if(isDebug === true)
 				addParentDebug(objParent);
 			

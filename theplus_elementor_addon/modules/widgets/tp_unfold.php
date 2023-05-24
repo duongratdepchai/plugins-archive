@@ -23,6 +23,8 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Unfold extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-unfold';
@@ -35,6 +37,12 @@ class ThePlus_Unfold extends Widget_Base {
     public function get_icon() {
         return 'fa fa-folder-open theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "unfold";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-essential');
@@ -52,7 +60,7 @@ class ThePlus_Unfold extends Widget_Base {
 		$this->add_control(
 			'content_title',
 			[
-				'label' => esc_html__( 'Title', 'theplus' ),
+				'label' => wp_kses_post( "Title <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "unfold-elementor-widget-settings-overview/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
@@ -64,7 +72,7 @@ class ThePlus_Unfold extends Widget_Base {
 		$this->add_control(
 			'content_a_source',
 			[
-				'label' => esc_html__( 'Select Source', 'theplus' ),
+				'label' => wp_kses_post( "Select Source <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "add-read-more-toggle-button-to-text-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'content',
 				'options' => [
@@ -79,7 +87,7 @@ class ThePlus_Unfold extends Widget_Base {
 			'containerbasednote',
 			[				
 				'type' => \Elementor\Controls_Manager::RAW_HTML,
-				'raw' => esc_html__( 'Note : Put this widget in below or above Container of Target Container.', 'theplus' ),
+				'raw' => wp_kses_post( "Note : Put this widget in below or above Containerrrr of Target Container. <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "collapsible-elementor-flexbox-container/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'content_classes' => 'tp-widget-description',
 				'condition' => [
 					'content_a_source' => 'containerbased',
@@ -90,17 +98,19 @@ class ThePlus_Unfold extends Widget_Base {
 			'innersectionbasednote',
 			[				
 				'type' => \Elementor\Controls_Manager::RAW_HTML,
-				'raw' => esc_html__( 'Note : Put this widget in below or above inner section of Target Section.', 'theplus' ),
+				'label' => wp_kses_post( "<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . 
+				"toggle-an-elementor-inner-section/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> Note : Put this widget in below or above inner section of Target Section.  <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'content_classes' => 'tp-widget-description',
 				'condition' => [
 					'content_a_source' => 'innersectionbased',
 				],	
 			]
 		);
+
 		$this->add_control(
 			'content_description',
 			[
-				'label' => esc_html__( 'Content', 'theplus' ),
+				'label' => wp_kses_post( "Content <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "add-read-more-toggle-button-to-text-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::WYSIWYG,
 				'default' => esc_html__( 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which  look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there is anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.', 'theplus' ),
 				'placeholder' => esc_html__( 'Enter Initial Text', 'theplus' ),
@@ -115,7 +125,7 @@ class ThePlus_Unfold extends Widget_Base {
 		$this->add_control(
 			'content_a_template',
 			[
-				'label'       => esc_html__( 'Elementor Templates', 'theplus' ),
+				'label' => wp_kses_post( "Elementor Templates<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-templates-in-unfold-widget/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'        => Controls_Manager::SELECT,
 				'default'     => '0',
 				'options'     => theplus_get_templates(),
@@ -239,7 +249,9 @@ class ThePlus_Unfold extends Widget_Base {
 				'type' => Controls_Manager::URL,
 				'placeholder' => __( 'https://your-link.com', 'theplus' ),
 				'show_external' => true,
-				'dynamic' 		=> [ 'active' => true ],
+				'dynamic' => [ 
+					'active' => true
+				],
 				'default' => [
 					'url' => '',
 					'is_external' => true,
@@ -259,7 +271,7 @@ class ThePlus_Unfold extends Widget_Base {
 					'value' => 'fas fa-book',
 					'library' => 'solid',
 				],
-				'condition'		=> [
+				'condition' => [
 					'extra_link' => 'yes',
 				],
 			]
@@ -276,7 +288,7 @@ class ThePlus_Unfold extends Widget_Base {
 		$this->add_control(
 			'con_pos',
 			[
-				'label' => esc_html__( 'Content Expand Direction', 'theplus' ),
+				'label' => wp_kses_post( "Content Expand Direction <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "add-read-more-toggle-button-to-text-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
@@ -414,6 +426,17 @@ class ThePlus_Unfold extends Widget_Base {
 				'separator' => 'before',
 			]
 		);	
+		$this->add_control('unfold_scroll_top',
+			[
+				'label' => esc_html__( 'Scroll Top', 'theplus' ),
+				'type' =>  Controls_Manager::SWITCHER,
+				'default' => '',
+				'label_on' => esc_html__( 'Enable', 'theplus' ),
+				'label_off' => esc_html__( 'Disable', 'theplus' ),
+				'description' => 'Note : If enabled, When you click on accordion, It will scroll to title automatically.',
+				'separator' => 'before',
+			]
+		);
 		$this->end_controls_section();
 		
 		/*style start*/
@@ -1219,6 +1242,9 @@ class ThePlus_Unfold extends Widget_Base {
 		/*extra button end*/
 		
 		/*style end*/
+
+		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
 	
 	 protected function render() {
@@ -1316,7 +1342,15 @@ class ThePlus_Unfold extends Widget_Base {
 			$content_readmore_icon = $lottie_content;
 			$content_readless_icon = $lottie_content;
 		}
-		$output = '<div class="tp-unfold-wrapper '.esc_attr($uid_widget).' '.esc_attr($ca_class).'" data-id="'.esc_attr($uid_widget).'"  data-content_a_source="'.$settings['content_a_source'].'" data-con_pos="'.$settings['con_pos'].'" data-icon-position="'.esc_attr($icon_position).'" data-readmore="'.$content_readmore.'" data-readless="'.$content_readless.'" data-readmore-icon="'.esc_html($content_readmore_icon).'" data-readless-icon="'.esc_html($content_readless_icon).'"  data-transition-duration="'.esc_attr($transition_duration).'" data-content-max-height="'.esc_attr($content_max_height1).'" data-content-max-height-t="'.esc_attr($content_max_heightt).'" data-content-max-height-m="'.esc_attr($content_max_heightm).'" '.$innersectionbaseddata.'>';
+
+		$unfold_scroll_top = isset($settings['unfold_scroll_top']) ? $settings['unfold_scroll_top'] : '';
+		$stunfoldclass = $stunfold = '';
+		if( $unfold_scroll_top == 'yes' ){
+			$stunfoldclass = ' tp-scrolltop-unfold';
+			$stunfold = ' data-scroll-top-unfold='.$unfold_scroll_top.'';
+		}
+
+		$output = '<div class="tp-unfold-wrapper '.esc_attr($uid_widget).' '.esc_attr($ca_class).' '.esc_attr($stunfoldclass).'" data-id="'.esc_attr($uid_widget).'"  data-content_a_source="'.$settings['content_a_source'].'" data-con_pos="'.$settings['con_pos'].'" data-icon-position="'.esc_attr($icon_position).'" data-readmore="'.$content_readmore.'" data-readless="'.$content_readless.'" data-readmore-icon="'.esc_html($content_readmore_icon).'" data-readless-icon="'.esc_html($content_readless_icon).'"  data-transition-duration="'.esc_attr($transition_duration).'" data-content-max-height="'.esc_attr($content_max_height1).'" data-content-max-height-t="'.esc_attr($content_max_heightt).'" data-content-max-height-m="'.esc_attr($content_max_heightm).'" '.$innersectionbaseddata.' '.$stunfold.'>';
 		
 				
 			$output .= '<'.esc_attr(theplus_validate_html_tag($title_tag)).' class="tp-unfold-title">'.esc_html($content_title).'</'.esc_attr(theplus_validate_html_tag($title_tag)).'>';

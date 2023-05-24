@@ -14,9 +14,8 @@ class UniteCreatorParamsProcessorWork{
 	private $processType;
 	private static $counter = 0;
 	private $arrMainParamsValuesCache = array();
-	protected $dynamicPopupParam = null;
+	protected $dynamicPopupParams = array();
 	protected $dynamicPopupEnabled = false;
-	
 	
 	const ITEMS_ATTRIBUTE_PREFIX = "uc_items_attribute_";
 	const KEY_ITEM_INDEX = "_uc_item_index_";
@@ -143,11 +142,12 @@ class UniteCreatorParamsProcessorWork{
 	 * construct the object
 	 */
 	public function init($addon){
-	
+			
 		//for auto complete
 		//$this->addon = new UniteCreatorAddon();
 		
 		$this->addon = $addon;
+				
 	}
 	
 	
@@ -1523,10 +1523,12 @@ class UniteCreatorParamsProcessorWork{
 	  * get link param data
 	 */
 	private function getLinkData($data, $value, $name, $param, $processType){
-
+		
 		if(is_string($value) == true){
+			
 			$data[$name] = $value;
-			return($data);
+			
+			$value = array("url"=>$value);
 		}
 		
 		$url = UniteFunctionsUC::getVal($value, "url");
@@ -1542,8 +1544,9 @@ class UniteCreatorParamsProcessorWork{
 		if(empty($scheme)){
 			$urlFull = "https://{$url}";
 			$urlNoPrefix = $url;
-		}else
-			$urlNoPrefix = str_replace($scheme, "", $url);
+		}else{
+			$urlNoPrefix = str_replace($scheme."://", "", $url);
+		}
 		
 		
 		$addHtml = "";
@@ -1704,18 +1707,34 @@ class UniteCreatorParamsProcessorWork{
 				$linkType = UniteFunctionsUC::getVal($arrValues, $name."_link_type");
 				
 				$className = "";
-				$this->dynamicPopupEnabled = false;
 				
-				if($linkType == "popup"){
+				$isEnabled = false;
+				
+				if($linkType == "popup"){	//is enabled
 					$className = "uc-dynamic-popup-grid";					
+					$isEnabled = true;
+					
 					$this->dynamicPopupEnabled = true;
 				}
 				
-				$data["uc_dynamic_popup_class"] = $className;
+				$suffix = UniteFunctionsUC::getVal($param, "dynamic_popup_suffix");
+				
+				if(!empty($suffix))
+					$suffix = "_{$suffix}";
+				
+				//if many popups, every one should enable the class
+				
+				if(isset($data["uc_dynamic_popup_class"]) == false)
+					$data["uc_dynamic_popup_class"] = $className;
+				else
+					if($this->dynamicPopupEnabled == true)
+						$data["uc_dynamic_popup_class"] = $className;
 				
 				//use in post items
 				
-				$this->dynamicPopupParam = $param;
+				$param["dynamic_popup_enabled"] = $isEnabled;
+				
+				$this->dynamicPopupParams[] = $param;
 				
 			break;
 		}

@@ -22,6 +22,9 @@ if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
 
 class ThePlus_Pre_Loader extends Widget_Base {	
+
+	public $TpDoc = THEPLUS_TPDOC;
+
 	public function get_name() {
 		return 'tp-pre-loader';
 	}
@@ -33,6 +36,12 @@ class ThePlus_Pre_Loader extends Widget_Base {
     public function get_icon() {
         return 'fas fa-spinner theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "preloader";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-essential');
@@ -54,7 +63,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$repeater->add_control(
 			'plcSelect',
 			[
-				'label' => esc_html__( 'Select', 'theplus' ),
+				'label' => wp_kses_post( "Select <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "multiple-preloaders-animations-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'Image',
 				'options' => [
@@ -134,7 +143,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 			'plcsImage',
 			[
 				'type' => Controls_Manager::MEDIA,
-				'label' => esc_html__('Image', 'theplus'),
+				'label' => wp_kses_post( "Image <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "image-preloader-animation-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'dynamic' => [ 'active'   => true, ],
 				'condition' => [
 					'plcSelect' => 'Image',
@@ -157,7 +166,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$repeater->add_control(
 			'plcsIcons',
 			[
-				'label' => esc_html__( 'Icon', 'theplus' ),
+				'label' => wp_kses_post( "Icon <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "icon-preloader-animation-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::ICONS,
 				'default' => [
 					'value' => 'fas fa-spinner',
@@ -171,7 +180,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$repeater->add_control(
 			'plcsText',
 			[
-				'label' => esc_html__( 'Content', 'theplus' ),
+				'label' => wp_kses_post( "Content <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "how-to-add-text-based-preloader-animation-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => esc_html__( 'Loading…', 'theplus' ),
 				'placeholder' => esc_html__( 'Enter Content Text', 'theplus' ),
@@ -196,7 +205,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$repeater->add_control(
 			'plcsLottieUrl',
 			[
-				'label' => esc_html__( 'Lottie URL', 'theplus' ),
+				'label' => wp_kses_post( "Lottie URL <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "lottie-file-preloader-animation-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::URL,				
 				'placeholder' => esc_html__( 'https://www.demo-link.com', 'theplus' ),
 				'condition' => [
@@ -311,7 +320,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$repeater->add_control(
 			'plcsCustomCode',
 			[
-				'label' => esc_html__( 'Code', 'theplus' ),
+				'label' => wp_kses_post( "code <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "custom-css-preloader-animations-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'rows' => 5,
 				'default' => '',
@@ -325,7 +334,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$repeater->add_control(
 			'plcsCustomShortCode',
 			[
-				'label' => esc_html__( 'Shortcode', 'theplus' ),
+				'label' => wp_kses_post( "Shortcode <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "shortcode-based-preloader-animation-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'rows' => 3,
 				'default' => '',
@@ -339,7 +348,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$this->add_control(
             'preLoaderContent',
             [
-				'label' => esc_html__( 'Preloader', 'theplus' ),
+				'label' => wp_kses_post( "Preloader <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "preloader-elementor-widget-settings-overview/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
                 'type' => Controls_Manager::REPEATER,
                 'default' => [
                     [
@@ -374,7 +383,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$this->add_control(
 			'alfSwitch',
 			[
-				'label' => esc_html__( 'Exclude Content', 'theplus' ),
+				'label' => wp_kses_post( "Exclude Content <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "exclude-content-from-preloader-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
 				'label_off' => esc_html__( 'Disable', 'theplus' ),
@@ -463,7 +472,7 @@ class ThePlus_Pre_Loader extends Widget_Base {
 		$this->add_control(
 			'inTransition',
 			[
-				'label' => esc_html__( 'In Transition', 'theplus' ),
+				'label' => wp_kses_post( "In Transition <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "page-loading-transition-effects-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::HEADING,
 			]
 		);
@@ -1696,8 +1705,11 @@ class ThePlus_Pre_Loader extends Widget_Base {
 				   
 				]
 		);
-		$this->end_controls_section();
+		$this->end_controls_section();	
 		/*box options*/
+
+		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
 		
 	 protected function render() {

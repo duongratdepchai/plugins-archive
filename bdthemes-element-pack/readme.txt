@@ -2,14 +2,14 @@
 Contributors: bdthemes, selimmw
 Donate link: http://bdthemes.com/
 Tags: elementor addons, elementor widget, elementor extensions, elementor addon, addons, elementor, addons for elementor, addons pack, live copy, template library, bdthemes
-Stable tag: 6.15.5
+Stable tag: 7.0.1
 Requires PHP: 7.4.0
 Requires at least: 5.0.0
-Tested up to: 6.2.0
+Tested up to: 6.2.1
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Elementor requires at least: 3.0.0
-Elementor tested up to: 3.12.1
+Elementor tested up to: 3.13.2
 
 The all-new Element Pack Pro brings incredibly advanced, and super-flexible widgets, and A to Z essential addons to the Elementor page builder for WordPress. Explore expertly-coded widgets with first-class support, risk-free! Get a full-refund if you’re not 100% satisfied.*
 
@@ -35,6 +35,53 @@ e.g.
 
 == Changelog ==
 
+= 7.0.1 [18th May 2023] =
+
+= Fixed =
+
+* Post gallery fatal error issue fixed
+* Comparison list Item style issue fixed
+* Future version compatibility notice removed
+* SVG Image widget code improved
+* Cryptocurrency Table width issue fixed
+
+= 7.0.0 [15th May 2023] =
+
+= Added =
+
+* Marquee widget added
+* SVG maps widget added
+* SVG Blob widget added
+* Icon mobile menu widget added
+* Content switcher widget added
+* Floating Knowledgebase widget added
+* Comparison List widget added
+* Content protector extension added
+* Realistic image shadow extension added
+* AdBlock Detector extension added
+* Crypto currency card widget added
+* Crypto currency table widget added
+* Crypto currency grid widget added
+* Crypto currency list widget added
+* Crypto currency carousel widget added
+* Crypto currency ticker widget added
+* Crypto currency chart widget added
+* Crypto currency chart carousel widget added
+* Fancy List 3d style added
+* Visibility Controls feature improved
+* Testimonial slider single skin design improved
+* Testimonial carousel twyla skin 2 style added
+* Ajax Load More option added in post grid widget
+
+= Fixed =
+
+* SVG issue fixed in SVG image widget
+* Query "All" issue fixed in Charitable Campaign widget
+* Lightbox conflict issue fixed (Thanks to Thomas)
+* Skin Dropdown glitch issue fixed in User Login widget (Thanks to Lajos Kovács)
+* Image radius issue fixed in tutor lms course carousel widget
+* Tooltip issue fixed in Image Stack Widget (Thanks to Christos Kovousoglou)
+
 = 6.15.5 [17th April 2023] =
 
 = Added =
@@ -59,21 +106,6 @@ e.g.
 * Fix Dropbar partially closing before opening when switching between Navbar items
 * Fix Parallax component updating too late during slide animation in Filter component
 * Readmore issue fixed in interactive card widget
-
-= 6.15.4 [13th April 2023] =
-
-= Added =
-
-* Read more text repeater option added in static carousel widget
-* Before after button align, border, box shadow & circle shadow color option added in image compare widget
-
-= Fixed =
-
-* Frontend eicon not showing issue fixed
-
-= Improved =
-
-* System Improved
 
 = 6.15.3 [11th April 2023] =
 

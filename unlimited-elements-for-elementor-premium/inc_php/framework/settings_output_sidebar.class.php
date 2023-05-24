@@ -41,6 +41,8 @@ class UniteSettingsOutputSidebarUC extends UniteCreatorSettingsOutput{
 		protected function drawSettingsAfter(){
 		
 			?></ul><?php
+			
+			parent::drawSettingsAfter();
 		}
      
 		/**
@@ -71,10 +73,13 @@ class UniteSettingsOutputSidebarUC extends UniteCreatorSettingsOutput{
 		 * draw before settings row
 		 */
 		protected function drawSettings_before(){
-						
+		  
+			parent::drawSettings_before();
+			
 		  ?>
 		  	  <ul class="unite-list-settings">
 		  <?php 
+		  
 		}
 		
 		/**
@@ -252,73 +257,80 @@ class UniteSettingsOutputSidebarUC extends UniteCreatorSettingsOutput{
 		 * @param  $sap
 		 */
 		protected function drawSapBefore($sap, $key){
-		   	
+			
 		    //set class
 		    $class = "unite-postbox";
 		    if(!empty($this->addClass))
 		        $class .= " ".$this->addClass;
 		    
-		        //set accordion closed
-		        $style = "";
-		        if($this->isAccordion == false){
-		            $h3Class = " unite-no-accordion";
-		        }else{
-		            $h3Class = "";
-		            if($key>0){
-		                $style = "style='display:none;'";
-		                $h3Class = " unite-closed";
-		            }
-		        }
-		        
-		        //set text and icon class
-		        $text = UniteFunctionsUC::getVal($sap, "text");
-		        $classIcon = UniteFunctionsUC::getVal($sap, "icon");
-		        $text = esc_html__($text,"unlimited-elements-for-elementor");
-		    	
-		        $classIcon = null;	//disable icons for now
-		    	
-		        //postbox style
-		        $addStyle = "";
-		        
-		        if($key > 0)
-		        	$addStyle .= "margin-top:".$this->accordionItemsSpaceBetween."px";
-		        
-		        
-		        if(!empty($addStyle)){
-		        	$addStyle = esc_attr($addStyle);
-		        	$addStyle = " style='$addStyle'";
-		        }
-		        
-		        //title style
-		        $styleTitle = "";
-		        
-		        if(!empty($styleTitle)){
-		        	$styleTitle = esc_attr($styleTitle);
-		        	$styleTitle = " style='$styleTitle'";
-		        }
+		    $tab = UniteFunctionsUC::getVal($sap, "tab");
+		    
+		    if(empty($tab))
+		    	$tab = UniteSettingsUC::TAB_CONTENT;
+		    
+		    $class .= " uctab-$tab";
+		    
+	        //set accordion closed
+	        $style = "";
+	        if($this->isAccordion == false){
+	            $h3Class = " unite-no-accordion";
+	        }else{
+	            $h3Class = "";
+	            if($key>0){
+	                $style = "style='display:none;'";
+	                $h3Class = " unite-closed";
+	            }
+	        }
+	        
+	        //set text and icon class
+	        $text = UniteFunctionsUC::getVal($sap, "text");
+	        $classIcon = UniteFunctionsUC::getVal($sap, "icon");
+	        $text = esc_html__($text,"unlimited-elements-for-elementor");
+	    	
+	        $classIcon = null;	//disable icons for now
+	    	
+	        //postbox style
+	        $addStyle = "";
+	        
+	        if($key > 0)
+	        	$addStyle .= "margin-top:".$this->accordionItemsSpaceBetween."px";
+	        
+	        
+	        if(!empty($addStyle)){
+	        	$addStyle = esc_attr($addStyle);
+	        	$addStyle = " style='$addStyle'";
+	        }
+	        
+	        //title style
+	        $styleTitle = "";
+	        
+	        if(!empty($styleTitle)){
+	        	$styleTitle = esc_attr($styleTitle);
+	        	$styleTitle = " style='$styleTitle'";
+	        }
 		        
 		        ?>
-					<div class="<?php echo esc_attr($class)?>" <?php echo UniteProviderFunctionsUC::escAddParam($addStyle)?>>
-						
-						<?php if($this->showSapTitle == true): ?>
-						
-							<div class="unite-postbox-title<?php echo esc_attr($h3Class)?>" <?php echo UniteProviderFunctionsUC::escAddParam($styleTitle)?> >
-							
-							<?php if(!empty($classIcon)):?>
-							<i class="unite-postbox-icon <?php echo esc_attr($classIcon)?>"></i>
-							<?php endif?>
-							
-							<?php if($this->isAccordion == true):?>
-							    <div class="unite-postbox-arrow-wrapper">
-									<div class="unite-postbox-arrow"></div>
-								</div>
-							<?php endif?>
-							
-								<span><?php echo esc_html($text) ?></span>
-							</div>			
-						<?php endif?>
-						
-						<div class="unite-postbox-inside" <?php echo UniteProviderFunctionsUC::escAddParam($style)?> > 
+			<div class="<?php echo esc_attr($class)?>" <?php echo UniteProviderFunctionsUC::escAddParam($addStyle)?>>
+				
+				<?php if($this->showSapTitle == true): ?>
+				
+					<div class="unite-postbox-title<?php echo esc_attr($h3Class)?>" <?php echo UniteProviderFunctionsUC::escAddParam($styleTitle)?> >
+					
+					<?php if(!empty($classIcon)):?>
+					<i class="unite-postbox-icon <?php echo esc_attr($classIcon)?>"></i>
+					<?php endif?>
+					
+					<?php if($this->isAccordion == true):?>
+					    <div class="unite-postbox-arrow-wrapper">
+							<div class="unite-postbox-arrow"></div>
+						</div>
+					<?php endif?>
+					
+						<span><?php echo esc_html($text) ?></span>
+					</div>			
+				<?php endif?>
+				
+				<div class="unite-postbox-inside" <?php echo UniteProviderFunctionsUC::escAddParam($style)?> > 
 			<?php
 			
 		}

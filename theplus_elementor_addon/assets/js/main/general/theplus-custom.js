@@ -1819,8 +1819,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						function() {
 							//b.initMetroIsotope(),
 							inner_c.isotope(f)
-						}(),						
-					
+						}();
 					})
 				};
 				b.window.on("load resize", function() {
@@ -1857,25 +1856,25 @@ document.addEventListener("DOMContentLoaded", function() {
 			if ($('.list-isotope-metro').length) {
 				
 				$(window).on("load resize", function() {
-					theplus_setup_packery_portfolio('all');
+					theplus_setup_packery_portfolio("*");
 					$('.list-isotope-metro .post-inner-loop').isotope('layout').isotope("reloadItems");
 				});
 				
 				$("body").on("post-load resort-isotope", function() {
 					setTimeout(function() {
-						theplus_setup_packery_portfolio('all');
+						theplus_setup_packery_portfolio("*");
 						$('.list-isotope-metro .post-inner-loop').isotope('layout');
 					}, 800)
 				});
 				$("body").on("tabs-reinited", function() {
 					setTimeout(function() {
-						theplus_setup_packery_portfolio('all');
+						theplus_setup_packery_portfolio("*");
 						$('.list-isotope-metro .post-inner-loop').isotope('layout');
 					}, 800)
 				});
 				$.browser.firefox = /firefox/.test(navigator.userAgent.toLowerCase()),
 				$.browser.firefox && setTimeout(function() {
-					theplus_setup_packery_portfolio('all');
+					theplus_setup_packery_portfolio("*");
 					$('.list-isotope-metro .post-inner-loop').isotope('layout');
 				}, 2500);
 			}			
@@ -3527,13 +3526,13 @@ function pt_plus_hexToRgbA(hex,data_opacity){
 	$(window).on("load resize", function() {
 		"use strict";
 		if ($('.list-isotope-metro').length) {
-			theplus_setup_packery_portfolio('all');	
+			theplus_setup_packery_portfolio("*");	
 			$('.list-isotope-metro .post-inner-loop').isotope('layout');
 		}		
 	});
 	$(document).ready(function() {
 		if ($('.list-isotope-metro').length) {
-			theplus_setup_packery_portfolio('all');
+			theplus_setup_packery_portfolio("*");
 			$('.list-isotope-metro .post-inner-loop').isotope('layout').isotope("reloadItems");
 		}
 	});
@@ -4058,7 +4057,7 @@ function theplus_setup_packery_portfolio(packery_id) {
 									}
 								}
 								if ($('.list-isotope-metro').length) {
-									theplus_setup_packery_portfolio('all');	
+									theplus_setup_packery_portfolio("*");	
 								}
 								if($("."+load_class).parents(".animate-general").length){
 									var c,d;
@@ -4122,7 +4121,7 @@ function theplus_setup_packery_portfolio(packery_id) {
 							}
 							if ($('.list-isotope-metro').length) {
 								setTimeout(function(){	
-									theplus_setup_packery_portfolio('all');	
+									theplus_setup_packery_portfolio("*");	
 								}, 500);
 							}
 							
@@ -4138,7 +4137,7 @@ function theplus_setup_packery_portfolio(packery_id) {
 							}
 						}
 						if ($('.list-isotope-metro').length) {
-							theplus_setup_packery_portfolio('all');	
+							theplus_setup_packery_portfolio("*");	
 						}
 						
 					});
@@ -4260,7 +4259,7 @@ function theplus_setup_packery_portfolio(packery_id) {
 											}
 										}
 										if ($('.list-isotope-metro').length) {
-											theplus_setup_packery_portfolio('all');	
+											theplus_setup_packery_portfolio("*");	
 										}
 										
 										if($("."+load_class).parents(".animate-general").length){
@@ -4330,7 +4329,7 @@ function theplus_setup_packery_portfolio(packery_id) {
 									}
 									if ($('.list-isotope-metro').length) {
 										setTimeout(function(){	
-											theplus_setup_packery_portfolio('all');	
+											theplus_setup_packery_portfolio("*");	
 										}, 500);
 									}
 									
@@ -4346,7 +4345,7 @@ function theplus_setup_packery_portfolio(packery_id) {
 									}
 								}
 								if ($('.list-isotope-metro').length) {
-									theplus_setup_packery_portfolio('all');	
+									theplus_setup_packery_portfolio("*");	
 								}
 								
 							});

@@ -1168,6 +1168,11 @@ function tp_number_short( $n, $precision = 1 ) {
     return $n_format . $suffix;
 }
 
+/**
+ * It is used for Remove transist for social feed, social remove, table widget
+ *
+ * @version 5.2.5
+ */
 function Tp_delete_transient() {
 	$result = [];
 	$delete_transient_nonce = isset($_POST['delete_transient_nonce']) ? $_POST['delete_transient_nonce'] : '';
@@ -1245,6 +1250,13 @@ function Tp_delete_transient() {
 						'Beach-Url-',
 						'Beach-Time-',
 						'Beach-Data-',
+				);
+			}else if($blockName == 'Table'){
+				// Google Sheet
+				$transient = array(
+					'tp-gs-table-url-',
+					'tp-gs-table-time-',
+					'tp-gs-table-Data-',
 				);
 			}
 
@@ -2561,7 +2573,7 @@ function theplus_searchfilter_autocomplete($NameValue, $DataValue, $TypeValue, $
 	$Maplocation = [];
 	$GetAddress = get_post_meta( $PostId, 'tp-gmap-address-'.$MapWidgetId, true );
 	$GeoValue = (!empty($val) && !empty($val['locationdata'])) ? $val['locationdata'] : '';
-
+	
 	if( !empty($GeoValue) && !empty($GetAddress) ){
 		$Country = !empty($GeoValue['country']) ? trim(strtolower( $GeoValue['country'] ) ) : '';
 		$State = !empty($GeoValue['state']) ? trim(strtolower( $GeoValue['state']) ) : '';
@@ -2607,8 +2619,21 @@ function theplus_searchfilter_autocomplete($NameValue, $DataValue, $TypeValue, $
 				}
 			}
 		}
+	}else{
+
+		$Maplocation['letlong'] = array( 37.0902, 95.7129 );
+
+		foreach ($GetAddress as $Gplace1) {
+			$latitude = !empty($Gplace1['latitude']) ? $Gplace1['latitude'] : '';
+			$longitude = !empty($Gplace1['longitude']) ? $Gplace1['longitude'] : '';
+			$Address = !empty($Gplace1['address']) ? $Gplace1['address'] : '';
+
+			$Maplocation['marks'][] = array( $latitude, $longitude );
+			$Maplocation['address'][] = $Gplace1['address'];
+		}
+
 	}
-	
+
 	return $Maplocation;
 }
 
@@ -3226,75 +3251,6 @@ function theplus_ajax_facebook_login() {
 
 add_action( 'wp_ajax_nopriv_theplus_ajax_facebook_login', 'theplus_ajax_facebook_login' );
 /*Wp facebook social login ajax*/
-
-/*Google Login Start*/
-/*verify google */
-function tp_verify_google_data_user( $token, $client_id ){
-	require_once THEPLUS_INCLUDES_URL . 'vendor/autoload.php';
-
-	$client_data = new \Google_Client( array( 'client_id' => $client_id ) );  //PHPCS:ignore:PHPCompatibility.PHP.ShortArray.Found
-
-	$verified = $client_data->verifyIdToken( $token );
-
-	if ( $verified ) {
-		return $verified;
-	} else {
-		echo wp_json_encode( ['loggedin' => false, 'message'=> esc_html__('Unauthorized access', 'theplus')] );
-		die();
-	}
-}
-/*verify google */
-function theplus_google_ajax_register() {
-
-	if(!isset($_POST['security']) || empty($_POST['security']) || ! wp_verify_nonce( $_POST['security'], 'ajax-login-nonce' )){	
-		die ('Security checked!');
-	}
-
-	$credential = $guclientId = '';
-
-	if(isset($_POST["googleCre"]) && !empty($_POST["googleCre"])){
-		$credential = sanitize_text_field($_POST["googleCre"]);
-	}else{
-		echo wp_json_encode( ['login' => false, 'message'=> esc_html__('Unauthorized access', 'theplus')] );
-		exit;
-	}
-
-	if(isset($_POST["clientId"]) && !empty($_POST["clientId"])){
-		$guclientId  = sanitize_text_field($_POST["clientId"]);
-	}else{
-		echo wp_json_encode( ['login' => false, 'message'=> esc_html__('clientId Not Set', 'theplus')] );
-		exit;
-	}
-	
-	$verified = tp_verify_google_data_user( $credential, $guclientId );
-	
-	if ( empty( $verified ) ) {
-		echo wp_json_encode( ['login'=>false, 'message'=> esc_html__( 'User not verified by Google', 'theplus' )] );
-		exit;
-	}
-	
-	if( !empty( $verified ) && isset( $verified['aud'] ) && !empty($verified['aud']) && $verified['aud'] === $guclientId ){
-		// verify the ID token
-		$curl = curl_init( 'https://oauth2.googleapis.com/tokeninfo?id_token=' . $credential );
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		$response = curl_exec( $curl );
-		curl_close( $curl );
-
-		// convert the response from JSON string to object
-		$response = json_decode($response);
-
-		if (isset($response->error)) {
-			echo wp_json_encode( ['login'=>false, 'message'=> $response->error_description] );
-		}
-		else{
-			tp_login_social_app( $response->name, $response->email , 'google' );
-		}
-		exit;
-	}
-}
-add_action( 'wp_ajax_nopriv_theplus_google_ajax_register', 'theplus_google_ajax_register' );
-add_action( 'wp_ajax_theplus_google_ajax_register', 'theplus_google_ajax_register' );
-/*google login end*/
 
 /*Forgot Password*/
 function theplus_ajax_forgot_password_ajax() {
@@ -4309,8 +4265,11 @@ function theplus_product_badge($out_of_stock_val='') {
 				}
 				echo apply_filters('woocommerce_sale_flash', '<span class="badge onsale perc">&darr; '.$maximumper.'%</span>', $post, $product);
 			} else if ($product->get_type() == 'simple'){
-				$percentage = round( ( ( $product->get_regular_price() - $product->get_sale_price() ) / $product->get_regular_price() ) * 100 );
-				echo apply_filters('woocommerce_sale_flash', '<span class="badge onsale perc">&darr; '.$percentage.'%</span>', $post, $product);
+				if( !empty($product->get_sale_price()) ){
+					$salePrice = $product->get_sale_price();
+					$percentage = round( ( ( $product->get_regular_price() - $salePrice ) / $product->get_regular_price() ) * 100 );
+					$output_html = '<span class="badge onsale perc">&darr; '.$percentage.'%</span>';
+				}
 			} else if ($product->get_type() == 'external'){
 				$percentage = round( ( ( $product->get_regular_price() - $product->get_sale_price() ) / $product->get_regular_price() ) * 100 );
 				echo apply_filters('woocommerce_sale_flash', '<span class="badge onsale perc">&darr; '.$percentage.'%</span>', $post, $product);
@@ -5138,6 +5097,13 @@ function registered_widgets(){
 				],
 			],
 		],
+		'plus-key-animations' => [
+			'dependency' => [
+				'css' => [
+					THEPLUS_PATH . DIRECTORY_SEPARATOR . 'assets/css/main/plus-animation/plus-key-animations.min.css',
+				],
+			],
+		],
 		'tp-protected-content' => [
 			'dependency' => [
 				'css' => [
@@ -5257,7 +5223,16 @@ function registered_widgets(){
 				],
 			],
 		],
-
+		'tp-scroll-sequence' => [
+			'dependency' => [
+				'css' => [
+					THEPLUS_PATH . DIRECTORY_SEPARATOR .'assets/css/main/scroll-sequence/tp-scroll-sequence.min.css',
+				],
+				'js' => [					
+					THEPLUS_PATH . DIRECTORY_SEPARATOR .'assets/js/main/scroll-sequence/tp-scroll-sequence.min.js',
+				],
+			],
+		],
 		'tp-search-filter' => [
 			'dependency' => [
 				'css' => [

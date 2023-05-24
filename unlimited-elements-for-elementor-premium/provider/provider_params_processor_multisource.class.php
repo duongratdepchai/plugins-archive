@@ -937,7 +937,8 @@ class UniteCreatetorParamsProcessorMultisource{
 		switch($this->itemsType){
 			case self::SOURCE_MENU:
 			case self::SOURCE_POSTS:
-		
+			case self::SOURCE_PRODUCTS:
+		 
 				$postID = UniteFunctionsUC::getVal($dataItem, "id");
 				
 				$value = UniteFunctionsWPUC::getPostCustomField($postID, $metaKey);
@@ -1406,7 +1407,7 @@ class UniteCreatetorParamsProcessorMultisource{
 			
 			if(isset($dataItem["dynamic_popup_link_class"]))
 				$item["dynamic_popup_link_class"] = $dataItem["dynamic_popup_link_class"];
-
+			
 			if(isset($dataItem["dynamic_popup_link_attributes"]))
 				$item["dynamic_popup_link_attributes"] = $dataItem["dynamic_popup_link_attributes"];
 

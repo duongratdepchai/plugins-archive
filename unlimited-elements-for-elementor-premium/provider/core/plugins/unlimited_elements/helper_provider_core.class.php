@@ -19,6 +19,7 @@ class HelperProviderCoreUC_EL{
 	private static $arrCacheElementorTemplate;
 	private static $arrPostContentCache = array();
 	private static $arrTemplatesCounter = array();
+	private static $isInfiniteLoopCode = false;
 	
 	
 	/**
@@ -628,7 +629,8 @@ class HelperProviderCoreUC_EL{
 	 * put elementor template
 	 * protection against inifinite loop
 	 */
-	public static function putElementorTemplate($templateID){
+	public static function putElementorTemplate($templateID, $mode = null){
+		
 		
 		if(!isset(self::$arrTemplatesCounter[$templateID]))
 			self::$arrTemplatesCounter[$templateID] = 0;
@@ -636,17 +638,32 @@ class HelperProviderCoreUC_EL{
 		self::$arrTemplatesCounter[$templateID]++;
 		
 		if(self::$arrTemplatesCounter[$templateID] >= 50){
-			$text = __("Infinite Template Loop Found","unlimited-elements-for-elementor");
+			
+			$text = __("Infinite Template Loop Found: $templateID","unlimited-elements-for-elementor");
 			
 			dmp($text);
 			
+			if(self::isInfiniteLoopCode == false){
+				echo "<script>alert('Infinite Template Loop Found with id: $templateID')</script>";
+			}
+			
+			self::$isInfiniteLoopCode = true;
+			
 			return($text);
 		}
-					
+		
+		if($mode == "no_ue_widgets")	//in dynamic popup for example
+			GlobalsProviderUC::$isUnderNoWidgetsToDisplay = true;
+		
 		$output = self::getElementorTemplate($templateID);
-						
+
+
+		if($mode == "no_ue_widgets")
+			GlobalsProviderUC::$isUnderNoWidgetsToDisplay = false;
+		
 		echo $output;
 	}
+	
 	
 	/**
 	 * get jet template
@@ -670,7 +687,9 @@ class HelperProviderCoreUC_EL{
 		if(empty($templateID) || is_numeric($templateID) == false)
 			return("");
 		
+		
 		$output = \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $templateID, $withCss);
+		
 		
 		return($output);
 	}
@@ -727,12 +746,13 @@ class HelperProviderCoreUC_EL{
 		
 		$documentToChange = null;
 		
+		GlobalsProviderUC::$isUnderDynamicTemplateLoop = true;
+		
 		if($isElementorProActive == true){
 			
 			$currentDocument = \ElementorPro\Plugin::elementor()->documents->get_current();
 			
 			$documentToChange = \Elementor\Plugin::$instance->documents->get( $postID );
-			
 			
 			//do it from elementorIntegrate class
 			//\ElementorPro\Plugin::elementor()->documents->switch_to_document( $document );
@@ -750,8 +770,7 @@ class HelperProviderCoreUC_EL{
 			$htmlTemplate = self::getJetTemplateListingItem($templateID, $post);
 		else
 			$htmlTemplate = self::getElementorTemplate($templateID, $withCss);
-		
-		
+			
 		//add one more class
 		
 		$source = "class=\"elementor elementor-{$templateID}";
@@ -760,7 +779,7 @@ class HelperProviderCoreUC_EL{
 		$htmlTemplate = str_replace($source, $dest, $htmlTemplate);
 		
 		echo $htmlTemplate;
-		
+				
 		GlobalsUnlimitedElements::$renderingDynamicData = null;
 		
 		GlobalsProviderUC::$isUnderAjaxDynamicTemplate = false;
@@ -777,9 +796,9 @@ class HelperProviderCoreUC_EL{
 			\ElementorPro\Plugin::elementor()->documents->switch_to_document( $currentDocument );
 		}
 		
+		GlobalsProviderUC::$isUnderDynamicTemplateLoop = false;
 		
 	}
-	
 	
 	/**
 	 * put dynamic loop element style if exists
@@ -823,9 +842,28 @@ class HelperProviderCoreUC_EL{
   		unset($dynamicSettings["link"]);
   		unset($dynamicSettings["eael_cta_btn_link"]);	//some protection
 		
+  		//unset dynamic settings
+  		foreach($dynamicSettings as $key => $setting){
+  			
+  			$arrControl = UniteFunctionsUC::getVal($arrControls, $key);
+  			
+  			$type = UniteFunctionsUC::getVal($arrControl, "type");
+  			  			
+  			switch($type){
+  				case "url":
+  					  					
+  					unset($dynamicSettings[$key]);
+  				break;
+  			}
+  			  
+  		}
+  		
+  		if(empty($dynamicSettings))
+  			return(false);
   		
   		try{
-  		
+  			
+  			
   			$settings = @$element->parse_dynamic_settings( $dynamicSettings, $arrControls);
 			
   		}catch(Exception $e){
@@ -834,7 +872,8 @@ class HelperProviderCoreUC_EL{
   		
   		if(empty($settings))
 			return(false);
-  				
+		
+					
   		$strStyle = "";
   		
   		$wrapperCssKey = "#{$widgetID} .uc-post-{$postID}.elementor-{$templateID} .elementor-element.elementor-element-{$elementID}";
@@ -904,6 +943,7 @@ class HelperProviderCoreUC_EL{
   		
   		if(empty($strStyle))
   			return(false);
+		
   			
   		//output the style
   		

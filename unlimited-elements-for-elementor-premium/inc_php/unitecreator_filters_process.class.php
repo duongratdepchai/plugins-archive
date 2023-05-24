@@ -12,6 +12,8 @@ class UniteCreatorFiltersProcess{
 	const DEBUG_MAIN_QUERY = false;
 	
 	const DEBUG_FILTER = false;
+
+	const DEBUG_PARSED_TERMS = false;
 	
 	private static $showDebug = false;
 	
@@ -238,6 +240,94 @@ class UniteCreatorFiltersProcess{
 		return($arrBase);
 	}
 	
+
+	/**
+	 * parse the values groups
+	 */
+	private function parseStrTerms_groups($strValues){
+		
+		preg_match_all('/\|(.*?)\|/', $strValues, $matches);
+
+		if(empty($matches))
+			return(array());
+			
+		$arrGroups = $matches[0];
+		$arrGroupValues = $matches[1];
+		
+		$arrReplace = array();
+		
+		//break into groups
+		
+		foreach($arrGroups as $index => $group){
+			
+			$strReplace = "group".($index+1)."_".UniteFunctionsUC::getRandomString();
+			
+			$strGroupValues = $arrGroupValues[$index];
+			
+			$arrReplace[$strReplace] = $strGroupValues;
+			
+			$strValues = str_replace($group, $strReplace, $strValues);
+		}
+		
+		//get the array
+		
+		$arrValues = $this->parseStrTerms_values($strValues);
+		
+		foreach($arrValues as $key => $value){
+			
+			if(isset($arrReplace[$value])){
+				
+				$strGroupValue = $arrReplace[$value];
+				
+				$arrGroupValue = $this->parseStrTerms_values($strGroupValue);
+		
+				$arrGroupValue["relation"] = "OR";
+				
+				if(count($arrGroupValue) == 1)
+					$arrGroupValue = $arrGroupValue[0];
+					
+				$arrValues[$key] = $arrGroupValue;
+			}
+			
+		}
+		
+		$arrValues["relation"] = "AND";
+		
+		return($arrValues);
+	}
+	
+	
+	
+	/**
+	 * parse the values
+	 */
+	private function parseStrTerms_values($strValues){
+		
+		//get the groups instead
+		
+		if(strpos($strValues,"|") !== false){
+			
+			$arrValues = $this->parseStrTerms_groups($strValues);
+			
+			return($arrValues);
+		}
+
+		$arrValues = explode(".", $strValues);
+		
+		$isTermsAnd = false;
+		foreach($arrValues as $valueKey=>$value){
+			if($value === "*"){
+				unset($arrValues[$valueKey]);
+				$isTermsAnd = true;
+			}
+		}
+		
+		if($isTermsAnd == true)
+			$arrValues["relation"] = "AND";
+		
+		return($arrValues);
+	}
+	
 	
 	/**
 	 * parse filters string
@@ -261,33 +351,28 @@ class UniteCreatorFiltersProcess{
 			$key = $arrFilter[0];
 			$strValues = $arrFilter[1];
 			
-			$arrValues = explode(".", $strValues);
+			$arrValues = $this->parseStrTerms_values($strValues);
 			
-			$isTermsAnd = false;
-			foreach($arrValues as $valueKey=>$value){
-				if($value === "*"){
-					unset($arrValues[$valueKey]);
-					$isTermsAnd = true;
-				}
-			}
-			
-			if($isTermsAnd == true)
-				$arrValues["relation"] = "AND";
-			
-			$type = self::TYPE_TABS;
-			
-			switch($type){
-				case self::TYPE_TABS:
-					$arrTerms[$key] = $arrValues;
-				break;
-			}
+			$arrTerms[$key] = $arrValues;
 			
 		}
+		
+		
+		//show debug terms
+		
+		if(self::DEBUG_PARSED_TERMS == true){
+			
+			dmp("parsed terms");
+			dmp($arrTerms);
+			exit();
+		}
+		
 		
 		$arrOutput = array();
 		
 		if(!empty($arrTerms))
 			$arrOutput[self::TYPE_TABS] = $arrTerms;
+		
 			
 		return($arrOutput);
 	}
@@ -315,6 +400,7 @@ class UniteCreatorFiltersProcess{
 			
 			$arrOutput = $this->parseStrTerms($strTerms);
 		}
+		
 		
 		//page
 		
@@ -358,6 +444,7 @@ class UniteCreatorFiltersProcess{
 			
 		self::$arrInputFiltersCache = $arrOutput;
 		
+		
 		return($arrOutput);
 	}
 	
@@ -391,7 +478,7 @@ class UniteCreatorFiltersProcess{
 		}
 		
 		self::$arrFiltersAssocCache = $output;
-				
+		
 		return($output);
 	}
 	
@@ -627,13 +714,11 @@ class UniteCreatorFiltersProcess{
 			$args = $this->processRequestFilters_setPaging($args, $page, $numItems);
 		
 		//set paging by offset
-		if(!empty($offset)){
-			
+		if(!empty($offset))
 			$args["offset"] = $offset;
-			
-			if(!empty($numItems))
-				$args["posts_per_page"] = $numItems;
-		}
+		
+		if(!empty($numItems))
+			$args["posts_per_page"] = $numItems;
 		
 		//search
 		if(!empty($search) && $search != "_all_"){
@@ -669,6 +754,8 @@ class UniteCreatorFiltersProcess{
 			
 		}
 		
+		
+		
 		//supress all filters
 		if(self::$isUnderAjaxSearch == true){
 
@@ -688,8 +775,7 @@ class UniteCreatorFiltersProcess{
 			dmp("filters:");
 			dmp($arrFilters);
 		}
-		
-		
+				
 		return($args);
 	}
 
@@ -1310,6 +1396,11 @@ class UniteCreatorFiltersProcess{
 	 */
 	private function includeClientSideScripts(){
 		
+		$isInsideEditor = GlobalsProviderUC::$isInsideEditor;
+		
+		if($isInsideEditor == true)
+			return(false);
+		
 		$this->includeJSFiles();
 		
 		$this->putCustomJsScripts();
@@ -1506,7 +1597,7 @@ class UniteCreatorFiltersProcess{
 		$slug = UniteFunctionsUC::getVal($term, "slug");
 		
 		$found = in_array($slug, $arrSlugs);
-			
+		
 		return($found);
 	}
 	
@@ -1939,7 +2030,7 @@ class UniteCreatorFiltersProcess{
 		$addClassItem = "";
 		$isFirstLoad = true;		//not in ajax, or with init after (also first load)
 		
-		$isInsideEditor = UniteCreatorElementorIntegrate::$isEditMode;
+		$isInsideEditor = GlobalsProviderUC::$isInsideEditor;
 		
 		$isUnderAjax = $this->isUnderAjax();
 		

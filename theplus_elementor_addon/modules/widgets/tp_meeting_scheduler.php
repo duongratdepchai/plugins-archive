@@ -15,6 +15,8 @@ if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
 
 class ThePlus_Meeting_Scheduler extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-meeting-scheduler';
@@ -27,6 +29,12 @@ class ThePlus_Meeting_Scheduler extends Widget_Base {
     public function get_icon() {
         return 'fa fa-calendar theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "meeting-scheduler";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-adapted');
@@ -46,7 +54,7 @@ class ThePlus_Meeting_Scheduler extends Widget_Base {
 		$this->add_control(
 			'scheduler_select',
 			[
-				'label' => esc_html__( 'Select', 'theplus' ),
+				'label' => wp_kses_post( "Select <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "meeting-scheduler-widget-settings-overview/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'calendly',
 				'options' => [
@@ -61,7 +69,7 @@ class ThePlus_Meeting_Scheduler extends Widget_Base {
 		$this->add_control(
 			'calendly_username',
 			[
-				'label' => esc_html__( 'User Name', 'theplus' ),
+				'label' => wp_kses_post( "User Name <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "embed-calendly-meeting-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'placeholder' => esc_html__( 'Enter User Name', 'theplus' ),
@@ -132,7 +140,7 @@ class ThePlus_Meeting_Scheduler extends Widget_Base {
 		$this->add_control(
 			'freebusy_url',
 			[
-				'label' => esc_html__( 'URL', 'theplus' ),
+				'label' => wp_kses_post( "URL <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "embed-freebusy-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'placeholder' => esc_html__( 'Enter URL', 'theplus' ),
@@ -242,7 +250,7 @@ class ThePlus_Meeting_Scheduler extends Widget_Base {
 		$this->add_control(
 			'vyte_url',
 			[
-				'label' => esc_html__( 'URL', 'theplus' ),
+				'label' => wp_kses_post( "URL <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "embed-vyte-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'placeholder' => esc_html__( 'Enter URL', 'theplus' ),
@@ -361,6 +369,9 @@ class ThePlus_Meeting_Scheduler extends Widget_Base {
 		);
 		$this->end_controls_section();
 		/*style end*/
+
+		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
 	
 	 protected function render() {

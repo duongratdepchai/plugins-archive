@@ -52,12 +52,12 @@ class News_Ticker extends Module_Base {
 	}
 
 	public function get_script_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['ep-scripts'];
-        } else {
-			return [ 'ep-news-ticker' ];
-        }
-  	}
+		if ($this->ep_is_edit_mode()) {
+			return ['ep-scripts'];
+		} else {
+			return ['ep-news-ticker'];
+		}
+	}
 
 	public function get_custom_help_url() {
 		return 'https://youtu.be/FmpFhNTR7uY';
@@ -226,11 +226,11 @@ class News_Ticker extends Module_Base {
 		$this->register_query_builder_controls();
 
 		$this->update_control(
-            'posts_per_page',
-            [
-                'default' => 5,
-            ]
-        );
+			'posts_per_page',
+			[
+				'default' => 5,
+			]
+		);
 
 		$this->end_controls_section();
 
@@ -518,11 +518,11 @@ class News_Ticker extends Module_Base {
 		$settings = $this->get_settings_for_display();
 
 		// TODO need to delete after v6.5
-        if (isset($settings['posts_limit']) and $settings['posts_per_page'] == 6) {
-            $limit = $settings['posts_limit'];
-        } else {
-            $limit = $settings['posts_per_page'];
-        }
+		if (isset($settings['posts_limit']) and $settings['posts_per_page'] == 6) {
+			$limit = $settings['posts_limit'];
+		} else {
+			$limit = $settings['posts_per_page'];
+		}
 
 		$this->query_posts($limit);
 

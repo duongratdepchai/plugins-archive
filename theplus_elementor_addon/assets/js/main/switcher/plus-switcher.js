@@ -129,7 +129,7 @@
 
                         if( FindMetro.length > 0 ){
                             setTimeout(function(){ 
-                                theplus_setup_packery_portfolio('all');	
+                                theplus_setup_packery_portfolio('*');	
                             }, 10);
                         }
                         if( FindGrid.length > 0 ){

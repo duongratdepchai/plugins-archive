@@ -1,4 +1,5 @@
 <?php
+
 namespace ElementPack\Modules\AdvancedIconBox\Widgets;
 
 use ElementPack\Base\Module_Base;
@@ -11,7 +12,7 @@ use Elementor\Group_Control_Css_Filter;
 use Elementor\Icons_Manager;
 use ElementPack\Utils;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class Advanced_Icon_Box extends Module_Base {
 
@@ -20,7 +21,7 @@ class Advanced_Icon_Box extends Module_Base {
 	}
 
 	public function get_title() {
-		return BDTEP . esc_html__( 'Advanced Icon Box', 'bdthemes-element-pack' );
+		return BDTEP . esc_html__('Advanced Icon Box', 'bdthemes-element-pack');
 	}
 
 	public function get_icon() {
@@ -28,27 +29,27 @@ class Advanced_Icon_Box extends Module_Base {
 	}
 
 	public function get_categories() {
-		return [ 'element-pack' ];
+		return ['element-pack'];
 	}
 
 	public function get_keywords() {
-		return [ 'advanced', 'icon', 'features', 'info', 'box' ];
+		return ['advanced', 'icon', 'features', 'info', 'box'];
 	}
 
 	public function get_style_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['ep-styles'];
-        } else {
-            return ['ep-advanced-icon-box'];
-        }
-    }
+		if ($this->ep_is_edit_mode()) {
+			return ['ep-styles'];
+		} else {
+			return ['ep-advanced-icon-box'];
+		}
+	}
 	public function get_script_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['ep-scripts'];
-        } else {
-            return ['ep-advanced-icon-box'];
-        }
-    }
+		if ($this->ep_is_edit_mode()) {
+			return ['ep-scripts'];
+		} else {
+			return ['ep-advanced-icon-box'];
+		}
+	}
 
 	public function get_custom_help_url() {
 		return 'https://youtu.be/IU4s5Cc6CUA';
@@ -58,7 +59,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_content_icon_box',
 			[
-				'label' => __( 'Icon Box', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Icon Box', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -87,7 +88,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'selected_icon',
 			[
-				'label'            => __( 'Icon', 'bdthemes-element-pack' ),
+				'label'            => esc_html__('Icon', 'bdthemes-element-pack'),
 				'type'             => Controls_Manager::ICONS,
 				'fa4compatibility' => 'icon',
 				'default' => [
@@ -106,7 +107,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'image',
 			[
-				'label'       => __( 'Image Icon', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Image Icon', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::MEDIA,
 				'render_type' => 'template',
 				'default'     => [
@@ -121,13 +122,13 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_text',
 			[
-				'label'   => __( 'Title', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Title', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
 				],
-				'default'     => __( 'Icon Box Heading', 'bdthemes-element-pack' ),
-				'placeholder' => __( 'Enter your title', 'bdthemes-element-pack' ),
+				'default'     => esc_html__('Icon Box Heading', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Enter your title', 'bdthemes-element-pack'),
 				'label_block' => true,
 			]
 		);
@@ -135,7 +136,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_link',
 			[
-				'label'        => __( 'Title Link', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Title Link', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'prefix_class' => 'bdt-title-link-'
 			]
@@ -145,9 +146,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_link_url',
 			[
-				'label'       => __( 'Title Link URL', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Title Link URL', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::URL,
-				'dynamic'     => [ 'active' => true ],
+				'dynamic'     => ['active' => true],
 				'placeholder' => 'http://your-link.com',
 				'condition'   => [
 					'title_link' => 'yes'
@@ -158,7 +159,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'show_sub_title',
 			[
-				'label'        => __( 'Show Sub Title', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Show Sub Title', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 			]
 		);
@@ -166,13 +167,13 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'sub_title_text',
 			[
-				'label'   => __( 'Sub Title', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Sub Title', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
 				],
-				'default'     => __( 'Icon Box Sub Heading', 'bdthemes-element-pack' ),
-				'placeholder' => __( 'Enter your sub title', 'bdthemes-element-pack' ),
+				'default'     => esc_html__('Icon Box Sub Heading', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Enter your sub title', 'bdthemes-element-pack'),
 				'label_block' => true,
 				'condition'	  => [
 					'show_sub_title'	=> 'yes',
@@ -183,7 +184,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'show_separator',
 			[
-				'label'        => __( 'Title Separator', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Title Separator', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 			]
 		);
@@ -191,13 +192,13 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'description_text',
 			[
-				'label'   => __( 'Description', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Description', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::WYSIWYG,
 				'dynamic' => [
 					'active' => true,
 				],
-				'default'     => __( 'Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack' ),
-				'placeholder' => __( 'Enter your description', 'bdthemes-element-pack' ),
+				'default'     => esc_html__('Click edit button to change this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Enter your description', 'bdthemes-element-pack'),
 				'rows'        => 10,
 			]
 		);
@@ -205,25 +206,25 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'position',
 			[
-				'label'     => __( 'Icon Position', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Icon Position', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::CHOOSE,
 				'separator' => 'before',
 				'default'   => 'top',
 				'options'   => [
 					'left' => [
-						'title' => __( 'Left', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-left',
 					],
 					'top' => [
-						'title' => __( 'Top', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Top', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-top',
 					],
 					'right' => [
-						'title' => __( 'Right', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-right',
 					],
 					'bottom' => [
-						'title' => __( 'Bottom', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Bottom', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-bottom',
 					],
 				],
@@ -251,7 +252,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_inline',
 			[
-				'label'        => __( 'Icon Inline', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Icon Inline', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'condition'    => [
 					'position' => ['left', 'right']
@@ -262,19 +263,19 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_vertical_alignment',
 			[
-				'label'   => __( 'Icon Vertical Alignment', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Icon Vertical Alignment', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'top'   => [
-						'title' => __( 'Top', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Top', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-top',
 					],
 					'middle' => [
-						'title' => __( 'Middle', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Middle', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-middle',
 					],
 					'bottom' => [
-						'title' => __( 'Bottom', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Bottom', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-bottom',
 					],
 				],
@@ -291,23 +292,23 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'text_align',
 			[
-				'label'   => __( 'Alignment', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Justified', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-justify',
 					],
 				],
@@ -322,7 +323,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_content_readmore',
 			[
-				'label'     => __( 'Read More', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Read More', 'bdthemes-element-pack'),
 				'condition' => [
 					'readmore' => 'yes',
 				],
@@ -332,23 +333,23 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore_text',
 			[
-				'label'       => __( 'Text', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Text', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'dynamic'     => [ 'active' => true ],
-				'default'     => __( 'Read More', 'bdthemes-element-pack' ),
-				'placeholder' => __( 'Read More', 'bdthemes-element-pack' ),
+				'dynamic'     => ['active' => true],
+				'default'     => esc_html__('Read More', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Read More', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'readmore_link',
 			[
-				'label'     => __( 'Link to', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Link to', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::URL,
 				'dynamic'   => [
 					'active' => true,
 				],
-				'placeholder' => __( 'https://your-link.com', 'bdthemes-element-pack' ),
+				'placeholder' => esc_html__('https://your-link.com', 'bdthemes-element-pack'),
 				'default'     => [
 					'url' => '#',
 				],
@@ -361,7 +362,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'onclick',
 			[
-				'label'     => esc_html__( 'OnClick', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('OnClick', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SWITCHER,
 				'condition' => [
 					'readmore'       => 'yes',
@@ -372,10 +373,10 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'onclick_event',
 			[
-				'label'       => esc_html__( 'OnClick Event', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('OnClick Event', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
 				'placeholder' => 'myFunction()',
-				'description' => sprintf( esc_html__('For details please look <a href="%s" target="_blank">here</a>'), 'https://www.w3schools.com/jsref/event_onclick.asp' ),
+				'description' => sprintf(esc_html__('For details please look <a href="%s" target="_blank">here</a>'), 'https://www.w3schools.com/jsref/event_onclick.asp'),
 				'condition' => [
 					'readmore'       => 'yes',
 					'onclick'        => 'yes'
@@ -386,7 +387,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'advanced_readmore_icon',
 			[
-				'label'       => __( 'Icon', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Icon', 'bdthemes-element-pack'),
 				'type'             => Controls_Manager::ICONS,
 				'fa4compatibility' => 'readmore_icon',
 				'condition'   => [
@@ -400,12 +401,12 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore_icon_align',
 			[
-				'label'   => __( 'Icon Position', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Icon Position', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'right',
 				'options' => [
-					'left'   => __( 'Left', 'bdthemes-element-pack' ),
-					'right'  => __( 'Right', 'bdthemes-element-pack' ),
+					'left'   => esc_html__('Left', 'bdthemes-element-pack'),
+					'right'  => esc_html__('Right', 'bdthemes-element-pack'),
 				],
 				'condition' => [
 					'advanced_readmore_icon[value]!' => '',
@@ -416,7 +417,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore_icon_indent',
 			[
-				'label' => __( 'Icon Spacing', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Icon Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -440,7 +441,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore_on_hover',
 			[
-				'label'        => __( 'Show on Hover', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Show on Hover', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'prefix_class' => 'bdt-readmore-on-hover-',
 			]
@@ -449,7 +450,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'readmore_horizontal_offset',
 			[
-				'label' => __( 'Horizontal Offset', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Horizontal Offset', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => -50,
@@ -478,7 +479,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'readmore_vertical_offset',
 			[
-				'label' => __( 'Vertical Offset', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Vertical Offset', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -507,14 +508,14 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'button_css_id',
 			[
-				'label' => __( 'Button ID', 'bdthemes-element-pack' ) . BDTEP_NC,
+				'label' => esc_html__('Button ID', 'bdthemes-element-pack') . BDTEP_NC,
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
 				],
 				'default' => '',
-				'title' => __( 'Add your custom id WITHOUT the Pound key. e.g: my-id', 'bdthemes-element-pack' ),
-				'description' => __( 'Please make sure the ID is unique and not used elsewhere on the page this form is displayed. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'bdthemes-element-pack' ),
+				'title' => esc_html__('Add your custom id WITHOUT the Pound key. e.g: my-id', 'bdthemes-element-pack'),
+				'description' => esc_html__('Please make sure the ID is unique and not used elsewhere on the page this form is displayed. This field allows <code>A-z 0-9</code> & underscore chars without spaces.', 'bdthemes-element-pack'),
 				'separator' => 'before',
 			]
 		);
@@ -524,7 +525,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_content_indicator',
 			[
-				'label'     => __( 'Indicator', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Indicator', 'bdthemes-element-pack'),
 				'condition' => [
 					'indicator' => 'yes',
 				],
@@ -534,7 +535,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'indicator_width',
 			[
-				'label' => __( 'Width', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Width', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -552,7 +553,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'indicator_horizontal_offset',
 			[
-				'label' => __( 'Horizontal Offset', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Horizontal Offset', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -579,7 +580,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'indicator_vertical_offset',
 			[
-				'label' => __( 'Vertical Offset', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Vertical Offset', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -606,9 +607,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'indicator_rotate',
 			[
-				'label'   => esc_html__( 'Rotate', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Rotate', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
-				'devices' => [ 'desktop', 'tablet', 'mobile' ],
+				'devices' => ['desktop', 'tablet', 'mobile'],
 				'default' => [
 					'size' => 0,
 				],
@@ -636,7 +637,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_content_badge',
 			[
-				'label'     => __( 'Badge', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Badge', 'bdthemes-element-pack'),
 				'condition' => [
 					'badge' => 'yes',
 				],
@@ -646,7 +647,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'badge_text',
 			[
-				'label'       => __( 'Badge Text', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Badge Text', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
 				'default'     => 'POPULAR',
 				'placeholder' => 'Type Badge Title',
@@ -659,7 +660,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'badge_position',
 			[
-				'label'   => esc_html__( 'Position', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Position', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'top-right',
 				'options' => element_pack_position(),
@@ -669,7 +670,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'badge_horizontal_offset',
 			[
-				'label' => __( 'Horizontal Offset', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Horizontal Offset', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -696,7 +697,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'badge_vertical_offset',
 			[
-				'label' => __( 'Vertical Offset', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Vertical Offset', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -723,9 +724,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'badge_rotate',
 			[
-				'label'   => esc_html__( 'Rotate', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Rotate', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
-				'devices' => [ 'desktop', 'tablet', 'mobile' ],
+				'devices' => ['desktop', 'tablet', 'mobile'],
 				'default' => [
 					'size' => 0,
 				],
@@ -753,7 +754,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_content_additional',
 			[
-				'label' => __( 'Additional Options', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Additional Options', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -934,7 +935,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_size',
 			[
-				'label'   => __( 'Title HTML Tag', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Title HTML Tag', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'h3',
 				'options' => element_pack_title_tags(),
@@ -944,7 +945,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore',
 			[
-				'label'     => __( 'Read More Button', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Read More Button', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SWITCHER,
 				'separator' => 'before',
 				'default'   => 'yes',
@@ -954,7 +955,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'indicator',
 			[
-				'label' => __( 'Indicator', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Indicator', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
@@ -962,7 +963,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'badge',
 			[
-				'label' => __( 'Badge', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Badge', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
@@ -970,19 +971,19 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'global_link',
 			[
-				'label'        => __( 'Global Link', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Global Link', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'prefix_class' => 'bdt-global-link-',
-				'description'  => __( 'Be aware! When Global Link activated then title link and read more link will not work', 'bdthemes-element-pack' ),
+				'description'  => esc_html__('Be aware! When Global Link activated then title link and read more link will not work', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'global_link_url',
 			[
-				'label'       => __( 'Global Link URL', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Global Link URL', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::URL,
-				'dynamic'     => [ 'active' => true ],
+				'dynamic'     => ['active' => true],
 				'placeholder' => 'http://your-link.com',
 				'condition'   => [
 					'global_link' => 'yes'
@@ -996,7 +997,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_icon_box',
 			[
-				'label'      => __( 'Icon/Image', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Icon/Image', 'bdthemes-element-pack'),
 				'tab'        => Controls_Manager::TAB_STYLE,
 				'conditions' => [
 					'relation' => 'or',
@@ -1016,19 +1017,19 @@ class Advanced_Icon_Box extends Module_Base {
 			]
 		);
 
-		$this->start_controls_tabs( 'icon_colors' );
+		$this->start_controls_tabs('icon_colors');
 
 		$this->start_controls_tab(
 			'icon_colors_normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'icon_color',
 			[
-				'label'     => __( 'Icon Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Icon Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap' => 'color: {{VALUE}};',
@@ -1043,7 +1044,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'show_svg_icon_color',
 			[
-				'label'     => __( 'Svg Icon Color ?', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Svg Icon Color ?', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SWITCHER,
 				'condition' => [
 					'icon_type!' => 'image',
@@ -1054,7 +1055,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'svg_icon_fill_color',
 			[
-				'label'     => __( 'Fill Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Fill Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap svg, {{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap svg *' => 'fill: {{VALUE}};',
@@ -1069,7 +1070,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'svg_icon_stroke_color',
 			[
-				'label'     => __( 'Stroke Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Stroke Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap svg, {{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap svg *' => 'stroke: {{VALUE}};',
@@ -1082,37 +1083,37 @@ class Advanced_Icon_Box extends Module_Base {
 		);
 
 		$this->add_control(
-            'glassmorphism_effect',
-            [
-                'label' => esc_html__('Glassmorphism', 'bdthemes-element-pack') . BDTEP_NC,
+			'glassmorphism_effect',
+			[
+				'label' => esc_html__('Glassmorphism', 'bdthemes-element-pack') . BDTEP_NC,
 				'type'  => Controls_Manager::SWITCHER,
-				'description' => sprintf( __( 'This feature will not work in the Firefox browser untill you enable browser compatibility so please %1s look here %2s', 'bdthemes-element-pack' ), '<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter#Browser_compatibility" target="_blank">', '</a>' ),
+				'description' => sprintf(esc_html__('This feature will not work in the Firefox browser untill you enable browser compatibility so please %1s look here %2s', 'bdthemes-element-pack'), '<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter#Browser_compatibility" target="_blank">', '</a>'),
 
-            ]
+			]
 		);
 
 		$this->add_control(
-            'glassmorphism_blur_level',
-            [
-                'label'       => __('Blur Level', 'bdthemes-element-pack'),
-                'type'        => Controls_Manager::SLIDER,
-                'range'       => [
-                    'px' => [
-                        'min'  => 0,
-                        'step' => 1,
-                        'max'  => 50,
-                    ]
-                ],
-                'default'     => [
-                    'size' => 5
-                ],
-                'selectors'   => [
-                    '{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap' => 'backdrop-filter: blur({{SIZE}}px); -webkit-backdrop-filter: blur({{SIZE}}px);'
+			'glassmorphism_blur_level',
+			[
+				'label'       => esc_html__('Blur Level', 'bdthemes-element-pack'),
+				'type'        => Controls_Manager::SLIDER,
+				'range'       => [
+					'px' => [
+						'min'  => 0,
+						'step' => 1,
+						'max'  => 50,
+					]
+				],
+				'default'     => [
+					'size' => 5
+				],
+				'selectors'   => [
+					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap' => 'backdrop-filter: blur({{SIZE}}px); -webkit-backdrop-filter: blur({{SIZE}}px);'
 				],
 				'condition' => [
 					'glassmorphism_effect' => 'yes',
 				]
-            ]
+			]
 		);
 
 		$this->add_group_control(
@@ -1138,7 +1139,7 @@ class Advanced_Icon_Box extends Module_Base {
 			[
 				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
 				],
@@ -1151,7 +1152,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_radius_advanced_show',
 			[
-				'label' => __( 'Advanced Radius', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Advanced Radius', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
@@ -1160,9 +1161,9 @@ class Advanced_Icon_Box extends Module_Base {
 			'icon_radius_advanced',
 			[
 				'label'       => esc_html__('Radius', 'bdthemes-element-pack'),
-				'description' => sprintf(__('For example: <b>%1s</b> or Go <a href="%2s" target="_blank">this link</a> and copy and paste the radius value.', 'bdthemes-element-pack'), '75% 25% 43% 57% / 46% 29% 71% 54%', 'https://9elements.github.io/fancy-border-radius/'),
+				'description' => sprintf(esc_html__('For example: <b>%1s</b> or Go <a href="%2s" target="_blank">this link</a> and copy and paste the radius value.', 'bdthemes-element-pack'), '75% 25% 43% 57% / 46% 29% 71% 54%', 'https://9elements.github.io/fancy-border-radius/'),
 				'type'        => Controls_Manager::TEXT,
-				'size_units'  => [ 'px', '%' ],
+				'size_units'  => ['px', '%'],
 				'default'     => '75% 25% 43% 57% / 46% 29% 71% 54%',
 				'selectors'   => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap'     => 'border-radius: {{VALUE}}; overflow: hidden;',
@@ -1179,7 +1180,7 @@ class Advanced_Icon_Box extends Module_Base {
 			[
 				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
 				]
@@ -1208,7 +1209,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'icon_space',
 			[
-				'label'     => __( 'Spacing', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'separator' => 'before',
 				'default'   => [
@@ -1233,7 +1234,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'image_fullwidth',
 			[
-				'label' => __( 'Image Fullwidth', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Image Fullwidth', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-icon-wrap' => 'width: 100%;box-sizing: border-box;',
@@ -1247,9 +1248,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'icon_size',
 			[
-				'label' => __( 'Size', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Size', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', 'vh', 'vw' ],
+				'size_units' => ['px', 'em', 'vh', 'vw'],
 				'range' => [
 					'px' => [
 						'min' => 6,
@@ -1280,7 +1281,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'rotate',
 			[
-				'label'   => __( 'Rotate', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Rotate', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -1301,7 +1302,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_background_rotate',
 			[
-				'label'   => __( 'Background Rotate', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Background Rotate', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -1322,7 +1323,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'image_icon_heading',
 			[
-				'label'     => __( 'Image Effect', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Image Effect', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -1345,7 +1346,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'image_opacity',
 			[
-				'label' => __( 'Opacity', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Opacity', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1366,7 +1367,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'background_hover_transition',
 			[
-				'label' => __( 'Transition Duration', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Transition Duration', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0.3,
@@ -1391,14 +1392,14 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_tab(
 			'icon_hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'icon_hover_color',
 			[
-				'label'     => __( 'Icon Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Icon Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}}:hover .bdt-ep-advanced-icon-box-icon-wrap' => 'color: {{VALUE}};',
@@ -1413,7 +1414,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'svg_icon_hover_fill_color',
 			[
-				'label'     => __( 'Fill Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Fill Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}}:hover .bdt-ep-advanced-icon-box-icon-wrap svg, {{WRAPPER}}:hover .bdt-ep-advanced-icon-box-icon-wrap svg *' => 'fill: {{VALUE}};',
@@ -1428,7 +1429,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'svg_icon_hover_stroke_color',
 			[
-				'label'     => __( 'Stroke Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Stroke Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}}:hover .bdt-ep-advanced-icon-box-icon-wrap svg, {{WRAPPER}}:hover .bdt-ep-advanced-icon-box-icon-wrap svg *' => 'stroke: {{VALUE}};',
@@ -1452,17 +1453,17 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_effect',
 			[
-				'label'        => __( 'Effect', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Effect', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SELECT,
 				'prefix_class' => 'bdt-icon-effect-',
 				'default'      => 'none',
 				'options'      => [
-					'none' => __( 'None', 'bdthemes-element-pack' ),
-					'a'    => __( 'Effect A', 'bdthemes-element-pack' ),
-					'b'    => __( 'Effect B', 'bdthemes-element-pack' ),
-					'c'    => __( 'Effect C', 'bdthemes-element-pack' ),
-					'd'    => __( 'Effect D', 'bdthemes-element-pack' ),
-					'e'    => __( 'Effect E', 'bdthemes-element-pack' ),
+					'none' => esc_html__('None', 'bdthemes-element-pack'),
+					'a'    => esc_html__('Effect A', 'bdthemes-element-pack'),
+					'b'    => esc_html__('Effect B', 'bdthemes-element-pack'),
+					'c'    => esc_html__('Effect C', 'bdthemes-element-pack'),
+					'd'    => esc_html__('Effect D', 'bdthemes-element-pack'),
+					'e'    => esc_html__('Effect E', 'bdthemes-element-pack'),
 				],
 			]
 		);
@@ -1470,7 +1471,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_hover_border_color',
 			[
-				'label'     => __( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'separator' => 'before',
 				'selectors' => [
@@ -1487,7 +1488,7 @@ class Advanced_Icon_Box extends Module_Base {
 			[
 				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'separator'  => 'after',
 				'selectors'  => [
 					'{{WRAPPER}}:hover .bdt-ep-advanced-icon-box-icon-wrap' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
@@ -1507,7 +1508,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_hover_rotate',
 			[
-				'label'   => __( 'Rotate', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Rotate', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'unit' => 'deg',
@@ -1527,7 +1528,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'icon_hover_background_rotate',
 			[
-				'label'   => __( 'Background Rotate', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Background Rotate', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'unit' => 'deg',
@@ -1547,7 +1548,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'image_icon_hover_heading',
 			[
-				'label'     => __( 'Image Effect', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Image Effect', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -1570,7 +1571,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'image_opacity_hover',
 			[
-				'label' => __( 'Opacity', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Opacity', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1597,24 +1598,24 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_title',
 			[
-				'label' => __( 'Title', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Title', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		$this->start_controls_tabs( 'tabs_title_style' );
+		$this->start_controls_tabs('tabs_title_style');
 
 		$this->start_controls_tab(
 			'tab_title_style_normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_responsive_control(
 			'title_bottom_space',
 			[
-				'label' => __( 'Spacing', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1631,7 +1632,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-title' => 'color: {{VALUE}};',
@@ -1652,14 +1653,14 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_tab(
 			'tab_title_style_hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'title_color_hover',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box:hover .bdt-ep-advanced-icon-box-title' => 'color: {{VALUE}};',
@@ -1684,7 +1685,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_sub_title',
 			[
-				'label' => __( 'Sub Title', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Sub Title', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition'	=> [
 					'show_sub_title'	=> 'yes',
@@ -1692,19 +1693,19 @@ class Advanced_Icon_Box extends Module_Base {
 			]
 		);
 
-		$this->start_controls_tabs( 'tabs_sub_title_style' );
+		$this->start_controls_tabs('tabs_sub_title_style');
 
 		$this->start_controls_tab(
 			'tab_sub_title_style_normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_responsive_control(
 			'sub_title_bottom_space',
 			[
-				'label' => __( 'Spacing', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1721,7 +1722,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'sub_title_color',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-sub-title' => 'color: {{VALUE}};',
@@ -1742,14 +1743,14 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_tab(
 			'tab_sub_title_style_hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'sub_title_color_hover',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box:hover .bdt-ep-advanced-icon-box-sub-title' => 'color: {{VALUE}};',
@@ -1774,17 +1775,17 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_description',
 			[
-				'label' => __( 'Description', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Description', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		$this->start_controls_tabs( 'tabs_description_style' );
+		$this->start_controls_tabs('tabs_description_style');
 
 		$this->start_controls_tab(
 			'tab_description_style_normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -1802,7 +1803,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'description_color',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-description' => 'color: {{VALUE}};',
@@ -1823,14 +1824,14 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_tab(
 			'tab_description_style_hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'description_color_hover',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box:hover .bdt-ep-advanced-icon-box-description' => 'color: {{VALUE}};',
@@ -1855,8 +1856,8 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_content_title_separator',
 			[
-				'label'     => __( 'Title Separator', 'bdthemes-element-pack' ),
-				'tab'        => Controls_Manager::TAB_STYLE,
+				'label'     => esc_html__('Title Separator', 'bdthemes-element-pack'),
+				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_separator' => 'yes',
 				],
@@ -1866,38 +1867,38 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_separator_type',
 			[
-				'label'     => esc_html__( 'Select Separator Type', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Select Separator Type', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'line',
 				'options'   => [
-					'line'        => esc_html__( 'Line', 'bdthemes-element-pack' ),
-					'line-circle' => esc_html__( 'Line Circle', 'bdthemes-element-pack' ),
-					'line-cross'  => esc_html__( 'Line Cross', 'bdthemes-element-pack' ),
-					'line-star'   => esc_html__( 'Line Star', 'bdthemes-element-pack' ),
-					'line-dashed' => esc_html__( 'Line Dashed', 'bdthemes-element-pack' ),
-					'heart'       => esc_html__( 'Heart', 'bdthemes-element-pack' ),
-					'dashed'      => esc_html__( 'Dashed', 'bdthemes-element-pack' ),
-					'floret'      => esc_html__( 'Floret', 'bdthemes-element-pack' ),
-					'rectangle'   => esc_html__( 'Rectangle', 'bdthemes-element-pack' ),
-					'leaf'        => esc_html__( 'Leaf', 'bdthemes-element-pack' ),
-					'slash'       => esc_html__( 'Slash', 'bdthemes-element-pack' ),
-					'triangle'    => esc_html__( 'Triangle', 'bdthemes-element-pack' ),
-					'wave'        => esc_html__( 'Wave', 'bdthemes-element-pack' ),
-					'kiss-curl'   => esc_html__( 'Kiss Curl', 'bdthemes-element-pack' ),
-					'zemik'       => esc_html__( 'Zemik', 'bdthemes-element-pack' ),
-					'finest'       => esc_html__( 'Finest', 'bdthemes-element-pack' ),
-					'furrow'       => esc_html__( 'Furrow', 'bdthemes-element-pack' ),
-					'peak'         => esc_html__( 'Peak', 'bdthemes-element-pack' ),
-					'melody'       => esc_html__( 'Melody', 'bdthemes-element-pack' ),
-					'bloomstar'   => esc_html__( 'Bloomstar', 'bdthemes-element-pack' ),
-					'bobbleaf' 	  => esc_html__( 'Bobbleaf', 'bdthemes-element-pack' ),
-					'demaxa' 	  => esc_html__( 'Demaxa', 'bdthemes-element-pack' ),
-					'fill-circle' => esc_html__( 'Fill Circle', 'bdthemes-element-pack' ),
-					'finalio' 	  => esc_html__( 'Finalio', 'bdthemes-element-pack' ),
-					'jemik' 	  => esc_html__( 'Jemik', 'bdthemes-element-pack' ),
-					'separk' 	  => esc_html__( 'Separk', 'bdthemes-element-pack' ),
-					'zigzag-dot'  => esc_html__( 'Zigzag Dot', 'bdthemes-element-pack' ),
-					'zozobe' 	  => esc_html__( 'Zozobe', 'bdthemes-element-pack' ),
+					'line'        => esc_html__('Line', 'bdthemes-element-pack'),
+					'line-circle' => esc_html__('Line Circle', 'bdthemes-element-pack'),
+					'line-cross'  => esc_html__('Line Cross', 'bdthemes-element-pack'),
+					'line-star'   => esc_html__('Line Star', 'bdthemes-element-pack'),
+					'line-dashed' => esc_html__('Line Dashed', 'bdthemes-element-pack'),
+					'heart'       => esc_html__('Heart', 'bdthemes-element-pack'),
+					'dashed'      => esc_html__('Dashed', 'bdthemes-element-pack'),
+					'floret'      => esc_html__('Floret', 'bdthemes-element-pack'),
+					'rectangle'   => esc_html__('Rectangle', 'bdthemes-element-pack'),
+					'leaf'        => esc_html__('Leaf', 'bdthemes-element-pack'),
+					'slash'       => esc_html__('Slash', 'bdthemes-element-pack'),
+					'triangle'    => esc_html__('Triangle', 'bdthemes-element-pack'),
+					'wave'        => esc_html__('Wave', 'bdthemes-element-pack'),
+					'kiss-curl'   => esc_html__('Kiss Curl', 'bdthemes-element-pack'),
+					'zemik'       => esc_html__('Zemik', 'bdthemes-element-pack'),
+					'finest'       => esc_html__('Finest', 'bdthemes-element-pack'),
+					'furrow'       => esc_html__('Furrow', 'bdthemes-element-pack'),
+					'peak'         => esc_html__('Peak', 'bdthemes-element-pack'),
+					'melody'       => esc_html__('Melody', 'bdthemes-element-pack'),
+					'bloomstar'   => esc_html__('Bloomstar', 'bdthemes-element-pack'),
+					'bobbleaf' 	  => esc_html__('Bobbleaf', 'bdthemes-element-pack'),
+					'demaxa' 	  => esc_html__('Demaxa', 'bdthemes-element-pack'),
+					'fill-circle' => esc_html__('Fill Circle', 'bdthemes-element-pack'),
+					'finalio' 	  => esc_html__('Finalio', 'bdthemes-element-pack'),
+					'jemik' 	  => esc_html__('Jemik', 'bdthemes-element-pack'),
+					'separk' 	  => esc_html__('Separk', 'bdthemes-element-pack'),
+					'zigzag-dot'  => esc_html__('Zigzag Dot', 'bdthemes-element-pack'),
+					'zozobe' 	  => esc_html__('Zozobe', 'bdthemes-element-pack'),
 				],
 				'render_type' => 'template'
 			]
@@ -1906,21 +1907,21 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'divider_align',
 			[
-				'label'       => __( 'Alignment', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::CHOOSE,
 				'toggle'      => false,
 				'default'     => 'center',
 				'options'     => [
 					'left'   => [
-						'title' => __( 'Left', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-center',
 					],
 					'right'  => [
-						'title' => __( 'Right', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-right',
 					],
 				],
@@ -1937,21 +1938,21 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'divider_line_align',
 			[
-				'label'       => __( 'Alignment', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::CHOOSE,
 				'toggle'      => false,
 				'default'     => 'center',
 				'options'     => [
 					'left'   => [
-						'title' => __( 'Left', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-center',
 					],
 					'right'  => [
-						'title' => __( 'Right', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-right',
 					],
 				],
@@ -1968,14 +1969,14 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_separator_border_style',
 			[
-				'label'   => esc_html__( 'Separator Style', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Separator Style', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'solid',
 				'options' => [
-					'solid'  => esc_html__( 'Solid', 'bdthemes-element-pack' ),
-					'dotted' => esc_html__( 'Dotted', 'bdthemes-element-pack' ),
-					'dashed' => esc_html__( 'Dashed', 'bdthemes-element-pack' ),
-					'groove' => esc_html__( 'Groove', 'bdthemes-element-pack' ),
+					'solid'  => esc_html__('Solid', 'bdthemes-element-pack'),
+					'dotted' => esc_html__('Dotted', 'bdthemes-element-pack'),
+					'dashed' => esc_html__('Dashed', 'bdthemes-element-pack'),
+					'groove' => esc_html__('Groove', 'bdthemes-element-pack'),
 				],
 				'condition' => [
 					'title_separator_type' => 'line'
@@ -1989,7 +1990,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_separator_line_color',
 			[
-				'label'     => esc_html__( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => [
 					'title_separator_type' => 'line'
@@ -2003,7 +2004,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'title_separator_height',
 			[
-				'label' => __( 'Height', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Height', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -2024,9 +2025,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'title_separator_width',
 			[
-				'label' => __( 'Width', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Width', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'range' => [
 					'%' => [
 						'min' => 1,
@@ -2049,7 +2050,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_separator_svg_fill_color',
 			[
-				'label'     => esc_html__( 'Fill Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Fill Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => [
 					'title_separator_type!' => 'line'
@@ -2063,7 +2064,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_separator_svg_stroke_color',
 			[
-				'label'     => esc_html__( 'Stroke Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Stroke Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => [
 					'title_separator_type!' => 'line'
@@ -2077,7 +2078,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'max_width',
 			[
-				'label'     => __( 'Width', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Width', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -2097,13 +2098,13 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'line_cap',
 			[
-				'label'   => esc_html__( 'Line Cap', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Line Cap', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'ep_square',
 				'options' => [
-					'ep_square' => esc_html__( 'Square', 'bdthemes-element-pack' ),
-					'ep_round'  => esc_html__( 'Rounded', 'bdthemes-element-pack' ),
-					'ep_butt'   => esc_html__( 'Butt', 'bdthemes-element-pack' ),
+					'ep_square' => esc_html__('Square', 'bdthemes-element-pack'),
+					'ep_round'  => esc_html__('Rounded', 'bdthemes-element-pack'),
+					'ep_butt'   => esc_html__('Butt', 'bdthemes-element-pack'),
 				],
 				'condition' => [
 					'title_separator_type!' => 'line'
@@ -2114,7 +2115,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'divider_svg_stroke_width',
 			[
-				'label'     => __( 'Stroke Width', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Stroke Width', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -2134,7 +2135,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'divider_crop',
 			[
-				'label' => __( 'Divider Crop', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Divider Crop', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -2154,7 +2155,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'max_height',
 			[
-				'label'     => __( 'Match Height', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Match Height', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -2173,7 +2174,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'title_separator_spacing',
 			[
-				'label' => __( 'Separator Spacing', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Separator Spacing', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -2191,7 +2192,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_readmore',
 			[
-				'label'     => __( 'Read More', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Read More', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'readmore'       => 'yes',
@@ -2202,24 +2203,24 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore_attention',
 			[
-				'label' => __( 'Attention', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Attention', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
 
-		$this->start_controls_tabs( 'tabs_readmore_style' );
+		$this->start_controls_tabs('tabs_readmore_style');
 
 		$this->start_controls_tab(
 			'tab_readmore_normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'readmore_text_color',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-readmore' => 'color: {{VALUE}};',
@@ -2251,9 +2252,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'readmore_radius',
 			[
-				'label'      => __( 'Border Radius', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'separator'  => 'after',
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-readmore' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -2272,9 +2273,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'readmore_padding',
 			[
-				'label'      => __( 'Padding', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-readmore' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2294,14 +2295,14 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_tab(
 			'tab_readmore_hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'readmore_hover_text_color',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-readmore:hover' => 'color: {{VALUE}};',
@@ -2322,7 +2323,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore_hover_border_color',
 			[
-				'label'     => __( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-readmore:hover' => 'border-color: {{VALUE}};',
@@ -2344,7 +2345,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'readmore_hover_animation',
 			[
-				'label' => __( 'Hover Animation', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover Animation', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::HOVER_ANIMATION,
 			]
 		);
@@ -2358,7 +2359,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_indicator',
 			[
-				'label'     => __( 'Indicator', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Indicator', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'indicator' => 'yes',
@@ -2369,15 +2370,15 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'indicator_style',
 			[
-				'label'   => __( 'Indicator Style', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Indicator Style', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => [
-					'1'   => __( 'Style 1', 'bdthemes-element-pack' ),
-					'2'   => __( 'Style 2', 'bdthemes-element-pack' ),
-					'3'   => __( 'Style 3', 'bdthemes-element-pack' ),
-					'4'   => __( 'Style 4', 'bdthemes-element-pack' ),
-					'5'   => __( 'Style 5', 'bdthemes-element-pack' ),
+					'1'   => esc_html__('Style 1', 'bdthemes-element-pack'),
+					'2'   => esc_html__('Style 2', 'bdthemes-element-pack'),
+					'3'   => esc_html__('Style 3', 'bdthemes-element-pack'),
+					'4'   => esc_html__('Style 4', 'bdthemes-element-pack'),
+					'5'   => esc_html__('Style 5', 'bdthemes-element-pack'),
 				],
 			]
 		);
@@ -2385,7 +2386,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'indicator_fill_color',
 			[
-				'label'     => __( 'Fill Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Fill Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-indicator svg *' => 'fill: {{VALUE}};',
@@ -2396,7 +2397,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'indicator_stroke_color',
 			[
-				'label'     => __( 'Stroke Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Stroke Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-indicator svg *' => 'stroke: {{VALUE}};',
@@ -2409,7 +2410,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_badge',
 			[
-				'label'     => __( 'Badge', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Badge', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'badge' => 'yes',
@@ -2420,7 +2421,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_control(
 			'badge_text_color',
 			[
-				'label'     => __( 'Text Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Text Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-badge span' => 'color: {{VALUE}};',
@@ -2451,9 +2452,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'badge_radius',
 			[
-				'label'      => __( 'Border Radius', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'separator'  => 'after',
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-badge span' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -2472,9 +2473,9 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'badge_padding',
 			[
-				'label'      => __( 'Padding', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-badge span' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2494,7 +2495,7 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->start_controls_section(
 			'section_style_additional',
 			[
-				'label' => __( 'Additional', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Additional', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -2504,7 +2505,7 @@ class Advanced_Icon_Box extends Module_Base {
 			[
 				'label'      => esc_html__('Content Inner Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-advanced-icon-box-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
 				]
@@ -2514,10 +2515,10 @@ class Advanced_Icon_Box extends Module_Base {
 		$this->add_responsive_control(
 			'icon_inline_spacing',
 			[
-				'label' => __( 'Icon Inline Spacing', 'bdthemes-element-pack' ),
-				'type'  => Controls_Manager::SLIDER,
+				'label'     => esc_html__('Icon Inline Spacing', 'bdthemes-element-pack'),
+				'type'      => Controls_Manager::SLIDER,
 				'condition' => [
-					'position' => ['left', 'right'],
+					'position'    => ['left', 'right'],
 					'icon_inline' => 'yes',
 				],
 				'selectors' => [
@@ -2532,263 +2533,262 @@ class Advanced_Icon_Box extends Module_Base {
 	protected function render_icon() {
 		$settings  = $this->get_settings_for_display();
 
-		if ( ! isset( $settings['icon'] ) && ! Icons_Manager::is_migration_allowed() ) {
+		if (!isset($settings['icon']) && !Icons_Manager::is_migration_allowed()) {
 			// add old default
 			$settings['icon'] = 'fas fa-star';
 		}
 
-		$has_icon  = ! empty( $settings['icon'] );
+		$has_icon  = !empty($settings['icon']);
 
-		$has_image = ! empty( $settings['image']['url'] );
+		$has_image = !empty($settings['image']['url']);
 
-		if ( $has_icon and 'icon' == $settings['icon_type'] ) {
-			$this->add_render_attribute( 'font-icon', 'class', $settings['selected_icon'] );
-			$this->add_render_attribute( 'font-icon', 'aria-hidden', 'true' );
-		} elseif ( $has_image and 'image' == $settings['icon_type'] ) {
-			$this->add_render_attribute( 'image-icon', 'src', $settings['image']['url'] );
-			$this->add_render_attribute( 'image-icon', 'alt', $settings['title_text'] );
+		if ($has_icon and 'icon' == $settings['icon_type']) {
+			$this->add_render_attribute('font-icon', 'class', $settings['selected_icon']);
+			$this->add_render_attribute('font-icon', 'aria-hidden', 'true');
+		} elseif ($has_image and 'image' == $settings['icon_type']) {
+			$this->add_render_attribute('image-icon', 'src', $settings['image']['url']);
+			$this->add_render_attribute('image-icon', 'alt', $settings['title_text']);
 		}
 
-		if ( ! $has_icon && ! empty( $settings['selected_icon']['value'] ) ) {
+		if (!$has_icon && !empty($settings['selected_icon']['value'])) {
 			$has_icon = true;
 		}
 
-		$migrated  = isset( $settings['__fa4_migrated']['selected_icon'] );
-		$is_new    = empty( $settings['icon'] ) && Icons_Manager::is_migration_allowed();
+		$migrated  = isset($settings['__fa4_migrated']['selected_icon']);
+		$is_new    = empty($settings['icon']) && Icons_Manager::is_migration_allowed();
 
-		?>
+?>
 
-			<?php if ( $has_icon or $has_image ) : ?>
-				<div class="bdt-ep-advanced-icon-box-icon">
-					<span class="bdt-ep-advanced-icon-box-icon-wrap">
-
-
-						<?php if ( $has_icon and 'icon' == $settings['icon_type'] ) { ?>
-
-							<?php if ( $is_new || $migrated ) :
-								Icons_Manager::render_icon( $settings['selected_icon'], [ 'aria-hidden' => 'true' ] );
-							else : ?>
-								<i <?php echo $this->get_render_attribute_string( 'font-icon' ); ?>></i>
-							<?php endif; ?>
+		<?php if ($has_icon or $has_image) : ?>
+			<div class="bdt-ep-advanced-icon-box-icon">
+				<span class="bdt-ep-advanced-icon-box-icon-wrap">
 
 
-						<?php } elseif ( $has_image and 'image' == $settings['icon_type'] ) { ?>
-							<img <?php echo $this->get_render_attribute_string( 'image-icon' ); ?>>
-						<?php } ?>
-					</span>
-				</div>
-			<?php endif; ?>
+					<?php if ($has_icon and 'icon' == $settings['icon_type']) { ?>
 
-		<?php
+						<?php if ($is_new || $migrated) :
+							Icons_Manager::render_icon($settings['selected_icon'], ['aria-hidden' => 'true']);
+						else : ?>
+							<i <?php echo $this->get_render_attribute_string('font-icon'); ?>></i>
+						<?php endif; ?>
+
+
+					<?php } elseif ($has_image and 'image' == $settings['icon_type']) { ?>
+						<img <?php echo $this->get_render_attribute_string('image-icon'); ?>>
+					<?php } ?>
+				</span>
+			</div>
+		<?php endif; ?>
+
+	<?php
 	}
 
 	protected function render_icon_heading() {
 		$settings  = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'advanced-icon-box-title', 'class', 'bdt-ep-advanced-icon-box-title' );
+		$this->add_render_attribute('advanced-icon-box-title', 'class', 'bdt-ep-advanced-icon-box-title');
 
-		if ( 'yes' == $settings['icon_inline'] ) {
-			$this->add_render_attribute( 'advanced-icon-box-icon-heading', 'class', 'bdt-ep-advanced-icon-box-icon-heading bdt-flex bdt-flex-middle' );
+		if ('yes' == $settings['icon_inline']) {
+			$this->add_render_attribute('advanced-icon-box-icon-heading', 'class', 'bdt-ep-advanced-icon-box-icon-heading bdt-flex bdt-flex-middle');
 		}
-		if ( 'right' == $settings['position'] ) {
-			$this->add_render_attribute( 'advanced-icon-box-icon-heading', 'class', 'bdt-flex-row-reverse' );
+		if ('right' == $settings['position']) {
+			$this->add_render_attribute('advanced-icon-box-icon-heading', 'class', 'bdt-flex-row-reverse');
 		}
 
-		$this->add_render_attribute( 'advanced-icon-box-sub-title', 'class', 'bdt-ep-advanced-icon-box-sub-title' );
+		$this->add_render_attribute('advanced-icon-box-sub-title', 'class', 'bdt-ep-advanced-icon-box-sub-title');
 
 		if ('yes' == $settings['title_link'] and $settings['title_link_url']['url']) {
 
 			$target = $settings['title_link_url']['is_external'] ? '_blank' : '_self';
 
-			$this->add_render_attribute( 'advanced-icon-box-title', 'onclick', "window.open('" . $settings['title_link_url']['url'] . "', '$target')" );
+			$this->add_render_attribute('advanced-icon-box-title', 'onclick', "window.open('" . $settings['title_link_url']['url'] . "', '$target')");
 		}
 
 
-		?>
-		<div <?php echo $this->get_render_attribute_string( 'advanced-icon-box-icon-heading' ); ?>>
+	?>
+		<div <?php echo $this->get_render_attribute_string('advanced-icon-box-icon-heading'); ?>>
 
 			<?php $this->render_icon(); ?>
 
 
 			<div class="bdt-icon-box-title-wrapper">
 
-				<?php if ( $settings['title_text'] ) : ?>
-				<<?php echo Utils::get_valid_html_tag($settings['title_size']); ?> <?php echo $this->get_render_attribute_string( 'advanced-icon-box-title' ); ?>>
-						<span <?php echo $this->get_render_attribute_string( 'title_text' ); ?>>
-							<?php echo wp_kses( $settings['title_text'], element_pack_allow_tags('title') ); ?>
+				<?php if ($settings['title_text']) : ?>
+					<<?php echo Utils::get_valid_html_tag($settings['title_size']); ?> <?php echo $this->get_render_attribute_string('advanced-icon-box-title'); ?>>
+						<span <?php echo $this->get_render_attribute_string('title_text'); ?>>
+							<?php echo wp_kses($settings['title_text'], element_pack_allow_tags('title')); ?>
 						</span>
 					</<?php echo Utils::get_valid_html_tag($settings['title_size']); ?>>
 				<?php endif; ?>
 
 
-				<?php if ( 'yes' == $settings['show_sub_title'] ) : ?>
-					<div <?php echo $this->get_render_attribute_string( 'advanced-icon-box-sub-title' ); ?>>
-						<?php echo wp_kses( $settings['sub_title_text'], element_pack_allow_tags('title') ); ?>
+				<?php if ('yes' == $settings['show_sub_title']) : ?>
+					<div <?php echo $this->get_render_attribute_string('advanced-icon-box-sub-title'); ?>>
+						<?php echo wp_kses($settings['sub_title_text'], element_pack_allow_tags('title')); ?>
 					</div>
 				<?php endif; ?>
 			</div>
 		</div>
-		<?php
+	<?php
 
 	}
 
 	protected function render_heading() {
 		$settings  = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'advanced-icon-box-title', 'class', 'bdt-ep-advanced-icon-box-title' );
+		$this->add_render_attribute('advanced-icon-box-title', 'class', 'bdt-ep-advanced-icon-box-title');
 
-		$this->add_render_attribute( 'advanced-icon-box-sub-title', 'class', 'bdt-ep-advanced-icon-box-sub-title' );
+		$this->add_render_attribute('advanced-icon-box-sub-title', 'class', 'bdt-ep-advanced-icon-box-sub-title');
 
 		if ('yes' == $settings['title_link'] and $settings['title_link_url']['url']) {
 
 			$target = $settings['title_link_url']['is_external'] ? '_blank' : '_self';
 
-			$this->add_render_attribute( 'advanced-icon-box-title', 'onclick', "window.open('" . $settings['title_link_url']['url'] . "', '$target')" );
+			$this->add_render_attribute('advanced-icon-box-title', 'onclick', "window.open('" . $settings['title_link_url']['url'] . "', '$target')");
 		}
-		?>
+	?>
 
-		<?php if ( $settings['title_text'] ) : ?>
-		<<?php echo Utils::get_valid_html_tag($settings['title_size']); ?> <?php echo $this->get_render_attribute_string( 'advanced-icon-box-title' ); ?>>
-				<span <?php echo $this->get_render_attribute_string( 'title_text' ); ?>>
-					<?php echo wp_kses( $settings['title_text'], element_pack_allow_tags('title') ); ?>
+		<?php if ($settings['title_text']) : ?>
+			<<?php echo Utils::get_valid_html_tag($settings['title_size']); ?> <?php echo $this->get_render_attribute_string('advanced-icon-box-title'); ?>>
+				<span <?php echo $this->get_render_attribute_string('title_text'); ?>>
+					<?php echo wp_kses($settings['title_text'], element_pack_allow_tags('title')); ?>
 				</span>
 			</<?php echo Utils::get_valid_html_tag($settings['title_size']); ?>>
 		<?php endif; ?>
 
 
-		<?php if ( 'yes' == $settings['show_sub_title'] ) : ?>
-			<div <?php echo $this->get_render_attribute_string( 'advanced-icon-box-sub-title' ); ?>>
-				<?php echo wp_kses( $settings['sub_title_text'], element_pack_allow_tags('title') ); ?>
+		<?php if ('yes' == $settings['show_sub_title']) : ?>
+			<div <?php echo $this->get_render_attribute_string('advanced-icon-box-sub-title'); ?>>
+				<?php echo wp_kses($settings['sub_title_text'], element_pack_allow_tags('title')); ?>
 			</div>
 		<?php endif; ?>
 
-		<?php
+	<?php
 
 	}
 
 	public function render_svg_image() {
 		$settings = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'svg-image', 'class', 'bdt-animation-stroke' );
-		$this->add_render_attribute( 'svg-image', 'bdt-svg', 'stroke-animation: true;' );
+		$this->add_render_attribute('svg-image', 'class', 'bdt-animation-stroke');
+		$this->add_render_attribute('svg-image', 'bdt-svg', 'stroke-animation: true;');
 
-		$align     = ( 'left' == $settings['divider_align'] or 'right' == $settings['divider_align'] ) ? '-' . $settings['divider_align'] : '';
+		$align     = ('left' == $settings['divider_align'] or 'right' == $settings['divider_align']) ? '-' . $settings['divider_align'] : '';
 		$svg_image = BDTEP_ASSETS_URL . 'images/divider/' . $settings['title_separator_type'] . $align . '.svg';
 
 		$line_cap = $settings['line_cap'];
 
-		?>
+	?>
 
-			<img class="bdt-animation-stroke <?php echo $line_cap; ?>" src="<?php echo $svg_image; ?>"
-                     alt="advanced divider">
+		<img class="bdt-animation-stroke <?php echo esc_attr($line_cap); ?>" src="<?php echo $svg_image; ?>" alt="advanced divider">
 
-		<?php
+	<?php
 	}
 
 	protected function render() {
 		$settings  = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'description_text', 'class', 'bdt-ep-advanced-icon-box-description' );
+		$this->add_render_attribute('description_text', 'class', 'bdt-ep-advanced-icon-box-description');
 
-		$this->add_inline_editing_attributes( 'title_text', 'none' );
-		$this->add_inline_editing_attributes( 'description_text' );
+		$this->add_inline_editing_attributes('title_text', 'none');
+		$this->add_inline_editing_attributes('description_text');
 
 
-		$this->add_render_attribute( 'readmore', 'class', ['bdt-ep-advanced-icon-box-readmore', 'bdt-display-inline-block'] );
+		$this->add_render_attribute('readmore', 'class', ['bdt-ep-advanced-icon-box-readmore', 'bdt-display-inline-block']);
 
-		if ( ! empty( $settings['readmore_link']['url'] ) ) {
-			$this->add_render_attribute( 'readmore', 'href', $settings['readmore_link']['url'] );
+		if (!empty($settings['readmore_link']['url'])) {
+			$this->add_render_attribute('readmore', 'href', $settings['readmore_link']['url']);
 
-			if ( $settings['readmore_link']['is_external'] ) {
-				$this->add_render_attribute( 'readmore', 'target', '_blank' );
+			if ($settings['readmore_link']['is_external']) {
+				$this->add_render_attribute('readmore', 'target', '_blank');
 			}
 
-			if ( $settings['readmore_link']['nofollow'] ) {
-				$this->add_render_attribute( 'readmore', 'rel', 'nofollow' );
+			if ($settings['readmore_link']['nofollow']) {
+				$this->add_render_attribute('readmore', 'rel', 'nofollow');
 			}
 		}
 
 		if ($settings['readmore_attention']) {
-			$this->add_render_attribute( 'readmore', 'class', 'bdt-ep-attention-button' );
+			$this->add_render_attribute('readmore', 'class', 'bdt-ep-attention-button');
 		}
 
-		if ( $settings['readmore_hover_animation'] ) {
-			$this->add_render_attribute( 'readmore', 'class', 'elementor-animation-' . $settings['readmore_hover_animation'] );
+		if ($settings['readmore_hover_animation']) {
+			$this->add_render_attribute('readmore', 'class', 'elementor-animation-' . $settings['readmore_hover_animation']);
 		}
 
 		if ($settings['onclick']) {
-			$this->add_render_attribute( 'readmore', 'onclick', $settings['onclick_event'] );
+			$this->add_render_attribute('readmore', 'onclick', $settings['onclick_event']);
 		}
 
-		if ( ! empty( $settings['button_css_id'] ) ) {
-			$this->add_render_attribute( 'readmore', 'id', $settings['button_css_id'] );
+		if (!empty($settings['button_css_id'])) {
+			$this->add_render_attribute('readmore', 'id', $settings['button_css_id']);
 		}
 
-		$this->add_render_attribute( 'advanced-icon-box', 'class', 'bdt-ep-advanced-icon-box' );
+		$this->add_render_attribute('advanced-icon-box', 'class', 'bdt-ep-advanced-icon-box');
 
 		if ('yes' == $settings['global_link'] and $settings['global_link_url']['url']) {
 
 			$target = $settings['global_link_url']['is_external'] ? '_blank' : '_self';
 
-			$this->add_render_attribute( 'advanced-icon-box', 'onclick', "window.open('" . $settings['global_link_url']['url'] . "', '$target')" );
+			$this->add_render_attribute('advanced-icon-box', 'onclick', "window.open('" . $settings['global_link_url']['url'] . "', '$target')");
 		}
 
 
-		if ( ! isset( $settings['readmore_icon'] ) && ! Icons_Manager::is_migration_allowed() ) {
+		if (!isset($settings['readmore_icon']) && !Icons_Manager::is_migration_allowed()) {
 			// add old default
 			$settings['readmore_icon'] = 'fas fa-arrow-right';
 		}
 
-		$readmore_migrated  = isset( $settings['__fa4_migrated']['advanced_readmore_icon'] );
-		$readmore_is_new    = empty( $settings['readmore_icon'] ) && Icons_Manager::is_migration_allowed();
+		$readmore_migrated  = isset($settings['__fa4_migrated']['advanced_readmore_icon']);
+		$readmore_is_new    = empty($settings['readmore_icon']) && Icons_Manager::is_migration_allowed();
 
-		?>
-		<div <?php echo $this->get_render_attribute_string( 'advanced-icon-box' ); ?>>
+	?>
+		<div <?php echo $this->get_render_attribute_string('advanced-icon-box'); ?>>
 
-			<?php if ( '' == $settings['icon_inline'] ) : ?>
+			<?php if ('' == $settings['icon_inline']) : ?>
 				<?php $this->render_icon(); ?>
 			<?php endif; ?>
 
 			<div class="bdt-ep-advanced-icon-box-content">
 
-				<?php if ( 'yes' == $settings['icon_inline'] ) : ?>
+				<?php if ('yes' == $settings['icon_inline']) : ?>
 					<?php $this->render_icon_heading(); ?>
 				<?php else : ?>
 					<?php $this->render_heading(); ?>
 				<?php endif; ?>
 
-				<?php if ( $settings['show_separator'] ) : ?>
+				<?php if ($settings['show_separator']) : ?>
 
-				<?php if ( 'line' == $settings['title_separator_type'] ) : ?>
-					<div class="bdt-ep-advanced-icon-box-separator-wrap">
-						<div class="bdt-ep-advanced-icon-box-separator"></div>
-					</div>
-				<?php elseif ( 'line' != $settings['title_separator_type'] ) : ?>
-					<div class="bdt-ep-advanced-icon-box-separator-wrap">
-						<?php $this->render_svg_image(); ?>
-					</div>
+					<?php if ('line' == $settings['title_separator_type']) : ?>
+						<div class="bdt-ep-advanced-icon-box-separator-wrap">
+							<div class="bdt-ep-advanced-icon-box-separator"></div>
+						</div>
+					<?php elseif ('line' != $settings['title_separator_type']) : ?>
+						<div class="bdt-ep-advanced-icon-box-separator-wrap">
+							<?php $this->render_svg_image(); ?>
+						</div>
+					<?php endif; ?>
+
 				<?php endif; ?>
 
-				<?php endif; ?>
-
-				<?php if ( $settings['description_text'] ) : ?>
-					<div <?php echo $this->get_render_attribute_string( 'description_text' ); ?>>
-						<?php echo $this->parse_text_editor( $settings['description_text'] ); ?>
+				<?php if ($settings['description_text']) : ?>
+					<div <?php echo $this->get_render_attribute_string('description_text'); ?>>
+						<?php echo $this->parse_text_editor($settings['description_text']); ?>
 					</div>
 				<?php endif; ?>
 
 				<?php if ($settings['readmore']) : ?>
-					<a <?php echo $this->get_render_attribute_string( 'readmore' ); ?>>
+					<a <?php echo $this->get_render_attribute_string('readmore'); ?>>
 						<?php echo esc_html($settings['readmore_text']); ?>
 
 						<?php if ($settings['advanced_readmore_icon']['value']) : ?>
 
 							<span class="bdt-button-icon-align-<?php echo $settings['readmore_icon_align'] ?>">
 
-								<?php if ( $readmore_is_new || $readmore_migrated ) :
-									Icons_Manager::render_icon( $settings['advanced_readmore_icon'], [ 'aria-hidden' => 'true', 'class' => 'fa-fw' ] );
+								<?php if ($readmore_is_new || $readmore_migrated) :
+									Icons_Manager::render_icon($settings['advanced_readmore_icon'], ['aria-hidden' => 'true', 'class' => 'fa-fw']);
 								else : ?>
-									<i <?php echo $this->get_render_attribute_string( 'font-icon' ); ?>></i>
+									<i <?php echo $this->get_render_attribute_string('font-icon'); ?>></i>
 								<?php endif; ?>
 
 							</span>
@@ -2799,19 +2799,18 @@ class Advanced_Icon_Box extends Module_Base {
 			</div>
 		</div>
 
-		<?php if ( $settings['indicator'] ) : ?>
+		<?php if ($settings['indicator']) : ?>
 			<div class="bdt-ep-advanced-icon-box-indicator bdt-svg-style-<?php echo esc_attr($settings['indicator_style']); ?>">
 				<?php echo element_pack_svg_icon('arrow-' . $settings['indicator_style']); ?>
 			</div>
 		<?php endif; ?>
 
-		<?php if ( $settings['badge'] and '' != $settings['badge_text'] ) : ?>
+		<?php if ($settings['badge'] and '' != $settings['badge_text']) : ?>
 			<div class="bdt-ep-advanced-icon-box-badge bdt-position-<?php echo esc_attr($settings['badge_position']); ?>">
 				<span class="bdt-badge bdt-padding-small"><?php echo esc_html($settings['badge_text']); ?></span>
 			</div>
 		<?php endif; ?>
 
-		<?php
+<?php
 	}
-
 }

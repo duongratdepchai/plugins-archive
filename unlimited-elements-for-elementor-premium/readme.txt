@@ -1238,6 +1238,39 @@ Note : This plugin works with Elementor. Make sure you have [Elementor](https://
 
 == Changelog ==
 
+
+version 1.5.62 2023-05-14:
+
+* Feature: added "edit template" link in template selector
+* Feature: added hidden template edit button to top bar
+* Feature: added option for dynamic popup link to connect to many links in the widget
+* Fix: solved some php error with parse dynamic settings in php 8.1
+* Fix: getMetaValue error in products
+* Fix: fixed doubly css includes in some cases
+
+
+version 1.5.61 - 2023-05-07:
+
+* Feature: added support for woocommerce jet wishlist
+* Feature: did option to disable third party hooks in ajax
+* Fix: click on link on sync didn't worked
+* Fix: added some protections to nonce and to file manager zip exctract 
+* Change: updated freemius sdk to 2.5.7 version.
+
+
+
+version 1.5.60 - 2023-04-30:
+
+* Feature: added functionality to get cart number of products 
+* Fix: fixed link field settings for multisoure
+* Fix: fixed some bugs with regular price in woocommerce widgets
+* Fix: filters js file loaded in editor as well
+* Fix: fixed some small php bug regarding "pathBase"
+* Fix: fixed conditions in multiple select control
+* Change: updated unite gallery version
+* Change: disabled autoload in update_option for the catalog variable
+
+
 version 1.5.59: 2023-04-09
 
 * Feature: added multiple select to condition attributes in widget editor

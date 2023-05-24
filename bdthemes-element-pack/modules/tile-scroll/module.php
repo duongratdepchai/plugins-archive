@@ -131,58 +131,6 @@ class Module extends Element_Pack_Module_Base {
 				'condition'          => [
 					'element_pack_tile_scroll_show' => 'yes'
 				],
-				// 'default'            => [
-				// 	[
-				// 		'element_pack_tile_scroll_x_start' => [
-				// 			'unit' => 'px',
-				// 			'size' => -150,
-				// 		],
-				// 		'element_pack_tile_scroll_x_end'   => [
-				// 			'unit' => 'px',
-				// 			'size' => 150,
-				// 		],
-				// 	],
-				// 	[
-				// 		'element_pack_tile_scroll_x_start' => [
-				// 			'unit' => 'px',
-				// 			'size' => 150,
-				// 		],
-				// 		'element_pack_tile_scroll_x_end'   => [
-				// 			'unit' => 'px',
-				// 			'size' => -150,
-				// 		]
-				// 	],
-				// 	[
-				// 		'element_pack_tile_scroll_x_start' => [
-				// 			'unit' => 'px',
-				// 			'size' => -150,
-				// 		],
-				// 		'element_pack_tile_scroll_x_end'   => [
-				// 			'unit' => 'px',
-				// 			'size' => 150,
-				// 		]
-				// 	],
-				// 	[
-				// 		'element_pack_tile_scroll_x_start' => [
-				// 			'unit' => 'px',
-				// 			'size' => 150,
-				// 		],
-				// 		'element_pack_tile_scroll_x_end'   => [
-				// 			'unit' => 'px',
-				// 			'size' => -150,
-				// 		]
-				// 	],
-				// 	[
-				// 		'element_pack_tile_scroll_x_start' => [
-				// 			'unit' => 'px',
-				// 			'size' => -150,
-				// 		],
-				// 		'element_pack_tile_scroll_x_end'   => [
-				// 			'unit' => 'px',
-				// 			'size' => 150,
-				// 		]
-				// 	]
-				// ],
 			]
 		);
 		$section->end_controls_tab();

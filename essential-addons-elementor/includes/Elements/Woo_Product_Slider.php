@@ -1693,7 +1693,7 @@ class Woo_Product_Slider extends Widget_Base {
 			    'label'     => esc_html__( 'Color', 'essential-addons-elementor' ),
 			    'type'      => Controls_Manager::COLOR,
 			    'selectors' => [
-				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart' => 'color: {{VALUE}};',
+				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart' => 'color: {{VALUE}} !important;',
 			    ],
 		    ]
 	    );
@@ -1704,7 +1704,7 @@ class Woo_Product_Slider extends Widget_Base {
 			    'label'     => esc_html__( 'Background Color', 'essential-addons-elementor' ),
 			    'type'      => Controls_Manager::COLOR,
 			    'selectors' => [
-				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart' => 'background-color: {{VALUE}};',
+				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart' => 'background-color: {{VALUE}} !important;',
 			    ],
 		    ]
 	    );
@@ -1753,7 +1753,7 @@ class Woo_Product_Slider extends Widget_Base {
 			    'type'      => Controls_Manager::COLOR,
 			    'default'   => '#F5EAFF',
 			    'selectors' => [
-				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart:hover' => 'color: {{VALUE}};',
+				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart:hover' => 'color: {{VALUE}} !important;',
 			    ],
 		    ]
 	    );
@@ -1765,7 +1765,7 @@ class Woo_Product_Slider extends Widget_Base {
 			    'type'      => Controls_Manager::COLOR,
 			    'default'   => '#F12DE0',
 			    'selectors' => [
-				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart:hover' => 'background-color: {{VALUE}};',
+				    '{{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .button.add_to_cart_button:hover, {{WRAPPER}} .eael-woo-product-slider .eael-product-slider .eael-add-to-cart-button .added_to_cart:hover' => 'background-color: {{VALUE}} !important;',
 			    ],
 		    ]
 	    );

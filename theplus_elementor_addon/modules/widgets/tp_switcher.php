@@ -24,6 +24,8 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Switcher extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-switcher';
@@ -36,6 +38,12 @@ class ThePlus_Switcher extends Widget_Base {
     public function get_icon() {
         return 'fa fa-toggle-on theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "switcher";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-tabbed');
@@ -102,7 +110,7 @@ class ThePlus_Switcher extends Widget_Base {
 		$this->add_control(
 			'content_a_template',
 			[
-				'label'       => esc_html__( 'Elementor Templates', 'theplus' ),
+				'label' => wp_kses_post( "Elementor Templates <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "pricing-table-in-elementor-switcher/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'        => Controls_Manager::SELECT,
 				'default'     => '0',
 				'options'     => theplus_get_templates(),
@@ -139,7 +147,7 @@ class ThePlus_Switcher extends Widget_Base {
 		$this->add_control(
 			'con1_hashid',
 			[
-				'label' => esc_html__( 'Unique ID', 'theplus' ),
+				'label' => wp_kses_post( "Unique ID<a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "anchor-link-to-elementor-switcher-template/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'dynamic' => [
@@ -278,7 +286,7 @@ class ThePlus_Switcher extends Widget_Base {
 		$this->add_control(
 			'switcher_unique_id',
 			[
-				'label' => esc_html__( 'Unique Switcher ID', 'theplus' ),
+				'label' => wp_kses_post( "Unique Switcher ID <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "connect-carousel-remote-with-elementor-switcher/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'separator' => 'after',
@@ -1461,6 +1469,8 @@ class ThePlus_Switcher extends Widget_Base {
 		
 		/*--On Scroll View Animation ---*/
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
+
 	}
 	 protected function render() {
 

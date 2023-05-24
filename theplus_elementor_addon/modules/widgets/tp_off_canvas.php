@@ -24,6 +24,8 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Off_Canvas extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-off-canvas';
@@ -36,6 +38,12 @@ class ThePlus_Off_Canvas extends Widget_Base {
     public function get_icon() {
         return 'fa fa-bars theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "popup";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-creatives');
@@ -56,7 +64,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'content_open_style',
 			[
-				'label' => esc_html__( 'Popup Type', 'theplus' ),
+				'label' => wp_kses_post( "Popup Type <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "off-canvas-popup-menu-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'slide',
 				'options' => [
@@ -95,6 +103,32 @@ class ThePlus_Off_Canvas extends Widget_Base {
 				],
 			]
 		);
+		$this->add_responsive_control('content_open_height',
+			[
+				'label' => esc_html__( 'Open Height', 'theplus' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'vh' ],
+				'range' => [
+					'vh' => [
+						'min' => 10,
+						'max' => 100,
+						'step' => 1,
+					],
+				],
+				'default' => [
+					'unit' => 'vh',
+					'size' => 100,
+				],
+				'selectors' => [
+					'.plus-{{ID}}.plus-canvas-content-wrap.plus-slide.plus-visible' => 'height: {{SIZE}}{{UNIT}};',
+					'.plus-{{ID}}.plus-canvas-content-wrap.plus-slide.plus-visible .plus-content-editor' => 'height: 100%;',	
+					'.plus-{{ID}}.plus-canvas-content-wrap.plus-slide.plus-visible .plus-stylist-list-wrapper' => 'height: {{SIZE}}{{UNIT}};',	
+				],
+				'condition' => [
+					'content_open_style' => 'slide',					
+				],
+			]
+		);
 		$this->add_control(
 			'content_open_direction',
 			[
@@ -130,7 +164,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_responsive_control(
 			'content_open_width',
 			[
-				'label' => esc_html__( 'Open Width', 'theplus' ),
+				'label' => wp_kses_post( "Open Width <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "full-width-menu-popup-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [
@@ -252,7 +286,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'content_template',
 			[
-				'label'       => esc_html__( 'Select Content', 'theplus' ),
+				'label' => wp_kses_post( "Select Content <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "popup-with-elementor-templates/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'        => Controls_Manager::SELECT,
 				'default'     => '0',
 				'options'     => theplus_get_templates(),
@@ -295,7 +329,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'select_toggle_canvas',
 			[
-				'label' => esc_html__( 'Select Option', 'theplus' ),
+				'label' => wp_kses_post( "Select Option <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "open-popup-on-button-click-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'button',
 				'options' => [
@@ -596,7 +630,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'event_esc_close_content',
 			[
-				'label' => esc_html__( 'Esc Button Close Content', 'theplus' ),
+				'label' => wp_kses_post( "Esc Button Close Content <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "close-elementor-popup-with-esc-or-by-clicking-outside/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Yes', 'theplus' ),
 				'label_off' => esc_html__( 'No', 'theplus' ),
@@ -607,7 +641,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'event_body_click_close_content',
 			[
-				'label' => esc_html__( 'Outer Click Close Content', 'theplus' ),
+				'label' => wp_kses_post( "Outer Click Close Content <a class='tp-docs-link' href='" . esc_url($this->TpDoc)."close-elementor-popup-with-esc-or-by-clicking-outside/' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Yes', 'theplus' ),
 				'label_off' => esc_html__( 'No', 'theplus' ),
@@ -1544,7 +1578,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
             'scrollHeight',
             [
                 'type' => Controls_Manager::SLIDER,
-				'label' => esc_html__('Scroll Offset (PX)', 'theplus'),
+				'label' => wp_kses_post( "Scroll Offset (PX)L <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "popup-after-page-scroll-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'size_units' => [ 'px' ],
 				'range' => [
 					'px' => [
@@ -1584,7 +1618,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'inactivitySec',
 			[
-				'label' => esc_html__( 'Inactivity MilliSecond', 'theplus' ),
+				'label' => wp_kses_post( "Inactivity MilliSecond <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "popup-on-user-inactivity-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => \Elementor\Controls_Manager::NUMBER,
 				'min' => 0,
 				'max' => 10000,
@@ -1608,7 +1642,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'pageViewsCount',
 			[
-				'label' => esc_html__( 'Page View Count', 'theplus' ),
+				'label' => wp_kses_post( "Page View Count <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "popup-on-page-views-in-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => \Elementor\Controls_Manager::NUMBER,
 				'min' => 0,
 				'max' => 50,
@@ -1632,7 +1666,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'previousUrl',
 			[
-				'label' => esc_html__( 'Source URL', 'theplus' ),
+				'label' => wp_kses_post( "Source URL <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "show-elementor-popup-arriving-from-a-specific-url/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::URL,
 				'dynamic' => [
 					'active' => true,
@@ -1660,7 +1694,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'extraId',
 			[
-				'label' => esc_html__( 'Unique Class (Open)', 'theplus' ),
+				'label' => wp_kses_post( "Unique Class (Open) <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-popup-on-specific-date-and-time/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'placeholder' => esc_html__( 'Unique Class', 'theplus' ),
@@ -1692,7 +1726,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'dateStart',
 			[
-				'label'   => esc_html__( 'Start Date', 'theplus' ),
+				'label' => wp_kses_post( "Start Date <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-popup-on-specific-date-and-time/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::DATE_TIME,
 				'condition' => [
 					'showTime' => 'yes',
@@ -1702,7 +1736,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'dateEnd',
 			[
-				'label'   => esc_html__( 'End Date', 'theplus' ),
+				'label' => wp_kses_post( "End Date <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-popup-on-specific-date-and-time/' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::DATE_TIME,
 				'condition' => [
 					'showTime' => 'yes',
@@ -1720,7 +1754,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		$this->add_control(
 			'showXTimes',
 			[
-				'label' => esc_html__( 'Number of Times', 'theplus' ),
+				'label' => wp_kses_post( "Number of Times <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-popup-once-per-website-session/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => \Elementor\Controls_Manager::NUMBER,
 				'min' => 1,
 				'max' => 50,
@@ -2988,6 +3022,7 @@ class ThePlus_Off_Canvas extends Widget_Base {
 		/*Sticky Navigation Style*/
 		/*--On Scroll View Animation ---*/
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
 	
 	

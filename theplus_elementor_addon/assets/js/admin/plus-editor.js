@@ -317,7 +317,7 @@ function Generate_longlived_token(FillTextArea, FillPageId, GetAppid, GetAppSecr
     });        
 }
 
-jQuery(document).on( 'click' , ".tp-feed-delete-transient, .tp-SReview-delete-transient", function() {
+jQuery(document).on( 'click' , ".tp-feed-delete-transient, .tp-SReview-delete-transient, .tp-table-delete-transient", function() {
     let Self = this;
         ClassName = jQuery(this).attr('class'),
         BlockName = '';
@@ -326,6 +326,8 @@ jQuery(document).on( 'click' , ".tp-feed-delete-transient, .tp-SReview-delete-tr
         BlockName = 'SocialFeed';
     }else if(ClassName == 'tp-SReview-delete-transient'){
         BlockName = 'SocialReviews';
+    }else if(ClassName == 'tp-table-delete-transient'){
+        BlockName = 'Table';
     }  
 
     let BtnText = Self.textContent;

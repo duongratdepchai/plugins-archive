@@ -29,7 +29,6 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		private static $hasOutput = false;
 		public static $arrWidgetScripts = array();
 		
-		
 		public static function a____GENERAL____(){}
 		
 		/**
@@ -317,6 +316,26 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			return($response);
 		}
 		
+		/**
+		 * check if there is permissions from query
+		 * and it's logged in or local
+		 */
+		public static function hasPermissionsFromQuery($getvar){
+			
+			$isEnabled = UniteFunctionsUC::getGetVar($getvar,"",UniteFunctionsUC::SANITIZE_TEXT_FIELD);
+			$isEnabled = UniteFunctionsUC::strToBool($isEnabled);
+			
+			if($isEnabled == false)
+				return(false);
+				
+			if(GlobalsUC::$isLocal == true)
+				return(true);
+				
+			if(UniteFunctionsWPUC::isCurrentUserHasPermissions() == true)
+				return(true);
+				
+			return(false);
+		}
 		
 		public static function a_______DEBUG________(){}
 		
@@ -1422,7 +1441,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		
 			UniteProviderFunctionsUC::addScript($handle, $urlScript,$inFooter);
 			
-			if(UniteCreatorElementorIntegrate::$isEditMode == true)
+			if(GlobalsProviderUC::$isInsideEditor == true)
 				self::$arrWidgetScripts[$handle] = $urlScript;
 			
 		}
@@ -1436,6 +1455,12 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 			$urlFiltersJS = GlobalsUC::$url_assets_libraries."remote/ue-remote-controls.js";
 			HelperUC::addScriptAbsoluteUrl($urlFiltersJS, "ue_remote_controls");
+			
+			$isDebug = HelperUC::hasPermissionsFromQuery("ucremotedebug");
+			
+			if($isDebug == true){
+				HelperUC::putCustomScript("var ucRemoteDebugEnabled=true;",false,"remote_controls_debug");
+			}
 			
 		}
 		
@@ -1456,9 +1481,9 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		/**
 		 * print custom script
 		 */
-		public static function putCustomScript($script, $hardCoded = false){
+		public static function putCustomScript($script, $hardCoded = false, $putOnceHandle=null){
 			
-			UniteProviderFunctionsUC::printCustomScript($script, $hardCoded);
+			UniteProviderFunctionsUC::printCustomScript($script, $hardCoded,false,$putOnceHandle, true);
 			
 		}
 		

@@ -224,6 +224,12 @@ class EAELicense {
 			$expiration = $this->dev_mode ? 10 : 12 * HOUR_IN_SECONDS;
 		}
 
+		if( isset( $license_data->expires ) && $license_data->expires === 'lifetime' ) {
+			$expiration = 0;
+		} elseif( isset( $license_data->expires ) ) {
+			$expiration = strtotime( $license_data->expires );
+		}
+
 		set_transient( $this->product_slug . '-license_data', $license_data, $expiration );
 	}
 	/**
@@ -406,6 +412,13 @@ class EAELicense {
 				$message = sprintf(
 					__( 'Your license has been expired. Please %1$srenew your license%2$s key to enable updates for %3$s.', $this->text_domain ),
 					'<a href="https://wpdeveloper.com/account">', '</a>',
+					'<strong>' . $this->product_name . '</strong>'
+				);
+				break;
+			case false:
+				$message = sprintf(
+					__( 'Please %1$sactivate your license%2$s key to enable updates for %3$s.', $this->text_domain ),
+					'<a href="' . admin_url( 'admin.php?page=' . $this->page_slug ) . '">', '</a>',
 					'<strong>' . $this->product_name . '</strong>'
 				);
 				break;

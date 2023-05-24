@@ -38,19 +38,21 @@ class Skin_Twyla extends Elementor_Skin_Base {
 							<?php $this->parent->render_image(get_the_ID()); ?>
 						</div>
 
-						<?php
-						$this->parent->render_excerpt(); ?>
-						<div class="bdt-testimonial-meta <?php echo ($settings['meta_multi_line']) ? '' : 'bdt-meta-multi-line'; ?>">
+						<div class="bdt-twyla-content-wrap">
 							<?php
-							$this->parent->render_title(get_the_ID());
-							$this->parent->render_address(get_the_ID()); ?>
-						</div>
-						<?php
-						if (($settings['show_rating']) && ($settings['show_text'])) : ?>
-							<div class="bdt-testimonial-carousel-rating bdt-display-inline-block">
-								<?php $this->parent->render_rating(get_the_ID()); ?>
+							$this->parent->render_excerpt(); ?>
+							<div class="bdt-testimonial-meta <?php echo ($settings['meta_multi_line']) ? '' : 'bdt-meta-multi-line'; ?>">
+								<?php
+								$this->parent->render_title(get_the_ID());
+								$this->parent->render_address(get_the_ID()); ?>
 							</div>
-						<?php endif; ?>
+							<?php
+							if (($settings['show_rating']) && ($settings['show_text'])) : ?>
+								<div class="bdt-testimonial-carousel-rating bdt-display-inline-block">
+									<?php $this->parent->render_rating(get_the_ID()); ?>
+								</div>
+							<?php endif; ?>
+						</div>
 
 					</div>
 				</div>

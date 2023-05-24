@@ -1,4 +1,5 @@
 <?php
+
 namespace ElementPack\Modules\ImageExpand\Widgets;
 
 use ElementPack\Base\Module_Base;
@@ -12,7 +13,7 @@ use Elementor\Group_Control_Text_Stroke;
 use Elementor\Repeater;
 use ElementPack\Utils;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class Image_Expand extends Module_Base {
 
@@ -21,7 +22,7 @@ class Image_Expand extends Module_Base {
 	}
 
 	public function get_title() {
-		return BDTEP . esc_html__( 'Image Expand', 'bdthemes-element-pack' );
+		return BDTEP . esc_html__('Image Expand', 'bdthemes-element-pack');
 	}
 
 	public function get_icon() {
@@ -29,11 +30,11 @@ class Image_Expand extends Module_Base {
 	}
 
 	public function get_categories() {
-		return [ 'element-pack' ];
+		return ['element-pack'];
 	}
 
 	public function get_keywords() {
-		return [ 'fancy', 'effects', 'image', 'accordion', 'hover', 'slideshow', 'wide', 'box', 'animated boxs', 'expand' ];
+		return ['fancy', 'effects', 'image', 'accordion', 'hover', 'slideshow', 'wide', 'box', 'animated boxs', 'expand'];
 	}
 
 	public function is_reload_preview_required() {
@@ -41,19 +42,19 @@ class Image_Expand extends Module_Base {
 	}
 
 	public function get_style_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['ep-styles'];
-        } else {
-            return [ 'ep-image-expand' ];
-        }
-    }
+		if ($this->ep_is_edit_mode()) {
+			return ['ep-styles'];
+		} else {
+			return ['ep-image-expand'];
+		}
+	}
 
 	public function get_script_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['gsap', 'split-text-js', 'ep-scripts'];
-        } else {
-			return [ 'gsap', 'split-text-js', 'ep-image-expand' ];
-        }
+		if ($this->ep_is_edit_mode()) {
+			return ['gsap', 'split-text-js', 'ep-scripts'];
+		} else {
+			return ['gsap', 'split-text-js', 'ep-image-expand'];
+		}
 	}
 
 	public function get_custom_help_url() {
@@ -65,34 +66,34 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_fancy_layout',
 			[
-				'label' => __( 'Image Expand', 'bdthemes-element-pack' ),
+				'label' => __('Image Expand', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_responsive_control(
 			'skin_type',
 			[
-				'label'	   => __( 'Style', 'bdthemes-element-pack' ) . BDTEP_UC,
+				'label'	   => __('Style', 'bdthemes-element-pack') . BDTEP_UC,
 				'type' 	   => Controls_Manager::SELECT,
 				'options'  => [
-					'default' 	=> __( 'Horizontal', 'bdthemes-element-pack' ),
-					'vertical' 	=> __( 'Vertical', 'bdthemes-element-pack' ),
-					'sliding-box' 	=> __( 'Sliding Box', 'bdthemes-element-pack' ),
+					'default' 	=> __('Horizontal', 'bdthemes-element-pack'),
+					'vertical' 	=> __('Vertical', 'bdthemes-element-pack'),
+					'sliding-box' 	=> __('Sliding Box', 'bdthemes-element-pack'),
 				],
 				'default'  => 'default',
 				'tablet_default'  => 'default',
 				'mobile_default'  => 'default',
 				'prefix_class' => 'skin-%s-',
 				'selectors_dictionary' => [
-                    'default' => 'flex-direction: unset;',
-                    'vertical' => 'flex-direction: column;',
+					'default' => 'flex-direction: unset;',
+					'vertical' => 'flex-direction: column;',
 					'sliding-box' => 'flex-direction: unset;',
-                ],
+				],
 				'selectors' => [
-                    '{{WRAPPER}} .bdt-ep-image-expand' => '{{VALUE}};',
-                ],
-                'render_type'     => 'template',
-                'style_transfer'  => true,
+					'{{WRAPPER}} .bdt-ep-image-expand' => '{{VALUE}};',
+				],
+				'render_type'     => 'template',
+				'style_transfer'  => true,
 			]
 		);
 
@@ -105,55 +106,55 @@ class Image_Expand extends Module_Base {
 
 		$repeater = new Repeater();
 
-		$repeater->start_controls_tabs( 'items_tabs_controls' );
+		$repeater->start_controls_tabs('items_tabs_controls');
 
 		$repeater->start_controls_tab(
 			'tab_item_content',
 			[
-				'label' => __( 'Content', 'bdthemes-element-pack' ),
+				'label' => __('Content', 'bdthemes-element-pack'),
 			]
 		);
 
 		$repeater->add_control(
-			'image_expand_title', 
+			'image_expand_title',
 			[
-				'label'       => __( 'Title', 'bdthemes-element-pack' ),
+				'label'       => __('Title', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'dynamic'     => [ 'active' => true ],
-				'default'     => __( 'Tab Title' , 'bdthemes-element-pack' ),
+				'dynamic'     => ['active' => true],
+				'default'     => __('Tab Title', 'bdthemes-element-pack'),
 				'label_block' => true,
 			]
 		);
 
 		$repeater->add_control(
-			'image_expand_sub_title', 
+			'image_expand_sub_title',
 			[
-				'label'       => __( 'Sub Title', 'bdthemes-element-pack' ),
+				'label'       => __('Sub Title', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'dynamic'     => [ 'active' => true ],
+				'dynamic'     => ['active' => true],
 				'label_block' => true,
 			]
 		);
 
 		$repeater->add_control(
-			'image_expand_button', 
+			'image_expand_button',
 			[
-				'label'       => esc_html__( 'Button Text', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Button Text', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => esc_html__( 'Read More' , 'bdthemes-element-pack' ),
+				'default'     => esc_html__('Read More', 'bdthemes-element-pack'),
 				'label_block' => true,
-				'dynamic'     => [ 'active' => true ],
+				'dynamic'     => ['active' => true],
 			]
 		);
 
 		$repeater->add_control(
-			'button_link', 
+			'button_link',
 			[
-				'label'         => esc_html__( 'Button Link', 'bdthemes-element-pack' ),
+				'label'         => esc_html__('Button Link', 'bdthemes-element-pack'),
 				'type'          => Controls_Manager::URL,
 				'default'       => ['url' => '#'],
 				'show_external' => false,
-				'dynamic'       => [ 'active' => true ],
+				'dynamic'       => ['active' => true],
 				'condition'     => [
 					'image_expand_button!' => ''
 				]
@@ -161,13 +162,13 @@ class Image_Expand extends Module_Base {
 		);
 
 		$repeater->add_control(
-			'slide_image', 
+			'slide_image',
 			[
-				'label'   => esc_html__( 'Background Image', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Background Image', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::MEDIA,
-				'dynamic' => [ 'active' => true ],
+				'dynamic' => ['active' => true],
 				'default' => [
-					'url' => BDTEP_ASSETS_URL . 'images/gallery/item-'.rand(1,6).'.svg',
+					'url' => BDTEP_ASSETS_URL . 'images/gallery/item-' . rand(1, 6) . '.svg',
 				],
 			]
 		);
@@ -177,18 +178,18 @@ class Image_Expand extends Module_Base {
 		$repeater->start_controls_tab(
 			'tab_item_content_optional',
 			[
-				'label' => __( 'Optional', 'bdthemes-element-pack' ),
+				'label' => __('Optional', 'bdthemes-element-pack'),
 			]
 		);
 
 		$repeater->add_control(
-			'title_link', 
+			'title_link',
 			[
-				'label'         => esc_html__( 'Title Link', 'bdthemes-element-pack' ),
+				'label'         => esc_html__('Title Link', 'bdthemes-element-pack'),
 				'type'          => Controls_Manager::URL,
 				'default'       => ['url' => ''],
 				'show_external' => false,
-				'dynamic'       => [ 'active' => true ],
+				'dynamic'       => ['active' => true],
 				'condition'     => [
 					'image_expand_title!' => ''
 				]
@@ -196,47 +197,47 @@ class Image_Expand extends Module_Base {
 		);
 
 		$repeater->add_control(
-			'image_expand_text', 
+			'image_expand_text',
 			[
 				'type'       => Controls_Manager::WYSIWYG,
-				'dynamic'    => [ 'active' => true ],
-				'default'    => __( 'Box Content', 'bdthemes-element-pack' ),
+				'dynamic'    => ['active' => true],
+				'default'    => __('Box Content', 'bdthemes-element-pack'),
 			]
 		);
 
 		$repeater->end_controls_tab();
-		
+
 		$repeater->end_controls_tabs();
 
 		$this->add_control(
 			'image_expand_items',
 			[
-				'label'   => esc_html__( 'Items', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Items', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::REPEATER,
 				'fields' => $repeater->get_controls(),
 				'default' => [
 					[
-						'image_expand_sub_title'   => __( 'This is a label', 'bdthemes-element-pack' ),
-						'image_expand_title'   	  => __( 'Image Expand Item One', 'bdthemes-element-pack' ),
-						'image_expand_text' 	  => __( 'Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack' ),
+						'image_expand_sub_title'   => __('This is a label', 'bdthemes-element-pack'),
+						'image_expand_title'   	  => __('Image Expand Item One', 'bdthemes-element-pack'),
+						'image_expand_text' 	  => __('Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack'),
 						'slide_image' => ['url' => BDTEP_ASSETS_URL . 'images/gallery/item-1.svg']
 					],
 					[
-						'image_expand_sub_title'   => __( 'This is a label', 'bdthemes-element-pack' ),
-						'image_expand_title'   => __( 'Image Expand Item Two', 'bdthemes-element-pack' ),
-						'image_expand_text' => __( 'Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack' ),
+						'image_expand_sub_title'   => __('This is a label', 'bdthemes-element-pack'),
+						'image_expand_title'   => __('Image Expand Item Two', 'bdthemes-element-pack'),
+						'image_expand_text' => __('Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack'),
 						'slide_image' => ['url' => BDTEP_ASSETS_URL . 'images/gallery/item-2.svg']
 					],
 					[
-						'image_expand_sub_title'   => __( 'This is a label', 'bdthemes-element-pack' ),
-						'image_expand_title'   => __( 'Image Expand Item Three', 'bdthemes-element-pack' ),
-						'image_expand_text' => __( 'Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack' ),
+						'image_expand_sub_title'   => __('This is a label', 'bdthemes-element-pack'),
+						'image_expand_title'   => __('Image Expand Item Three', 'bdthemes-element-pack'),
+						'image_expand_text' => __('Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack'),
 						'slide_image' => ['url' => BDTEP_ASSETS_URL . 'images/gallery/item-3.svg']
 					],
 					[
-						'image_expand_sub_title'   => __( 'This is a label', 'bdthemes-element-pack' ),
-						'image_expand_title'   => __( 'Image Expand Item Four', 'bdthemes-element-pack' ),
-						'image_expand_text' => __( 'Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack' ),
+						'image_expand_sub_title'   => __('This is a label', 'bdthemes-element-pack'),
+						'image_expand_title'   => __('Image Expand Item Four', 'bdthemes-element-pack'),
+						'image_expand_text' => __('Lorem ipsum dolor sit amet consect voluptate repell endus kilo gram magni.', 'bdthemes-element-pack'),
 						'slide_image' => ['url' => BDTEP_ASSETS_URL . 'images/gallery/item-4.svg']
 					],
 				],
@@ -249,7 +250,7 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_layout_hover_box',
 			[
-				'label' => esc_html__( 'Additional Settings', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Additional Settings', 'bdthemes-element-pack'),
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -292,8 +293,8 @@ class Image_Expand extends Module_Base {
 			Group_Control_Image_Size::get_type(),
 			[
 				'name'         => 'thumbnail_size',
-				'label'        => esc_html__( 'Image Size', 'bdthemes-element-pack' ),
-				'exclude'      => [ 'custom' ],
+				'label'        => esc_html__('Image Size', 'bdthemes-element-pack'),
+				'exclude'      => ['custom'],
 				'default'      => 'full',
 				'prefix_class' => 'thumbnail-size-',
 				'separator' => 'before',
@@ -301,26 +302,26 @@ class Image_Expand extends Module_Base {
 		);
 
 		$this->add_control(
-            'divider_hr',
-            [
-                'type'    => Controls_Manager::DIVIDER,
-            ]
+			'divider_hr',
+			[
+				'type'    => Controls_Manager::DIVIDER,
+			]
 		);
 
 		$this->add_responsive_control(
 			'items_content_position',
 			[
-				'label'   => __( 'Content Position', 'bdthemes-element-pack' ),
+				'label'   => __('Content Position', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'toggle' => false,
 				'default' => 'row',
 				'options' => [
 					'row-reverse' => [
-						'title' => __( 'Left', 'bdthemes-element-pack' ),
+						'title' => __('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-left',
 					],
 					'row' => [
-						'title' => __( 'Right', 'bdthemes-element-pack' ),
+						'title' => __('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-right',
 					],
 				],
@@ -328,8 +329,8 @@ class Image_Expand extends Module_Base {
 					'{{WRAPPER}} .bdt-ep-image-expand-item' => 'flex-direction: {{VALUE}};',
 				],
 				'prefix_class' => 'ep-img-position--',
-                'render_type'     => 'template',
-                'style_transfer'  => true,
+				'render_type'     => 'template',
+				'style_transfer'  => true,
 				'condition' => [
 					'skin_type' => 'sliding-box'
 				]
@@ -339,23 +340,23 @@ class Image_Expand extends Module_Base {
 		$this->add_responsive_control(
 			'items_content_align',
 			[
-				'label'   => __( 'Text Alignment', 'bdthemes-element-pack' ),
+				'label'   => __('Text Alignment', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => __( 'Left', 'bdthemes-element-pack' ),
+						'title' => __('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'bdthemes-element-pack' ),
+						'title' => __('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'bdthemes-element-pack' ),
+						'title' => __('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-right',
 					],
 					'justify' => [
-						'title' => __( 'Justified', 'bdthemes-element-pack' ),
+						'title' => __('Justified', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-stretch',
 					],
 				],
@@ -368,19 +369,19 @@ class Image_Expand extends Module_Base {
 		$this->add_responsive_control(
 			'items_content_vertical_align',
 			[
-				'label'   => __( 'Vertical Alignment', 'bdthemes-element-pack' ) . BDTEP_NC,
+				'label'   => __('Vertical Alignment', 'bdthemes-element-pack') . BDTEP_NC,
 				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'flex-start' => [
-						'title' => __( 'Top', 'bdthemes-element-pack' ),
+						'title' => __('Top', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-top',
 					],
 					'center' => [
-						'title' => __( 'Center', 'bdthemes-element-pack' ),
+						'title' => __('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-middle',
 					],
 					'flex-end' => [
-						'title' => __( 'Bottom', 'bdthemes-element-pack' ),
+						'title' => __('Bottom', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-v-align-bottom',
 					],
 				],
@@ -393,7 +394,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'show_title',
 			[
-				'label'   => esc_html__( 'Show Title', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Show Title', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'separator' => 'before',
@@ -403,7 +404,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'title_tags',
 			[
-				'label'   => __( 'Title HTML Tag', 'bdthemes-element-pack' ),
+				'label'   => __('Title HTML Tag', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'h2',
 				'options' => element_pack_title_tags(),
@@ -416,7 +417,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'show_sub_title',
 			[
-				'label'   => esc_html__( 'Show Sub Title', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Show Sub Title', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'separator' => 'before',
@@ -426,7 +427,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'show_button',
 			[
-				'label'   => esc_html__( 'Show Button', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Show Button', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -435,7 +436,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'show_text',
 			[
-				'label'   => esc_html__( 'Show Text', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Show Text', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'separator' => 'before',
@@ -464,8 +465,8 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'animation_heading',
 			[
-				'label'   => esc_html__( 'A n i m a t i o n', 'bdthemes-element-pack' ),
-				'type'    => Controls_Manager::HEADING, 
+				'label'   => esc_html__('A n i m a t i o n', 'bdthemes-element-pack'),
+				'type'    => Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
 		);
@@ -473,7 +474,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'default_animation_type',
 			[
-				'label'   => esc_html__( 'Basic Animation', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Basic Animation', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'fade',
 				'options' => element_pack_transition_options(),
@@ -486,25 +487,25 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'animation_status',
 			[
-				'label'   => esc_html__( 'Advanced Animation', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Advanced Animation', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'no',
 			]
 		);
 
-        $this->add_control(
+		$this->add_control(
 			'animation_of',
 			[
-				'label'	   => __( 'Animation Of', 'bdthemes-element-pack' ),
+				'label'	   => __('Animation Of', 'bdthemes-element-pack'),
 				'type' 	   => Controls_Manager::SELECT2,
 				'multiple' => true,
 				'options'  => [
-					'.bdt-ep-image-expand-sub-title' 	=> __( 'Sub Title', 'bdthemes-element-pack' ),
-					'.bdt-ep-image-expand-title'  		=> __( 'Title', 'bdthemes-element-pack' ),
-					'.bdt-ep-image-expand-text' 		=> __( 'Text', 'bdthemes-element-pack' ),
+					'.bdt-ep-image-expand-sub-title' 	=> __('Sub Title', 'bdthemes-element-pack'),
+					'.bdt-ep-image-expand-title'  		=> __('Title', 'bdthemes-element-pack'),
+					'.bdt-ep-image-expand-text' 		=> __('Text', 'bdthemes-element-pack'),
 				],
-				'default'  => [ '.bdt-ep-image-expand-sub-title', '.bdt-ep-image-expand-title', '.bdt-ep-image-expand-text' ],
-				'condition'=> [
+				'default'  => ['.bdt-ep-image-expand-sub-title', '.bdt-ep-image-expand-title', '.bdt-ep-image-expand-text'],
+				'condition' => [
 					'animation_status' => 'yes'
 				]
 			]
@@ -526,7 +527,7 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_expand_lightbox',
 			[
-				'label' => __( 'Lightbox', 'bdthemes-element-pack' ),
+				'label' => __('Lightbox', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_CONTENT,
 				'condition' => [
 					'show_lightbox' => 'yes',
@@ -603,7 +604,7 @@ class Image_Expand extends Module_Base {
 			[
 				'label'   => __('Lightbox Autoplay', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
-				
+
 			]
 		);
 
@@ -622,14 +623,14 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'lightbox_placement',
 			[
-				'label'     => esc_html__( 'Position', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Position', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'top-right',
 				'options'   => [
-					'top-left'    => esc_html__( 'Top Left', 'bdthemes-element-pack' ),
-					'top-right'   => esc_html__( 'Top Right', 'bdthemes-element-pack' ),
-					'bottom-left' => esc_html__( 'Bottom Left', 'bdthemes-element-pack' ),
-					'bottom-right' => esc_html__( 'Bottom Right', 'bdthemes-element-pack' ),
+					'top-left'    => esc_html__('Top Left', 'bdthemes-element-pack'),
+					'top-right'   => esc_html__('Top Right', 'bdthemes-element-pack'),
+					'bottom-left' => esc_html__('Bottom Left', 'bdthemes-element-pack'),
+					'bottom-right' => esc_html__('Bottom Right', 'bdthemes-element-pack'),
 				],
 				'selectors_dictionary' => [
 					'top-left' => 'left: 0;',
@@ -650,20 +651,20 @@ class Image_Expand extends Module_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-            'anim_option',
-            [
-                'label' => esc_html__('Animation', 'bdthemes-element-pack'),
-                'condition' => [
+			'anim_option',
+			[
+				'label' => esc_html__('Animation', 'bdthemes-element-pack'),
+				'condition' => [
 					'animation_status' => 'yes',
 				]
-            ]
-        );
+			]
+		);
 
 
 		$this->add_control(
 			'animation_on',
 			[
-				'label'   => __( 'Animation On', 'bdthemes-element-pack' ),
+				'label'   => __('Animation On', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'words',
 				'options' => [
@@ -677,10 +678,10 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'animation_options',
 			[
-				'label' => __( 'Animation Options', 'bdthemes-element-pack' ),
+				'label' => __('Animation Options', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::POPOVER_TOGGLE,
-				'label_off' => __( 'Default', 'bdthemes-element-pack' ),
-				'label_on' => __( 'Custom', 'bdthemes-element-pack' ),
+				'label_off' => __('Default', 'bdthemes-element-pack'),
+				'label_on' => __('Custom', 'bdthemes-element-pack'),
 				'return_value' => 'yes',
 				'default' => 'yes',
 			]
@@ -711,12 +712,12 @@ class Image_Expand extends Module_Base {
 				'range' => [
 					'px' => [
 						'min' => 0.1,
-						'step'=> 0.1,
+						'step' => 0.1,
 						'max' => 1,
 					],
 				],
 			]
-		);	
+		);
 
 		$this->add_control(
 			'anim_scale',
@@ -778,7 +779,7 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_image_expand_style',
 			[
-				'label' => __( 'Image Expand Item', 'bdthemes-element-pack' ),
+				'label' => __('Image Expand Item', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -786,7 +787,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'image_expand_overlay_color',
 			[
-				'label'     => __( 'Overlay Color', 'bdthemes-element-pack' ),
+				'label'     => __('Overlay Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand-item:before'  => 'background: {{VALUE}};',
@@ -817,22 +818,22 @@ class Image_Expand extends Module_Base {
 		);
 
 		$this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'     => 'content_background',
-                'selector' => '{{WRAPPER}} .bdt-ep-image-expand-item',
+			Group_Control_Background::get_type(),
+			[
+				'name'     => 'content_background',
+				'selector' => '{{WRAPPER}} .bdt-ep-image-expand-item',
 				'condition' => [
 					'skin_type' => 'sliding-box'
 				]
-            ]
-        );
+			]
+		);
 
 		$this->add_responsive_control(
 			'tabs_content_padding',
 			[
-				'label'      => __( 'Content Padding', 'bdthemes-element-pack' ),
+				'label'      => __('Content Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-image-expand-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -844,10 +845,10 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_style_title',
 			[
-				'label'     => esc_html__( 'Title', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Title', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
-					'show_title' => [ 'yes' ],
+					'show_title' => ['yes'],
 				],
 			]
 		);
@@ -855,7 +856,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'title_color',
 			[
-				'label'     => esc_html__( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand .bdt-ep-image-expand-title' => 'color: {{VALUE}}; -webkit-text-stroke-color: {{VALUE}};',
@@ -866,19 +867,19 @@ class Image_Expand extends Module_Base {
 		$this->add_responsive_control(
 			'title_spacing',
 			[
-				'label'     => esc_html__( 'Spacing', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand-title' => 'padding-bottom: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
-		
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'title_typography',
-				'label'    => esc_html__( 'Typography', 'bdthemes-element-pack' ),
+				'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
 				'selector' => '{{WRAPPER}} .bdt-ep-image-expand-title',
 			]
 		);
@@ -887,7 +888,7 @@ class Image_Expand extends Module_Base {
 			Group_Control_Text_Stroke::get_type(),
 			[
 				'name' => 'title_text_stroke',
-                'label' => __('Text Stroke', 'bdthemes-element-pack') . BDTEP_NC,
+				'label' => __('Text Stroke', 'bdthemes-element-pack') . BDTEP_NC,
 				'selector' => '{{WRAPPER}} .bdt-ep-image-expand-title',
 			]
 		);
@@ -897,10 +898,10 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_style_sub_title',
 			[
-				'label'     => esc_html__( 'Sub Title', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Sub Title', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
-					'show_sub_title' => [ 'yes' ],
+					'show_sub_title' => ['yes'],
 				],
 			]
 		);
@@ -908,7 +909,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'sub_title_color',
 			[
-				'label'     => esc_html__( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand .bdt-ep-image-expand-sub-title' => 'color: {{VALUE}};',
@@ -919,19 +920,19 @@ class Image_Expand extends Module_Base {
 		$this->add_responsive_control(
 			'sub_title_spacing',
 			[
-				'label'     => esc_html__( 'Spacing', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand-sub-title' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
-		
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'sub_title_typography',
-				'label'    => esc_html__( 'Typography', 'bdthemes-element-pack' ),
+				'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
 				'selector' => '{{WRAPPER}} .bdt-ep-image-expand-sub-title',
 			]
 		);
@@ -941,10 +942,10 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_style_description',
 			[
-				'label'     => esc_html__( 'Text', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Text', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
-					'show_text' => [ 'yes' ],
+					'show_text' => ['yes'],
 				],
 			]
 		);
@@ -952,7 +953,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'description_color',
 			[
-				'label'     => esc_html__( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand .bdt-ep-image-expand-text, {{WRAPPER}} .bdt-ep-image-expand .bdt-ep-image-expand-text *' => 'color: {{VALUE}};',
@@ -963,19 +964,19 @@ class Image_Expand extends Module_Base {
 		$this->add_responsive_control(
 			'description_spacing',
 			[
-				'label'     => esc_html__( 'Spacing', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand-text' => 'padding-bottom: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
-		
+
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'description_typography',
-				'label'    => esc_html__( 'Typography', 'bdthemes-element-pack' ),
+				'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
 				'selector' => '{{WRAPPER}} .bdt-ep-image-expand-text',
 			]
 		);
@@ -985,7 +986,7 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_section(
 			'section_style_button',
 			[
-				'label'     => esc_html__( 'Button', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Button', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_button' => 'yes',
@@ -993,19 +994,19 @@ class Image_Expand extends Module_Base {
 			]
 		);
 
-		$this->start_controls_tabs( 'tabs_button_style' );
+		$this->start_controls_tabs('tabs_button_style');
 
 		$this->start_controls_tab(
 			'tab_button_normal',
 			[
-				'label' => esc_html__( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'button_text_color',
 			[
-				'label'     => esc_html__( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand .bdt-ep-image-expand-button a' => 'color: {{VALUE}};',
@@ -1033,7 +1034,7 @@ class Image_Expand extends Module_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'        => 'button_border',
-				'label'       => esc_html__( 'Border', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Border', 'bdthemes-element-pack'),
 				'selector'    => '{{WRAPPER}} .bdt-ep-image-expand-button a',
 				'separator'   => 'before',
 			]
@@ -1042,9 +1043,9 @@ class Image_Expand extends Module_Base {
 		$this->add_responsive_control(
 			'button_border_radius',
 			[
-				'label'      => esc_html__( 'Border Radius', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-image-expand-button a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1057,7 +1058,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'border_radius_advanced_show',
 			[
-				'label' => __( 'Advanced Radius', 'bdthemes-element-pack' ),
+				'label' => __('Advanced Radius', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 			]
 		);
@@ -1068,7 +1069,7 @@ class Image_Expand extends Module_Base {
 				'label'       => esc_html__('Radius', 'bdthemes-element-pack'),
 				'description' => sprintf(__('For example: <b>%1s</b> or Go <a href="%2s" target="_blank">this link</a> and copy and paste the radius value.', 'bdthemes-element-pack'), '30% 70% 82% 18% / 46% 62% 38% 54%', 'https://9elements.github.io/fancy-border-radius/'),
 				'type'        => Controls_Manager::TEXT,
-				'size_units'  => [ 'px', '%' ],
+				'size_units'  => ['px', '%'],
 				'separator'   => 'after',
 				'default'     => '30% 70% 82% 18% / 46% 62% 38% 54%',
 				'selectors'   => [
@@ -1083,9 +1084,9 @@ class Image_Expand extends Module_Base {
 		$this->add_responsive_control(
 			'button_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-ep-image-expand-button a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1097,7 +1098,7 @@ class Image_Expand extends Module_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'      => 'button_typography',
-				'label'     => esc_html__( 'Typography', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Typography', 'bdthemes-element-pack'),
 				'selector'  => '{{WRAPPER}} .bdt-ep-image-expand-button a',
 			]
 		);
@@ -1107,14 +1108,14 @@ class Image_Expand extends Module_Base {
 		$this->start_controls_tab(
 			'tab_button_hover',
 			[
-				'label' => esc_html__( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'button_hover_color',
 			[
-				'label'     => esc_html__( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-image-expand .bdt-ep-image-expand-button a:hover'  => 'color: {{VALUE}};',
@@ -1133,7 +1134,7 @@ class Image_Expand extends Module_Base {
 		$this->add_control(
 			'button_hover_border_color',
 			[
-				'label'     => esc_html__( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => [
 					'button_border_border!' => '',
@@ -1182,12 +1183,12 @@ class Image_Expand extends Module_Base {
 		);
 
 		$this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'     => 'lightbox_background',
-                'selector' => '{{WRAPPER}} .bdt-ep-image-expand-lightbox',
-            ]
-        );
+			Group_Control_Background::get_type(),
+			[
+				'name'     => 'lightbox_background',
+				'selector' => '{{WRAPPER}} .bdt-ep-image-expand-lightbox',
+			]
+		);
 
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
@@ -1274,12 +1275,12 @@ class Image_Expand extends Module_Base {
 		);
 
 		$this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'     => 'lightbox_background_hover_color',
-                'selector' => '{{WRAPPER}} .bdt-ep-image-expand-lightbox:hover',
-            ]
-        );
+			Group_Control_Background::get_type(),
+			[
+				'name'     => 'lightbox_background_hover_color',
+				'selector' => '{{WRAPPER}} .bdt-ep-image-expand-lightbox:hover',
+			]
+		);
 
 		$this->add_control(
 			'lightbox_hover_border_color',
@@ -1301,13 +1302,12 @@ class Image_Expand extends Module_Base {
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
-
 	}
 
 	public function render_lightbox($item) {
 		$settings = $this->get_settings_for_display();
 
-		if ( ! $settings['show_lightbox'] ) {
+		if (!$settings['show_lightbox']) {
 			return;
 		}
 
@@ -1328,7 +1328,7 @@ class Image_Expand extends Module_Base {
 
 		$icon = $settings['icon'] ?: 'plus';
 
-		?>
+?>
 		<a <?php echo $this->get_render_attribute_string('lightbox'); ?>>
 			<?php if ('icon' == $settings['link_type']) : ?>
 				<i class="ep-icon-<?php echo esc_attr($icon); ?>" aria-hidden="true"></i>
@@ -1336,11 +1336,11 @@ class Image_Expand extends Module_Base {
 				<span class="bdt-text"><?php esc_html_e('ZOOM', 'bdthemes-element-pack'); ?></span>
 			<?php endif; ?>
 		</a>
-		<?php
+	<?php
 	}
 
 	public function render_expand_content($item) {
-        $settings = $this->get_settings_for_display();
+		$settings = $this->get_settings_for_display();
 
 		$text_hide_on_setup = '';
 		if (!empty($settings['text_hide_on'])) {
@@ -1358,61 +1358,61 @@ class Image_Expand extends Module_Base {
 			}
 		}
 
-		$this->add_render_attribute( 'bdt-ep-image-expand-title', 'class', 'bdt-ep-image-expand-title', true );
+		$this->add_render_attribute('bdt-ep-image-expand-title', 'class', 'bdt-ep-image-expand-title', true);
 
-		?>
+	?>
 		<div class="bdt-ep-image-expand-content">
-			<?php if ( $item['image_expand_sub_title'] && ( 'yes' == $settings['show_sub_title'] ) ) : ?>
+			<?php if ($item['image_expand_sub_title'] && ('yes' == $settings['show_sub_title'])) : ?>
 				<div class="bdt-ep-image-expand-sub-title">
-					<?php echo wp_kses( $item['image_expand_sub_title'], element_pack_allow_tags('title') ); ?>
+					<?php echo wp_kses($item['image_expand_sub_title'], element_pack_allow_tags('title')); ?>
 				</div>
 			<?php endif; ?>
 
-			<?php if ( $item['image_expand_title'] && ( 'yes' == $settings['show_title'] ) ) : ?>
+			<?php if ($item['image_expand_title'] && ('yes' == $settings['show_title'])) : ?>
 				<<?php echo Utils::get_valid_html_tag($settings['title_tags']); ?> <?php echo $this->get_render_attribute_string('bdt-ep-image-expand-title'); ?>>
-					<?php if ( '' !== $item['title_link']['url'] ) : ?>
-						<a href="<?php echo esc_url( $item['title_link']['url'] ); ?>">
-					<?php endif; ?>
-						<?php echo wp_kses( $item['image_expand_title'], element_pack_allow_tags('title') ); ?>
-					<?php if ( '' !== $item['title_link']['url'] ) : ?>
+					<?php if ('' !== $item['title_link']['url']) : ?>
+						<a href="<?php echo esc_url($item['title_link']['url']); ?>">
+						<?php endif; ?>
+						<?php echo wp_kses($item['image_expand_title'], element_pack_allow_tags('title')); ?>
+						<?php if ('' !== $item['title_link']['url']) : ?>
 						</a>
 					<?php endif; ?>
 				</<?php echo Utils::get_valid_html_tag($settings['title_tags']); ?>>
 			<?php endif; ?>
 
-			<?php if ( $item['image_expand_text'] && ( 'yes' == $settings['show_text'] ) ) : ?>
-				<div class="bdt-ep-image-expand-text <?php echo $text_hide_on_setup; ?>">
-					<?php echo $this->parse_text_editor( $item['image_expand_text'] ); ?>
+			<?php if ($item['image_expand_text'] && ('yes' == $settings['show_text'])) : ?>
+				<div class="bdt-ep-image-expand-text <?php echo esc_attr($text_hide_on_setup); ?>">
+					<?php echo $this->parse_text_editor($item['image_expand_text']); ?>
 				</div>
 			<?php endif; ?>
 
-			<?php if ($item['image_expand_button'] && ( 'yes' == $settings['show_button'] )) : ?>
+			<?php if ($item['image_expand_button'] && ('yes' == $settings['show_button'])) : ?>
 				<div class="bdt-ep-image-expand-button">
-					<?php if ( '' !== $item['button_link']['url'] ) : ?>
-						<a href="<?php 
-						if($item['button_link']['url'] == '#'){
-							echo 'javascript:void(0);'; 
-						}else{
-							echo esc_url( $item['button_link']['url'] ); 
-						}
-						?>">
-					<?php endif; ?>
+					<?php if ('' !== $item['button_link']['url']) : ?>
+						<a href="<?php
+									if ($item['button_link']['url'] == '#') {
+										echo 'javascript:void(0);';
+									} else {
+										echo esc_url($item['button_link']['url']);
+									}
+									?>">
+						<?php endif; ?>
 						<?php echo wp_kses_post($item['image_expand_button']); ?>
-					<?php if ( '' !== $item['button_link']['url'] ) : ?>
+						<?php if ('' !== $item['button_link']['url']) : ?>
 						</a>
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 		</div>
-		<?php
+	<?php
 	}
 
 	public function render_image($item) {
-        $settings = $this->get_settings_for_display();
+		$settings = $this->get_settings_for_display();
 
-        ?>
-        <div class="bdt-ep-image-expand-img">
-			<?php 
+	?>
+		<div class="bdt-ep-image-expand-img">
+			<?php
 			$thumb_url = Group_Control_Image_Size::get_attachment_image_src($item['slide_image']['id'], 'thumbnail_size', $settings);
 			if (!$thumb_url) {
 				printf('<img src="%1$s" alt="%2$s">', $item['slide_image']['url'], esc_html($item['image_expand_title']));
@@ -1431,20 +1431,20 @@ class Image_Expand extends Module_Base {
 			<?php $this->render_lightbox($item); ?>
 
 		</div>
-        <?php
-    }
+	<?php
+	}
 
 	public function render() {
 		$settings = $this->get_settings_for_display();
 		$id       = $this->get_id();
- 
-	    $animation_of = (isset($settings['animation_of'])) ? implode(", ",$settings['animation_of']) : '.bdt-ep-image-expand-sub-title';
 
-	    $animation_of = (strlen($animation_of))>0 ? $animation_of : '.bdt-ep-image-expand-sub-title';
+		$animation_of = (isset($settings['animation_of'])) ? implode(", ", $settings['animation_of']) : '.bdt-ep-image-expand-sub-title';
 
-		$animation_status = ($settings['animation_status'] == 'yes'?'yes':'no');
+		$animation_of = (strlen($animation_of)) > 0 ? $animation_of : '.bdt-ep-image-expand-sub-title';
 
-		if( $settings['animation_status'] == 'yes' ){
+		$animation_status = ($settings['animation_status'] == 'yes' ? 'yes' : 'no');
+
+		if ($settings['animation_status'] == 'yes') {
 			$this->add_render_attribute(
 				[
 					'image-expand' => [
@@ -1462,13 +1462,13 @@ class Image_Expand extends Module_Base {
 								'anim_rotation_y'    	=> ($settings['anim_rotationY']['size']) ? $settings['anim_rotationY']['size'] : 80,
 								'anim_rotation_x'    	=> ($settings['anim_rotationX']['size']) ? $settings['anim_rotationX']['size'] : 180,
 								'anim_transform_origin' => ($settings['anim_transform_origin']) ? $settings['anim_transform_origin'] : '0% 50% -50',
-					        ])
+							])
 						]
 					]
 				]
 			);
-		}else{
-				$this->add_render_attribute(
+		} else {
+			$this->add_render_attribute(
 				[
 					'image-expand' => [
 						'id' => 'bdt-ep-image-expand-' . $this->get_id(),
@@ -1477,7 +1477,7 @@ class Image_Expand extends Module_Base {
 							wp_json_encode(array_filter([
 								'wide_id' => 'bdt-ep-image-expand-' . $this->get_id(),
 								'animation_status'		=> $animation_status,
-								'default_animation_type'=> (strlen($settings['default_animation_type'])>0 ? $settings['default_animation_type'] : 'fade')
+								'default_animation_type' => (strlen($settings['default_animation_type']) > 0 ? $settings['default_animation_type'] : 'fade')
 							]))
 						]
 					]
@@ -1496,30 +1496,29 @@ class Image_Expand extends Module_Base {
 			}
 		}
 
-		?>
+	?>
 
-		<div <?php echo ( $this->get_render_attribute_string( 'image-expand' ) ); ?>>
-			<?php foreach ( $settings['image_expand_items'] as $index => $item ) : 
+		<div <?php echo ($this->get_render_attribute_string('image-expand')); ?>>
+			<?php foreach ($settings['image_expand_items'] as $index => $item) :
 
-                $slide_image = Group_Control_Image_Size::get_attachment_image_src( $item['slide_image']['id'], 'thumbnail_size', $settings);
-                if ( ! $slide_image ) {
-                    $slide_image = $item['slide_image']['url'];
-                }
+				$slide_image = Group_Control_Image_Size::get_attachment_image_src($item['slide_image']['id'], 'thumbnail_size', $settings);
+				if (!$slide_image) {
+					$slide_image = $item['slide_image']['url'];
+				}
 
-				$this->add_render_attribute( 'image-expand-item', 'class', 'bdt-ep-image-expand-item', true );
-				
-				$this->add_render_attribute( 'image-expand-item', 'id', $this->get_id().'-'.$item['_id'], true );
+				$this->add_render_attribute('image-expand-item', 'class', 'bdt-ep-image-expand-item', true);
 
-				?> 
+				$this->add_render_attribute('image-expand-item', 'id', $this->get_id() . '-' . $item['_id'], true);
 
-				<?php if( $settings['skin_type'] !== 'sliding-box' ) : ?>
-					<div <?php echo $this->get_render_attribute_string( 'image-expand-item' ); ?> 
-					style="background-image: url('<?php echo esc_url( $slide_image); ?>');">
+			?>
+
+				<?php if ($settings['skin_type'] !== 'sliding-box') : ?>
+					<div <?php echo $this->get_render_attribute_string('image-expand-item'); ?> style="background-image: url('<?php echo esc_url($slide_image); ?>');">
 						<?php $this->render_lightbox($item); ?>
 						<?php $this->render_expand_content($item); ?>
 					</div>
-				<?php else: ?>
-					<div <?php echo ( $this->get_render_attribute_string( 'image-expand-item' ) ); ?>>
+				<?php else : ?>
+					<div <?php echo ($this->get_render_attribute_string('image-expand-item')); ?>>
 						<?php $this->render_image($item); ?>
 						<?php $this->render_expand_content($item); ?>
 					</div>
@@ -1527,6 +1526,6 @@ class Image_Expand extends Module_Base {
 
 			<?php endforeach; ?>
 		</div>
-		<?php 
+<?php
 	}
 }

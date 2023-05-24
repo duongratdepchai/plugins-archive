@@ -10,7 +10,7 @@ use Elementor\Group_Control_Text_Shadow;
 use Elementor\Group_Control_Typography;
 use Elementor\Repeater;
 
-if ( !defined('ABSPATH') ) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -39,7 +39,7 @@ class Advanced_Progress_Bar extends Module_Base {
     }
 
     public function get_style_depends() {
-        if ( $this->ep_is_edit_mode() ) {
+        if ($this->ep_is_edit_mode()) {
             return ['ep-styles'];
         } else {
             return ['ep-advanced-progress-bar'];
@@ -47,7 +47,7 @@ class Advanced_Progress_Bar extends Module_Base {
     }
 
     public function get_script_depends() {
-        if ( $this->ep_is_edit_mode() ) {
+        if ($this->ep_is_edit_mode()) {
             return ['ep-scripts'];
         } else {
             return ['ep-advanced-progress-bar'];
@@ -62,7 +62,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->start_controls_section(
             'section_progress_bars',
             [
-                'label' => __('Progress Bars', 'bdthemes-element-pack'),
+                'label' => esc_html__('Progress Bars', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -72,17 +72,17 @@ class Advanced_Progress_Bar extends Module_Base {
         $repeater->add_control(
             'name',
             [
-                'label'       => __('Name', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Name', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::TEXT,
-                'default'     => __('Design', 'bdthemes-element-pack'),
-                'placeholder' => __('Type a skill name', 'bdthemes-element-pack'),
+                'default'     => esc_html__('Design', 'bdthemes-element-pack'),
+                'placeholder' => esc_html__('Type a skill name', 'bdthemes-element-pack'),
             ]
         );
 
         $repeater->add_control(
             'max_level',
             [
-                'label'       => __('Max Value', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Max Value', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::SLIDER,
                 'default'     => [
                     'unit' => '%',
@@ -106,7 +106,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $repeater->add_control(
             'level',
             [
-                'label'      => __('Level (Out Of Max Value)', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Level (Out Of Max Value)', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'default'    => [
                     'unit' => '%',
@@ -125,7 +125,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $repeater->add_control(
             'color',
             [
-                'label'     => __('Text Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Text Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} {{CURRENT_ITEM}} .bdt-ep-advanced-progress-bar-content' => 'color: {{VALUE}}',
@@ -136,7 +136,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $repeater->add_control(
             'base_color',
             [
-                'label'          => __('Base Color', 'bdthemes-element-pack'),
+                'label'          => esc_html__('Base Color', 'bdthemes-element-pack'),
                 'type'           => Controls_Manager::COLOR,
                 'selectors'      => [
                     '{{WRAPPER}} {{CURRENT_ITEM}} .bdt-ep-advanced-progress-bar-level' => 'background-color: {{VALUE}};',
@@ -148,7 +148,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $repeater->add_control(
             'fill_color',
             [
-                'label'          => __('Fill Color', 'bdthemes-element-pack'),
+                'label'          => esc_html__('Fill Color', 'bdthemes-element-pack'),
                 'type'           => Controls_Manager::COLOR,
                 'selectors'      => [
                     '{{WRAPPER}} {{CURRENT_ITEM}} .bdt-ep-advanced-progress-bar-fill' => 'background-color: {{VALUE}};',
@@ -192,7 +192,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'animation_speed',
             [
-                'label'     => __('Animation Speed (s)', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Animation Speed (s)', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SLIDER,
                 'range'     => [
                     'px' => [
@@ -210,14 +210,14 @@ class Advanced_Progress_Bar extends Module_Base {
             'skills_style',
             [
                 'type'           => Controls_Manager::SELECT,
-                'label'          => __('Progress Style', 'bdthemes-element-pack'),
+                'label'          => esc_html__('Progress Style', 'bdthemes-element-pack'),
                 'separator'      => 'before',
                 'default'        => 'default',
                 'options'        => [
-                    'default'                          => __('Default', 'bdthemes-element-pack'),
-                    'bdt-progress-with-perc'           => __('Percentage With Progress', 'bdthemes-element-pack'),
-                    'bdt-progress-inner-perc'          => __('Inner Content', 'bdthemes-element-pack'),
-                    'bdt-progress-inner-perc-and-name' => __('Inner Content Between', 'bdthemes-element-pack'),
+                    'default'                          => esc_html__('Default', 'bdthemes-element-pack'),
+                    'bdt-progress-with-perc'           => esc_html__('Percentage With Progress', 'bdthemes-element-pack'),
+                    'bdt-progress-inner-perc'          => esc_html__('Inner Content', 'bdthemes-element-pack'),
+                    'bdt-progress-inner-perc-and-name' => esc_html__('Inner Content Between', 'bdthemes-element-pack'),
 
                 ],
                 'style_transfer' => true,
@@ -228,12 +228,12 @@ class Advanced_Progress_Bar extends Module_Base {
             'text_position',
             [
                 'type'           => Controls_Manager::SELECT,
-                'label'          => __('Text Position', 'bdthemes-element-pack'),
+                'label'          => esc_html__('Text Position', 'bdthemes-element-pack'),
                 'separator'      => 'before',
                 'default'        => 'outside-top',
                 'options'        => [
-                    'outside-top'    => __('Text Outside Top', 'bdthemes-element-pack'),
-                    'outside-bottom' => __('Text Outside Bottom', 'bdthemes-element-pack'),
+                    'outside-top'    => esc_html__('Text Outside Top', 'bdthemes-element-pack'),
+                    'outside-bottom' => esc_html__('Text Outside Bottom', 'bdthemes-element-pack'),
                 ],
                 'style_transfer' => true,
                 'condition'      => [
@@ -246,14 +246,14 @@ class Advanced_Progress_Bar extends Module_Base {
             'skills_extra_style',
             [
                 'type'           => Controls_Manager::SELECT,
-                'label'          => __('Additional Style', 'bdthemes-element-pack'),
+                'label'          => esc_html__('Additional Style', 'bdthemes-element-pack'),
                 'separator'      => 'before',
                 'default'        => 'null',
                 'options'        => [
-                    'null'                                            => __('Default', 'bdthemes-element-pack'),
-                    'bdt-progress-fill-striped'                       => __('Striped', 'bdthemes-element-pack'),
-                    'bdt-progress-fill-striped bdt-progress-animated' => __('Striped With Animation', 'bdthemes-element-pack'),
-                    'bdt-progress-rainbow-animate'                    => __('Rainbow Animation', 'bdthemes-element-pack'),
+                    'null'                                            => esc_html__('Default', 'bdthemes-element-pack'),
+                    'bdt-progress-fill-striped'                       => esc_html__('Striped', 'bdthemes-element-pack'),
+                    'bdt-progress-fill-striped bdt-progress-animated' => esc_html__('Striped With Animation', 'bdthemes-element-pack'),
+                    'bdt-progress-rainbow-animate'                    => esc_html__('Rainbow Animation', 'bdthemes-element-pack'),
 
                 ],
                 'style_transfer' => true,
@@ -263,7 +263,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'rainbow_animation_speed',
             [
-                'label'     => __('Rainbow Animation Speed (s)', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Rainbow Animation Speed (s)', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SLIDER,
                 'range'     => [
                     'px' => [
@@ -306,7 +306,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->start_controls_section(
             'section_style_progress_bars',
             [
-                'label' => __('Progress Bars', 'bdthemes-element-pack'),
+                'label' => esc_html__('Progress Bars', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -314,7 +314,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'height',
             [
-                'label'      => __('Height', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Height', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['px'],
                 'range'      => [
@@ -332,7 +332,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'spacing',
             [
-                'label'      => __('Spacing Between', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Spacing Between', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['px'],
                 'range'      => [
@@ -351,7 +351,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'border_radius_level',
             [
-                'label'      => __('Border Radius Level', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Border Radius Level', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors'  => [
@@ -363,7 +363,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'border_radius',
             [
-                'label'      => __('Border Radius Fill', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Border Radius Fill', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors'  => [
@@ -388,7 +388,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->start_controls_section(
             'section_content_style',
             [
-                'label' => __('Content', 'bdthemes-element-pack'),
+                'label' => esc_html__('Content', 'bdthemes-element-pack'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -396,7 +396,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'text_color',
             [
-                'label'     => __('Text Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Text Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-advanced-progress-bar-content' => 'color: {{VALUE}};',
@@ -407,7 +407,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'progress_base_color',
             [
-                'label'     => __('Base Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Base Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-advanced-progress-bar-level' => 'background: {{VALUE}};',
@@ -418,7 +418,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'show_progress_fill',
             [
-                'label'   => __('Fill Color', 'bdthemes-element-pack'),
+                'label'   => esc_html__('Fill Color', 'bdthemes-element-pack'),
                 'type'    => Controls_Manager::SWITCHER,
                 'default' => 'yes'
             ]
@@ -428,7 +428,7 @@ class Advanced_Progress_Bar extends Module_Base {
             Group_Control_Background::get_type(),
             [
                 'name'      => 'progress_fill_color',
-                'label'     => __('Background', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
                 'types'     => ['classic', 'gradient'],
                 'selector'  => '{{WRAPPER}} .bdt-ep-advanced-progress-bar-fill',
                 'condition' => [
@@ -441,7 +441,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'rainbow_first_color',
             [
-                'label'       => __('Rainbow Color', 'bdthemes-element-pack'),
+                'label'       => esc_html__('Rainbow Color', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::TEXTAREA,
                 'placeholder' => 'Input your colors. example: red, #9400d3, indigo',
                 'default'     => 'red, orange, yellow, blue, indigo, violet',
@@ -475,7 +475,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->start_controls_section(
             'section_percentage _style',
             [
-                'label'     => __('Percentage', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Percentage', 'bdthemes-element-pack'),
                 'tab'       => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'skills_style' => ['bdt-progress-with-perc'],
@@ -486,7 +486,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'percentage_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ep-advanced-progress-bar-parcentage' => 'color: {{VALUE}};',
@@ -498,7 +498,7 @@ class Advanced_Progress_Bar extends Module_Base {
             Group_Control_Background::get_type(),
             [
                 'name'     => 'percentage_bg_color',
-                'label'    => __('Background', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Background', 'bdthemes-element-pack'),
                 'types'    => ['classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .bdt-ep-advanced-progress-bar-parcentage::before',
 
@@ -508,7 +508,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'percentage_size',
             [
-                'label'      => __('Size', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Size', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['px'],
                 'range'      => [
@@ -527,7 +527,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'percentage_vertical_position',
             [
-                'label'      => __('Vertical Position', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Vertical Position', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['px'],
                 'range'      => [
@@ -545,7 +545,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'percentage_horizontal_position',
             [
-                'label'      => __('Horizontal Position', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Horizontal Position', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::SLIDER,
                 'size_units' => ['px'],
                 'range'      => [
@@ -570,7 +570,7 @@ class Advanced_Progress_Bar extends Module_Base {
         $this->add_control(
             'percentage_border_radius',
             [
-                'label'      => __('Border Radius', 'bdthemes-element-pack'),
+                'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors'  => [
@@ -580,7 +580,6 @@ class Advanced_Progress_Bar extends Module_Base {
         );
 
         $this->end_controls_section();
-
     }
 
     public function render() {
@@ -588,99 +587,91 @@ class Advanced_Progress_Bar extends Module_Base {
 
         $this->add_render_attribute('progress-bar', 'class', 'bdt-ep-advanced-progress-bar ' . $settings['skills_style'] . ' ' . $settings['skills_extra_style'] . '  ');
 
-        ?>
+?>
         <div <?php echo $this->get_render_attribute_string('progress-bar'); ?>>
             <?php
-            foreach ( $settings['progress_bars'] as $progress ):
-                ?>
+            foreach ($settings['progress_bars'] as $progress) :
+            ?>
 
                 <!-- was here render-bak-code from below -->
-                <?php if ( $settings['skills_style'] == 'bdt-progress-with-perc' ) { ?>
-                <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
-                    <?php if ( $settings['text_position'] == 'outside-top' ) { ?>
-                        <div class="bdt-ep-advanced-progress-bar-content">
-                            <span class="bdt-ep-advanced-progress-bar-name">  <?php echo esc_html($progress['name']); ?> </span>
-                        </div>
-                    <?php } ?>
-                    <div class="bdt-ep-advanced-progress-bar-level">
-                        <div class="bdt-ep-advanced-progress-bar-fill "
-                             data-max-value="<?php echo($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>"
-                             data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
+                <?php if ($settings['skills_style'] == 'bdt-progress-with-perc') { ?>
+                    <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
+                        <?php if ($settings['text_position'] == 'outside-top') { ?>
+                            <div class="bdt-ep-advanced-progress-bar-content">
+                                <span class="bdt-ep-advanced-progress-bar-name"> <?php echo esc_html($progress['name']); ?> </span>
+                            </div>
+                        <?php } ?>
+                        <div class="bdt-ep-advanced-progress-bar-level">
+                            <div class="bdt-ep-advanced-progress-bar-fill " data-max-value="<?php echo ($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>" data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
                                 <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']); ?>
                                     <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
                                     <?php echo ($settings['show_perc'] == 'yes') ? '%' : ''; ?>
-                            </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <?php if ( $settings['text_position'] == 'outside-bottom' ) { ?>
-                        <div class="bdt-ep-advanced-progress-bar-content">
-                            <span class="bdt-ep-advanced-progress-bar-name">  <?php echo esc_html($progress['name']); ?> </span>
-                        </div>
-                    <?php } ?>
-                </div>
-            <?php } elseif ( $settings['skills_style'] == 'bdt-progress-inner-perc' ) { ?>
-                <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
-                    <div class="bdt-ep-advanced-progress-bar-level">
-                        <div class="bdt-ep-advanced-progress-bar-fill "
-                             data-max-value="<?php echo($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>"
-                             data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
+                        <?php if ($settings['text_position'] == 'outside-bottom') { ?>
                             <div class="bdt-ep-advanced-progress-bar-content">
-                                <span class="bdt-ep-advanced-progress-bar-name">  <?php echo esc_html($progress['name']); ?> </span>
-                                <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']); ?>
-                                    <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
-                                    <?php echo($settings['show_perc'] == 'yes' ? '%' : '') ?>
-                            </span>
+                                <span class="bdt-ep-advanced-progress-bar-name"> <?php echo esc_html($progress['name']); ?> </span>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } elseif ($settings['skills_style'] == 'bdt-progress-inner-perc') { ?>
+                    <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
+                        <div class="bdt-ep-advanced-progress-bar-level">
+                            <div class="bdt-ep-advanced-progress-bar-fill " data-max-value="<?php echo ($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>" data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
+                                <div class="bdt-ep-advanced-progress-bar-content">
+                                    <span class="bdt-ep-advanced-progress-bar-name"> <?php echo esc_html($progress['name']); ?> </span>
+                                    <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']); ?>
+                                        <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
+                                        <?php echo ($settings['show_perc'] == 'yes' ? '%' : '') ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php } elseif ( $settings['skills_style'] == 'bdt-progress-inner-perc-and-name' ) { ?>
-                <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
-                    <div class="bdt-ep-advanced-progress-bar-level">
-                        <div class="bdt-ep-advanced-progress-bar-fill "
-                             data-max-value="<?php echo($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>"
-                             data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
-                            <div class="bdt-ep-advanced-progress-bar-content">
-                                <span class="bdt-ep-advanced-progress-bar-name">  <?php echo esc_html($progress['name']); ?> </span>
-                                <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']); ?>
-                                    <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
-                                    <?php echo($settings['show_perc'] == 'yes' ? '%' : '') ?>
-                    </span>
+                <?php } elseif ($settings['skills_style'] == 'bdt-progress-inner-perc-and-name') { ?>
+                    <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
+                        <div class="bdt-ep-advanced-progress-bar-level">
+                            <div class="bdt-ep-advanced-progress-bar-fill " data-max-value="<?php echo ($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>" data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
+                                <div class="bdt-ep-advanced-progress-bar-content">
+                                    <span class="bdt-ep-advanced-progress-bar-name"> <?php echo esc_html($progress['name']); ?> </span>
+                                    <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']); ?>
+                                        <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
+                                        <?php echo ($settings['show_perc'] == 'yes' ? '%' : '') ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php } else { ?>
-                <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
-                    <?php if ( $settings['text_position'] == 'outside-top' ) { ?>
-                        <div class="bdt-ep-advanced-progress-bar-content">
-                            <span class="bdt-ep-advanced-progress-bar-name">  <?php echo esc_html($progress['name']); ?> </span>
-                            <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']); ?>
-                                <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
-                                <?php echo($settings['show_perc'] == 'yes' ? '%' : '') ?>
-                            </span>
+                <?php } else { ?>
+                    <div class="bdt-ep-advanced-progress-bar-item elementor-repeater-item-<?php echo esc_attr($progress['_id']); ?>">
+                        <?php if ($settings['text_position'] == 'outside-top') { ?>
+                            <div class="bdt-ep-advanced-progress-bar-content">
+                                <span class="bdt-ep-advanced-progress-bar-name"> <?php echo esc_html($progress['name']); ?> </span>
+                                <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']); ?>
+                                    <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
+                                    <?php echo ($settings['show_perc'] == 'yes' ? '%' : '') ?>
+                                </span>
+                            </div>
+                        <?php } ?>
+                        <div class="bdt-ep-advanced-progress-bar-level">
+                            <div class="bdt-ep-advanced-progress-bar-fill " data-max-value="<?php echo ($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>" data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
+                            </div>
                         </div>
-                    <?php } ?>
-                    <div class="bdt-ep-advanced-progress-bar-level">
-                        <div class="bdt-ep-advanced-progress-bar-fill "
-                             data-max-value="<?php echo($progress['max_level']['size'] > 0 ? $progress['max_level']['size'] : '100') ?>"
-                             data-width="<?php echo esc_attr($progress['level']['size']) ?>%">
-                        </div>
+                        <?php if ($settings['text_position'] == 'outside-bottom') { ?>
+                            <div class="bdt-ep-advanced-progress-bar-content">
+                                <span class="bdt-ep-advanced-progress-bar-name"> <?php echo esc_html($progress['name']); ?> </span>
+                                <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']) ?>
+                                    <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
+                                    <?php echo ($settings['show_perc'] == 'yes' ? '%' : '') ?>
+                                </span>
+                            </div>
+                        <?php } ?>
                     </div>
-                    <?php if ( $settings['text_position'] == 'outside-bottom' ) { ?>
-                        <div class="bdt-ep-advanced-progress-bar-content">
-                            <span class="bdt-ep-advanced-progress-bar-name">  <?php echo esc_html($progress['name']); ?> </span>
-                            <span class="bdt-ep-advanced-progress-bar-parcentage"><?php echo esc_html($progress['level']['size']) ?>
-                                <?php echo esc_html($settings['show_max_value'] == 'yes' ? ' / ' . $progress['max_level']['size'] : ''); ?>
-                                <?php echo($settings['show_perc'] == 'yes' ? '%' : '') ?>
-                            </span>
-                        </div>
-                    <?php } ?>
-                </div>
-            <?php } ?>
+                <?php } ?>
             <?php endforeach; ?>
         </div>
 
-        <?php
+<?php
     }
 }

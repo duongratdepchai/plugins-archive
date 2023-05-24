@@ -1,5 +1,39 @@
 
 
+
+version 1.5.62:
+
+-bug fix: solved some php error with parse dynamic settings in php 8.1
+-bug fix: getMetaValue error in products
+-feature: added "edit template" link in template selector
+-feature: added hidden template edit button to top bar
+-feature: added option for dynamic popup link to connect to many links in the widget
+-bug fix: fixed doubly css includes in some cases
+
+
+
+version 1.5.61:
+
+change: updated freemius sdk to 2.5.7 version.
+-feature: added support for woocommerce jet wishlist
+-feature: did option to disable third party hooks in ajax
+-bug fix: click on link on sync didn't worked
+-bug fix: added some protections to nonce and to file manager zip exctract 
+
+
+version 1.5.60:
+
+-bug fix: fixed link field settings for multisoure
+-bug fix: fixed some bugs with regular price in woocommerce widgets
+-bug fix: filters js file loaded in editor as well
+-bug fix: fixed some small php bug regarding "pathBase"
+-change: updated unite gallery version
+-change: disabled autoload in update_option for the catalog variable
+-feature: added functionality to get cart number of products 
+-bug fix: fixed conditions in multiple select control
+
+
+
 version 1.5.59:
 
 -bug fix: fixed empty post meta fields in case that acf plugin is on

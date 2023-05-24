@@ -1,4 +1,5 @@
 <?php
+
 namespace ElementPack\Modules\AudioPlayer\Widgets;
 
 use ElementPack\Base\Module_Base;
@@ -15,7 +16,7 @@ use ElementPack\Modules\AudioPlayer\Skins;
 
 use ElementPack;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class Audio_Player extends Module_Base {
 
@@ -24,7 +25,7 @@ class Audio_Player extends Module_Base {
 	}
 
 	public function get_title() {
-		return BDTEP . esc_html__( 'Audio Player', 'bdthemes-element-pack' );
+		return BDTEP . esc_html__('Audio Player', 'bdthemes-element-pack');
 	}
 
 	public function get_icon() {
@@ -32,27 +33,27 @@ class Audio_Player extends Module_Base {
 	}
 
 	public function get_categories() {
-		return [ 'element-pack' ];
+		return ['element-pack'];
 	}
 
 	public function get_keywords() {
-		return [ 'audio', 'player', 'sounder' ];
+		return ['audio', 'player', 'sounder'];
 	}
 
 	public function get_style_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['ep-styles'];
-        } else {
-            return [ 'ep-audio-player' ];
-        }
-    }
+		if ($this->ep_is_edit_mode()) {
+			return ['ep-styles'];
+		} else {
+			return ['ep-audio-player'];
+		}
+	}
 
 	public function get_script_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['jplayer', 'ep-scripts'];
-        } else {
-			return [ 'jplayer', 'ep-audio-player' ];
-        }
+		if ($this->ep_is_edit_mode()) {
+			return ['jplayer', 'ep-scripts'];
+		} else {
+			return ['jplayer', 'ep-audio-player'];
+		}
 	}
 
 	public function get_custom_help_url() {
@@ -60,23 +61,23 @@ class Audio_Player extends Module_Base {
 	}
 
 	protected function register_skins() {
-		$this->add_skin( new Skins\Skin_Poster( $this ) );
+		$this->add_skin(new Skins\Skin_Poster($this));
 	}
 
 	protected function register_controls() {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'Audio', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Audio', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'poster',
 			[
-				'label'   => __( 'Choose Poster', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Choose Poster', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::MEDIA,
-				'dynamic' => [ 'active' => true ],
+				'dynamic' => ['active' => true],
 				'default' => [
 					'url' => BDTEP_ASSETS_URL . 'images/audio-thumbnail.svg',
 				],
@@ -112,7 +113,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'player_height',
 			[
-				'label' => esc_html__( 'Player Height', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Player Height', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -149,7 +150,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'hosted_url',
 			[
-				'label'      => __( 'Local Audio', 'elementor' ),
+				'label'      => esc_html__('Local Audio', 'elementor'),
 				'type'       => Controls_Manager::MEDIA,
 				'dynamic' => [
 					'active' => true,
@@ -172,7 +173,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'remote_url',
 			[
-				'label'         => esc_html__( 'Remote URL', 'bdthemes-element-pack' ),
+				'label'         => esc_html__('Remote URL', 'bdthemes-element-pack'),
 				'description'   => 'If you want to add any streaming audio url so please add <b>;stream/1</b> at the end of your url for example: http://cast.com:9942/;stream/1',
 				'type'          => Controls_Manager::URL,
 				'show_external' => false,
@@ -217,11 +218,11 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'title',
 			[
-				'label'       => __( 'Title', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Title', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => __( 'Audio Title' , 'bdthemes-element-pack' ),
+				'default'     => esc_html__('Audio Title', 'bdthemes-element-pack'),
 				'label_block' => true,
-				'dynamic'     => [ 'active' => true ],
+				'dynamic'     => ['active' => true],
 				// 'condition'   => [
 				// 	'_skin!' => 'bdt-poster',
 				// ],
@@ -232,9 +233,9 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'author_name',
 			[
-				'label'       => __( 'Author Name', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Author Name', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'dynamic'     => [ 'active' => true ],
+				'dynamic'     => ['active' => true],
 				'default'     => 'John Duo',
 				'placeholder' => 'Author Name',
 				'condition'   => [
@@ -246,7 +247,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'player_width',
 			[
-				'label' => esc_html__( 'Player Width', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Player Width', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -266,20 +267,20 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'player_align',
 			[
-				'label'   => esc_html__( 'Alignment', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'default' => 'left',
 				'options' => [
 					'left' => [
-						'title' => esc_html__( 'Left', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => esc_html__( 'Center', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => esc_html__( 'Right', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-right',
 					],
 				],
@@ -299,7 +300,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'fixed_player',
 			[
-				'label'        => __( 'Fixed Player', 'bdthemes-element-pack' ),
+				'label'        => esc_html__('Fixed Player', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'prefix_class' => 'bdt-audio-player-fixed-',
 				'condition'   => [
@@ -313,14 +314,14 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_content_additional',
 			[
-				'label' => __( 'Additional', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Additional', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'seek_bar',
 			[
-				'label'   => __( 'Seek Bar', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Seek Bar', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -329,14 +330,14 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'time_duration',
 			[
-				'label'   => esc_html__( 'Time/Duration(s)', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Time/Duration(s)', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'both',
 				'options' => [
-					''         => esc_html__( 'None', 'bdthemes-element-pack' ),
-					'time'     => esc_html__( 'Time', 'bdthemes-element-pack' ),
-					'duration' => esc_html__( 'Duration', 'bdthemes-element-pack' ),
-					'both'     => esc_html__( 'Both', 'bdthemes-element-pack' ),
+					''         => esc_html__('None', 'bdthemes-element-pack'),
+					'time'     => esc_html__('Time', 'bdthemes-element-pack'),
+					'duration' => esc_html__('Duration', 'bdthemes-element-pack'),
+					'both'     => esc_html__('Both', 'bdthemes-element-pack'),
 				],
 			]
 		);
@@ -344,16 +345,16 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'time_restrict',
 			[
-				'label'       => __( 'Restrict Time', 'bdthemes-element-pack' ),
+				'label'       => esc_html__('Restrict Time', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::SWITCHER,
-				'description' => __( 'After some second player will stop', 'bdthemes-element-pack' ),
+				'description' => esc_html__('After some second player will stop', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'restrict_duration',
 			[
-				'label' => esc_html__( 'Restrict Duration(s)', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Restrict Duration(s)', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -374,7 +375,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_mute',
 			[
-				'label'   => __( 'Volume Mute/Unmute', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Volume Mute/Unmute', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -383,7 +384,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_bar',
 			[
-				'label'   => __( 'Volume Bar', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Volume Bar', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -392,7 +393,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'smooth_show',
 			[
-				'label'   => __( 'Smoothly Enter', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Smoothly Enter', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -401,8 +402,8 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'keyboard_enable',
 			[
-				'label'   => __( 'Keyboard Enable', 'bdthemes-element-pack' ),
-				'description'   => __( 'for example: when you press p=Play, m=Mute, >=Volume + <=Volume -, l=Loop etc  ', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Keyboard Enable', 'bdthemes-element-pack'),
+				'description'   => esc_html__('for example: when you press p=Play, m=Mute, >=Volume + <=Volume -, l=Loop etc  ', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 			]
@@ -411,8 +412,8 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'autoplay',
 			[
-				'label'   => __( 'Auto Play', 'bdthemes-element-pack' ),
-				'description'   => __( 'Some latest browser does not support this feature for not annoying user.', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Auto Play', 'bdthemes-element-pack'),
+				'description'   => esc_html__('Some latest browser does not support this feature for not annoying user.', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 			]
 		);
@@ -420,8 +421,8 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'loop',
 			[
-				'label'   => __( 'Loop', 'bdthemes-element-pack' ),
-				'description'   => __( 'If you set yes so your music will automatically repeat again and again.', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Loop', 'bdthemes-element-pack'),
+				'description'   => esc_html__('If you set yes so your music will automatically repeat again and again.', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 			]
 		);
@@ -429,7 +430,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_level',
 			[
-				'label' => esc_html__( 'Default Volume', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Default Volume', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -449,7 +450,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_skin_poster',
 			[
-				'label'     => __( 'Skin Poster', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Skin Poster', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'_skin' => 'bdt-poster'
@@ -460,7 +461,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'thumb_style',
 			[
-				'label' => __( 'Thumb Style', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Thumb Style', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SWITCHER,
 				'prefix_class' => 'bdt-audio-player-poster-thumb-',
 				'render_type' => 'template'
@@ -470,20 +471,20 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'skin_poster_align',
 			[
-				'label'   => esc_html__( 'Alignment', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'default' => 'center',
 				'options' => [
 					'left' => [
-						'title' => __( 'Top', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Top', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-center',
 					],
 					'right' => [
-						'title' => __( 'Bottom', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Bottom', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-h-align-right',
 					],
 				],
@@ -494,7 +495,7 @@ class Audio_Player extends Module_Base {
 			Group_Control_Border::get_type(),
 			[
 				'name'        => 'skin_poster__border',
-				'label'       => __('Border', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Border', 'bdthemes-element-pack'),
 				'placeholder' => '1px',
 				'default'     => '1px',
 				'selector'    => '{{WRAPPER}} .bdt-audio-player.skin-poster',
@@ -503,21 +504,21 @@ class Audio_Player extends Module_Base {
 		);
 
 		$this->add_responsive_control(
-            'skin_poster__radius',
-            [
-                'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors'  => [
-                    '{{WRAPPER}} .bdt-audio-player.skin-poster' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
+			'skin_poster__radius',
+			[
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors'  => [
+					'{{WRAPPER}} .bdt-audio-player.skin-poster' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
 
 		$this->add_responsive_control(
 			'skin_poster_padding',
 			[
-				'label'      => __( 'Padding', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'selectors'  => [
 					'{{WRAPPER}} .skin-poster' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -539,7 +540,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_thumbnail',
 			[
-				'label'     => __( 'Thumbnail', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Thumbnail', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'_skin'       => 'bdt-poster',
@@ -551,7 +552,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'thumb_width',
 			[
-				'label' => __( 'Width (px)', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Width (px)', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -572,7 +573,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'thumbnail_margin',
 			[
-				'label'      => __( 'Margin', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Margin', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-audio-player-thumb img' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -583,7 +584,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'thumbnail_padding',
 			[
-				'label'      => __( 'Padding', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-audio-player-thumb img' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -591,18 +592,19 @@ class Audio_Player extends Module_Base {
 			]
 		);
 
-		$this->start_controls_tabs( 'thumbnail_effects' );
+		$this->start_controls_tabs('thumbnail_effects');
 
-		$this->start_controls_tab( 'normal',
+		$this->start_controls_tab(
+			'normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'opacity',
 			[
-				'label' => __( 'Opacity', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Opacity', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -628,16 +630,17 @@ class Audio_Player extends Module_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'hover',
+		$this->start_controls_tab(
+			'hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'opacity_hover',
 			[
-				'label' => __( 'Opacity', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Opacity', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -663,7 +666,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'background_hover_transition',
 			[
-				'label' => __( 'Transition Duration (s)', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Transition Duration (s)', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -694,9 +697,9 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'thumbnail_radius',
 			[
-				'label'      => __( 'Radius', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-audio-player-thumb img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -716,24 +719,24 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_play_button',
 			[
-				'label' => __( 'Play/Pause Button', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Play/Pause Button', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
-		$this->start_controls_tabs( 'tabs_play_button' );
+		$this->start_controls_tabs('tabs_play_button');
 
 		$this->start_controls_tab(
 			'tab_play_button_normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'play_button_icon_color',
 			[
-				'label'     => __( 'Icon Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Icon Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-play svg *, {{WRAPPER}} .jp-audio .jp-pause svg *' => 'fill: {{VALUE}};',
@@ -744,7 +747,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'play_button_background',
 			[
-				'label'     => __( 'Background Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-play, {{WRAPPER}} .jp-audio .jp-pause' => 'background-color: {{VALUE}};',
@@ -755,14 +758,14 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'play_button_border',
 			[
-				'label'   => esc_html__( 'Border Type', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Border Type', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'solid',
 				'options' => [
-					''       => esc_html__( 'None', 'bdthemes-element-pack' ),
-					'solid'  => esc_html__( 'Solid', 'bdthemes-element-pack' ),
-					'dotted' => esc_html__( 'Dotted', 'bdthemes-element-pack' ),
-					'dashed' => esc_html__( 'Dashed', 'bdthemes-element-pack' ),
+					''       => esc_html__('None', 'bdthemes-element-pack'),
+					'solid'  => esc_html__('Solid', 'bdthemes-element-pack'),
+					'dotted' => esc_html__('Dotted', 'bdthemes-element-pack'),
+					'dashed' => esc_html__('Dashed', 'bdthemes-element-pack'),
 				],
 				'selectors'  => [
 					'{{WRAPPER}} .jp-audio .jp-play, {{WRAPPER}} .jp-audio .jp-pause' => 'border-style: {{VALUE}};',
@@ -773,9 +776,9 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'play_button_border_width',
 			[
-				'label'      => __( 'Border Width', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Width', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px' ],
+				'size_units' => ['px'],
 				'default' => [
 					'top'    => '1',
 					'bottom' => '1',
@@ -795,7 +798,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'play_button_border_color',
 			[
-				'label'     => __( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'default' => '#d5d5d5',
 				'selectors' => [
@@ -810,9 +813,9 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'play_button_radius',
 			[
-				'label'      => __( 'Border Radius', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .jp-audio .jp-play, {{WRAPPER}} .jp-audio .jp-pause' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -830,7 +833,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'play_button_size',
 			[
-				'label' => esc_html__( 'Size', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Size', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -849,14 +852,14 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_tab(
 			'tab_play_button_hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'play_button_hover_icon_color',
 			[
-				'label'     => __( 'Icon Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Icon Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-play:hover svg *, {{WRAPPER}} .jp-audio .jp-pause:hover svg *' => 'fill: {{VALUE}};',
@@ -867,7 +870,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'play_button_hover_background',
 			[
-				'label'     => __( 'Background Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-play:hover, {{WRAPPER}} .jp-audio .jp-pause:hover' => 'background-color: {{VALUE}};',
@@ -878,7 +881,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'play_button_hover_border_color',
 			[
-				'label'     => __( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => [
 					'play_button_border_border!' => '',
@@ -906,7 +909,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_time',
 			[
-				'label'     => __( 'Time/Duration', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Time/Duration', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'time_duration!'     => '',
@@ -917,7 +920,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'time_color',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-current-time, {{WRAPPER}} .jp-audio .jp-duration' => 'color: {{VALUE}};',
@@ -939,7 +942,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_seek_bar',
 			[
-				'label'     => __( 'Seek Bar', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Seek Bar', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'seek_bar'     => 'yes',
@@ -950,7 +953,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'seek_bar_height',
 			[
-				'label' => __( 'Bar Height', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Bar Height', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -967,7 +970,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'seek_bar_color',
 			[
-				'label'     => __( 'Bar Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Bar Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-seek-bar' => 'background-color: {{VALUE}};',
@@ -978,7 +981,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'seek_bar_adjust_color',
 			[
-				'label'     => __( 'Active Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Active Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-seek-bar .jp-play-bar' => 'background-color: {{VALUE}};',
@@ -989,9 +992,9 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'seek_bar_radius',
 			[
-				'label'      => __( 'Border Radius', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .jp-audio .jp-seek-bar .jp-play-bar, {{WRAPPER}} .jp-audio .jp-seek-bar' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1003,7 +1006,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_audio_title',
 			[
-				'label'     => __( 'Audio Title', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Audio Title', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'audio_title' => 'inline',
@@ -1015,7 +1018,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'audio_title_color',
 			[
-				'label'     => __( 'Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-audio-title' => 'color: {{VALUE}};',
@@ -1026,19 +1029,19 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'audio_title_align',
 			[
-				'label'   => __( 'Alignment', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Alignment', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::CHOOSE,
 				'options' => [
 					'left'    => [
-						'title' => __( 'Left', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => __( 'Center', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Center', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => __( 'Right', 'bdthemes-element-pack' ),
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
 						'icon'  => 'eicon-text-align-right',
 					],
 				],
@@ -1062,7 +1065,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_volume_button',
 			[
-				'label' => __( 'Volume Button', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Volume Button', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'volume_mute'     => 'yes',
@@ -1070,19 +1073,19 @@ class Audio_Player extends Module_Base {
 			]
 		);
 
-		$this->start_controls_tabs( 'tabs_volume_button' );
+		$this->start_controls_tabs('tabs_volume_button');
 
 		$this->start_controls_tab(
 			'tab_volume_button_normal',
 			[
-				'label' => __( 'Normal', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Normal', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'volume_button_icon_color',
 			[
-				'label'     => __( 'Icon Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Icon Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-mute svg *, {{WRAPPER}} .jp-audio .jp-unmute svg *' => 'fill: {{VALUE}};',
@@ -1093,7 +1096,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_button_background',
 			[
-				'label'     => __( 'Background Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-mute, {{WRAPPER}} .jp-audio .jp-unmute' => 'background-color: {{VALUE}};',
@@ -1104,14 +1107,14 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_button_border',
 			[
-				'label'   => esc_html__( 'Border Type', 'bdthemes-element-pack' ),
+				'label'   => esc_html__('Border Type', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'solid',
 				'options' => [
-					''       => esc_html__( 'None', 'bdthemes-element-pack' ),
-					'solid'  => esc_html__( 'Solid', 'bdthemes-element-pack' ),
-					'dotted' => esc_html__( 'Dotted', 'bdthemes-element-pack' ),
-					'dashed' => esc_html__( 'Dashed', 'bdthemes-element-pack' ),
+					''       => esc_html__('None', 'bdthemes-element-pack'),
+					'solid'  => esc_html__('Solid', 'bdthemes-element-pack'),
+					'dotted' => esc_html__('Dotted', 'bdthemes-element-pack'),
+					'dashed' => esc_html__('Dashed', 'bdthemes-element-pack'),
 				],
 				'selectors'  => [
 					'{{WRAPPER}} .jp-audio .jp-mute, {{WRAPPER}} .jp-audio .jp-unmute' => 'border-style: {{VALUE}};',
@@ -1122,9 +1125,9 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_button_border_width',
 			[
-				'label'      => __( 'Border Width', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Width', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px' ],
+				'size_units' => ['px'],
 				'default' => [
 					'top'    => '1',
 					'bottom' => '1',
@@ -1144,7 +1147,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_button_border_color',
 			[
-				'label'     => __( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'default' => '#d5d5d5',
 				'selectors' => [
@@ -1159,9 +1162,9 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'volume_button_radius',
 			[
-				'label'      => __( 'Border Radius', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Border Radius', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'selectors'  => [
 					'{{WRAPPER}} .jp-audio .jp-mute, {{WRAPPER}} .jp-audio .jp-unmute' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1179,7 +1182,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'volume_button_size',
 			[
-				'label' => esc_html__( 'Size', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Size', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1198,14 +1201,14 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_tab(
 			'tab_volume_button_hover',
 			[
-				'label' => __( 'Hover', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Hover', 'bdthemes-element-pack'),
 			]
 		);
 
 		$this->add_control(
 			'volume_button_hover_icon_color',
 			[
-				'label'     => __( 'Icon Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Icon Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-mute:hover svg *, {{WRAPPER}} .jp-audio .jp-unmute:hover svg *' => 'fill: {{VALUE}};',
@@ -1216,7 +1219,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_button_hover_background',
 			[
-				'label'     => __( 'Background Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-mute:hover, {{WRAPPER}} .jp-audio .jp-unmute:hover' => 'background-color: {{VALUE}};',
@@ -1227,7 +1230,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_button_hover_border_color',
 			[
-				'label'     => __( 'Border Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => [
 					'volume_button_border_border!' => '',
@@ -1255,7 +1258,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_volume_bar',
 			[
-				'label'     => __( 'Volume Bar', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Volume Bar', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'volume_bar'     => 'yes',
@@ -1266,7 +1269,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_bar_height',
 			[
-				'label' => __( 'Bar Height', 'bdthemes-element-pack' ),
+				'label' => esc_html__('Bar Height', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1283,7 +1286,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_bar_color',
 			[
-				'label'     => __( 'Bar Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Bar Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-volume-bar' => 'background-color: {{VALUE}};',
@@ -1294,7 +1297,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'volume_bar_adjust_color',
 			[
-				'label'     => __( 'Active Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Active Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .jp-audio .jp-volume-bar .jp-volume-bar-value' => 'background-color: {{VALUE}};',
@@ -1307,7 +1310,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_skin_audio_title',
 			[
-				'label'     => esc_html__( 'Audio Title', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Audio Title', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'_skin' => 'bdt-poster',
@@ -1318,7 +1321,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'skin_audio_title_padding',
 			[
-				'label'      => __( 'Padding', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-audio-player-title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -1329,7 +1332,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'skin_audio_title_color',
 			[
-				'label'     => esc_html__( 'Text Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Text Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-audio-player-title' => 'color: {{VALUE}}',
@@ -1349,7 +1352,7 @@ class Audio_Player extends Module_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'skin_audio_title_typography',
-				'label'    => esc_html__( 'Typography', 'bdthemes-element-pack' ),
+				'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
 				//'scheme'   => Schemes\Typography::TYPOGRAPHY_1,
 				'selector' => '{{WRAPPER}} .bdt-audio-player-title',
 			]
@@ -1360,7 +1363,7 @@ class Audio_Player extends Module_Base {
 		$this->start_controls_section(
 			'section_style_skin_author_name',
 			[
-				'label'     => esc_html__( 'Author Name', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Author Name', 'bdthemes-element-pack'),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'_skin' => 'bdt-poster',
@@ -1371,7 +1374,7 @@ class Audio_Player extends Module_Base {
 		$this->add_responsive_control(
 			'skin_author_name_padding',
 			[
-				'label'      => __( 'Padding', 'bdthemes-element-pack' ),
+				'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'selectors'  => [
 					'{{WRAPPER}} .bdt-audio-player-artist' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -1382,7 +1385,7 @@ class Audio_Player extends Module_Base {
 		$this->add_control(
 			'skin_author_name_color',
 			[
-				'label'     => esc_html__( 'Text Color', 'bdthemes-element-pack' ),
+				'label'     => esc_html__('Text Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-audio-player-artist span' => 'color: {{VALUE}}',
@@ -1402,7 +1405,7 @@ class Audio_Player extends Module_Base {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'skin_author_name_typography',
-				'label'    => esc_html__( 'Typography', 'bdthemes-element-pack' ),
+				'label'    => esc_html__('Typography', 'bdthemes-element-pack'),
 				//'scheme'   => Schemes\Typography::TYPOGRAPHY_1,
 				'selector' => '{{WRAPPER}} .bdt-audio-player-artist span',
 			]
@@ -1415,7 +1418,7 @@ class Audio_Player extends Module_Base {
 		$settings      = $this->get_settings_for_display();
 		$id            = $this->get_id();
 
-		$this->add_render_attribute( 'audio-player', 'class', 'jp-jplayer' );
+		$this->add_render_attribute('audio-player', 'class', 'jp-jplayer');
 
 		$this->add_render_attribute(
 			[
@@ -1430,24 +1433,24 @@ class Audio_Player extends Module_Base {
 							'restrict_duration' => (isset($settings['restrict_duration']['size']) ? $settings['restrict_duration']['size'] : 10),
 							'autoplay'          => ('yes' == $settings['autoplay']) ? true : false,
 							'loop'              => ('yes' == $settings['loop']) ? true : false,
-							'audio_source'      => ('remote_url' == $settings['source_type']) ? esc_url( do_shortcode( $settings['remote_url']['url'] ) ) : esc_url( $settings['hosted_url']['url'] ),
-				        ]))
+							'audio_source'      => ('remote_url' == $settings['source_type']) ? esc_url(do_shortcode($settings['remote_url']['url'])) : esc_url($settings['hosted_url']['url']),
+						]))
 					]
 				]
 			]
 		);
 
-		?>
-		<div <?php echo $this->get_render_attribute_string( 'audio-player' ); ?>></div>
+?>
+		<div <?php echo $this->get_render_attribute_string('audio-player'); ?>></div>
 
-		<?php
+	<?php
 	}
 
 	public function render_audio_default() {
 		$settings      = $this->get_settings_for_display();
 		$id            = $this->get_id();
 
-		?>
+	?>
 		<div id="jp_container_<?php echo esc_attr($id); ?>" class="jp-audio" role="application" aria-label="media player">
 			<div class="jp-type-playlist">
 				<div class="jp-gui jp-interface">
@@ -1472,15 +1475,15 @@ class Audio_Player extends Module_Base {
 			</div>
 		</div>
 
-		<?php
+	<?php
 	}
 
 	public function render_play_button() {
 		$settings = $this->get_settings_for_display();
 
-		?>
+	?>
 
-		<div class="bdt-width-auto" >
+		<div class="bdt-width-auto">
 			<a href="javascript:void(0);" class="jp-play" tabindex="1" title="<?php esc_html_e('Play', 'bdthemes-element-pack'); ?> <?php echo esc_html($settings['title']); ?>">
 				<?php echo element_pack_svg_icon('play'); ?>
 			</a>
@@ -1489,31 +1492,31 @@ class Audio_Player extends Module_Base {
 			</a>
 		</div>
 
-		<?php
+	<?php
 	}
 
 	public function render_seek_bar() {
 		$settings      = $this->get_settings_for_display();
 
-		$this->add_render_attribute( 'progress', 'title', $settings['title'] );
+		$this->add_render_attribute('progress', 'title', $settings['title']);
 
-		if ( 'tooltip'  == $settings['audio_title'] and 'bdt-poster' !== $settings['_skin'] ) {
-			$this->add_render_attribute( 'progress', 'data-bdt-tooltip' );
+		if ('tooltip'  == $settings['audio_title'] and 'bdt-poster' !== $settings['_skin']) {
+			$this->add_render_attribute('progress', 'data-bdt-tooltip');
 		}
 
-		?>
+	?>
 
 		<?php if ('yes' === $settings['seek_bar']) : ?>
-		<div class="bdt-width-expand">
-			<div class="jp-progress" <?php echo $this->get_render_attribute_string( 'progress' ); ?>>
-				<?php if ( 'inline' === $settings['audio_title'] ) : ?>
-					<div class="bdt-audio-title"><?php echo esc_html($settings['title']); ?></div>
-				<?php endif; ?>
-				<div class="jp-seek-bar">
-					<div class="jp-play-bar"></div>
+			<div class="bdt-width-expand">
+				<div class="jp-progress" <?php echo $this->get_render_attribute_string('progress'); ?>>
+					<?php if ('inline' === $settings['audio_title']) : ?>
+						<div class="bdt-audio-title"><?php echo esc_html($settings['title']); ?></div>
+					<?php endif; ?>
+					<div class="jp-seek-bar">
+						<div class="jp-play-bar"></div>
+					</div>
 				</div>
 			</div>
-		</div>
 		<?php endif;
 	}
 
@@ -1523,7 +1526,9 @@ class Audio_Player extends Module_Base {
 		?>
 
 		<?php if ('time' === $settings['time_duration'] or 'both' === $settings['time_duration']) : ?>
-		<div class="bdt-width-auto"><div class="jp-current-time"></div></div>
+			<div class="bdt-width-auto">
+				<div class="jp-current-time"></div>
+			</div>
 		<?php endif;
 	}
 
@@ -1533,7 +1538,9 @@ class Audio_Player extends Module_Base {
 		?>
 
 		<?php if ('duration' === $settings['time_duration'] or 'both' === $settings['time_duration']) : ?>
-			<div class="bdt-width-auto bdt-visible@m"><div class="jp-duration"></div></div>
+			<div class="bdt-width-auto bdt-visible@m">
+				<div class="jp-duration"></div>
+			</div>
 		<?php endif;
 	}
 
@@ -1543,14 +1550,14 @@ class Audio_Player extends Module_Base {
 		?>
 
 		<?php if ('yes' === $settings['volume_mute']) : ?>
-		<div class="bdt-width-auto bdt-audio-player-mute">
-			<a href="javascript:void(0);" class="jp-mute" tabindex="1" title="<?php esc_html_e('Mute', 'bdthemes-element-pack'); ?>">
-				<?php echo element_pack_svg_icon('mute'); ?>
-			</a>
-			<a href="javascript:void(0);" class="jp-unmute" tabindex="1" title="<?php esc_html_e('Unmute', 'bdthemes-element-pack'); ?>">
-				<?php echo element_pack_svg_icon('unmute'); ?>
-			</a>
-		</div>
+			<div class="bdt-width-auto bdt-audio-player-mute">
+				<a href="javascript:void(0);" class="jp-mute" tabindex="1" title="<?php esc_html_e('Mute', 'bdthemes-element-pack'); ?>">
+					<?php echo element_pack_svg_icon('mute'); ?>
+				</a>
+				<a href="javascript:void(0);" class="jp-unmute" tabindex="1" title="<?php esc_html_e('Unmute', 'bdthemes-element-pack'); ?>">
+					<?php echo element_pack_svg_icon('unmute'); ?>
+				</a>
+			</div>
 		<?php endif;
 	}
 
@@ -1559,11 +1566,11 @@ class Audio_Player extends Module_Base {
 		?>
 
 		<?php if ('yes' === $settings['volume_bar']) : ?>
-		<div class="bdt-width-auto bdt-visible@m">
-			<div class="jp-volume-bar">
-				<div class="jp-volume-bar-value"></div>
+			<div class="bdt-width-auto bdt-visible@m">
+				<div class="jp-volume-bar">
+					<div class="jp-volume-bar-value"></div>
+				</div>
 			</div>
-		</div>
 		<?php endif;
 	}
 
@@ -1578,6 +1585,6 @@ class Audio_Player extends Module_Base {
 			<?php $this->render_audio_header(); ?>
 			<?php $this->render_audio_default(); ?>
 		</div>
-		<?php
+<?php
 	}
 }

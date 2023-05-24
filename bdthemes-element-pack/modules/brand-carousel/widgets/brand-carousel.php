@@ -69,7 +69,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'ep_section_brand',
 			[
-				'label' => __('Brand Items', 'bdthemes-element-pack'),
+				'label' => esc_html__('Brand Items', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -79,7 +79,7 @@ class Brand_Carousel extends Module_Base {
 		$repeater->add_control(
 			'image',
 			[
-				'label'   => __('Brand Image', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Brand Image', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::MEDIA,
 				'default' => [
 					'url' => Utils::get_placeholder_image_src(),
@@ -90,9 +90,9 @@ class Brand_Carousel extends Module_Base {
 		$repeater->add_control(
 			'brand_name',
 			[
-				'label'       => __('Brand Name', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Brand Name', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => __('Brand Name', 'bdthemes-element-pack'),
+				'default'     => esc_html__('Brand Name', 'bdthemes-element-pack'),
 				'label_block' => true,
 				'dynamic'     => ['active'      => true],
 			]
@@ -101,9 +101,9 @@ class Brand_Carousel extends Module_Base {
 		$repeater->add_control(
 			'link',
 			[
-				'label'         => __('Website Url', 'bdthemes-element-pack'),
+				'label'         => esc_html__('Website Url', 'bdthemes-element-pack'),
 				'type'          => Controls_Manager::URL,
-				'placeholder'   => __('https://your-link.com', 'plugin-domain'),
+				'placeholder'   => esc_html__('https://your-link.com', 'plugin-domain'),
 				'show_external' => true,
 				'default'      => [
 					'url'         => '#',
@@ -118,10 +118,10 @@ class Brand_Carousel extends Module_Base {
 		$repeater->add_control(
 			'website_link_text',
 			[
-				'label'       => __('Website Url Text', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Website Url Text', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => __('www.example.com', 'bdthemes-element-pack'),
-				'placeholder' => __('Paste URL Text or Type', 'bdthemes-element-pack'),
+				'default'     => esc_html__('www.example.com', 'bdthemes-element-pack'),
+				'placeholder' => esc_html__('Paste URL Text or Type', 'bdthemes-element-pack'),
 				'label_block' => true,
 				'dynamic'     => ['active'      => true],
 			]
@@ -160,7 +160,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'section_additional_settings',
 			[
-				'label' => __('Additional Settings', 'bdthemes-element-pack'),
+				'label' => esc_html__('Additional Settings', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -168,7 +168,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_responsive_control(
 			'columns',
 			[
-				'label'          => __('Columns', 'bdthemes-element-pack'),
+				'label'          => esc_html__('Columns', 'bdthemes-element-pack'),
 				'type'           => Controls_Manager::SELECT,
 				'default'        => 3,
 				'tablet_default' => 2,
@@ -187,7 +187,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'item_gap',
 			[
-				'label'   => __('Item Gap', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Item Gap', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 20,
@@ -204,7 +204,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'item_match_height',
 			[
-				'label'        => __('Item Match Height', 'bdthemes-element-pack'),
+				'label'        => esc_html__('Item Match Height', 'bdthemes-element-pack'),
 				'type'         => Controls_Manager::SWITCHER,
 				'default'      => 'yes',
 				'prefix_class' => 'bdt-item-match-height--',
@@ -215,7 +215,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'show_brand_name',
 			[
-				'label'   => __('Show Brand Name', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Show Brand Name', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'separator' => 'before'
@@ -225,7 +225,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'brand_html_tag',
 			[
-				'label'   => __('Name HTML Tag', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Name HTML Tag', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'h3',
 				'options' => element_pack_title_tags(),
@@ -238,7 +238,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'show_website_link',
 			[
-				'label'   => __('Show Link Text', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Show Link Text', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'separator' => 'before'
@@ -248,13 +248,13 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'brand_event',
 			[
-				'label'   => __('Select Event ', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Select Event ', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'hover-icon',
 				'options' => [
-					'click'     => __('Click', 'bdthemes-element-pack'),
-					'hover-icon' => __('Icon Hover', 'bdthemes-element-pack'),
-					'hover-item' => __('Item Hover', 'bdthemes-element-pack'),
+					'click'     => esc_html__('Click', 'bdthemes-element-pack'),
+					'hover-icon' => esc_html__('Icon Hover', 'bdthemes-element-pack'),
+					'hover-item' => esc_html__('Item Hover', 'bdthemes-element-pack'),
 				],
 				'separator' => 'before'
 			]
@@ -263,15 +263,15 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'icon_position',
 			[
-				'label'   => __('Icon Position', 'bdthemes-element-pack'),
+				'label'   => esc_html__('Icon Position', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'bottom-left',
 				'options' => [
-					'top-left'      => __('Top Left', 'bdthemes-element-pack'),
-					'top-right'     => __('Top Right', 'bdthemes-element-pack'),
-					'bottom-left'   => __('Bottom Left', 'bdthemes-element-pack'),
-					'bottom-right'  => __('Bottom Right', 'bdthemes-element-pack'),
-					'center-center' => __('Center Center', 'bdthemes-element-pack'),
+					'top-left'      => esc_html__('Top Left', 'bdthemes-element-pack'),
+					'top-right'     => esc_html__('Top Right', 'bdthemes-element-pack'),
+					'bottom-left'   => esc_html__('Bottom Left', 'bdthemes-element-pack'),
+					'bottom-right'  => esc_html__('Bottom Right', 'bdthemes-element-pack'),
+					'center-center' => esc_html__('Center Center', 'bdthemes-element-pack'),
 				],
 				'prefix_class' => 'bdt-ep-icon--',
 			]
@@ -283,7 +283,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'section_content_navigation',
 			[
-				'label' => __('Navigation', 'bdthemes-element-pack'),
+				'label' => esc_html__('Navigation', 'bdthemes-element-pack'),
 			]
 		);
 
@@ -299,7 +299,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'section_style_items',
 			[
-				'label' => __('Items', 'bdthemes-element-pack'),
+				'label' => esc_html__('Items', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -365,8 +365,8 @@ class Brand_Carousel extends Module_Base {
 		$this->add_responsive_control(
 			'item_shadow_padding',
 			[
-				'label'       => __('Match Padding', 'bdthemes-element-pack'),
-				'description' => __('You have to add padding for matching overlaping normal/hover box shadow when you used Box Shadow option.', 'bdthemes-element-pack'),
+				'label'       => esc_html__('Match Padding', 'bdthemes-element-pack'),
+				'description' => esc_html__('You have to add padding for matching overlaping normal/hover box shadow when you used Box Shadow option.', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::SLIDER,
 				'range'       => [
 					'px' => [
@@ -384,7 +384,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'image_heading',
 			[
-				'label'     => __('Image', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Image', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before'
 			]
@@ -393,7 +393,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_responsive_control(
 			'brand_image_size',
 			[
-				'label' => __('Size', 'bdthemes-element-pack'),
+				'label' => esc_html__('Size', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -463,7 +463,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'section_style_icon',
 			[
-				'label' => __('Icon', 'bdthemes-element-pack'),
+				'label' => esc_html__('Icon', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -510,7 +510,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_responsive_control(
 			'iamge_margin',
 			[
-				'label'      => __('Margin', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Margin', 'bdthemes-element-pack'),
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', 'em', '%'],
 				'selectors'  => [
@@ -522,7 +522,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_responsive_control(
 			'icon_size',
 			[
-				'label' => __('Size', 'bdthemes-element-pack'),
+				'label' => esc_html__('Size', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -539,7 +539,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_responsive_control(
 			'icon_font_size',
 			[
-				'label' => __('Font Size', 'bdthemes-element-pack'),
+				'label' => esc_html__('Font Size', 'bdthemes-element-pack'),
 				'type'  => Controls_Manager::SLIDER,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-brand-carousel-icon' => 'font-size: {{SIZE}}{{UNIT}};',
@@ -560,7 +560,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'section_style_name',
 			[
-				'label' => __('Name', 'bdthemes-element-pack'),
+				'label' => esc_html__('Name', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_brand_name' => 'yes',
@@ -571,7 +571,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'name_color',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-brand-carousel-name' => 'color: {{VALUE}};',
@@ -591,7 +591,7 @@ class Brand_Carousel extends Module_Base {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'name_shadow',
-				'label' => __('Text Shadow', 'bdthemes-element-pack'),
+				'label' => esc_html__('Text Shadow', 'bdthemes-element-pack'),
 				'selector' => '{{WRAPPER}} .bdt-ep-brand-carousel-name',
 			]
 		);
@@ -601,7 +601,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'section_style_website_link',
 			[
-				'label' => __('Text', 'bdthemes-element-pack'),
+				'label' => esc_html__('Text', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'show_website_link' => 'yes',
@@ -612,7 +612,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'website_link_color',
 			[
-				'label'     => __('Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-brand-carousel-link' => 'color: {{VALUE}};',
@@ -623,7 +623,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_control(
 			'website_link_hover_color',
 			[
-				'label'     => __('Hover Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Hover Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .bdt-ep-brand-carousel-link:hover' => 'color: {{VALUE}};',
@@ -634,7 +634,7 @@ class Brand_Carousel extends Module_Base {
 		$this->add_responsive_control(
 			'website_link_top_space',
 			[
-				'label'     => __('Spacing', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Spacing', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => [
 					'px' => [
@@ -662,7 +662,7 @@ class Brand_Carousel extends Module_Base {
 		$this->start_controls_section(
 			'section_style_navigation',
 			[
-				'label'      => __('Navigation', 'bdthemes-element-pack'),
+				'label'      => esc_html__('Navigation', 'bdthemes-element-pack'),
 				'tab'        => Controls_Manager::TAB_STYLE,
 				'conditions' => [
 					'relation' => 'or',

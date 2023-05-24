@@ -68,6 +68,7 @@ class UniteCreatorDialogParamWork{
 	const PARAM_SPECIAL = "uc_special";
 	const PARAM_POST_SELECT = "uc_post_select";
 	const PARAM_TERM_SELECT = "uc_term_select";
+	const PARAM_RAW_HTML = "uc_raw_html";
 	
 	const PARAM_VAR_GET = "uc_var_get";
 	const PARAM_VAR_FILTER = "uc_var_filter";

@@ -18,8 +18,8 @@
 		data_content_max_height_m = container.data("content-max-height-m"),
 		data_content_max_height_t = container.data("content-max-height-t"),
 		data_transition_duration = container.data("transition-duration"),
-		toggle1 = container.find(".tp-unfold-toggle");
-		
+		toggle1 = container.find(".tp-unfold-toggle"),
+		data_scrollTop = container.data('scroll-top-unfold');
 		
 		if(container.length){
 			if(data_content_a_source === 'innersectionbased'){
@@ -69,29 +69,29 @@
 			}else{
 				var get_height_of_div = container.find(".tp-unfold-description .tp-unfold-description-inner").outerHeight();
 			}			
-           
-				if(get_height_of_div <= data_content_max_height ){
-					container.find(".tp-unfold-last-toggle").css("display", "none");
-					if(data_content_a_source === 'innersectionbased'){
-						if(data_con_pos==='default'){
-							container.closest(".elementor-widget-tp-unfold").next('.elementor-inner-section').after().css("min-height",0);
-						}else if(data_con_pos==='after_button'){							
-							container.closest(".elementor-widget-tp-unfold").prev('.elementor-inner-section').after().css("min-height",0);
-						}
-					}else if(data_content_a_source === 'containerbased'){
-                        if(data_con_pos==='default'){          
-							container.closest(".elementor-element.e-container,.elementor-element.e-con").next(".elementor-element.e-container,.elementor-element.e-con").after().css("min-height",0);
-						}else if(data_con_pos==='after_button'){
-							container.closest(".elementor-element.e-container,.elementor-element.e-con").prev(".elementor-element.e-container,.elementor-element.e-con").after().css("min-height",0);
-						}
-                    }else{
-						container.find(".tp-unfold-description").append("<style>.tp-unfold-wrapper."+ data_id + " .tp-unfold-description:after{:0 !important;}</style>");
+
+			if(get_height_of_div <= data_content_max_height ){
+				container.find(".tp-unfold-last-toggle").css("display", "none");
+				if(data_content_a_source === 'innersectionbased'){
+					if(data_con_pos==='default'){
+						container.closest(".elementor-widget-tp-unfold").next('.elementor-inner-section').after().css("min-height",0);
+					}else if(data_con_pos==='after_button'){							
+						container.closest(".elementor-widget-tp-unfold").prev('.elementor-inner-section').after().css("min-height",0);
 					}
-					
+				}else if(data_content_a_source === 'containerbased'){
+					if(data_con_pos==='default'){          
+						container.closest(".elementor-element.e-container,.elementor-element.e-con").next(".elementor-element.e-container,.elementor-element.e-con").after().css("min-height",0);
+					}else if(data_con_pos==='after_button'){
+						container.closest(".elementor-element.e-container,.elementor-element.e-con").prev(".elementor-element.e-container,.elementor-element.e-con").after().css("min-height",0);
+					}
 				}else{
-					container.find(".tp-unfold-last-toggle").css("display", "flex");
+					container.find(".tp-unfold-description").append("<style>.tp-unfold-wrapper."+ data_id + " .tp-unfold-description:after{:0 !important;}</style>");
 				}
-			
+				
+			}else{
+				container.find(".tp-unfold-last-toggle").css("display", "flex");
+			}
+		
 			toggle1.on('click',function(){
 				var unfold_toggle = $(this).closest('.tp-unfold-wrapper').find(".tp-unfold-toggle");
 				var unfold_desc='';
@@ -157,6 +157,10 @@
 					var inw = $(window).innerWidth();
 					if(inw >= 1025){
 						unfold_desc.animate({height:data_content_max_height},data_transition_duration);
+
+						if(data_scrollTop == 'yes'){
+							TopscrollTo();
+						}
 					}else if(inw <= 1024 && inw >= 768){
 						unfold_desc.animate({height:data_content_max_height_t},data_transition_duration);						
 					}else if(inw <= 767 ){
@@ -170,6 +174,14 @@
 				}
 				
 			});
+
+			var TopscrollTo = function () {
+				setTimeout(() => {
+					jQuery('html,body').animate({
+						scrollTop: (jQuery('.tp-unfold-title').offset().top - 50) 
+					}, 300);
+				}, 100);
+			}
 		}		
 	};	
 	

@@ -2392,7 +2392,7 @@ class Fancy_Card extends Module_Base {
 ?>
 
 		<?php if ($has_icon or $has_image) : ?>
-			<div class="bdt-ep-fancy-card-icon" data-label="<?php echo $data_label; ?>">
+			<div class="bdt-ep-fancy-card-icon" data-label="<?php echo esc_attr($data_label); ?>">
 				<span class="bdt-ep-fancy-card-icon-inner">
 					<?php if ($has_icon and 'icon' == $settings['icon_type']) { ?>
 
@@ -2506,7 +2506,7 @@ class Fancy_Card extends Module_Base {
 				<a <?php echo $this->get_render_attribute_string('readmore'); ?>>
 					<?php echo esc_html($settings['readmore_text']); ?>
 					<?php if ($settings['advanced_readmore_icon']['value']) : ?>
-						<span class="bdt-button-icon-align-<?php echo $settings['readmore_icon_align'] ?>">
+						<span class="bdt-button-icon-align-<?php echo esc_attr($settings['readmore_icon_align']); ?>">
 							<?php Icons_Manager::render_icon($settings['advanced_readmore_icon'], ['aria-hidden' => 'true', 'class' => 'fa-fw']); ?>
 						</span>
 					<?php endif; ?>

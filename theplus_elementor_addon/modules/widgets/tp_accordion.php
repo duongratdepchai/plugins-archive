@@ -24,6 +24,8 @@ if (!defined('ABSPATH'))
 
 
 class ThePlus_Accordion extends Widget_Base {
+
+	public $TpDoc = THEPLUS_TPDOC;
 		
 	public function get_name() {
 		return 'tp-accordion';
@@ -36,6 +38,12 @@ class ThePlus_Accordion extends Widget_Base {
     public function get_icon() {
         return 'fa fa-lightbulb-o theplus_backend_icon';
     }
+
+	public function get_custom_help_url() {
+		$DocUrl = $this->TpDoc . "accordion";
+
+		return esc_url($DocUrl);
+	}
 
     public function get_categories() {
         return array('plus-tabbed');
@@ -71,7 +79,7 @@ class ThePlus_Accordion extends Widget_Base {
 		$repeater->add_control(
 			'content_source',
 			[
-				'label' => esc_html__( 'Content Source', 'theplus' ),
+				'label' => wp_kses_post( "Content Source <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-accordion-widget-settings-overview/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'content',
 				'options' => [
@@ -187,7 +195,7 @@ class ThePlus_Accordion extends Widget_Base {
 		$repeater->add_control(
 			'tab_hashid',
 			[
-				'label' => esc_html__( 'Unique ID', 'theplus' ),
+				'label' => wp_kses_post( "Unique ID <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "anchor-link-specific-accordion-item/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'dynamic' => [
@@ -362,7 +370,7 @@ class ThePlus_Accordion extends Widget_Base {
 		$this->add_control(
 			'active_accordion',
 			[
-				'label' => esc_html__( 'Active Accordion', 'theplus' ),
+				'label' => wp_kses_post( "Active Accordion <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '1',
 				'options' => theplus_get_numbers(),
@@ -370,7 +378,7 @@ class ThePlus_Accordion extends Widget_Base {
 		);
 		$this->add_control(
 			'on_hover_accordion',[
-				'label'   => esc_html__( 'On Hover Accordion', 'theplus' ),
+				'label' => wp_kses_post( "On Hover Accordion <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-accordion-on-hover/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -380,7 +388,7 @@ class ThePlus_Accordion extends Widget_Base {
 		);
 		$this->add_control(
 			'horizontal_accordion',[
-				'label'   => esc_html__( 'Horizontal Accordion', 'theplus' ),
+				'label' => wp_kses_post( "Horizontal Accordion <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-horizontal-accordion/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -481,7 +489,7 @@ class ThePlus_Accordion extends Widget_Base {
 		);
 		$this->add_control(
 			'expand_collapse_accordion',[
-				'label'   => esc_html__( 'Expand/Collapse Content Button', 'theplus' ),
+				'label' => wp_kses_post( "Expand/Collapse Content Button <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "expand-close-elementor-accordion-button/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -647,7 +655,7 @@ class ThePlus_Accordion extends Widget_Base {
 		);
 		$this->add_control(
 			'search_accordion',[
-				'label'   => esc_html__( 'Search', 'theplus' ),
+				'label' => wp_kses_post( "Search <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-accordion-search/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -700,7 +708,7 @@ class ThePlus_Accordion extends Widget_Base {
 		);
 		$this->add_control(
 			'slider_accordion',[
-				'label'   => esc_html__( 'Slider/Pagination', 'theplus' ),
+				'label' => wp_kses_post( "Slider/Pagination <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-accordion-pagination/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -812,7 +820,7 @@ class ThePlus_Accordion extends Widget_Base {
 		$this->add_control(
 			'tabs_autoplay',
 			[
-				'label' => esc_html__( 'Autoplay', 'theplus' ),
+				'label' => wp_kses_post( "Autoplay <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-accordion-autoplay/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
 				'label_off' => esc_html__( 'Disable', 'theplus' ),
@@ -910,7 +918,7 @@ class ThePlus_Accordion extends Widget_Base {
 		);
 		$this->add_control(
 			'schema_accordion',[
-				'label'   => esc_html__( 'SEO Schema Markup', 'theplus' ),
+				'label' => wp_kses_post( "SEO Schema Markup <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "elementor-accordion-schema-markup/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type'    =>  Controls_Manager::SWITCHER,
 				'default' => 'no',
 				'label_on' => esc_html__( 'Enable', 'theplus' ),
@@ -922,7 +930,7 @@ class ThePlus_Accordion extends Widget_Base {
 		$this->add_control(
 			'connection_unique_id',
 			[
-				'label' => esc_html__( 'Carousel Connection ID', 'theplus' ),
+				'label' => wp_kses_post( "Carousel Connection ID <a class='tp-docs-link' href='" . esc_url($this->TpDoc) . "carousel-widgets-remotesync-elementor/?utm_source=wpbackend&utm_medium=elementoreditor&utm_campaign=widget' target='_blank' rel='noopener noreferrer'> <i class='eicon-help-o'></i> </a>", 'theplus' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => '',
 				'description' => 'Note : This option is to connect Accordions with Anything Carousel widget. Use same id both places for deep connection.',
@@ -3178,6 +3186,7 @@ class ThePlus_Accordion extends Widget_Base {
 
 		/*--On Scroll View Animation ---*/
 		include THEPLUS_PATH. 'modules/widgets/theplus-widget-animation.php';
+		include THEPLUS_PATH. 'modules/widgets/theplus-needhelp.php';
 	}
 
     protected function render() {

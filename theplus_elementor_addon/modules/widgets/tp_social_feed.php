@@ -1515,17 +1515,6 @@ class ThePlus_Social_Feed extends Widget_Base {
 				'separator' => 'before',
 			]
 		);
-		// $this->add_control(
-		// 	'facebook_transient',
-		// 	[
-		// 		'label' => esc_html__( 'Facebook Transient', 'theplus' ),
-		// 		'type' => Controls_Manager::SWITCHER,
-		// 		'label_on' => esc_html__( 'Enable', 'theplus' ),
-		// 		'label_off' => esc_html__( 'Disable', 'theplus' ),
-		// 		'default' => 'yes',
-		// 		'separator' => 'before',
-		// 	]
-		// );
 		$this->end_controls_section();
 		/* Extra options end*/
 

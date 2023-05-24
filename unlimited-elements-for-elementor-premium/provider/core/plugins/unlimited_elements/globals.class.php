@@ -13,11 +13,13 @@ class GlobalsUnlimitedElements{
 	
 	//public static $insideNotificationText = "BLACK FRIDAY SALE STARTS NOW! <br> Grab the PRO version for 50% off. <br> <a href='https://unlimited-elements.com/pricing/' target='_blank'>Get It Now</a> ";
 	//public static $insideNotificationText = "BLACK FRIDAY DEAL ENDS SOON! <br> Last chance to get 50% off. <br> <a href='https://unlimited-elements.com/pricing/' target='_blank'>Get It Now</a> ";
+	
 	public static $insideNotificationText = "Unlock Access To All PRO Widgets and Features.  <a href='https://unlimited-elements.com/pricing/' target='_blank'>Upgrade Now</a> ";
 	public static $insideNotificationUrl = "https://unlimited-elements.com/pricing/";
 	
 	public static $showAdminNotice = false;
-	
+	 
+	/*
 	public static $arrAdminNotice = array(
 		"id"=>"black_friday_22_last",
 		"text"=>"temp text",		//real text goes from event
@@ -33,21 +35,38 @@ class GlobalsUnlimitedElements{
 		"internal_only"=>true,		//show only in ue page
 		"no-notice-wrap"=>false
 	);
+	*/
 	
-	/*
 	public static $arrAdminNotice = array(
-		"id"=>"birthday-3-sale",
+		"id"=>"doubly-work3",
+		"type"=>"advanced",
+		//"text"=>"Birthday Sale IS Here!",
+		//"banner"=>"birthday-3-banner.png",
+		//"type"=>"banner",	//advanced,banner
+		"button_text"=>"",
+		"button_link"=>"",
+		"free_only"=>false,
+		"no-notice-wrap"=>true,
+		"start" => 0, 			//offset in hours from the plugin instalation
+		"duration" => 48, 		//offset in hours from the first view
+		"debug"=>true			//force show this notice with some meta data
+	);
+
+	public static $arrAdminNotice2 = array(
+		"id"=>"rating2",
 		//"text"=>"Birthday Sale IS Here!",
 		//"banner"=>"birthday-3-banner.png",
 		"type"=>"advanced",
 		//"type"=>"banner",	//advanced,banner
-		//"button_text"=>"Show Me More",
+		"button_text"=>"Show Me More",
 		"button_link"=>"https://unlimited-elements.com/pricing/",
-		"expire"=>"",
-		"free_only"=>true,
-		"no-notice-wrap"=>true
+		"free_only"=>false,
+		"no-notice-wrap"=>true,
+		"start" => 240, 		//offset in hours from the plugin instalation
+		"finish" => 288, 		//offset in hours from the first view
+		"debug"=>true			//force show this notice with some meta data
 	);
-	*/
+	
 	
 	const PLUGIN_NAME = "unlimitedelements";
    	const VIEW_ADDONS_ELEMENTOR = "addons_elementor";	
@@ -94,32 +113,37 @@ class GlobalsUnlimitedElements{
    	 * set doubly notice text
    	 */
    	private static function setDoublyNoticeText(){
-   		
-   		$urlInstallDoubly = UniteFunctionsWPUC::getInstallPluginLink("doubly");
-   				
-   		$urlImage = GlobalsUC::$urlPluginImages."logo-circle.svg";
-   		
+		$urlInstallDoubly = UniteFunctionsWPUC::getInstallPluginLink("doubly") . "&uc_dismiss_notice=" . self::$arrAdminNotice["id"];
 		$textDoubly = "
 			<div class='uc-notice-wrapper'>
-			<div class='uc-notice-left'>
-				<img src='{$urlImage}' width='100'>
-			</div>
 			<div class='uc-notice-right'>
 				<div class='uc-notice-header'>Live Copy Paste from Unlimited Elements</div>
-				
 				<div class='uc-notice-middle'>
 					Did you know that now you can copy fully designed sections from Unlimited Elements to your website for FREE? <br> 
 					If you want to try then install our new plugin called Doubly. <br>
 				</div>
-				
 				<a class='uc-notice-button button button-primary' href='{$urlInstallDoubly}'>Install Doubly Now</a>
 			</div>
 			</div>
 		";
-   		
    		self::$arrAdminNotice["text"] = $textDoubly;
    		
    	}
+
+   	/**
+   	 * set rating notice text
+   	 */
+	private static function setRatingNoticeText(){
+   		
+		$textDoubly = "
+			<div class='uc-notice-wrapper'>
+				rating notice goes here!
+			</div>
+		";
+		
+		self::$arrAdminNotice2["text"] = $textDoubly;
+		
+	}
    	
    	
    	/**
@@ -131,6 +155,7 @@ class GlobalsUnlimitedElements{
    			return(false);
    		
    		self::setDoublyNoticeText();
+		self::setRatingNoticeText();
    			
    	}
    	

@@ -65,7 +65,8 @@
                                    id="<?php echo $this->product_slug; ?>-license-key"
                                    name="<?php echo $this->product_slug; ?>-license-key" type="text"
                                    class="regular-text"
-                                   value="EA Pro Activated"
+                                   value="<?php echo esc_attr( self::get_hidden_license_key() ); ?>"" placeholder="Place
+                            Your License Key and Activate" />
                             <input type="hidden" name="action" value="eae_pro_deactivate_license"/>
                             <input type="hidden" name="<?php echo $this->product_slug; ?>_license_deactivate"/>
                             <button type="submit" class="eael-button button__danger">Deactivate</button>

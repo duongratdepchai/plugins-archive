@@ -12,7 +12,7 @@ defined ('UNLIMITED_ELEMENTS_INC') or die ('restricted aceess');
 
 class UniteCreatorAdminNotices{
 	
-	const NOTICES_LIMIT = 1;
+	const NOTICES_LIMIT = 2;
 	const TYPE_ADVANCED = "advanced";
 	const TYPE_BANNER = "banner";
 	
@@ -23,13 +23,13 @@ class UniteCreatorAdminNotices{
 	/**
 	 * set notice
 	 */
-	public function setNotice($text, $id, $expire, $params = array()){
+	public function setNotice($text, $id, $params = array()){
 		
 		//don't let to add more then limited notices
 		if(count(self::$arrNotices) >= self::NOTICES_LIMIT)
 			return(false);
+				
 		
-			
 		$type = UniteFunctionsUC::getVal($params, "type");
 		
 		if(empty($text) && $type != self::TYPE_BANNER)
@@ -45,7 +45,6 @@ class UniteCreatorAdminNotices{
 		if(!empty($params)){
 			unset($params["text"]);
 			unset($params["id"]);
-			unset($params["expire"]);
 			
 			$arrNotice = array_merge($arrNotice, $params);
 		}
@@ -201,8 +200,37 @@ class UniteCreatorAdminNotices{
 		
 		return(true);
 	}
-	
-	
+
+	/**
+	 * check condition
+	 */
+	private function isScheduleAllowed($notice){
+		
+		$userID = get_current_user_id();
+		$id = UniteFunctionsUC::getVal($notice, "id");
+		$duration = intval(UniteFunctionsUC::getVal($notice, "duration")) * 3600;
+		$start = intval(UniteFunctionsUC::getval($notice, "start") * 3600);
+		$install = intval(get_option('unlimited_elements_install'));
+		$current_time = time();
+		$install_diff = $current_time - $install;
+		
+		//echo $install_diff;
+		//echo "<br>" . time() . "<br>";
+		
+		if($install_diff > $start){
+			$finish = get_user_meta($userID, 'uc_notice_dissmissed_finish_' . $id);
+			if(!$finish){
+				$finish = time() + $duration;
+				add_user_meta($userID, 'uc_notice_dissmissed_finish_' . $id, $finish, true);	
+			}
+			if($install_diff < $finish){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * put admin notices
 	 */
@@ -210,6 +238,10 @@ class UniteCreatorAdminNotices{
 		
 		if(empty(self::$arrNotices))
 			return(false);
+
+		//echo "<pre>";
+		//print_r(self::$arrNotices);
+		//echo "</pre>";
 		
 		foreach(self::$arrNotices as $notice){
 			
@@ -226,12 +258,18 @@ class UniteCreatorAdminNotices{
 			
 			if($isAllowed == false)
 				return(false);
+
+			//check schedule
+			$isScheduled = $this->isScheduleAllowed($notice);
+			
+			if($isScheduled == false)
+				return(false);
 						
 			$htmlNotices = $this->getNoticeHtml($text, $id, true, $notice);			
 			
 			if(empty($htmlNotices))
 				continue;
-			
+
 			echo $htmlNotices;
 		}
 		
@@ -418,7 +456,11 @@ class UniteCreatorAdminNotices{
 			return(false);
 		
 		$this->checkDissmissAction();
-		
+
+		// Set plugin instalation time
+		if(!get_option('unlimited_elements_install')){
+			add_option('unlimited_elements_install',time());
+		}
 		
 		UniteProviderFunctionsUC::addFilter("admin_notices", array($this, "putAdminNotices"),10,3);
 		

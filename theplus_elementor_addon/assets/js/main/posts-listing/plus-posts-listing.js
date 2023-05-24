@@ -90,19 +90,19 @@
 
 		if( $scope.hasClass("elementor-widget") && $scope.find('.list-isotope-metro').length > 0 ){
 			$(window).on("resize", function() {
-				theplus_setup_packery_portfolio('all');
+				theplus_setup_packery_portfolio("*");
 				$('.list-isotope-metro .post-inner-loop').isotope('layout').isotope("reloadItems");
 			});
 			
 			$("body").on("post-load resort-isotope", function() {
 				setTimeout(function() {
-					theplus_setup_packery_portfolio('all');
+					theplus_setup_packery_portfolio("*");
 					$('.list-isotope-metro .post-inner-loop').isotope('layout');
 				}, 800)
 			});
 			$("body").on("tabs-reinited", function() {
 				setTimeout(function() {
-					theplus_setup_packery_portfolio('all');
+					theplus_setup_packery_portfolio("*");
 					$('.list-isotope-metro .post-inner-loop').isotope('layout');
 				}, 800)
 			});

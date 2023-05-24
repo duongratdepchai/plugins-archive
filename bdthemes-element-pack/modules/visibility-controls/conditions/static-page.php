@@ -79,10 +79,10 @@
 			} elseif ( 'custom' === $val ) {
 				$page_id = '';
 				$page_id = get_the_id();
-				if ( 0 === (int) $extra ) {
+				if ( 0 === (int) $custom_page_id ) {
 					$show = false;
 				} else {
-					$show = (int) $extra === (int) $page_id ? true : false;
+					$show = (int) $custom_page_id === (int) $page_id ? true : false;
 				}
 				return $this->compare( $show, true, $relation );
 			}

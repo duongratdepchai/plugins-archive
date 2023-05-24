@@ -98,7 +98,7 @@ class Table extends Module_Base
             [
                 'label'       => __('Table HTML', 'bdthemes-element-pack'),
                 'type'        => Controls_Manager::TEXTAREA,
-                'default'     => __('<table><thead><tr><th>Name</th><th>Age</th><th>Phone</th></tr></thead><tbody><tr><td>Tom</td><td>5</td><td>010281065</td></tr><tr><td>Jerry</td><td>4</td><td>012540515</td></tr><tr><td>Halum</td><td>12</td><td>011511441</td></tr></tbody></table>', 'bdthemes-element-pack'),
+                'default'     => '<table><thead><tr><th>Name</th><th>Age</th><th>Phone</th></tr></thead><tbody><tr><td>Tom</td><td>5</td><td>010281065</td></tr><tr><td>Jerry</td><td>4</td><td>012540515</td></tr><tr><td>Halum</td><td>12</td><td>011511441</td></tr></tbody></table>', 'bdthemes-element-pack',
                 'placeholder' => __('Table Data', 'bdthemes-element-pack'),
                 'rows'        => 10,
                 'condition'   => [

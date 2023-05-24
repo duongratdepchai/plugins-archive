@@ -22,6 +22,7 @@ class UniteCreatorSettingsWork extends UniteSettingsAdvancedUC{
 		"add_current_posts",
 		"selector",
 		"selector_value",
+		"selector1",		//for typography
 		"selector2",
 		"selector2_value",
 		"selector3",
@@ -59,7 +60,8 @@ class UniteCreatorSettingsWork extends UniteSettingsAdvancedUC{
 			$param["default_value"] = UniteFunctionsUC::getVal($setting, "default_value");
 			$param["placeholder"] = UniteFunctionsUC::getVal($setting, "placeholder");
 			
-			$arrKeys = array("min","max","step","units","disabled");
+			
+			$arrKeys = array("min","max","step","units","disabled","html");
 			
 			foreach($arrKeys as $key){
 				
@@ -753,7 +755,7 @@ class UniteCreatorSettingsWork extends UniteSettingsAdvancedUC{
 			$extra["unit"] = $unit;
 		
 		$extra["origtype"] = $type;
-				
+		
 		foreach($this->arrAddAttributes as $attributeName){
 			
 			$attributeValue = UniteFunctionsUC::getVal($param, $attributeName);
@@ -1273,7 +1275,7 @@ class UniteCreatorSettingsWork extends UniteSettingsAdvancedUC{
 			
 			$arrParams = UniteFunctionsUC::getVal($arrCat, "params");
 		
-			$this->addSap($title,$catID);
+			$this->addSap($title,$catID,$tab);
 			
 			foreach($arrParams as $param)
 				$this->addByCreatorParam($param);

@@ -112,6 +112,7 @@ Class Plus_Library
 			'tp_process_steps' => 'tp-process-steps',
 			'tp_row_background' => 'tp-row-background',
 			'tp_scroll_navigation' => 'tp-scroll-navigation',
+			'tp_scroll_sequence' => 'tp-scroll-sequence',
 			'tp_search_filter' => 'tp-search-filter',
 			'tp_search_bar' => 'tp-search-bar',
 			'tp_site_logo' => 'tp-site-logo',

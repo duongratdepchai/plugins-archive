@@ -719,19 +719,57 @@ class ThePlus_Style_List extends Widget_Base {
 				],
 			]
 		);
-		$this->add_control(
-			'layout',
-			[
-				'label' => esc_html__( 'Layout', 'theplus' ),
+
+		$this->start_controls_tabs( 'tabs_layout_style' );
+		$this->start_controls_tab( 'tab_layout_desktop', [
+				'label' => esc_html__( 'Desktop', 'theplus' ),
+			]
+		);
+		$this->add_control( 'layout', [
+				'label' => esc_html__( 'Desktop Layout', 'theplus' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'default',
 				'options' => [
 					'default'  => esc_html__( 'Default', 'theplus' ),
 					'tp_sl_l_horizontal'  => esc_html__( 'Horizontal', 'theplus' ),
 				],
-				'separator' => 'before',
 			]
 		);
+		$this->end_controls_tab();
+		
+		$this->start_controls_tab( 'tab_layout_tablet', [
+				'label' => esc_html__( 'Tablet', 'theplus' ),
+			]
+		);
+		$this->add_control( 'tablet_layout', [
+				'label' => esc_html__( 'Tablet Layout', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'default',
+				'options' => [
+					'default'  => esc_html__( 'Default', 'theplus' ),
+					'tp_sl_l_horizontal'  => esc_html__( 'Horizontal', 'theplus' ),
+				],
+			]
+		);
+		$this->end_controls_tab();
+
+		$this->start_controls_tab( 'tab_layout_mobile', [
+				'label' => esc_html__( 'Mobile', 'theplus' ),
+			]
+		);
+		$this->add_control( 'mobile_layout', [
+				'label' => esc_html__( 'Mobile Layout', 'theplus' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'default',
+				'options' => [
+					'default'  => esc_html__( 'Default', 'theplus' ),
+					'tp_sl_l_horizontal'  => esc_html__( 'Horizontal', 'theplus' ),
+				],
+			]
+		);
+		$this->end_controls_tab();
+		$this->end_controls_tabs();
+
 		$this->end_controls_section();
 		
 		$this->start_controls_section(
@@ -1856,6 +1894,7 @@ class ThePlus_Style_List extends Widget_Base {
 
         $settings = $this->get_settings_for_display();
 		$display_counter_class='';
+
 		$sl_display_counter = isset($settings['sl_display_counter']) ? $settings['sl_display_counter'] : '';
 		$sl_display_counter_style = !empty($settings['sl_display_counter_style']) ? $settings['sl_display_counter_style'] : 'number-normal';
 		if($sl_display_counter == 'yes' && !empty($sl_display_counter_style)){
@@ -1942,14 +1981,24 @@ class ThePlus_Style_List extends Widget_Base {
 			<?php }
 			
 			$layout = !empty($settings['layout']) ? $settings['layout'] : 'default';
+			$tablet_layout = !empty($settings['tablet_layout']) ? $settings['tablet_layout'] : 'default';
+			$mobile_layout = !empty($settings['mobile_layout']) ? $settings['mobile_layout'] : 'default';
 			
-			$layout_class='';
+			$layout_class=$tablayout=$moblayout='';
 			if(!empty($layout) && $layout==='tp_sl_l_horizontal'){
 				$layout_class = 'tp-sl-l-horizontal';
 			}
-			
+			if(!empty($tablet_layout) && $tablet_layout==='tp_sl_l_horizontal'){
+				$layout_class = 'tp-sl-l-horizontal';
+			}
+			if(!empty($mobile_layout) && $mobile_layout==='tp_sl_l_horizontal'){
+				$layout_class = 'tp-sl-l-horizontal';
+			}
+				$layout_attr = '';
+				$layout_attr = ['desktop' => $layout, 'tablet' => $tablet_layout, 'mobile' => $mobile_layout ];
+				$layout_attr = htmlspecialchars(json_encode($layout_attr, true));
 			?>
-		<div class="plus-stylist-list-wrapper <?php echo esc_attr($animated_class); ?> <?php echo esc_attr($hover_inverse_effect); ?> <?php echo esc_attr($hover_inverse_id); ?> <?php echo esc_attr($layout_class); ?>" <?php echo $animation_attr; ?> <?php echo $hover_inverse_attr_id; ?>>
+		<div class="plus-stylist-list-wrapper <?php echo esc_attr($animated_class); ?> <?php echo esc_attr($hover_inverse_effect); ?> <?php echo esc_attr($hover_inverse_id); ?> <?php //echo esc_attr($layout_class); ?>" <?php echo $animation_attr; ?> <?php echo $hover_inverse_attr_id; ?> data-layout="<?php echo esc_attr($layout_attr); ?>" >
 			
 		<ul class="plus-icon-list-items <?php echo esc_attr($vertical_center); ?>">
 			<?php

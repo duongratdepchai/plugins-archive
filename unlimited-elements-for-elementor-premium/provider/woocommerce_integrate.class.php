@@ -54,9 +54,22 @@ class UniteCreatorWooIntegrate{
 		if(class_exists("BeRocket_products_label")){
 			do_action('berocket_apl_set_label', true, $productID);
 		}
-			
+
 		
 	}
+
+	
+	/**
+	 * bottom product integrations
+	 */
+	public static function onInsideEditorWooProductBottom($productID){
+		
+		//wishlist
+		
+		UniteCreatorPluginIntegrations::putJetWooWishlistButton();
+		
+	}
+	
 	
 	/**
 	 * init actions on start, run on "plugins_loaded" filter
@@ -64,6 +77,8 @@ class UniteCreatorWooIntegrate{
 	public static function initActions(){
 		
 		add_action("ue_woocommerce_product_integrations", array("UniteCreatorWooIntegrate", "onInsideEditorWooProduct"), 10, 1);
+		
+		add_action("ue_woocommerce_product_integrations_bottom", array("UniteCreatorWooIntegrate", "onInsideEditorWooProductBottom"), 10, 1);
 		
 	}
 	
@@ -213,7 +228,10 @@ class UniteCreatorWooIntegrate{
 			
 			if(empty($arrPriceNumbers)){
 				$arrProduct["woo_".$key."_from"] = 0;
-				$arrProduct["woo_".$key."_to"] = 0;				
+				$arrProduct["woo_".$key."_to"] = 0;
+								
+				$arrProduct["woo_".$key."_from_id"] = null;
+				$arrProduct["woo_".$key."_to_id"] = null;
 				continue;
 			}
 			
@@ -234,7 +252,7 @@ class UniteCreatorWooIntegrate{
 			
 			$from = (float)$from;
 			$to = (float)$to;
-						
+			
 			$from = $this->modifyPrice($from, $objProduct);
 			$to = $this->modifyPrice($to, $objProduct);
 			
@@ -753,7 +771,7 @@ class UniteCreatorWooIntegrate{
     		$arrPrices = $objInfo->get_variation_prices();
     		
     		$arrProduct = $this->addPricesFromTo($arrProduct, $arrPrices, $objInfo);
-    		
+    		    		
     		$arrProduct["woo_price"] = $arrProduct["woo_price_from"];
     		$arrProduct["woo_price_id"] = $arrProduct["woo_price_from_id"];
     		
@@ -1083,6 +1101,20 @@ class UniteCreatorWooIntegrate{
 		return($arrIDs);
 	}
 	
+	/**
+	 * get cart data
+	 */
+	public function getCartData(){
+		
+		$arrProducts = $this->getCartProductIDs();
+		
+		$numProducts = count($arrProducts);
+		
+		$output = array();
+		$output["num_products"] = $numProducts;
+		
+		return($output);
+	}
 	
 	/**
 	 * get related product id's from selected to cart products
@@ -1092,7 +1124,7 @@ class UniteCreatorWooIntegrate{
 		$isActive = self::isWooActive();
 		if($isActive == false)
 			return(array());
-			
+		
 		$arrIDs = $this->getCartProductIDs();
 		
 		if(empty($arrIDs))

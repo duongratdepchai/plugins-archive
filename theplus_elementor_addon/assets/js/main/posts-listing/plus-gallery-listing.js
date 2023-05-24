@@ -58,7 +58,7 @@
 									}
 								}
 								if ($('.list-isotope-metro').length) {
-									theplus_setup_packery_portfolio('all');	
+									theplus_setup_packery_portfolio("*");	
 								}
 								if($("."+load_class).parents(".animate-general").length){
 									var c,d;
@@ -116,7 +116,7 @@
 							}
 							if ($('.list-isotope-metro').length) {
 								setTimeout(function(){	
-									theplus_setup_packery_portfolio('all');	
+									theplus_setup_packery_portfolio("*");	
 								}, 500);
 							}
 							
@@ -132,7 +132,7 @@
 							}
 						}
 						if ($('.list-isotope-metro').length) {
-							theplus_setup_packery_portfolio('all');	
+							theplus_setup_packery_portfolio("*");	
 						}
 						
 					});

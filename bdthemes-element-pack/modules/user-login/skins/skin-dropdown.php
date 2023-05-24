@@ -239,7 +239,7 @@ class Skin_Dropdown extends Elementor_Skin_Base {
                 ]
             );
 
-            $this->parent->add_render_attribute('dropdown-settings', 'class', 'bdt-dropdown');
+            $this->parent->add_render_attribute('dropdown-settings', 'class', 'bdt-dropdown bdt-drop');
         }
 
         $this->parent->form_fields_render_attributes();

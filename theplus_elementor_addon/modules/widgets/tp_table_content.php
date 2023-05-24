@@ -393,7 +393,19 @@ class ThePlus_Table_Content extends Widget_Base {
 					'hashtag' => 'yes',
 				],	
 			]
-		);		
+		);
+		$this->add_control('copyText',
+            [
+                'label' => esc_html__( 'Copy Text', 'theplus' ),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => esc_html__( 'On', 'theplus' ),
+                'label_off' => esc_html__( 'Off', 'theplus' ),
+                'default' => 'yes',
+                'condition' => [
+                    'hashtag' => 'yes',
+                ],
+            ]
+        );
 		$this->add_control(
             'hashtaghover',
             [
@@ -1626,6 +1638,7 @@ class ThePlus_Table_Content extends Widget_Base {
 		
 		if(!empty($settings['hashtag']) && $settings['hashtag']=='yes'){
 			$option['hashtagtext']= !empty($settings["hashtagtext"]) ? $settings["hashtagtext"] : '#';
+			$option['copyText']= !empty($settings["copyText"]) ? 1 : 0;
 		}
 		
 		$option['isCollapsedClass'] ='';

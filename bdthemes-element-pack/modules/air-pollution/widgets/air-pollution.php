@@ -8,7 +8,7 @@ use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Background;
 use ElementPack\Utils;
 
-if ( !defined('ABSPATH') ) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -65,17 +65,17 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'cache_refresh',
             array(
-                'label'     => __('Reload Cache after ', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Reload Cache after ', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SELECT,
                 'default'   => '1',
                 'options'   => array(
-                    '15' => __('15 Minutes', 'bdthemes-element-pack'),
-                    '30' => __('30 Minutes', 'bdthemes-element-pack'),
-                    '1'  => __('1 Hour', 'bdthemes-element-pack'),
-                    '3'  => __('3 Hour', 'bdthemes-element-pack'),
-                    '6'  => __('6 Hour', 'bdthemes-element-pack'),
-                    '12' => __('12 Hour', 'bdthemes-element-pack'),
-                    '24' => __('24 Hour', 'bdthemes-element-pack'),
+                    '15' => esc_html__('15 Minutes', 'bdthemes-element-pack'),
+                    '30' => esc_html__('30 Minutes', 'bdthemes-element-pack'),
+                    '1'  => esc_html__('1 Hour', 'bdthemes-element-pack'),
+                    '3'  => esc_html__('3 Hour', 'bdthemes-element-pack'),
+                    '6'  => esc_html__('6 Hour', 'bdthemes-element-pack'),
+                    '12' => esc_html__('12 Hour', 'bdthemes-element-pack'),
+                    '24' => esc_html__('24 Hour', 'bdthemes-element-pack'),
                 ),
                 'condition' => [
                     'weather_cache' => 'yes',
@@ -118,7 +118,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'title_html_tag',
             [
-                'label'   => __('Title HTML Tag', 'bdthemes-element-pack'),
+                'label'   => esc_html__('Title HTML Tag', 'bdthemes-element-pack'),
                 'type'    => Controls_Manager::SELECT,
                 'options' => element_pack_title_tags(),
                 'default' => 'h4',
@@ -160,14 +160,14 @@ class Air_Pollution extends Module_Base {
         $this->start_controls_tab(
             'style_list_normal_tab',
             [
-                'label' => __('Normal', 'bdthemes-element-pack'),
+                'label' => esc_html__('Normal', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'style_title_heading',
             [
-                'label' => __('Title', 'bdthemes-element-pack'),
+                'label' => esc_html__('Title', 'bdthemes-element-pack'),
                 'type'  => Controls_Manager::HEADING,
             ]
         );
@@ -175,7 +175,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'title_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ap-title' => 'color: {{VALUE}};',
@@ -194,7 +194,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'style_value_heading',
             [
-                'label'     => __('Value', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Value', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::HEADING,
                 'separator' => 'before',
             ]
@@ -203,7 +203,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'value_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ap-value' => 'color: {{VALUE}};',
@@ -222,7 +222,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'style_list_heading',
             [
-                'label'     => __('List', 'bdthemes-element-pack'),
+                'label'     => esc_html__('List', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::HEADING,
                 'separator' => 'before',
             ]
@@ -232,7 +232,7 @@ class Air_Pollution extends Module_Base {
             Group_Control_Background::get_type(),
             [
                 'name'     => 'list_bg',
-                'label'    => __('Background', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Background', 'bdthemes-element-pack'),
                 'types'    => ['classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .bdt-list li',
             ]
@@ -243,14 +243,14 @@ class Air_Pollution extends Module_Base {
         $this->start_controls_tab(
             'style_list_hover_tab',
             [
-                'label' => __('Hover', 'bdthemes-element-pack'),
+                'label' => esc_html__('Hover', 'bdthemes-element-pack'),
             ]
         );
 
         $this->add_control(
             'title_color_hover',
             [
-                'label'     => __('Title Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Title Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-list li:hover .bdt-ap-title' => 'color: {{VALUE}};',
@@ -261,7 +261,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'value_color_hover',
             [
-                'label'     => __('Value Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Value Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-list li:hover .bdt-ap-value' => 'color: {{VALUE}};',
@@ -272,7 +272,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'style_list_heading_hover',
             [
-                'label'     => __('List', 'bdthemes-element-pack'),
+                'label'     => esc_html__('List', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::HEADING,
                 'separator' => 'before',
             ]
@@ -282,7 +282,7 @@ class Air_Pollution extends Module_Base {
             Group_Control_Background::get_type(),
             [
                 'name'     => 'list_bg_hover',
-                'label'    => __('Background', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Background', 'bdthemes-element-pack'),
                 'types'    => ['classic', 'gradient'],
                 'selector' => '{{WRAPPER}} ul.bdt-list li:hover',
             ]
@@ -295,7 +295,7 @@ class Air_Pollution extends Module_Base {
         // $this->add_responsive_control(
         //     'list_spacing',
         //     [
-        //         'label'   => __( 'Spacing', 'bdthemes-element-pack' ),
+        //         'label'   => esc_html__( 'Spacing', 'bdthemes-element-pack' ),
         //         'type'    => Controls_Manager::SLIDER,
         //         'separator' => 'before',
         //         'selectors' => [
@@ -320,7 +320,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'heading_stripe',
             [
-                'label'     => __('List Stripe', 'bdthemes-element-pack'),
+                'label'     => esc_html__('List Stripe', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::HEADING,
                 'separator' => 'before',
                 'condition' => ['list_stripe' => 'yes'],
@@ -331,7 +331,7 @@ class Air_Pollution extends Module_Base {
             Group_Control_Background::get_type(),
             [
                 'name'      => 'list_stripe_bg',
-                'label'     => __('Background', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Background', 'bdthemes-element-pack'),
                 'types'     => ['classic', 'gradient'],
                 'selector'  => '{{WRAPPER}} ul.bdt-list-striped>:nth-of-type(odd)',
                 'condition' => ['list_stripe' => 'yes']
@@ -353,19 +353,19 @@ class Air_Pollution extends Module_Base {
         $this->add_responsive_control(
             'date_align',
             [
-                'label'     => __('Alignment', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Alignment', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::CHOOSE,
                 'options'   => [
                     'left'   => [
-                        'title' => __('Left', 'bdthemes-element-pack'),
+                        'title' => esc_html__('Left', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __('Center', 'bdthemes-element-pack'),
+                        'title' => esc_html__('Center', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-center',
                     ],
                     'right'  => [
-                        'title' => __('Right', 'bdthemes-element-pack'),
+                        'title' => esc_html__('Right', 'bdthemes-element-pack'),
                         'icon'  => 'eicon-text-align-right',
                     ],
                 ],
@@ -380,7 +380,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'date_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ap-date-wrapper .bdt-text-lead' => 'color: {{VALUE}};',
@@ -392,7 +392,7 @@ class Air_Pollution extends Module_Base {
             Group_Control_Background::get_type(),
             [
                 'name'     => 'date_bg',
-                'label'    => __('Background', 'bdthemes-element-pack'),
+                'label'    => esc_html__('Background', 'bdthemes-element-pack'),
                 'types'    => ['classic', 'gradient'],
                 'selector' => '{{WRAPPER}} .bdt-ap-date-wrapper .bdt-text-lead',
             ]
@@ -421,7 +421,7 @@ class Air_Pollution extends Module_Base {
         $this->add_responsive_control(
             'date_margin',
             [
-                'label'     => __('Margin', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Margin', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::DIMENSIONS,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-ap-date-wrapper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
@@ -443,7 +443,7 @@ class Air_Pollution extends Module_Base {
         $this->add_control(
             'divider_color',
             [
-                'label'     => __('Color', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Color', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .bdt-list-divider>:nth-child(n+2)' => 'border-color: {{VALUE}};',
@@ -454,7 +454,7 @@ class Air_Pollution extends Module_Base {
         $this->add_responsive_control(
             'divider_size',
             [
-                'label'     => __('Size', 'bdthemes-element-pack'),
+                'label'     => esc_html__('Size', 'bdthemes-element-pack'),
                 'type'      => Controls_Manager::SLIDER,
                 'separator' => 'before',
                 'selectors' => [
@@ -471,19 +471,19 @@ class Air_Pollution extends Module_Base {
         $expire_value = $settings['cache_refresh'];
         $expire_time  = 1 * HOUR_IN_SECONDS;
 
-        if ( '1' === $expire_value ) {
+        if ('1' === $expire_value) {
             $expire_time = 1 * HOUR_IN_SECONDS;
-        } elseif ( '3' === $expire_value ) {
+        } elseif ('3' === $expire_value) {
             $expire_time = 3 * HOUR_IN_SECONDS;
-        } elseif ( '6' === $expire_value ) {
+        } elseif ('6' === $expire_value) {
             $expire_time = 6 * HOUR_IN_SECONDS;
-        } elseif ( '12' === $expire_value ) {
+        } elseif ('12' === $expire_value) {
             $expire_time = 12 * HOUR_IN_SECONDS;
-        } elseif ( '24' === $expire_value ) {
+        } elseif ('24' === $expire_value) {
             $expire_time = 24 * HOUR_IN_SECONDS;
-        } elseif ( '15' === $expire_value ) {
+        } elseif ('15' === $expire_value) {
             $expire_time = 15 * MINUTE_IN_SECONDS;
-        } elseif ( '30' === $expire_value ) {
+        } elseif ('30' === $expire_value) {
             $expire_time = 30 * MINUTE_IN_SECONDS;
         }
 
@@ -496,7 +496,7 @@ class Air_Pollution extends Module_Base {
         $ep_api_settings = get_option('element_pack_api_settings');
         $api_key         = !empty($ep_api_settings['open_weather_api_key']) ? $ep_api_settings['open_weather_api_key'] : '';
 
-        if ( !$api_key ) {
+        if (!$api_key) {
 
             $message = esc_html__('Ops! I think you forget to set API key in Element Pack API settings. Please set your API key on Open Weather Map access box', 'bdthemes-element-pack');
 
@@ -511,7 +511,7 @@ class Air_Pollution extends Module_Base {
 
         $data         = $this->weather_data;
         $weather_date = NULL;
-        if ( !empty($data) ) {
+        if (!empty($data)) {
             $weather_date_timestamp = $data['dt'];
             $weather_date           = date_i18n(get_option('date_format'), $weather_date_timestamp);
         }
@@ -521,10 +521,10 @@ class Air_Pollution extends Module_Base {
 
         $this->add_render_attribute('list', 'class', 'bdt-list bdt-list-large bdt-margin-remove ' . $list_stripe . $list_divider);
 
-        ?>
+?>
 
         <div <?php echo $this->get_render_attribute_string('air-pollution'); ?>>
-            <?php if ( $settings['show_date'] == 'yes' ) : ?>
+            <?php if ($settings['show_date'] == 'yes') : ?>
                 <div class="bdt-ap-date-wrapper">
                     <div class="bdt-text-lead bdt-text-center bdt-margin-bottom">
                         <?php echo esc_html($weather_date); ?>
@@ -534,121 +534,121 @@ class Air_Pollution extends Module_Base {
             <ul <?php echo $this->get_render_attribute_string('list'); ?>>
                 <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
                     <div>
-                        <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove
                         bdt-ap-title">
-                        <?php _e('Carbon monoxide', 'bdthemes-element-pack'); ?>
-                    </<?php echo $components_tag; ?>>
-        </div>
-        <div>
+                            <?php _e('Carbon monoxide', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['co']);
                             } ?>
                         </span>
-        </div>
-        </li>
-        <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
-            <div>
-                <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
-                <?php _e('Nitrogen monoxide', 'bdthemes-element-pack'); ?>
-            </<?php echo $components_tag; ?>>
-            </div>
-            <div>
+                    </div>
+                </li>
+                <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
+                    <div>
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
+                            <?php _e('Nitrogen monoxide', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['no']);
                             } ?>
                         </span>
-            </div>
-        </li>
-        <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
-            <div>
-                <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
-                <?php _e('Nitrogen dioxide', 'bdthemes-element-pack'); ?>
-            </<?php echo $components_tag; ?>>
-            </div>
-            <div>
+                    </div>
+                </li>
+                <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
+                    <div>
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
+                            <?php _e('Nitrogen dioxide', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['no2']);
                             } ?>
                         </span>
-            </div>
-        </li>
-        <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
-            <div>
-                <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
-                <?php _e('Ozone', 'bdthemes-element-pack'); ?>
-            </<?php echo $components_tag; ?>>
-            </div>
-            <div>
+                    </div>
+                </li>
+                <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
+                    <div>
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
+                            <?php _e('Ozone', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['o3']);
                             } ?>
                         </span>
-            </div>
-        </li>
-        <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
-            <div>
-                <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
-                <?php _e('Sulphur dioxide', 'bdthemes-element-pack'); ?>
-            </<?php echo $components_tag; ?>>
-            </div>
-            <div>
+                    </div>
+                </li>
+                <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
+                    <div>
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
+                            <?php _e('Sulphur dioxide', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['so2']);
                             } ?>
                         </span>
-            </div>
-        </li>
-        <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
-            <div>
-                <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
-                <?php _e('Fine particles matter', 'bdthemes-element-pack'); ?>
-            </<?php echo $components_tag; ?>>
-            </div>
-            <div>
+                    </div>
+                </li>
+                <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
+                    <div>
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
+                            <?php _e('Fine particles matter', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['pm2_5']);
                             } ?>
                         </span>
-            </div>
-        </li>
-        <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
-            <div>
-                <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
-                <?php _e('Coarse particulate matter', 'bdthemes-element-pack'); ?>
-            </<?php echo $components_tag; ?>>
-            </div>
-            <div>
+                    </div>
+                </li>
+                <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
+                    <div>
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
+                            <?php _e('Coarse particulate matter', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['pm10']);
                             } ?>
                         </span>
-            </div>
-        </li>
-        <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
-            <div>
-                <<?php echo $components_tag; ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
-                <?php _e('Ammonia', 'bdthemes-element-pack'); ?>
-            </<?php echo $components_tag; ?>>
-            </div>
-            <div>
+                    </div>
+                </li>
+                <li class="bdt-flex bdt-flex-between  bdt-flex-middle bdt-padding-small">
+                    <div>
+                        <<?php echo esc_attr($components_tag); ?> class="bdt-text-default bdt-text-bold bdt-margin-remove bdt-ap-title">
+                            <?php _e('Ammonia', 'bdthemes-element-pack'); ?>
+                        </<?php echo esc_attr($components_tag); ?>>
+                    </div>
+                    <div>
                         <span class="bdt-text-default bdt-text-normal bdt-ap-value">
-                            <?php if ( !empty($data) ) {
+                            <?php if (!empty($data)) {
                                 echo esc_html($data['components']['nh3']);
                             } ?>
                         </span>
-            </div>
-        </li>
-        </ul>
+                    </div>
+                </li>
+            </ul>
         </div>
 
-        <?php
+    <?php
     }
 
     public function weather_data() {
@@ -659,7 +659,7 @@ class Air_Pollution extends Module_Base {
         $api_key         = !empty($ep_api_settings['open_weather_api_key']) ? $ep_api_settings['open_weather_api_key'] : '';
 
         // return error message when api key not found
-        if ( !$api_key ) {
+        if (!$api_key) {
 
             $message = esc_html__('Ops! I think you forget to set API key in Element Pack API settings. Please set your API key on Open Weather Map access box', 'bdthemes-element-pack');
 
@@ -670,19 +670,19 @@ class Air_Pollution extends Module_Base {
 
         $location = $settings['location_lat'];
 
-        if ( empty($settings['location_lat']) || empty($settings['location_lon']) ) {
+        if (empty($settings['location_lat']) || empty($settings['location_lon'])) {
             return false;
         }
 
         $transient_key = sprintf('bdt-open-weather-air-pollution-data-%s', md5($location));
 
-        if ( $settings['weather_cache'] == 'yes' ) {
+        if ($settings['weather_cache'] == 'yes') {
             $data = get_transient($transient_key);
         } else {
             $data = '';
         }
 
-        if ( !$data ) {
+        if (!$data) {
             // Prepare request data
 
             $api_key = esc_attr($api_key);
@@ -702,13 +702,13 @@ class Air_Pollution extends Module_Base {
 
             $weather = $this->weather_remote_request($request_url);
 
-            if ( !$weather ) {
+            if (!$weather) {
                 return false;
             }
 
-            if ( isset($weather['error']) ) {
+            if (isset($weather['error'])) {
 
-                if ( isset($weather['error']['info']) ) {
+                if (isset($weather['error']['info'])) {
                     $message = $weather['error']['info'];
                 } else {
                     $message = esc_html__('Weather data of this location not found.', 'bdthemes-element-pack');
@@ -721,13 +721,13 @@ class Air_Pollution extends Module_Base {
 
             $data = $this->transient_weather($weather);
 
-            if ( empty($data) ) {
+            if (empty($data)) {
                 return false;
             }
 
             $expireTime = $this->get_transient_expire($settings);
 
-            if ( $settings['weather_cache'] == 'yes' ) {
+            if ($settings['weather_cache'] == 'yes') {
                 set_transient($transient_key, $data, apply_filters('element-pack/weather/cached-time', $expireTime));
             }
             return $data;
@@ -741,19 +741,19 @@ class Air_Pollution extends Module_Base {
 
         $response = wp_remote_get($url, array('timeout' => 30));
 
-        if ( !$response || is_wp_error($response) ) {
+        if (!$response || is_wp_error($response)) {
             return false;
         }
 
         $remote_data = wp_remote_retrieve_body($response);
 
-        if ( !$remote_data || is_wp_error($remote_data) ) {
+        if (!$remote_data || is_wp_error($remote_data)) {
             return false;
         }
 
         $remote_data = json_decode($remote_data, true);
 
-        if ( empty($remote_data) ) {
+        if (empty($remote_data)) {
             return false;
         }
         return $remote_data;
@@ -784,11 +784,11 @@ class Air_Pollution extends Module_Base {
     }
 
     public function weather_error_notice($message) {
-        ?>
+    ?>
         <div class="bdt-alert-warning" data-bdt-alert>
             <a class="bdt-alert-close" data-bdt-close></a>
             <p><?php echo esc_html($message); ?></p>
         </div>
-        <?php
+<?php
     }
 }

@@ -12,7 +12,7 @@
                     style = GetBasic.style;
                     this.Basic = GetBasic;
                     this.GetClassList = (this.container[0] && this.container[0].dataset && this.container[0].dataset.classlist) ? JSON.parse(this.container[0].dataset.classlist) : '';
-                   
+                
                     if(GetBasic && GetBasic.type == "normal"){
                         if(style && style == 'style-1') {
                             this.tp_normal_style1();
@@ -103,6 +103,7 @@
                                 document.querySelector($this.GetClassList.duringcountdownclass).style.display = 'block';
                                 document.querySelector($this.GetClassList.afterexpcountdownclass).style.display = 'none';
                             }
+
                         if(this.Basic.fliptheme == 'mix'){
                             this.tp_flipdown_themechange();
                         }
@@ -114,6 +115,8 @@
                         }                       
                         return;
                     }
+
+                    this.tp_enable_column();
                 }
             }
 
@@ -138,7 +141,6 @@
                                 days = new ProgressBar.Circle(elementd, param);
                             
                             var countInterval = setInterval(function() {
-                                
                                 let now = new Date(),
                                     countTo = new Date(CounterDate),
                                     difference = (countTo - now);
@@ -173,6 +175,8 @@
                     this.tp_countdown_expiry();
                     return;
                 }
+
+                this.tp_enable_column();
             }
 
             tp_scarcity_style1(){
@@ -271,7 +275,7 @@
                     $uid = this.scarcityid;
                     if( this.container[0].classList.contains('countdown-style-2') ){
                         this.container[0].insertAdjacentHTML("afterbegin", `<div id ="${this.FlipdownID}" class="tp-scarcity-flipdown flipdown"></div>`);
-
+                        
                         if(this.Basic.storetype == "cookie"){
                             let addtime = new Date().getTime() + this.Basic.scarminit * 60000;
                             if( !localStorage.getItem($uid) ){
@@ -336,6 +340,8 @@
                         if(this.Basic.fliptheme == 'mix'){
                             this.tp_flipdown_themechange();
                         }
+                        
+                        this.tp_enable_column();
                     }
             }
             
@@ -448,6 +454,7 @@
                             });
                     }
                 }
+                this.tp_enable_column();
             }
 
             tp_progressbar_sethtml(){
@@ -872,6 +879,53 @@
                 }
             }
 
+            tp_enable_column(){
+                if( this.Basic.style == 'style-2' ){
+                    let GetRotorGroup = this.container[0].querySelectorAll('.rotor-group');
+                    
+                    if( !this.Basic.daysenable ){
+                        GetRotorGroup[0].remove();
+                    } 
+
+                    if( !this.Basic.hoursenable ){
+                        GetRotorGroup[1].remove();
+                    }
+
+                    if( !this.Basic.minutesenable ){
+                        GetRotorGroup[2].remove();
+                    }
+
+                    if( !this.Basic.secondsenable ){
+                        GetRotorGroup[3].remove();
+                    }
+
+                    GetRotorGroup = this.container[0].querySelectorAll('.rotor-group');
+
+                    if( !this.Basic.daysenable || !this.Basic.hoursenable || !this.Basic.minutesenable || !this.Basic.secondsenable ){
+                        let getElem = GetRotorGroup[GetRotorGroup.length - 1]
+                            getElem.style.setProperty('--setDisplay','none')
+                    }
+
+                }else if( this.Basic.style == 'style-3' ){
+                    let GetRotorGroup = this.container[0].querySelectorAll('.counter-part');
+                    if( !this.Basic.daysenable ){
+                        GetRotorGroup[0].remove();
+                    }
+
+                    if( !this.Basic.hoursenable ){
+                        GetRotorGroup[1].remove();
+                    }
+
+                    if( !this.Basic.minutesenable ){
+                        GetRotorGroup[2].remove();
+                    }
+
+                    if( !this.Basic.secondsenable ){
+                        GetRotorGroup[3].remove();
+                    }
+                }
+            }
+
             tp_resize_layout(){
                 let resize = document.querySelectorAll(".post-inner-loop");
                     resize.forEach(function(item, index) {
@@ -881,7 +935,7 @@
                             }, 300);
                         }else if( item.parentNode.classList.contains('list-isotope-metro') ){
                             setTimeout(function(){	
-                                theplus_setup_packery_portfolio('all');	
+                                theplus_setup_packery_portfolio("*");	
                             }, 300);
                         }
                     });

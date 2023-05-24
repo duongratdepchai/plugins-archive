@@ -53,7 +53,18 @@ class UniteCreatorTemplateEngineWork{
 			//save post id
 			
 			$arrItem = UniteFunctionsUC::getVal($itemParams, "item");
+						
+			$postType = UniteFunctionsUC::getVal($arrItem, "object_type");
+			
 			GlobalsProviderUC::$lastObjectID = UniteFunctionsUC::getVal($arrItem, "object_id");
+			
+			//woo commerce global object product save			
+			
+			if($postType == "product" && function_exists("wc_get_product")){
+				
+				global $product; 
+				$product = wc_get_product(GlobalsProviderUC::$lastObjectID);
+			}
 			
 		}
 		
@@ -867,9 +878,14 @@ class UniteCreatorTemplateEngineWork{
 						
 		$newPrice = wc_price($price);
 		
+		//new - exclude if the product or variation id is not given
+		
+		if(empty($variationID))
+			return($newPrice);
+		
 		if($this->isItemsFromPosts == false)
 			return($newPrice);
-			
+					
 		if(empty(GlobalsProviderUC::$lastObjectID))
 			return($newPrice);
 		
@@ -884,7 +900,7 @@ class UniteCreatorTemplateEngineWork{
 		try{
 			
 			$newPrice = apply_filters("woocommerce_get_price_html",$newPrice, $product);
-		
+			
 		}catch(Exception $e){
 		}
 		
@@ -964,9 +980,9 @@ class UniteCreatorTemplateEngineWork{
 	/**
 	 * output elementor template by id
 	 */
-	public function putElementorTemplate($templateID){
+	public function putElementorTemplate($templateID, $mode = null){
 		
-		HelperProviderCoreUC_EL::putElementorTemplate($templateID);
+		HelperProviderCoreUC_EL::putElementorTemplate($templateID,$mode);
 		
 	}
 	
@@ -1002,7 +1018,7 @@ class UniteCreatorTemplateEngineWork{
 			case "get_loadmore_data":
 								
 				$objPagination = new UniteCreatorElementorPagination();
-				$strData = $objPagination->getLoadmoreData(UniteCreatorElementorIntegrate::$isEditMode);
+				$strData = $objPagination->getLoadmoreData(GlobalsProviderUC::$isInsideEditor);
 				
 				return($strData);
 			break;
@@ -1052,7 +1068,7 @@ class UniteCreatorTemplateEngineWork{
 				
 				$productID = $arg1;
 				
-				$objWoo = new UniteCreatorWooIntegrate();
+				$objWoo = UniteCreatorWooIntegrate::getInstance();
 				$arrVariations = $objWoo->getProductVariations($productID);
 				
 				return($arrVariations);
@@ -1061,8 +1077,8 @@ class UniteCreatorTemplateEngineWork{
 			case "get_wc_gallery":
 				
 				$productID = $arg1;
-								
-				$objWoo = new UniteCreatorWooIntegrate();
+				
+				$objWoo = UniteCreatorWooIntegrate::getInstance();
 				$arrGallery = $objWoo->getProductGallery($productID);
 				
 				return($arrGallery);
@@ -1072,6 +1088,14 @@ class UniteCreatorTemplateEngineWork{
 				$arrEndpoints = UniteCreatorWooIntegrate::getWooEndpoint($arg1);
 				
 				return($arrEndpoints);
+			break;
+			case "get_woo_cart_data":
+				
+				$objWoo = UniteCreatorWooIntegrate::getInstance();
+				
+				$arrCartData = $objWoo->getCartData();
+				
+				return($arrCartData);
 			break;
 			case "get_unitegallery_js":
 				
@@ -1202,7 +1226,7 @@ class UniteCreatorTemplateEngineWork{
 			break;
 			case "get_product_attributes":
 				
-				$objWoo = new UniteCreatorWooIntegrate();
+				$objWoo = UniteCreatorWooIntegrate::getInstance();
 				
 				$arrAttributes = $objWoo->getProductAttributes($arg1);
 				

@@ -353,7 +353,7 @@ function UniteCreatorElementorEditorAdmin(){
 	
 	
 	
-	function a________CONSOLIDATION_________(){}
+	function a________SPECIAL_SELECTS_________(){}
 		
 	
 	/**
@@ -364,123 +364,8 @@ function UniteCreatorElementorEditorAdmin(){
 		return rawurldecode(base64_decode(value));
 	}
 	
-	
-	/**
-	 * hide all controls except the needed ones
-	 */
-	function hideAllControls(){
-				
-		var objWrapper = jQuery("#elementor-controls");
 		
-		var objControls = objWrapper.find(".elementor-control").not(".elementor-control-type-section.elementor-control-section_general").not(".elementor-control-uc_addon_name");
-		objControls.hide();
 		
-	}
-	
-	
-	/**
-	 * show controls by names
-	 */
-	function showControlsByNames(arrNames){
-				
-		var objWrapper = jQuery("#elementor-controls");
-		
-		jQuery(arrNames).each(function(index, name){
-			objWrapper.find(".elementor-control-"+name).show();
-		});
-		
-	}
-	
-	/**
-	 * show the right repeater fields
-	 */
-	function showRepeaterFields(){
-		
-		//hide repeater items
-		var objRepeater = jQuery(".elementor-control-uc_items.elementor-control-type-repeater");
-		if(objRepeater.length == 0)
-			return(false);
-		
-		if(typeof g_objAddonParamsItems == "undefined")
-			return(false);
-		
-		if(!g_objAddonParamsItems)
-			return(false);
-				
-		if(!g_objAddonParamsItems.length)
-			return(false);
-		
-		if(g_objAddonParamsItems.hasOwnProperty(g_lastAddonName) == false)
-			return(false);
-		
-		var arrItemControls = g_objAddonParamsItems[g_lastAddonName];
-		
-		//hide all repeater controls
-		objRepeater.find(".elementor-control").hide();
-		
-		//show only relevant controls
-		jQuery.each(arrItemControls,function(index, controlName){
-			
-			var objControl = objRepeater.find(".elementor-control.elementor-control-"+controlName);
-			objControl.show();
-		});
-		
-	}
-	
-	
-	/**
-	 * hide all items controls
-	 */
-	function hideAllItemsControls(){
-		
-		var objSection = jQuery(".elementor-control.elementor-control-section_uc_items_consolidation");
-		
-		if(objSection.length)
-			objSection.hide();
-		
-	}
-	
-	
-	/**
-	 * show active controls
-	 */
-	function showActiveControls(){
-		
-		var objAddonSelector = jQuery(this);
-		
-		var addonName = objAddonSelector.val();
-		
-		g_lastAddonName = addonName;
-		
-		var arrParamNames = g_objAddonParams[addonName];
-		
-		hideAllControls();
-		showControlsByNames(arrParamNames);
-		
-	}
-	
-	
-	/**
-	 * show active item controls
-	 */
-	function showActiveItemsControls(){
-		
-		if(!g_lastAddonName)
-			return(false);
-		
-		if(g_objAddonParamsItems.hasOwnProperty(g_lastAddonName) == false)
-			return(false);
-		
-		//show section
-		var objSection = jQuery(".elementor-control.elementor-control-section_uc_items_consolidation");
-		objSection.show();
-		
-		if(objSection.length == 0)
-			return(false);
-		
-		showRepeaterFields();
-		
-	}
 	
 	/**
 	 * get select 2 ajax options
@@ -592,7 +477,7 @@ function UniteCreatorElementorEditorAdmin(){
 		
 		if(typeof g_ucAdminUrl == "undefined")
 			return(false);
-				
+		
 		//append the new button
 		
 		switch(type){
@@ -772,6 +657,55 @@ function UniteCreatorElementorEditorAdmin(){
 	}
 	
 	/**
+	 * set the template button
+	 */
+	function templateButtonSet(objButton, objSelectTemplate){
+		
+		var value = objSelectTemplate.val();
+		
+		if(value == "" || value == "__none__"){
+			objButton.hide();
+			return(false);
+		}
+		
+		if(!g_ucAdminUrl)
+			return(false);
+		
+		objButton.show();
+		
+		value = value.replace("jet_","");
+		
+		var urlEdit = g_ucAdminUrl+"post.php?post="+value+"&action=elementor";
+		
+		objButton.attr("href", urlEdit);
+		
+	}
+	
+	
+	/**
+	 * init template button
+	 */
+	function initTemplateButton(objButton){
+		
+		var selectID = objButton.data("selectid");
+		
+		var objPanel = getObjElementorPanel();
+		
+		var objSelectTemplate = objPanel.find("select[data-setting='"+selectID+"']");
+		
+		if(objSelectTemplate.length == 0)
+			return(false);
+		
+		templateButtonSet(objButton, objSelectTemplate);
+		
+		objSelectTemplate.on("change", function(){
+			templateButtonSet(objButton, objSelectTemplate);
+		});
+		
+	}
+
+	
+	/**
 	 * init the addons selector
 	 */
 	function initSpecialSelects(){
@@ -795,88 +729,15 @@ function UniteCreatorElementorEditorAdmin(){
 				case "post_ids":
 					initPostIDsSelect(objSelect);
 				break;
+				case "template_button":
+					initTemplateButton(objSelect);
+				break;
 			}
 			
 		});
 				
 	}
 	
-	
-	/**
-	 * indicate init control
-	 */
-	function indicateInitControl(sectionType){
-		
-		switch(sectionType){
-			case "style":
-				var selector = ".elementor-control.elementor-control-type-section.elementor-control-uc_section_styles_indicator";
-			break;
-			case "items":
-				var selector = ".elementor-control.elementor-control-section_uc_items_consolidation";
-			break;
-			default:
-				trace("section type not found: " + sectionType);
-			break;
-		}
-		
-		if(!g_lastAddonName)
-			return(false);
-		
-		//check special param, tells that it's really the style controls
-		var objWrapper = jQuery("#elementor-controls");
-		
-		var objControl = objWrapper.find(selector);
-		if(objControl.length == 0)
-			return(false);
-		
-		var isInited = objControl.data("uc_isinited");
-				
-		if(isInited == true){
-			return(false);
-		}
-		
-		objControl.data("uc_isinited", true);
-		
-		return(true);
-	}
-	
-	
-	/**
-	 * init the style controls
-	 */
-	function initStyleControls(){
-		
-		var isFound = indicateInitControl("style");
-		if(isFound == false)
-			return(false);
-		
-		var arrParamNames = g_objAddonParams[g_lastAddonName];
-		
-		hideAllControls();
-		showControlsByNames(arrParamNames);
-		
-		return(true);
-	}
-	
-	
-	/**
-	 * init items controls (with the repeater)
-	 */
-	function initItemsControls(){
-		
-		var isFound = indicateInitControl("items");
-		if(isFound == false)
-			return(false);
-		
-		var arrParamNames = g_objAddonParams[g_lastAddonName];
-		
-		hideAllItemsControls();
-		showActiveItemsControls();
-		
-		//showControlsByNames(arrParamNames);
-		
-		return(true);
-	}
 	
 	
 	/**
@@ -885,25 +746,12 @@ function UniteCreatorElementorEditorAdmin(){
 	function onSettingsPanelInit(){
 				
 		initSpecialSelects();
-		
-		var isInited = initStyleControls();
-		
-		if(isInited == false)
-			initItemsControls();
-		
+						
 		//init the post type selector if exists
 		postSelectOnLoad();
 		
 	}
 	
-	/**
-	 * on repeater click
-	 */
-	function onRepeaterItemClick(){
-		setTimeout(function(){
-			showRepeaterFields();
-		},500);
-	}
 	
 	/**
 	 * init all the events
@@ -917,10 +765,7 @@ function UniteCreatorElementorEditorAdmin(){
 			  g_handle = setTimeout(onSettingsPanelInit, 50);
 			  
 		});
-		
-		//init items repeater events
-		jQuery(document).on("mousedown",".elementor-control-uc_items .elementor-repeater-row-item-title",onRepeaterItemClick);
-		
+				
 	}
 	
 	function a________LOAD_INCLUDES_________(){}

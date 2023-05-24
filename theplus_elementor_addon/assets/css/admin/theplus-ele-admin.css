@@ -1059,13 +1059,17 @@ margin: 0;
 }
 /* button facebook End */
 
-.tp-feed-delete-transient-btn,.tp-SReview-delete-transient-btn {
+.tp-feed-delete-transient-btn,
+.tp-SReview-delete-transient-btn,
+.tp-table-delete-transient-btn {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.tp-feed-delete-transient,.tp-SReview-delete-transient{
+.tp-feed-delete-transient,
+.tp-SReview-delete-transient,
+.tp-table-delete-transient{
     color: #fff !important;
     background: #93003ccf;
     padding: 10px;
@@ -1081,15 +1085,20 @@ margin: 0;
     outline: none;
 }
 
-.tp-feed-delete-transient:hover,.tp-SReview-delete-transient:hover {
+.tp-feed-delete-transient:hover,
+.tp-SReview-delete-transient:hover,
+.tp-table-delete-transient:hover {
     transform: scale(1);
     background: #93003c;
 }
+
 .tp-feed-delete-transient svg,
-.tp-SReview-delete-transient svg{
+.tp-SReview-delete-transient svg,
+.tp-table-delete-transient svg{
     width  : 28px;
     height : 28px;
 }
+
 body.elementor-panel-loading #elementor-panel-state-loading .theplus-bk-ele-spinner-main{
     position: absolute;
     transition: all .3s linear;
@@ -1111,6 +1120,15 @@ body.elementor-panel-loading #elementor-panel-state-loading .theplus-bk-ele-spin
 }
 .elementor-control-direction_dots span.elementor-switch-label {
     overflow: hidden;
+}
+
+/**Docs link Section*/
+.tp-docs-link{
+    color: #515962 !important;
+}
+.tp-docs-link:hover{
+    color: #2563eb !important;
+    border-color: transparent !important;
 }
 
 /*live editor*/

@@ -100,6 +100,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 		
 		self::$arrUrlCacheCss = array();
 		self::$arrUrlCacheJs = array();
+		
 	}
 	
 	
@@ -127,12 +128,12 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	 * check that the include located in cache
 	 */
 	private function isIncludeInCache($url, $handle, $type){
-		
+				
 		if(empty($url) || empty($handle))
 			return(false);
 		
 		if($type == "css"){
-			
+						
 			if(isset(self::$arrUrlCacheCss[$url]))
 				return(true);
 			
@@ -330,10 +331,11 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 			$arrIncludesCss = array_merge($arrLibCss, $arrIncludesCss);
 			$arrIncludesCss = $this->processIncludesList($arrIncludesCss, "css");
 		}
-		
+				
 		$arrProcessedIncludes = array_merge($arrIncludesJS, $arrIncludesCss);
 		
 		$arrProcessedIncludes = $this->excludeExistingInlcudes($arrProcessedIncludes);
+		
 		
 		// add widget scripts to editor
 		
@@ -392,8 +394,11 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 				$handle = HelperUC::getUrlHandle($url, $addonName);
 			
 			$isInCache = $this->isIncludeInCache($url, $handle, $type);
-			if($isInCache == true)
+			
+			if($isInCache == true){
+								
 				continue;
+			}
 			
 			$this->cacheInclude($url, $handle, $type);
 			
@@ -476,6 +481,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 					UniteProviderFunctionsUC::addScript($handle, $url, false, $arrIncludeDep);
 				break;
 				case "css":
+										
 						UniteProviderFunctionsUC::addStyle($handle, $url);
 				break;
 				default:
@@ -525,8 +531,6 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 		
 		$value = UniteFunctionsUC::getVal($param, "value");
 		$selectorValue = UniteFunctionsUC::getVal($param, "selector_value");
-
-		
 		
 		$selectorValueDesktop = str_replace("{{VALUE}}", $value, $selectorValue);
 		
@@ -1723,8 +1727,10 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 			
 			//add css includes if needed
 			if(!empty($arrCssIncludes)){
+				
 				$htmlIncludes = $this->getHtmlIncludes($arrCssIncludes);
-								
+				
+				
 				if(self::$isBufferingCssActive == true)
 					self::$bufferCssIncludes .= self::BR.$htmlIncludes;
 				else
@@ -2012,6 +2018,11 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 					$objectID = UniteFunctionsUC::getVal($item, "id");
 					if(!empty($objectID))
 						$arrAdd["object_id"] = $objectID;
+
+					$postType = UniteFunctionsUC::getVal($item, "post_type");
+					if(!empty($postType))
+						$arrAdd["object_type"] = $postType;
+					
 				}
 				
 			}

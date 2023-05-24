@@ -388,7 +388,7 @@ class Horizontal_Scroller extends Module_Base {
     }
     public function render_navigation() {
         $settings = $this->get_settings_for_display(); ?>
-        <nav id="nav-id-<?php echo $this->get_id(); ?>" class="ep-pagination-wrapper">
+        <nav id="nav-id-<?php echo esc_attr($this->get_id()); ?>" class="ep-pagination-wrapper">
             <ul class="ep-dot-nav">
                 <?php
                 foreach ($settings['horizontal_scroller_section_list'] as $key => $section) {
