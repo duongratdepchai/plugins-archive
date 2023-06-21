@@ -1878,7 +1878,8 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		 * draw settings - all together
 		 */
 		private function drawSettings_settings($filterSapID = null, $mode=null, $arrSettings = null){
-		    		    
+
+			
 			if(is_null($arrSettings))
 				$arrSettings = $this->arrSettings;
 			
@@ -1951,6 +1952,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		    
 			 $arrSaps = $this->groupSettingsIntoSaps();
 			 
+			 
 		     foreach($arrSaps as $key=>$sap){
 		     	
 		     	$tab = UniteFunctionsUC::getVal($sap, "tab");
@@ -1965,7 +1967,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		        //draw settings - advanced - with sections
 		        foreach($arrSaps as $key=>$sap):
 		        		
-		        		$arrSettings = $sap["settings"];
+		        		$arrSettings = UniteFunctionsUC::getVal($sap, "settings");
 		        		
 		        		$nodraw = UniteFunctionsUC::getVal($sap, "nodraw");
 		        		if($nodraw === true)
@@ -1973,11 +1975,11 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		        		
 		                $this->drawSapBefore($sap, $key);
 						
-						$this->drawSettings_settings($filterSapID, $mode, $arrSettings);
+		                if(!empty($arrSettings))
+							$this->drawSettings_settings($filterSapID, $mode, $arrSettings);
 						
 						$this->drawSapAfter();
-						
-		        
+		        		
 		        endforeach;
 		    
 		   $this->drawSettingsBottom();

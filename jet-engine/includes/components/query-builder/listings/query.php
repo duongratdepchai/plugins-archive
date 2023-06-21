@@ -132,6 +132,27 @@ class Query {
 				$query->set_filtered_prop( $prop, $value );
 			}
 		}
+
+		add_filter( 'jet-engine/ajax/listing_load_more/response', function ( $response ) use ( $query, $query_id ) {
+
+			if ( ! isset( $response['fragments'] ) ) {
+				$response['fragments'] = array();
+			}
+
+			$page  = absint( $_REQUEST['page'] );
+			$pages = absint( $query->get_items_pages_count() );
+
+			if ( $page === $pages ) {
+				$visible_items_count = $query->get_items_total_count();
+			} else {
+				$visible_items_count = $page * $query->get_items_per_page();
+			}
+
+			$response['fragments'][ '.jet-engine-query-count.count-type-visible.query-' . $query_id ] = $visible_items_count;
+			$response['fragments'][ '.jet-engine-query-count.count-type-end-item.query-' . $query->id ] = $query->get_end_item_index_on_page();
+
+			return $response;
+		} );
 	}
 
 	public function maybe_add_load_more_query_args( $request, $query, $settings ) {

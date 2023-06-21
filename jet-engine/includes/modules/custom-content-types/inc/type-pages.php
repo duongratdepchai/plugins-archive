@@ -35,6 +35,11 @@ class Type_Pages {
 
 			if ( $item_id ) {
 				$item = $this->factory->db->get_item( $item_id );
+
+				if ( empty( $item ) ) {
+					wp_die( 'You attempted to edit an item that does not exist. Perhaps it was deleted?' );
+				}
+
 			} else {
 				$item = array();
 			}

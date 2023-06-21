@@ -1589,7 +1589,20 @@ class UniteCreatorElementorIntegrate{
 		return($arrWidgets);
 	}
 	
-	
+	/**
+	 * get current rendering widget settings
+	 */
+	public function onGetCurrentRenderingWidgetSettings($settings = array()){
+		
+		if(empty(GlobalsUnlimitedElements::$currentRenderingWidget))
+			return(null);
+			
+		$widget = GlobalsUnlimitedElements::$currentRenderingWidget;
+		
+		$arrDynamic = $widget->ueGetDynamicSettingsValues();
+		
+		return($arrDynamic);
+	}
     
 	private function a____________INIT_INTEGRATION___________(){}
 
@@ -1655,6 +1668,8 @@ class UniteCreatorElementorIntegrate{
 			
 		
 	}
+	
+	
 	
     /**
      * init the elementor integration
@@ -1759,6 +1774,10 @@ class UniteCreatorElementorIntegrate{
 		//wpml translation integrattion
 		
 		add_filter( 'wpml_elementor_widgets_to_translate', array( $this, 'onWpmlTranslateRegister' ) );
+		
+		//get current dynamic settings from loop
+		
+		add_filter( 'ue_get_current_widget_settings', array( $this, 'onGetCurrentRenderingWidgetSettings' ) );
 		
 		
     	// ------ admin related only ----------

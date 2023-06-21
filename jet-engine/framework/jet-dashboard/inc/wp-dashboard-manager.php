@@ -142,6 +142,7 @@ class WP_Dashboard_Manager {
 
 				if ( ! $is_jet_plugin_before_separator ) {
 					$last_plugin_index = $last_plugin_index + 0.00001;
+					$last_plugin_index = number_format( $last_plugin_index, 5 );
 					$last_index = $last_plugin_index;
 				}
 
@@ -155,6 +156,7 @@ class WP_Dashboard_Manager {
 					$this->add_plugin_index_data( $last_plugin_index, $item_data[2] );
 
 					$last_plugin_index = $last_plugin_index + 0.00001;
+					$last_plugin_index = number_format( $last_plugin_index, 5 );
 					$last_index = $last_plugin_index;
 				}
 			}
@@ -171,8 +173,8 @@ class WP_Dashboard_Manager {
 						$item_data[4] = $item_data[4] . ' jet-engine-post-type';
 						$menu[ '' . $last_post_type_index ] = $item_data;
 						$this->post_type_indexes[] = $last_post_type_index;
-
 						$last_post_type_index = $last_post_type_index + 0.00001;
+						$last_post_type_index = number_format( $last_post_type_index, 5 );
 						$last_index = $last_post_type_index;
 					}
 				}
@@ -189,6 +191,7 @@ class WP_Dashboard_Manager {
 						$this->cct_indexes[] = $last_cct_index;
 
 						$last_cct_index = $last_cct_index + 0.00001;
+						$last_cct_index = number_format( $last_cct_index, 5 );
 						$last_index = $last_cct_index;
 					}
 				}
@@ -205,6 +208,7 @@ class WP_Dashboard_Manager {
 						$this->options_pages_indexes[] = $last_options_pages_index;
 
 						$last_options_pages_index = $last_options_pages_index + 0.00001;
+						$last_options_pages_index = number_format( $last_options_pages_index, 5 );
 						$last_index = $last_options_pages_index;
 					}
 				}

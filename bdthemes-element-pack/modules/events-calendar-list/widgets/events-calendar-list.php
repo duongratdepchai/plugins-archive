@@ -938,16 +938,16 @@ class Events_Calendar_List extends Module_Base {
 			$query_args['event_category']    = $settings['event_categories'];
 		}
 
-		$query_args = tribe_get_events($query_args);
-
-		
+		$query_args = tribe_get_events($query_args);		
 
 		$this->render_header();
 
-		foreach ($query_args as $post) {
-
-
-			$this->render_loop_item($post);
+		if(!empty($query_args)){
+			foreach ($query_args as $post) {
+				$this->render_loop_item($post);
+			}
+		} else {
+			echo '<div class="bdt-alert bdt-alert-warning">'.__('No events!', 'bdthemes-element-pack').'</div>';
 		}
 
 		$this->render_footer();

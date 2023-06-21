@@ -176,7 +176,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			$this->arrIndex[$name] = count($this->arrSettings)-1;
 		}
 		
-		private function a_GETTERS(){}
+		private function a_______GETTERS_________(){}
 		
 		//-----------------------------------------------------------------------------------------------
 		//get types array from all the settings:
@@ -978,7 +978,8 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 						
 			//modify for multiple values
 			$arrValues = array();
-			if(strpos($value, ",") !== false){
+			
+			if(is_array($value) == false && strpos($value, ",") !== false){
 		
 				$arrValues = explode(",", $value);
 		

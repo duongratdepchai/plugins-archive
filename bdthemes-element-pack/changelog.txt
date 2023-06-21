@@ -1,3 +1,24 @@
+## 7.1.0 [8th June 2023]
+
+### Added
+
+- Badge arrow option added in content switcher widget
+- Empty product icon size option added in wc mini cart widget
+- No events warning message added in Events Calendar widget (Thanks to Rory Smith)
+- Testimonial carousel widget quatation offset option added
+
+### Fixed
+
+- Filter error fixed in WC Product widget(Thanks to Webber)
+- Style 4 border radius issue fixed in content switcher widget
+- Glitching issue fixed in Mega Menu widget(Thanks to Shawn Palmer)
+- Target blank issue fixed in Icon Mobile Menu widget(Thanks to Charles-Dominique MAZY)
+- Age Gate Blink Modal issue fixed
+
+### Updated
+
+- Map display region updated in SVG maps widget
+
 ## 7.0.1 [18th May 2023]
 
 ### Fixed
@@ -50,9 +71,6 @@
 - Switcher component not initializing properly issue fixed
 - Tooltips are not removed from Dom if showing is prevented issue fixed
 - Toggle component uses anchor element's hash as target fallback issue fixed
-
-
-
 
 ## 6.15.5 [17th April 2023]
 

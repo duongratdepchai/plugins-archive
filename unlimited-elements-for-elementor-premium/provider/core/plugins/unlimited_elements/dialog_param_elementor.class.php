@@ -468,7 +468,10 @@ class UniteCreatorDialogParamElementor extends UniteCreatorDialogParam{
 			</div>
 		
 		</div>
-				
+		<div class="unite-dialog-description-left">
+			<?php _e("* In case of multiple units, the min, max apply to px unit only.", "unlimited-elements-for-elementor")?>
+		</div>
+		
 		<?php 
 		
 		$this->addResponsiveInputs("slider");
@@ -897,6 +900,7 @@ class UniteCreatorDialogParamElementor extends UniteCreatorDialogParam{
 		$arrTypes["schema"] = __("Schema","unlimited-elements-for-elementor");
 		$arrTypes["dynamic_popup"] = __("Dynamic Popup","unlimited-elements-for-elementor");
 		$arrTypes["contact_form7"] = __("Contact Form 7","unlimited-elements-for-elementor");
+		$arrTypes["ucform_conditions"] = __("Unite Form Conditions","unlimited-elements-for-elementor");
 		
 		
 		$optionsClass = "uc-special-attribute-options";

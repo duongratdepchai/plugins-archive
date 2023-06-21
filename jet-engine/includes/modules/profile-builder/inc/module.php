@@ -31,6 +31,10 @@ class Module {
 		return jet_engine()->modules->modules_path( 'profile-builder/inc/' . $path );
 	}
 
+	public function module_url( $path ) {
+		return jet_engine()->modules->modules_url( 'profile-builder/inc/' . $path );
+	}
+
 	/**
 	 * Init module components
 	 *

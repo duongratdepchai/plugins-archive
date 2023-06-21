@@ -711,5 +711,32 @@ class HelperProviderUC{
 		
 	}
 	
+	/**
+	 * check if user has some operations permissions
+	 */
+	public static function isUserHasOperationsPermissions(){
+		
+		$permission = HelperProviderCoreUC_EL::getGeneralSetting("edit_permission");
+		
+		$capability = "manage_options";
+		if($permission == "editor")
+			$capability = "edit_posts";
+		
+		$isUserHasPermission = current_user_can($capability);
+		
+		return($isUserHasPermission);
+	}
+	
+	/**
+	 * verify admin permisison of the plugin, use it before ajax actions
+	 */
+	public static function verifyAdminPermission(){
+		
+		$hasPermission = self::isUserHasOperationsPermissions();
+		
+		if($hasPermission == false)
+			UniteFunctionsUC::throwError("The user don't have permission to do this operation");
+		
+	}
 	
 }

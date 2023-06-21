@@ -6,6 +6,7 @@ function UEDynamicFilters(){
 	var g_remote = null, g_lastSyncGrids;
 	
 	var g_showDebug = false;
+	var g_debugInitMode = false;
 	
 	var g_types = {
 		PAGINATION:"pagination",
@@ -670,8 +671,7 @@ function UEDynamicFilters(){
 			
 			if(isHide == true)
 				objFilter.addClass(g_vars.CLASS_HIDDEN);	
-			
-			
+						
 			clearFilter(objFilter);
 						
 		});
@@ -700,7 +700,9 @@ function UEDynamicFilters(){
 				objSelect.val("");
 				
 			break;
-
+			case g_types.GENERAL:
+				objFilter.trigger("clear_filter");
+			break;
 		}
 		
 	}
@@ -1061,11 +1063,14 @@ function UEDynamicFilters(){
 	/**
 	 * on general filter change
 	 */
-	function onGeneralFilterChange(){
+	function onGeneralFilterChange(obj, params){
+		
+		var isRefresh = getVal(params, "refresh");
 		
 		var objFilter = jQuery(this);
 		
-		setNoRefreshFilter(objFilter);
+		if(isRefresh !== true)
+			setNoRefreshFilter(objFilter);
 		
 		var objGrid = objFilter.data("grid");
 				
@@ -1115,6 +1120,11 @@ function UEDynamicFilters(){
 			case g_types.TERMS_LIST:
 				
 				termListSelectItems(objFilter, arrTerms);
+				
+			break;
+			case g_types.GENERAL:
+				
+				objFilter.trigger("uc_select_items", arrTerms);
 				
 			break;
 		}
@@ -1200,22 +1210,32 @@ function UEDynamicFilters(){
 	 * get slugs string
 	 */
 	function buildTermsQuery_getStrSlugs(objSlugs, isGroup){
-		
+				
 		var strSlugs = "";
 		
 		var moreThenOne = false;
+		var isEndSlugFound = false;
+		
 		for (var slug in objSlugs){
+						
+			if(slug === "__ucand__"){
+				isEndSlugFound = true;
+				continue
+			}
 			
 			if(strSlugs){
 				moreThenOne = true;
 				strSlugs += ".";
 			}
-			
+					
 			strSlugs += slug;
 		}
-		
+				
 		//add "and"
-		if(moreThenOne == true && isGroup !== true)
+		
+		var addAnd = (moreThenOne == true && isGroup !== true || isEndSlugFound);
+		
+		if(addAnd)
 			strSlugs += ".*";
 		
 		return(strSlugs);
@@ -1228,6 +1248,8 @@ function UEDynamicFilters(){
 	 */
 	function buildTermsQuery(arrTerms){
 		
+		var isDebug = false;
+		
 		var query = "";
 				
 		//break by taxonomy
@@ -1235,22 +1257,33 @@ function UEDynamicFilters(){
 		var arrTax = {};
 		var arrGroupTax = {};
 		
+		if(isDebug == true){
+			trace("arr terms");
+			trace(arrTerms);
+		}
+		
 		jQuery.each(arrTerms, function(index, objTerm){
-			
+						
 			//group term
 			if(jQuery.isArray(objTerm) && objTerm.length != 0){
 				
 				jQuery.each(objTerm, function(index, groupTerm){
+					
 					arrGroupTax = buildTermsQuery_handleTerm(groupTerm, arrGroupTax);
+					
 				});
 				
-				return(true);
+			}else{	//single term
+				
+				arrTax = buildTermsQuery_handleTerm(objTerm, arrTax);
 			}
-			
-			arrTax = buildTermsQuery_handleTerm(objTerm, arrTax);
-			
+						
 		});
 		
+		if(isDebug == true){
+			trace("first arr tax");
+			trace(arrTax);
+		}
 		
 		//combine the query
 		
@@ -1260,7 +1293,7 @@ function UEDynamicFilters(){
 		
 		//build group slugs
 		jQuery.each(arrGroupTax,function(taxonomy, objSlugs){
-			
+						
 			var strSlugs = buildTermsQuery_getStrSlugs(objSlugs, true);
 			
 			strAdd = "|"+strSlugs+"|";
@@ -1276,7 +1309,7 @@ function UEDynamicFilters(){
 			
 			arrTax[taxonomy] = objTax;
 		});
-				
+		
 		
 		jQuery.each(arrTax,function(taxonomy, objSlugs){
 			
@@ -1291,6 +1324,10 @@ function UEDynamicFilters(){
 			
 		});
 		
+		if(isDebug == true){
+			trace("query");
+			trace(arrTax);
+		}
 		
 		return(query);
 	}
@@ -1820,6 +1857,13 @@ function UEDynamicFilters(){
 	 */
 	function ajaxRequest(ajaxUrl, action, objData, onSuccess){
 		
+		
+		if(g_debugInitMode === true){
+			
+			trace("debug init mode - skip request");
+			return(false);
+		}
+		
 		if(g_showDebug == true){
 			trace("ajax request");
 			trace(ajaxUrl);		
@@ -2305,6 +2349,10 @@ function UEDynamicFilters(){
 		var objTaxIDs = {};
 		var strSelectedTerms = "";
 		var search = "";
+		var orderby = null;
+		var orderby_metaname = null;
+		var orderby_metatype = null;
+		var orderdir = null;
 		var addSyncedGrids = true;
 		
 		
@@ -2312,7 +2360,7 @@ function UEDynamicFilters(){
 		jQuery.each(objFilters, function(index, objFilter){
 			
 			var isNoRefresh = objFilter.data("uc_norefresh");
-			
+						
 			var type = getFilterType(objFilter);
 			
 			if(g_showDebug == true){
@@ -2438,16 +2486,48 @@ function UEDynamicFilters(){
 						
 						if(dataTerms.length == 1)		//single term
 							arrTerms.push(dataTerms[0]);
-						else
+						else{
+							
+							var operator = getVal(filterData,"operator");
+							
+							if(operator == "and"){
+								
+								var firstTerm = dataTerms[0];
+								
+								var objOperatorTerm = {
+										taxonomy: firstTerm.taxonomy,
+										slug: "__ucand__",
+										id:null
+								};
+								
+								dataTerms.push(objOperatorTerm);
+							}
+																				
 							arrTerms.push(dataTerms);	//multiple (grouping)
+							
+						}
+						
 					}
 					
+					//handle sort
+					var argOrderby = getVal(filterData,"orderby");
+					if(argOrderby && argOrderby != "default"){
+						orderby = argOrderby;
+						
+						orderby_metaname = getVal(filterData,"metaname");
+						orderby_metatype = getVal(filterData,"metatype");
+					}
+					
+					var argOrderDir = getVal(filterData,"orderdir");
+					if(argOrderDir && argOrderDir != "default")
+						orderdir = argOrderDir;
 					
 				break;
 				default:
 					throw new Error("Unknown filter type: "+type);
 				break;
 			}
+			
 			
 			//handle filters init mode
 			
@@ -2459,10 +2539,12 @@ function UEDynamicFilters(){
 					isNoRefresh = true;
 			}
 			
+			
 			//if hidden - no refresh
 			var isFilterHidden = objFilter.hasClass(g_vars.CLASS_HIDDEN);
 			if(isFilterHidden == true)
 				isNoRefresh = true;
+			
 			
 			objFilter.data("uc_norefresh",false);
 			
@@ -2480,6 +2562,7 @@ function UEDynamicFilters(){
 			
 			if(isNoRefresh === true)
 				isRefresh = false;
+			
 			
 			if(isRefresh == true){
 				
@@ -2582,6 +2665,30 @@ function UEDynamicFilters(){
 			
 			urlFilterString = addUrlParam(urlFilterString, "ucterms="+strTerms);
 		}
+		
+		if(orderby){
+			
+			urlAjax += "&ucorderby="+orderby;
+			urlReplace = addUrlParam(urlReplace, "ucorderby="+orderby);
+			
+			if(orderby_metaname){
+				urlAjax += "&ucorderby_meta="+orderby_metaname;
+				urlReplace = addUrlParam(urlReplace, "ucorderby_meta="+orderby_metaname);				
+			}
+			
+			if(orderby_metatype){
+				urlAjax += "&ucorderby_metatype="+orderby_metatype;
+				urlReplace = addUrlParam(urlReplace, "ucorderby_metatype="+orderby_metatype);				
+			}
+			
+		}
+		
+		if(orderdir){
+			urlAjax += "&ucorderdir="+orderdir;
+			
+			urlReplace = addUrlParam(urlReplace, "ucorderdir="+orderdir);
+		}
+			
 		
 		if(isFiltersInitMode && strSelectedTerms)
 			urlAjax += "&ucinitselectedterms="+strSelectedTerms;
@@ -2858,22 +2965,29 @@ function UEDynamicFilters(){
 			else
 				trace(objFilters);
 		}
+
+		var numFilters = objFilters.length;
 		
-		if(objFilters.length == 0)
+		if(numFilters == 0)
 			return(false);
 		
 		var arrTypes = {};
 		var arrGeneralTypes = {};
 		
 		var objParent = getFiltersParent(objFilters);
-		
+				
 		jQuery.each(objFilters, function(index, filter){
 			
 			var objFilter = jQuery(filter);
 			var type = getFilterType(objFilter);
 			
+			//set single filter
+			if(numFilters === 1){
+				objFilter.attr("data-singlefilter",true);
+			}
+			
 			initFilter(objFilter, type);
-				
+			
 			//collect the general type
 			
 			arrTypes[type] = true;
@@ -3115,6 +3229,32 @@ function UEDynamicFilters(){
 		var objData = getFilterElementData(objElement);
 		
 		return(objData);
+	}
+	
+	/**
+	 * get filter parent query data
+	 */
+	this.getFilterGridQueryData = function(objFilter){
+		 
+     	 var objGrid = objFilter.data("grid");
+      	 if(!objGrid)
+           	return(null);
+      	  
+         var queryData = objGrid.attr("querydata");
+      	  if(!queryData)
+            return(null);
+      
+      	 var objData = jQuery.parseJSON(queryData);
+		
+		return(objData);
+	}
+	
+	/**
+	 * get value
+	 */
+	this.getVal = function(obj, name, defaultValue){
+		
+		return getVal(obj, name, defaultValue);
 	}
 	
 	

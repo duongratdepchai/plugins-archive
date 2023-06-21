@@ -316,6 +316,11 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		if($postType != "product")
 			return($arrClauses);
 		
+		$isActive = UniteCreatorWooIntegrate::isWooActive();
+
+		if($isActive == false)
+			return($arrClauses);
+		
 		$orderBY = UniteFunctionsUC::getVal($args, "orderby");
 		$dir = UniteFunctionsUC::getVal($args, "order", "DESC");
 		
@@ -546,7 +551,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		}
 		
 		//for woo
-		if($postType == "product"){
+		if($postType == "product" && UniteCreatorWooIntegrate::isWooActive()){
 			$taxonomy = "product_cat";
 			self::$arrPostTypeTaxCache[$postType] = $taxonomy;
 			return($taxonomy);
@@ -681,10 +686,11 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		
 		//get first gallery image
-		if(empty($featuredImageID) && $postType == "product"){
+		if(empty($featuredImageID) && $postType == "product" && UniteCreatorWooIntegrate::isWooActive()){
 			
 			$objWoo = new UniteCreatorWooIntegrate();
 			$featuredImageID = $objWoo->getFirstGalleryImageID($postID);
+			
 		}
 		
 		
@@ -708,8 +714,10 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			
 			$postID = UniteFunctionsUC::getVal($arrPost, "ID");
 			
+			$postTitle = UniteFunctionsUC::getVal($arrPost, "post_title");
+			
 			$arrData["id"] = $postID;
-			$arrData["title"] = UniteFunctionsUC::getVal($arrPost, "post_title");
+			$arrData["title"] = $postTitle;
 			$arrData["alias"] = UniteFunctionsUC::getVal($arrPost, "post_name");
 			$arrData["author_id"] = UniteFunctionsUC::getVal($arrPost, "post_author");
 			$arrData["post_type"] = UniteFunctionsUC::getVal($arrPost, "post_type");
@@ -721,6 +729,16 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			$link = UniteFunctionsWPUC::getPermalink($post);
 			
 			$arrData["link"] = $link;
+			
+			//link attributes
+			
+			$readMoreText = __("Read more about ","unlimited-elements-for-elementor").$postTitle;
+			$readMoreText = esc_attr($readMoreText);
+			
+			$linkAtrributes = " area-label=\"{$readMoreText}\" ";
+			
+			$arrData["link_attributes"] = $linkAtrributes;
+			
 			
 			//dynamic popup
 			
@@ -784,10 +802,10 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			//check woo commmerce data
 			$postType = UniteFunctionsUC::getVal($arrPost, "post_type");
 			
-			if($postType == "product"){
-				
+			if($postType == "product" && UniteCreatorWooIntegrate::isWooActive()){
+				 
 				$arrWooData = UniteCreatorWooIntegrate::getWooDataByType($postType, $postID);
-								
+				
 				if(!empty($arrWooData))
 					$arrData = $arrData + $arrWooData;
 			}
@@ -856,9 +874,20 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		}catch(Exception $e){
 			
 			$message = $e->getMessage();
-			HelperUC::addDebug("Get Post Exception: ($postID) ".$message);
+			$trace = $e->getTraceAsString();
 			
-			return(null);
+			$errorMessage = "Get Post Exception: ($postID) ".$message;
+			
+			HelperUC::addDebug($errorMessage);
+			
+			$arrData = array(
+				"error"=>$errorMessage
+			);
+			
+			dmp($errorMessage);
+			//dmp($trace);
+			
+			return($arrData);
 		}
 			
 		return($arrData);
@@ -1739,7 +1768,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 				 	
 					if(!empty($product)){
 						$arrProductsCrossSells = $product->get_cross_sell_ids();
-						if(empty($arrProductsUpSells))
+						if(empty($arrProductsCrossSells))
 							$arrProductsCrossSells = array("0");
 					}
 					
@@ -2171,8 +2200,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		//check for modify orderby query clauses (for woo)
 		$this->checkModifyQueryClauses($args, $showDebugQuery);
-		
-		
+				
 		//skip run
 		if(GlobalsProviderUC::$skipRunPostQueryOnce == true){
 			GlobalsProviderUC::$skipRunPostQueryOnce = false;
@@ -2185,8 +2213,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		$args["cache_results"] = true;
 		$args["update_post_meta_cache"] = true;
-		
-		
+				
 		$query->query($args);
 		
 		do_action("ue_after_custom_posts_query", $query);
@@ -2221,6 +2248,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 				
 		
 		$arrPosts = $query->posts;
+		
 		
 		if(!$arrPosts)
 			$arrPosts = array();
@@ -2296,7 +2324,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		//show debug meta if needed
 		$this->showPostsDebyMeta($arrPosts, $value, $name);
-		
+				
 		
 		return($arrPosts);
 	}
@@ -2344,7 +2372,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 	 */
 	private function saveLastQueryAndPage($query, $type, $initialOffset = null){
 		
-		
+				
 		/* debug
 			dmp("save query");
 			dmp($query->query);
@@ -2794,6 +2822,10 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		if(empty($arrPosts))
 			$arrPosts = array();
 		
+		//save last posts 
+		GlobalsProviderUC::$arrFetchedPostsObjectsCache = UniteFunctionsUC::arrPostsToAssoc($arrPosts);
+		
+		
 		//cache post attachment and data queries
 		
 		UniteFunctionsWPUC::cachePostsAttachmentsQueries($arrPosts);
@@ -2857,12 +2889,13 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			//protection in case that post is id
 			if(is_numeric($post))
 				$post = get_post($post);
-						
-			$arrData[] = $this->getPostDataByObj($post, $arrPostAdditions, $arrImageSizes);
+
+			$postData = $this->getPostDataByObj($post, $arrPostAdditions, $arrImageSizes);
+			
+			$arrData[] = $postData;
 		}
 		
 		$data[$name] = $arrData;		
-		
 		
 		// remove me
 		if(self::SHOW_DEBUG_POSTLIST_QUERIES == true){
@@ -3593,7 +3626,6 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 					
 				$postData = $this->getPostDataByObj($item);
 				
-				
 				$arrFields = array("id","alias","link","intro","intro_full","date","date_modified","image","image_thumb","image_thumb_large");
 				
 				foreach($arrFields as $fieldKey){
@@ -4245,7 +4277,9 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 
 			//set the default
 			if($orderBy == "default"){
+				
 				$orderBy = "name";
+				
 				if(!empty($arrIncludeTermIDs))
 					$orderBy = "include";
 			}
@@ -4638,7 +4672,13 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			case "post_filter":
 				$data = $this->modifyData_postFilterOptions($data, $specialData);
 			break;
+			case "ue_form":
+				
+				$objFrom = new UniteCreatorForm();
+				$objFrom->addFormIncludes();
+			break;
 		}
+		
 		
 		
 		return($data);

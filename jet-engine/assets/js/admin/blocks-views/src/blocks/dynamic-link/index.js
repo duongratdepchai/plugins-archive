@@ -147,7 +147,7 @@ registerBlockType( 'jet-engine/dynamic-link', {
 										<TextControl
 											type="text"
 											label={ __("Redirect after delete") }
-											help={ __("If empty will redirect to home page") }
+											help={ __("If empty will redirect to home page. Use the %current_page_url% macro to redirect to the current page.") }
 											value={attributes.delete_link_redirect}
 											onChange={ newValue =>
 												props.setAttributes({ delete_link_redirect: newValue })

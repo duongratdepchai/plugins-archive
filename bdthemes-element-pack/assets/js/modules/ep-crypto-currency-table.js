@@ -183,19 +183,7 @@
                     },
                 },
                 {
-                    data: "price_change_percentage_1h",
-                    render: function (data, type, row, meta) {
-                        return Number(data) === data && data % 1 !== 0 ? data.toFixed(2) + "%" : data + "%";
-                    },
-                },
-                {
                     data: "price_change_percentage_24h",
-                    render: function (data, type, row, meta) {
-                        return Number(data) === data && data % 1 !== 0 ? data.toFixed(2) + "%" : data + "%";
-                    },
-                },
-                {
-                    data: "price_change_percentage_7d",
                     render: function (data, type, row, meta) {
                         return Number(data) === data && data % 1 !== 0 ? data.toFixed(2) + "%" : data + "%";
                     },
@@ -239,14 +227,14 @@
                 searchable: false,
                 orderable: false,
                 //targets: [0, 8],
-                targets: [9],
+                targets: [7],
             }, ],
             //order: [[1, "asc"]],
             order: [
                 [0, "asc"]
             ],
             createdRow: function (row, data, index) {
-                let getCanvasElement = $("td", row).eq(9);
+                let getCanvasElement = $("td", row).eq(7);
                 //let canvas_id = $(getCanvasElement).find("canvas").attr("id");
                 let getHiddenData = $(getCanvasElement).find("input").val();
                 let splitData = getHiddenData.split(",");
@@ -266,12 +254,20 @@
                     labels.push(index);
                     dataPointvalue.push(Number(element));
                 });
+
+
                 const dataCharts = {
                     labels: labels,
                     datasets: [{
                         label: "",
-                        backgroundColor: "rgb(255, 99, 132)",
-                        borderColor: "rgb(255, 99, 132)",
+                        backgroundColor: "rgba(30,135,240,0.2)",
+                        borderColor: "#1e87f0",
+                        fill: true,
+                        lineTension: 0.4,
+                        pointStyle: 'circle',
+                        pointBackgroundColor: "#1e87f0",
+                        pointBorderWidth: 1,
+                        borderWidth: 2,
                         data: dataPointvalue,
                     }, ],
                 };
@@ -285,7 +281,7 @@
                                 display: false,
                             },
                             tooltip: {
-                                enabled: false
+                                enabled: true
                             }
                         },
                         scales: {
@@ -315,7 +311,8 @@
                     },
                 };
                 const chart = new Chart(dom_canvas_element, config);
-                chart.canvas.parentNode.style.width = "150px";
+                chart.canvas.parentNode.style.width = "100%";
+                chart.canvas.style.width = "100%";
                 chart.canvas.parentNode.style.height = "50px";
             },
         });

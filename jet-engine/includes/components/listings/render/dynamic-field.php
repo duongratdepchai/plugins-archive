@@ -281,7 +281,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 			if ( $hide_if_empty && Jet_Engine_Tools::is_empty( $result ) ) {
 				$this->show_field = false;
 				return;
-			} elseif ( Jet_Engine_Tools::is_empty( $result ) && ! empty( $settings['field_fallback'] ) ) {
+			} elseif ( Jet_Engine_Tools::is_empty( $result ) && ! Jet_Engine_Tools::is_empty( $settings, 'field_fallback' ) ) {
 				echo wp_kses_post( $settings['field_fallback'] );
 				return;
 			}

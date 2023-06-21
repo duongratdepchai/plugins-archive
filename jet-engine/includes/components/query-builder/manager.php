@@ -171,6 +171,7 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 		require $this->component_path( 'query-editor.php' );
 		require $this->component_path( 'listings/manager.php' );
 		require $this->component_path( 'query-gateway/manager.php' );
+		require $this->component_path( 'traits/query-count.php' );
 
 		$this->editor   = new Query_Editor();
 		$this->listings = new Listings\Manager();
@@ -610,10 +611,22 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 			return 0;
 		}
 
-		if ( 'visible' === $count_type ) {
-			$result = $query->get_items_page_count();
-		} else {
-			$result = $query->get_items_total_count();
+		switch ( $count_type ) {
+
+			case 'visible':
+				$result = $query->get_items_page_count();
+				break;
+
+			case 'start-item':
+				$result = $query->get_start_item_index_on_page();
+				break;
+
+			case 'end-item':
+				$result = $query->get_end_item_index_on_page();
+				break;
+
+			default:
+				$result = $query->get_items_total_count();
 		}
 
 		return sprintf( '<span class="jet-engine-query-count query-%2$s count-type-%3$s" data-query="%2$s">%1$s</span>', $result, $query_id, $count_type );

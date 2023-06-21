@@ -29,7 +29,7 @@ trait Tax_Query_Trait {
 		}
 
 		foreach ( $rows as $row_index => $row ) {
-			if ( ! in_array( $row_index, $replaced_rows ) ) {
+			if ( ! in_array( $row_index, $replaced_rows ) && is_array( $row ) ) {
 				$row['custom'] = true;
 				$this->final_query['tax_query'][] = $row;
 			}

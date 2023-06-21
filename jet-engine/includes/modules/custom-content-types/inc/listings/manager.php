@@ -175,6 +175,12 @@ class Manager {
 			10, 2
 		);
 
+		add_filter(
+			'jet-engine/listing/container-atts',
+			array( $this, 'add_data_attr_for_listing' ),
+			10, 3
+		);
+
 	}
 
 	public function get_object_date( $date, $object ) {
@@ -907,6 +913,29 @@ class Manager {
 		} else {
 			return $url;
 		}
+	}
+
+	public function add_data_attr_for_listing( $attr, $settings, $render ) {
+
+		$type = null;
+
+		if ( $render->listing_query_id ) {
+			$query = \Jet_Engine\Query_Builder\Manager::instance()->get_query_by_id( $render->listing_query_id );
+
+			if ( 'custom-content-type' === $query->query_type ) {
+				$query->setup_query();
+				$type = ! empty( $query->final_query['content_type'] ) ? $query->final_query['content_type'] : false;
+			}
+
+		} elseif ( 'custom_content_type' === jet_engine()->listings->data->get_listing_source() ) {
+			$type = jet_engine()->listings->data->get_listing_post_type();
+		}
+
+		if ( ! empty( $type ) ) {
+			$attr[] = 'data-cct-slug="' . esc_attr( $type ) . '"';
+		}
+
+		return $attr;
 	}
 
 }

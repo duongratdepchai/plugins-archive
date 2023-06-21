@@ -20,6 +20,7 @@ define('BDTEP_ASSETS_URL', BDTEP_URL . 'assets/');
 define('BDTEP_ASSETS_PATH', BDTEP_PATH . 'assets/');
 define('BDTEP_MODULES_URL', BDTEP_URL . 'modules/');
 
+
 if (!defined('BDTEP')) {
     define('BDTEP', '');
 } //Add prefix for all widgets <span class="bdt-widget-badge"></span>
@@ -36,13 +37,15 @@ if (!defined('BDTEP_SLUG')) {
     define('BDTEP_SLUG', 'element-pack');
 } // set your own alias
 
-function element_pack_is_edit()
-{
+function is_ep_pro() {
+    return apply_filters('bdt_ep_init_pro', false);
+}
+
+function element_pack_is_edit() {
     return Plugin::$instance->editor->is_edit_mode();
 }
 
-function element_pack_is_preview()
-{
+function element_pack_is_preview() {
     return Plugin::$instance->preview->is_preview_mode();
 }
 
@@ -55,23 +58,21 @@ function element_pack_is_preview()
  *
  * @return string [description]
  */
-function element_pack_alert($message, $type = 'warning', $close = true)
-{
-    ?>
+function element_pack_alert($message, $type = 'warning', $close = true) {
+?>
     <div class="bdt-alert-<?php echo esc_attr($type); ?>" data-bdt-alert>
-        <?php if ($close): ?>
+        <?php if ($close) : ?>
             <a class="bdt-alert-close" data-bdt-close></a>
-        <?php endif;?>
+        <?php endif; ?>
         <?php echo wp_kses_post($message); ?>
     </div>
     <?php
 }
 
-function element_pack_get_alert($message, $type = 'warning', $close = true)
-{
+function element_pack_get_alert($message, $type = 'warning', $close = true) {
 
     $output = '<div class="bdt-alert-' . $type . '" bdt-alert>';
-    if ($close):
+    if ($close) :
         $output .= '<a class="bdt-alert-close" bdt-close></a>';
     endif;
     $output .= wp_kses_post($message);
@@ -88,8 +89,7 @@ function element_pack_get_alert($message, $type = 'warning', $close = true)
  * @return array string
  */
 
-function element_pack_get_post_types($args = [])
-{
+function element_pack_get_post_types($args = []) {
 
     $post_type_args = [
         'show_in_nav_menus' => true,
@@ -110,8 +110,7 @@ function element_pack_get_post_types($args = [])
     return $post_types;
 }
 
-function element_pack_get_users($args = array())
-{
+function element_pack_get_users($args = array()) {
 
     $users = get_users();
     $user_list = array();
@@ -127,8 +126,7 @@ function element_pack_get_users($args = array())
     return $user_list;
 }
 
-function element_pack_get_posts()
-{
+function element_pack_get_posts() {
 
     $post_types = get_post_types();
 
@@ -152,8 +150,7 @@ function element_pack_get_posts()
     return $posts;
 }
 
-function element_pack_allow_tags($tag = null)
-{
+function element_pack_allow_tags($tag = null) {
     $tag_allowed = wp_kses_allowed_html('post');
 
     $tag_allowed['input'] = [
@@ -273,8 +270,7 @@ function element_pack_allow_tags($tag = null)
 /**
  * post pagination
  */
-function element_pack_post_pagination($wp_query)
-{
+function element_pack_post_pagination($wp_query) {
 
     /** Stop execution if there's only 1 page */
     if ($wp_query->max_num_pages <= 1) {
@@ -349,8 +345,7 @@ function element_pack_post_pagination($wp_query)
     echo '</ul>' . "\n";
 }
 
-function element_pack_template_edit_link($template_id)
-{
+function element_pack_template_edit_link($template_id) {
     if (Element_Pack_Loader::elementor()->editor->is_edit_mode()) {
 
         $final_url = add_query_arg(['elementor' => ''], get_permalink($template_id));
@@ -363,13 +358,12 @@ function element_pack_template_edit_link($template_id)
     return false;
 }
 
-function element_pack_template_on_modal_with_iframe($template_id, $id)
-{
+function element_pack_template_on_modal_with_iframe($template_id, $id) {
     if (Element_Pack_Loader::elementor()->editor->is_edit_mode()) {
         $src = add_query_arg(['elementor' => ''], get_permalink($template_id));
         $modalSelector = "bdt-template-modal-iframe-{$id}";
-        ?>
-        <a class="bdt-template-modal-iframe-edit-link bdt-elementor-template-edit-link" data-modal-element=".<?php echo esc_attr($modalSelector) ?>" href="javascript:void(0)" title="<?php esc_html__('Edit Template', 'bdthemes-element-pack')?>" target="_blank">
+    ?>
+        <a class="bdt-template-modal-iframe-edit-link bdt-elementor-template-edit-link" data-modal-element=".<?php echo esc_attr($modalSelector) ?>" href="javascript:void(0)" title="<?php esc_html__('Edit Template', 'bdthemes-element-pack') ?>" target="_blank">
             <i class="eicon-edit"></i>
         </a>
         <div class="<?php echo esc_attr($modalSelector) ?> bdt-flex-top" bdt-modal>
@@ -378,8 +372,8 @@ function element_pack_template_on_modal_with_iframe($template_id, $id)
                 <iframe src="<?php echo esc_attr($src) ?>" width="1600" height="800" data-bdt-responsive></iframe>
             </div>
         </div>
-<?php
-}
+    <?php
+    }
 }
 
 /**
@@ -388,8 +382,7 @@ function element_pack_template_on_modal_with_iframe($template_id, $id)
  *
  * @return false|string
  */
-function element_pack_currency_format($currency, $precision = 1)
-{
+function element_pack_currency_format($currency, $precision = 1) {
 
     if ($currency > 0) {
         if ($currency < 900) {
@@ -429,8 +422,7 @@ function element_pack_currency_format($currency, $precision = 1)
 /**
  * @return array
  */
-function element_pack_get_menu()
-{
+function element_pack_get_menu() {
 
     $menus = wp_get_nav_menus();
     $items = [0 => esc_html__('Select Menu', 'bdthemes-element-pack')];
@@ -450,8 +442,7 @@ function element_pack_get_menu()
  *
  * @return mixed
  */
-function element_pack_option($option, $section, $default = '')
-{
+function element_pack_option($option, $section, $default = '') {
 
     $options = get_option($section);
 
@@ -466,8 +457,7 @@ function element_pack_option($option, $section, $default = '')
  * @return array of anywhere templates
  * will be deprecated next major version
  */
-function element_pack_ae_options()
-{
+function element_pack_ae_options() {
 
     if (post_type_exists('ae_global_templates')) {
         $anywhere = get_posts(array(
@@ -492,8 +482,7 @@ function element_pack_ae_options()
  * @return array of elementor template
  * will be deprecated next major version
  */
-function element_pack_et_options()
-{
+function element_pack_et_options() {
 
     $templates = Element_Pack_Loader::elementor()->templates_manager->get_source('local')->get_items();
     $types = [];
@@ -515,8 +504,7 @@ function element_pack_et_options()
 /**
  * @return array of wp default sidebars
  */
-function element_pack_sidebar_options()
-{
+function element_pack_sidebar_options() {
 
     global $wp_registered_sidebars;
     $sidebar_options = [];
@@ -538,8 +526,7 @@ function element_pack_sidebar_options()
  * @param string category name
  * @return array of category
  */
-function element_pack_get_terms($taxonomy = 'category')
-{
+function element_pack_get_terms($taxonomy = 'category') {
 
     $post_options = [];
 
@@ -565,8 +552,7 @@ function element_pack_get_terms($taxonomy = 'category')
  * @param string parent category name
  * @return array of parent category
  */
-function element_pack_get_only_parent_cats($taxonomy = 'category')
-{
+function element_pack_get_only_parent_cats($taxonomy = 'category') {
 
     $parent_categories = ['none' => __('None', 'bdthemes-element-pack')];
     $args = ['parent' => 0];
@@ -584,8 +570,7 @@ function element_pack_get_only_parent_cats($taxonomy = 'category')
  *
  * @return string
  */
-function element_pack_get_category_list($post_type, $separator = ' ')
-{
+function element_pack_get_category_list($post_type, $separator = ' ') {
     switch ($post_type) {
         case 'campaign':
             $taxonomy = 'campaign_category';
@@ -635,8 +620,7 @@ function element_pack_get_category_list($post_type, $separator = ' ')
  *
  * @return array return all setting as array
  */
-function element_pack_ajax_settings($settings)
-{
+function element_pack_ajax_settings($settings) {
 
     $required_settings = [
         'show_date' => true,
@@ -663,77 +647,73 @@ function element_pack_ajax_settings($settings)
 /**
  * @return array of all transition names
  */
-function element_pack_transition_options()
-{
+function element_pack_transition_options() {
 
     $transition_options = [
-        '' => esc_html__('None', 'bdthemes-element-pack'),
-        'fade' => esc_html__('Fade', 'bdthemes-element-pack'),
-        'scale-up' => esc_html__('Scale Up', 'bdthemes-element-pack'),
-        'scale-down' => esc_html__('Scale Down', 'bdthemes-element-pack'),
-        'slide-top' => esc_html__('Slide Top', 'bdthemes-element-pack'),
-        'slide-bottom' => esc_html__('Slide Bottom', 'bdthemes-element-pack'),
-        'slide-left' => esc_html__('Slide Left', 'bdthemes-element-pack'),
-        'slide-right' => esc_html__('Slide Right', 'bdthemes-element-pack'),
-        'slide-top-small' => esc_html__('Slide Top Small', 'bdthemes-element-pack'),
-        'slide-bottom-small' => esc_html__('Slide Bottom Small', 'bdthemes-element-pack'),
-        'slide-left-small' => esc_html__('Slide Left Small', 'bdthemes-element-pack'),
-        'slide-right-small' => esc_html__('Slide Right Small', 'bdthemes-element-pack'),
-        'slide-top-medium' => esc_html__('Slide Top Medium', 'bdthemes-element-pack'),
+        ''                    => esc_html__('None', 'bdthemes-element-pack'),
+        'fade'                => esc_html__('Fade', 'bdthemes-element-pack'),
+        'scale-up'            => esc_html__('Scale Up', 'bdthemes-element-pack'),
+        'scale-down'          => esc_html__('Scale Down', 'bdthemes-element-pack'),
+        'slide-top'           => esc_html__('Slide Top', 'bdthemes-element-pack'),
+        'slide-bottom'        => esc_html__('Slide Bottom', 'bdthemes-element-pack'),
+        'slide-left'          => esc_html__('Slide Left', 'bdthemes-element-pack'),
+        'slide-right'         => esc_html__('Slide Right', 'bdthemes-element-pack'),
+        'slide-top-small'     => esc_html__('Slide Top Small', 'bdthemes-element-pack'),
+        'slide-bottom-small'  => esc_html__('Slide Bottom Small', 'bdthemes-element-pack'),
+        'slide-left-small'    => esc_html__('Slide Left Small', 'bdthemes-element-pack'),
+        'slide-right-small'   => esc_html__('Slide Right Small', 'bdthemes-element-pack'),
+        'slide-top-medium'    => esc_html__('Slide Top Medium', 'bdthemes-element-pack'),
         'slide-bottom-medium' => esc_html__('Slide Bottom Medium', 'bdthemes-element-pack'),
-        'slide-left-medium' => esc_html__('Slide Left Medium', 'bdthemes-element-pack'),
-        'slide-right-medium' => esc_html__('Slide Right Medium', 'bdthemes-element-pack'),
+        'slide-left-medium'   => esc_html__('Slide Left Medium', 'bdthemes-element-pack'),
+        'slide-right-medium'  => esc_html__('Slide Right Medium', 'bdthemes-element-pack'),
     ];
 
     return $transition_options;
 }
 
 // BDT Blend Type
-function element_pack_blend_options()
-{
+function element_pack_blend_options() {
     $blend_options = [
-        'multiply' => esc_html__('Multiply', 'bdthemes-element-pack'),
-        'screen' => esc_html__('Screen', 'bdthemes-element-pack'),
-        'overlay' => esc_html__('Overlay', 'bdthemes-element-pack'),
-        'darken' => esc_html__('Darken', 'bdthemes-element-pack'),
-        'lighten' => esc_html__('Lighten', 'bdthemes-element-pack'),
+        'multiply'    => esc_html__('Multiply', 'bdthemes-element-pack'),
+        'screen'      => esc_html__('Screen', 'bdthemes-element-pack'),
+        'overlay'     => esc_html__('Overlay', 'bdthemes-element-pack'),
+        'darken'      => esc_html__('Darken', 'bdthemes-element-pack'),
+        'lighten'     => esc_html__('Lighten', 'bdthemes-element-pack'),
         'color-dodge' => esc_html__('Color-Dodge', 'bdthemes-element-pack'),
-        'color-burn' => esc_html__('Color-Burn', 'bdthemes-element-pack'),
-        'hard-light' => esc_html__('Hard-Light', 'bdthemes-element-pack'),
-        'soft-light' => esc_html__('Soft-Light', 'bdthemes-element-pack'),
-        'difference' => esc_html__('Difference', 'bdthemes-element-pack'),
-        'exclusion' => esc_html__('Exclusion', 'bdthemes-element-pack'),
-        'hue' => esc_html__('Hue', 'bdthemes-element-pack'),
-        'saturation' => esc_html__('Saturation', 'bdthemes-element-pack'),
-        'color' => esc_html__('Color', 'bdthemes-element-pack'),
-        'luminosity' => esc_html__('Luminosity', 'bdthemes-element-pack'),
+        'color-burn'  => esc_html__('Color-Burn', 'bdthemes-element-pack'),
+        'hard-light'  => esc_html__('Hard-Light', 'bdthemes-element-pack'),
+        'soft-light'  => esc_html__('Soft-Light', 'bdthemes-element-pack'),
+        'difference'  => esc_html__('Difference', 'bdthemes-element-pack'),
+        'exclusion'   => esc_html__('Exclusion', 'bdthemes-element-pack'),
+        'hue'         => esc_html__('Hue', 'bdthemes-element-pack'),
+        'saturation'  => esc_html__('Saturation', 'bdthemes-element-pack'),
+        'color'       => esc_html__('Color', 'bdthemes-element-pack'),
+        'luminosity'  => esc_html__('Luminosity', 'bdthemes-element-pack'),
     ];
 
     return $blend_options;
 }
 
 // BDT Position
-function element_pack_position()
-{
+function element_pack_position() {
     $position_options = [
-        '' => esc_html__('Default', 'bdthemes-element-pack'),
-        'top-left' => esc_html__('Top Left', 'bdthemes-element-pack'),
-        'top-center' => esc_html__('Top Center', 'bdthemes-element-pack'),
-        'top-right' => esc_html__('Top Right', 'bdthemes-element-pack'),
-        'center' => esc_html__('Center', 'bdthemes-element-pack'),
-        'center-left' => esc_html__('Center Left', 'bdthemes-element-pack'),
-        'center-right' => esc_html__('Center Right', 'bdthemes-element-pack'),
-        'bottom-left' => esc_html__('Bottom Left', 'bdthemes-element-pack'),
+        ''              => esc_html__('Default', 'bdthemes-element-pack'),
+        'top-left'      => esc_html__('Top Left', 'bdthemes-element-pack'),
+        'top-center'    => esc_html__('Top Center', 'bdthemes-element-pack'),
+        'top-right'     => esc_html__('Top Right', 'bdthemes-element-pack'),
+        'center'        => esc_html__('Center', 'bdthemes-element-pack'),
+        'center-left'   => esc_html__('Center Left', 'bdthemes-element-pack'),
+        'center-right'  => esc_html__('Center Right', 'bdthemes-element-pack'),
+        'bottom-left'   => esc_html__('Bottom Left', 'bdthemes-element-pack'),
         'bottom-center' => esc_html__('Bottom Center', 'bdthemes-element-pack'),
-        'bottom-right' => esc_html__('Bottom Right', 'bdthemes-element-pack'),
+        'bottom-right'  => esc_html__('Bottom Right', 'bdthemes-element-pack'),
     ];
 
     return $position_options;
 }
 
 // BDT Thumbnavs Position
-function element_pack_thumbnavs_position()
-{
+function element_pack_thumbnavs_position() {
     $position_options = [
         'top-left' => esc_html__('Top Left', 'bdthemes-element-pack'),
         'top-center' => esc_html__('Top Center', 'bdthemes-element-pack'),
@@ -748,65 +728,61 @@ function element_pack_thumbnavs_position()
     return $position_options;
 }
 
-function element_pack_navigation_position()
-{
+function element_pack_navigation_position() {
     $position_options = [
-        'top-left' => esc_html__('Top Left', 'bdthemes-element-pack'),
-        'top-center' => esc_html__('Top Center', 'bdthemes-element-pack'),
-        'top-right' => esc_html__('Top Right', 'bdthemes-element-pack'),
-        'center' => esc_html__('Center', 'bdthemes-element-pack'),
-        'center-left' => esc_html__('Center Left', 'bdthemes-element-pack'),
-        'center-right' => esc_html__('Center Right', 'bdthemes-element-pack'),
-        'bottom-left' => esc_html__('Bottom Left', 'bdthemes-element-pack'),
+        'top-left'      => esc_html__('Top Left', 'bdthemes-element-pack'),
+        'top-center'    => esc_html__('Top Center', 'bdthemes-element-pack'),
+        'top-right'     => esc_html__('Top Right', 'bdthemes-element-pack'),
+        'center'        => esc_html__('Center', 'bdthemes-element-pack'),
+        'center-left'   => esc_html__('Center Left', 'bdthemes-element-pack'),
+        'center-right'  => esc_html__('Center Right', 'bdthemes-element-pack'),
+        'bottom-left'   => esc_html__('Bottom Left', 'bdthemes-element-pack'),
         'bottom-center' => esc_html__('Bottom Center', 'bdthemes-element-pack'),
-        'bottom-right' => esc_html__('Bottom Right', 'bdthemes-element-pack'),
+        'bottom-right'  => esc_html__('Bottom Right', 'bdthemes-element-pack'),
     ];
 
     return $position_options;
 }
 
-function element_pack_pagination_position()
-{
+function element_pack_pagination_position() {
     $position_options = [
-        'top-left' => esc_html__('Top Left', 'bdthemes-element-pack'),
-        'top-center' => esc_html__('Top Center', 'bdthemes-element-pack'),
-        'top-right' => esc_html__('Top Right', 'bdthemes-element-pack'),
-        'center-left' => esc_html__('Center Left', 'bdthemes-element-pack'),
-        'center-right' => esc_html__('Center Right', 'bdthemes-element-pack'),
-        'bottom-left' => esc_html__('Bottom Left', 'bdthemes-element-pack'),
+        'top-left'      => esc_html__('Top Left', 'bdthemes-element-pack'),
+        'top-center'    => esc_html__('Top Center', 'bdthemes-element-pack'),
+        'top-right'     => esc_html__('Top Right', 'bdthemes-element-pack'),
+        'center-left'   => esc_html__('Center Left', 'bdthemes-element-pack'),
+        'center-right'  => esc_html__('Center Right', 'bdthemes-element-pack'),
+        'bottom-left'   => esc_html__('Bottom Left', 'bdthemes-element-pack'),
         'bottom-center' => esc_html__('Bottom Center', 'bdthemes-element-pack'),
-        'bottom-right' => esc_html__('Bottom Right', 'bdthemes-element-pack'),
+        'bottom-right'  => esc_html__('Bottom Right', 'bdthemes-element-pack'),
     ];
 
     return $position_options;
 }
 
 // BDT Drop Position
-function element_pack_drop_position()
-{
+function element_pack_drop_position() {
     $drop_position_options = [
-        'bottom-left' => esc_html__('Bottom Left', 'bdthemes-element-pack'),
-        'bottom-center' => esc_html__('Bottom Center', 'bdthemes-element-pack'),
-        'bottom-right' => esc_html__('Bottom Right', 'bdthemes-element-pack'),
+        'bottom-left'    => esc_html__('Bottom Left', 'bdthemes-element-pack'),
+        'bottom-center'  => esc_html__('Bottom Center', 'bdthemes-element-pack'),
+        'bottom-right'   => esc_html__('Bottom Right', 'bdthemes-element-pack'),
         'bottom-justify' => esc_html__('Bottom Justify', 'bdthemes-element-pack'),
-        'top-left' => esc_html__('Top Left', 'bdthemes-element-pack'),
-        'top-center' => esc_html__('Top Center', 'bdthemes-element-pack'),
-        'top-right' => esc_html__('Top Right', 'bdthemes-element-pack'),
-        'top-justify' => esc_html__('Top Justify', 'bdthemes-element-pack'),
-        'left-top' => esc_html__('Left Top', 'bdthemes-element-pack'),
-        'left-center' => esc_html__('Left Center', 'bdthemes-element-pack'),
-        'left-bottom' => esc_html__('Left Bottom', 'bdthemes-element-pack'),
-        'right-top' => esc_html__('Right Top', 'bdthemes-element-pack'),
-        'right-center' => esc_html__('Right Center', 'bdthemes-element-pack'),
-        'right-bottom' => esc_html__('Right Bottom', 'bdthemes-element-pack'),
+        'top-left'       => esc_html__('Top Left', 'bdthemes-element-pack'),
+        'top-center'     => esc_html__('Top Center', 'bdthemes-element-pack'),
+        'top-right'      => esc_html__('Top Right', 'bdthemes-element-pack'),
+        'top-justify'    => esc_html__('Top Justify', 'bdthemes-element-pack'),
+        'left-top'       => esc_html__('Left Top', 'bdthemes-element-pack'),
+        'left-center'    => esc_html__('Left Center', 'bdthemes-element-pack'),
+        'left-bottom'    => esc_html__('Left Bottom', 'bdthemes-element-pack'),
+        'right-top'      => esc_html__('Right Top', 'bdthemes-element-pack'),
+        'right-center'   => esc_html__('Right Center', 'bdthemes-element-pack'),
+        'right-bottom'   => esc_html__('Right Bottom', 'bdthemes-element-pack'),
     ];
 
     return $drop_position_options;
 }
 
 // Button Size
-function element_pack_button_sizes()
-{
+function element_pack_button_sizes() {
     $button_sizes = [
         'xs' => esc_html__('Extra Small', 'bdthemes-element-pack'),
         'sm' => esc_html__('Small', 'bdthemes-element-pack'),
@@ -819,8 +795,7 @@ function element_pack_button_sizes()
 }
 
 // Button Size
-function element_pack_heading_size()
-{
+function element_pack_heading_size() {
     $heading_sizes = [
         'h1' => 'H1',
         'h2' => 'H2',
@@ -834,18 +809,17 @@ function element_pack_heading_size()
 }
 
 // Title Tags
-function element_pack_title_tags()
-{
+function element_pack_title_tags() {
     $title_tags = [
-        'h1' => 'H1',
-        'h2' => 'H2',
-        'h3' => 'H3',
-        'h4' => 'H4',
-        'h5' => 'H5',
-        'h6' => 'H6',
-        'div' => 'div',
+        'h1'   => 'H1',
+        'h2'   => 'H2',
+        'h3'   => 'H3',
+        'h4'   => 'H4',
+        'h5'   => 'H5',
+        'h6'   => 'H6',
+        'div'  => 'div',
         'span' => 'span',
-        'p' => 'p',
+        'p'    => 'p',
     ];
 
     return $title_tags;
@@ -869,8 +843,7 @@ function element_pack_title_tags()
  *
  * @return array list
  */
-function element_pack_mask_shapes()
-{
+function element_pack_mask_shapes() {
     $shape_name = 'shape';
     $list = [];
 
@@ -887,8 +860,7 @@ function element_pack_mask_shapes()
  * @param string file
  * @return false content
  */
-function element_pack_svg_icon($icon)
-{
+function element_pack_svg_icon($icon) {
 
     $icon_path = BDTEP_ASSETS_PATH . "images/svg/{$icon}.svg";
 
@@ -910,8 +882,7 @@ function element_pack_svg_icon($icon)
  *
  * @return false content
  */
-function element_pack_load_svg($icon)
-{
+function element_pack_load_svg($icon) {
 
     if (!file_exists($icon)) {
         return false;
@@ -930,8 +901,7 @@ function element_pack_load_svg($icon)
  * weather code to icon and description output
  * more info: http://www.apixu.com/doc/Apixu_weather_conditions.json
  */
-function element_pack_weather_code($code = null, $condition = null)
-{
+function element_pack_weather_code($code = null, $condition = null) {
 
     $codes = apply_filters('element-pack/weather/codes', [
         "113" => [
@@ -1145,8 +1115,7 @@ function element_pack_weather_code($code = null, $condition = null)
     return $codes[$code_key];
 }
 
-function element_pack_open_weather_code($code = null, $condition = null)
-{
+function element_pack_open_weather_code($code = null, $condition = null) {
 
     $codes = apply_filters('element-pack/weather/codes', [
         "01d" => [
@@ -1217,8 +1186,7 @@ function element_pack_open_weather_code($code = null, $condition = null)
     return $codes[$code_key];
 }
 
-function element_pack_wind_code($degree)
-{
+function element_pack_wind_code($degree) {
 
     $direction = '';
 
@@ -1250,8 +1218,7 @@ function element_pack_wind_code($degree)
  *
  * @return string
  */
-function element_pack_parse_csv($csv, $delimiter = ';', $header = true)
-{
+function element_pack_parse_csv($csv, $delimiter = ';', $header = true) {
 
     if (!is_string($csv)) {
         return '';
@@ -1278,8 +1245,8 @@ function element_pack_parse_csv($csv, $delimiter = ';', $header = true)
             $cell = trim($cell);
 
             $html .= $header
-            ? '<th>' . $cell . '</th>'
-            : '<td>' . $cell . '</td>';
+                ? '<th>' . $cell . '</th>'
+                : '<td>' . $cell . '</td>';
         }
 
         if ($headRow == 1 and $header) {
@@ -1302,8 +1269,7 @@ function element_pack_parse_csv($csv, $delimiter = ';', $header = true)
  *
  * @return [type]         [description]
  */
-function element_pack_string_id($string)
-{
+function element_pack_string_id($string) {
     //Lower case everything
     $string = strtolower($string);
     //Make alphanumeric (removes all other characters)
@@ -1317,8 +1283,7 @@ function element_pack_string_id($string)
     return $string;
 }
 
-function element_pack_instagram_card()
-{
+function element_pack_instagram_card() {
 
     $options = get_option('element_pack_api_settings');
     $access_token = (!empty($options['instagram_access_token'])) ? $options['instagram_access_token'] : '';
@@ -1356,8 +1321,7 @@ function element_pack_instagram_card()
  * Ninja form array creator for get all form as
  * @return array [description]
  */
-function element_pack_ninja_forms_options()
-{
+function element_pack_ninja_forms_options() {
 
     if (class_exists('Ninja_Forms') and function_exists('Ninja_Forms')) {
         $ninja_forms = Ninja_Forms()->form()->get_forms();
@@ -1374,36 +1338,34 @@ function element_pack_ninja_forms_options()
     return $form_options;
 }
 
-function element_pack_fluent_forms_options()
-{{
+function element_pack_fluent_forms_options() { {
 
-    $options = array();
+        $options = array();
 
-    if (defined('FLUENTFORM')) {
-        global $wpdb;
+        if (defined('FLUENTFORM')) {
+            global $wpdb;
 
-        $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}fluentform_forms");
+            $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}fluentform_forms");
 
-        if ($result) {
-            $options[0] = esc_html__('Select Form', 'bdthemes-element-pack');
-            foreach ($result as $form) {
-                $options[$form->id] = $form->title;
+            if ($result) {
+                $options[0] = esc_html__('Select Form', 'bdthemes-element-pack');
+                foreach ($result as $form) {
+                    $options[$form->id] = $form->title;
+                }
+            } else {
+                $options[0] = esc_html__('Form Not Found!', 'bdthemes-element-pack');
             }
-        } else {
-            $options[0] = esc_html__('Form Not Found!', 'bdthemes-element-pack');
         }
-    }
 
-    return $options;
-}
+        return $options;
+    }
 }
 
 /**
  * [element_pack_everest_forms_options description]
  * @return [type] [description]
  */
-function element_pack_everest_forms_options()
-{
+function element_pack_everest_forms_options() {
     $everest_form = array();
     $ev_form = get_posts('post_type="everest_form"&numberposts=-1');
     if ($ev_form) {
@@ -1421,8 +1383,7 @@ function element_pack_everest_forms_options()
  * [element_pack_formidable_forms_options description]
  * @return [type] [description]
  */
-function element_pack_formidable_forms_options()
-{
+function element_pack_formidable_forms_options() {
     if (class_exists('FrmForm')) {
         $options = array();
 
@@ -1448,8 +1409,7 @@ function element_pack_formidable_forms_options()
  * [element_pack_forminator_forms_options description]
  * @return [type] [description]
  */
-function element_pack_forminator_forms_options()
-{
+function element_pack_forminator_forms_options() {
     $forminator_form = array();
     $fnr_form = get_posts('post_type="forminator_forms"&numberposts=-1');
     if ($fnr_form) {
@@ -1467,8 +1427,7 @@ function element_pack_forminator_forms_options()
  * [element_pack_we_forms_options description]
  * @return [type] [description]
  */
-function element_pack_we_forms_options()
-{
+function element_pack_we_forms_options() {
 
     if (class_exists('WeForms')) {
         $we_forms = get_posts([
@@ -1496,8 +1455,7 @@ function element_pack_we_forms_options()
  * [element_pack_caldera_forms_options description]
  * @return [type] [description]
  */
-function element_pack_caldera_forms_options()
-{
+function element_pack_caldera_forms_options() {
 
     if (class_exists('Caldera_Forms')) {
         $caldera_forms = Caldera_Forms_Forms::get_forms(true, true);
@@ -1521,8 +1479,7 @@ function element_pack_caldera_forms_options()
  * [element_pack_quform_options description]
  * @return [type] [description]
  */
-function element_pack_quform_options()
-{
+function element_pack_quform_options() {
 
     if (class_exists('Quform')) {
         $quform = Quform::getService('repository');
@@ -1544,8 +1501,7 @@ function element_pack_quform_options()
  * [element_pack_gravity_forms_options description]
  * @return [type] [description]
  */
-function element_pack_gravity_forms_options()
-{
+function element_pack_gravity_forms_options() {
 
     if (class_exists('GFCommon')) {
         $contact_forms = RGFormsModel::get_forms(null, 'title');
@@ -1566,8 +1522,7 @@ function element_pack_gravity_forms_options()
  * [element_pack_give_forms_options description]
  * @return [type] [description]
  */
-function element_pack_give_forms_options()
-{
+function element_pack_give_forms_options() {
     $give_form = ['0' => esc_html__('Select Form', 'bdthemes-element-pack')];
     $gwp_form = get_posts('post_type="give_forms"&numberposts=-1');
     if ($gwp_form) {
@@ -1585,8 +1540,7 @@ function element_pack_give_forms_options()
  * [element_pack_charitable_forms_options description]
  * @return [type] [description]
  */
-function element_pack_charitable_forms_options()
-{
+function element_pack_charitable_forms_options() {
     $charitable_form = array('all' => esc_html__('All', 'bdthemes-element-pack'));
     $charity_form = get_posts('post_type="campaign"&numberposts=-1');
     if ($charity_form) {
@@ -1604,8 +1558,7 @@ function element_pack_charitable_forms_options()
  * [element_pack_rev_slider_options description]
  * @return [type] [description]
  */
-function element_pack_rev_slider_options()
-{
+function element_pack_rev_slider_options() {
 
     if (class_exists('RevSlider')) {
         $slider = new RevSlider();
@@ -1629,8 +1582,7 @@ function element_pack_rev_slider_options()
  * [element_pack_download_file_list description]
  * @return [type] [description]
  */
-function element_pack_download_file_list()
-{
+function element_pack_download_file_list() {
 
     $output = [];
     if (defined('DLM_VERSION')) {
@@ -1654,8 +1606,7 @@ function element_pack_download_file_list()
  * @param  string $suffix [description]
  * @return [type]         [description]
  */
-function element_pack_dashboard_link($suffix = '#welcome')
-{
+function element_pack_dashboard_link($suffix = '#welcome') {
     return add_query_arg(['page' => 'element_pack_options' . $suffix], admin_url('admin.php'));
 }
 
@@ -1664,8 +1615,7 @@ function element_pack_dashboard_link($suffix = '#welcome')
  * @param  string $currency [description]
  * @return [type]           [description]
  */
-function element_pack_currency_symbol($currency = '')
-{
+function element_pack_currency_symbol($currency = '') {
     switch (strtoupper($currency)) {
         case 'AED':
             $currency_symbol = 'د.إ';
@@ -1837,8 +1787,7 @@ function element_pack_currency_symbol($currency = '')
  * @param  [type] $value [description]
  * @return [type]        [description]
  */
-function element_pack_money_format($value)
-{
+function element_pack_money_format($value) {
 
     if (empty($value)) {
         return;
@@ -1856,8 +1805,7 @@ function element_pack_money_format($value)
  *
  * @return string return custom limited excerpt text
  */
-function element_pack_custom_excerpt($limit = 25, $strip_shortcode = false, $trail = '')
-{
+function element_pack_custom_excerpt($limit = 25, $strip_shortcode = false, $trail = '') {
 
     $output = get_the_content();
 
@@ -1877,8 +1825,7 @@ function element_pack_custom_excerpt($limit = 25, $strip_shortcode = false, $tra
  * @param  string $comment_type [description]
  * @return [type]               [description]
  */
-function element_pack_total_comment($comment_type = 'total')
-{
+function element_pack_total_comment($comment_type = 'total') {
     $comments_count = wp_count_comments();
 
     if ($comment_type == 'moderated') {
@@ -1902,8 +1849,7 @@ function element_pack_total_comment($comment_type = 'total')
  * @param  string $post_status      [description]
  * @return [type]                   [description]
  */
-function element_pack_total_post($custom_post_type = 'post', $post_status = 'publish')
-{
+function element_pack_total_post($custom_post_type = 'post', $post_status = 'publish') {
     $post_count = wp_count_posts($custom_post_type);
 
     if ($post_status == 'publish') {
@@ -1922,8 +1868,7 @@ function element_pack_total_post($custom_post_type = 'post', $post_status = 'pub
  * @param  string $user_type [description]
  * @return [type]            [description]
  */
-function element_pack_total_user($user_type = 'bdt-all-users')
-{
+function element_pack_total_user($user_type = 'bdt-all-users') {
     $user_count = count_users();
 
     if ($user_type == 'bdt-all-users') {
@@ -1943,8 +1888,7 @@ function element_pack_total_user($user_type = 'bdt-all-users')
  * [element_pack_user_roles description]
  * @return [type] [description]
  */
-function element_pack_user_roles()
-{
+function element_pack_user_roles() {
     global $wp_roles;
 
     if (!isset($wp_roles)) {
@@ -1967,8 +1911,7 @@ function element_pack_user_roles()
  * @param  [type] $text [description]
  * @return [type]       [description]
  */
-function element_pack_strip_emoji($text)
-{
+function element_pack_strip_emoji($text) {
     // four byte utf8: 11110www 10xxxxxx 10yyyyyy 10zzzzzz
     return preg_replace('/[\xF0-\xF7][\x80-\xBF]{3}/', '', $text);
 }
@@ -1978,8 +1921,7 @@ function element_pack_strip_emoji($text)
  * @param  [type] $tweet [description]
  * @return [type]        [description]
  */
-function element_pack_twitter_process_links($tweet)
-{
+function element_pack_twitter_process_links($tweet) {
 
     // Is the Tweet a ReTweet - then grab the full text of the original Tweet
     if (isset($tweet->retweeted_status)) {
@@ -2010,8 +1952,7 @@ function element_pack_twitter_process_links($tweet)
  * @param  string $to   [description]
  * @return [type]       [description]
  */
-function element_pack_time_diff($from, $to = '')
-{
+function element_pack_time_diff($from, $to = '') {
     $diff = human_time_diff($from, $to);
     $replace = array(
         ' hour' => 'h',
@@ -2032,8 +1973,7 @@ function element_pack_time_diff($from, $to = '')
  * @param  string $format [description]
  * @return [type]         [description]
  */
-function element_pack_post_time_diff($format = '')
-{
+function element_pack_post_time_diff($format = '') {
     $displayAgo = esc_html_x('ago', 'leading space is required', 'bdthemes-element-pack');
 
     if ($format == 'short') {
@@ -2047,8 +1987,7 @@ function element_pack_post_time_diff($format = '')
     return $output;
 }
 
-function element_pack_hide_on_class($selectors)
-{
+function element_pack_hide_on_class($selectors) {
     $element_hide_on = '';
     if (!empty($selectors)) {
         foreach ($selectors as $element) {
@@ -2075,8 +2014,7 @@ if (!function_exists('element_pack_array_except')) {
      * @param  callable|null  $callback
      * @return mixed
      */
-    function element_pack_array_except($array, $keys)
-    {
+    function element_pack_array_except($array, $keys) {
 
         $original = &$array;
 
@@ -2120,8 +2058,7 @@ if (!function_exists('element_pack_array_except')) {
  * License Validation
  */
 if (!function_exists('bdt_license_validation')) {
-    function bdt_license_validation()
-    {
+    function bdt_license_validation() {
         $license_key = trim(get_option('element_pack_license_key'));
 
         if (isset($license_key) && !empty($license_key)) {
@@ -2137,8 +2074,7 @@ if (!function_exists('bdt_license_validation')) {
  * Crypto Currency API
  */
 if (!function_exists('ep_crypto')) {
-    function ep_crypto()
-    {
+    function ep_crypto() {
         $currency = isset($_GET['currency']) ? $_GET['currency'] : 'usd';
         $param = [
             'page' => isset($_GET['page']) && is_int($_GET['page']) ? $_GET['page'] : 1,
@@ -2165,7 +2101,7 @@ if (!function_exists('ep_crypto')) {
          */
         // now have to brek the data
 
-        if (isset($data->status->error_code)) {
+        if (isset($data->status->error_code) && !empty($data->status->error_code)) {
             $data = get_transient('ep-bitcoin');
             // $dataset = array(
             //     "apiErrors" => true,
@@ -2203,7 +2139,6 @@ if (!function_exists('ep_crypto')) {
                 //'last_seven_days_changes' => getChartData($row->id, $currency)
                 'last_seven_days_changes' => $row->sparkline_in_7d->price,
             ];
-
         }
 
         $dataset = array(
@@ -2218,8 +2153,7 @@ if (!function_exists('ep_crypto')) {
 }
 
 if (!function_exists('ep_crypto_data')) {
-    function ep_crypto_data()
-    {
+    function ep_crypto_data() {
         try {
             /**
              * initialization
@@ -2245,7 +2179,7 @@ if (!function_exists('ep_crypto_data')) {
             $body = wp_remote_retrieve_body($url);
             $data = json_decode($body);
 
-            if (isset($data->status->error_code)) {
+            if (isset($data->status->error_code) && !empty($data->status->error_code)) {
                 // echo $data->status->error_code;
                 $data = get_transient('ep-bitcoin');
                 // $dataset = array(
@@ -2254,6 +2188,7 @@ if (!function_exists('ep_crypto_data')) {
                 // );
                 // echo json_encode($dataset);
                 // wp_die();
+                // print_r($data->status->error_code);
             }
 
             $resultArray = [];
@@ -2274,5 +2209,71 @@ if (!function_exists('ep_crypto_data')) {
             echo $e->getMessage();
             wp_die();
         }
+    }
+}
+
+
+if (!function_exists('element_pack_render_mini_cart_item')) {
+    function element_pack_render_mini_cart_item($cart_item_key, $cart_item) {
+        $_product           = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+        $is_product_visible = ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_widget_cart_item_visible', true, $cart_item, $cart_item_key));
+
+        if (!$is_product_visible) {
+            return;
+        }
+
+        $product_id        = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
+        $product_price     = apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key);
+        $item_permalink    = apply_filters('woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink($cart_item) : '', $cart_item, $cart_item_key);
+    ?>
+        <div class="bdt-mini-cart-product-item bdt-flex bdt-flex-middle <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>">
+
+            <div class="bdt-mini-cart-product-thumbnail">
+                <?php
+                $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
+
+                if (!$item_permalink) {
+                    echo wp_kses_post($thumbnail);
+                } else {
+                    printf('<a href="%s">%s</a>', esc_url($item_permalink), wp_kses_post($thumbnail));
+                }
+                ?>
+            </div>
+
+            <div class="bdt-margin-small-left">
+                <div class="bdt-mini-cart-product-name bdt-margin-small-bottom">
+                    <?php
+                    if (!$item_permalink) {
+                        echo wp_kses_post(apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key) . '&nbsp;');
+                    } else {
+                        echo wp_kses_post(apply_filters('woocommerce_cart_item_name', sprintf('<a href="%s">%s</a>', esc_url($item_permalink), $_product->get_name()), $cart_item, $cart_item_key));
+                    }
+
+                    do_action('woocommerce_after_cart_item_name', $cart_item, $cart_item_key);
+
+                    // Meta data.
+                    echo wc_get_formatted_cart_item_data($cart_item); // PHPCS: XSS ok.
+                    ?>
+                </div>
+
+                <div class="bdt-mini-cart-product-price" data-title="<?php esc_attr_e('Price', 'bdthemes-element-pack'); ?>">
+                    <?php echo apply_filters('woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf('%s &times; %s', $cart_item['quantity'], $product_price) . '</span>', $cart_item, $cart_item_key); ?>
+                </div>
+            </div>
+
+            <div class="bdt-mini-cart-product-remove">
+                <?php
+                echo apply_filters('woocommerce_cart_item_remove_link', sprintf(
+                    '<a href="%s" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s"><svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" data-svg="close-icon"><line fill="none" stroke="#000" stroke-width="1.1" x1="1" y1="1" x2="13" y2="13"></line><line fill="none" stroke="#000" stroke-width="1.1" x1="13" y1="1" x2="1" y2="13"></line></svg></a>',
+                    esc_url(wc_get_cart_remove_url($cart_item_key)),
+                    __('Remove this item', 'bdthemes-element-pack'),
+                    esc_attr($product_id),
+                    esc_attr($cart_item_key),
+                    esc_attr($_product->get_sku())
+                ), $cart_item_key);
+                ?>
+            </div>
+        </div>
+<?php
     }
 }

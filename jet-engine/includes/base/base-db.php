@@ -573,7 +573,7 @@ class Jet_Engine_Base_DB {
 				break;
 			case 'date':
 				$value = strtotime( $value );
-				$value = sprintf( "'%s'", date( $value, 'Y-m-d H:i:s' ) );
+				$value = sprintf( "'%s'", date( 'Y-m-d H:i:s', $value ) );
 				break;
 			default:
 				$value = sprintf( "'%s'", esc_sql( $value ) );

@@ -1450,11 +1450,17 @@ function UniteCreatorElementorEditorAdmin(){
 				return(true);
 			break;
 		}
-						
+		
+				
 		var id = objElement.data("id");
 		
+		//validate it's opened element in panel
+		
+		if(window.ucLastElementorModelID && id != window.ucLastElementorModelID)
+			return(true);
+		
 		var objSettings = getSettingsFromElementor(id);
-				
+		
 		checkElementBackground(element, objSettings);
 	}
 	
@@ -1492,7 +1498,7 @@ function UniteCreatorElementorEditorAdmin(){
 		elementor.hooks.addAction("panel/open_editor/section", onElementorSectionPanelChange);
 		elementor.hooks.addAction("panel/open_editor/container", onElementorSectionPanelChange);
 		elementor.hooks.addAction("panel/open_editor/widget", onElementorSectionPanelChange);
-				
+		
 		if(typeof elementorFrontend != "undefined"){
 			
 			//elementorFrontend.hooks.addAction( 'frontend/element_ready/widget', onFrontWidgetReady); 

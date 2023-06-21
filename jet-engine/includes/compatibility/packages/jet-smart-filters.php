@@ -166,9 +166,23 @@ if ( ! class_exists( 'Jet_Engine_Smart_Filters_Package' ) ) {
 					'provider' => 'jet-engine/' . $query_id,
 					'query'    => wp_parse_args(
 						$query,
-						isset( $filters_data['queries'][$query_id] ) ? $filters_data['queries'][$query_id] : array()
+						isset( $filters_data['queries'][ $query_id ] ) ? $filters_data['queries'][ $query_id ] : array()
 					)
 				);
+			}
+
+			$query_builder_id = false;
+
+			if ( class_exists( 'Jet_Engine\Query_Builder\Manager' ) ) {
+				$query_builder_id = Jet_Engine\Query_Builder\Manager::instance()->listings->get_query_id( $widget_settings['lisitng_id'], $widget_settings );
+			}
+
+			/**
+			 * After indexer get required data, remove query builder-related arguments from filters data to avoid it from sending
+			 * with AJAX requests and break these requests if query have to much args
+			 */
+			if ( ! empty( $query_builder_id ) && ! empty( $response['filters_data'] ) && ! empty( $response['filters_data']['queries'] ) ) {
+				$response['filters_data']['queries'][ $query_id ] = array();
 			}
 
 			return $response;

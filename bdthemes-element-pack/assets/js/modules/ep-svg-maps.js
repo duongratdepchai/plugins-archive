@@ -129,9 +129,32 @@
           let markerIsLinkable = [];
 
           // set region
-          options.region = self.settings("display_region")
-            ? self.settings("display_region")
-            : "world";
+          switch (self.settings("region_type")) {
+            case "continent":
+              options.region = self.settings("display_region_continent")
+                ? self.settings("display_region_continent")
+                : "002";
+              break;
+
+            case "subcontinent":
+              options.region = self.settings("display_region_sub_continent")
+                ? self.settings("display_region_sub_continent")
+                : "015";
+              break;
+
+            case "countries":
+              options.region = self.settings("display_region_countries")
+                ? self.settings("display_region_countries")
+                : "AU";
+              break;
+
+            default:
+              options.region = "world";
+              break;
+          }
+          // options.region = self.settings("display_region") ? self.settings("display_region") : "world";
+
+
           options.width = self.settings("width")
             ? self.settings("width").size
             : 600;

@@ -57,6 +57,8 @@ class GlobalsProviderUC{
 	
 	public static $arrFetchedPostIDs = array();	
 	public static $arrPostTermsCache = array();	
+	public static $arrFetchedPostsObjectsCache = array();	
+	
 	public static $isUnderAjaxDynamicTemplate = false;
 	public static $isUnderAjax = false;
 	

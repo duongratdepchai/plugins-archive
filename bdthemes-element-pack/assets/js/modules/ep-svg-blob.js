@@ -33,24 +33,20 @@
         options = {
           targets: firstSVG,
           d: [{ value: path || [] }],
-          easing: this.settings("easing_type")
-            ? this.settings("easing_type")
-            : "easeOutQuad",
-          direction: this.settings("direction")
-            ? this.settings("direction")
-            : "alternate",
-          loop: this.settings("loop") === "yes" ? true : false,
+          easing: 'easeOutQuad',
+          direction: 'alternate',
+          loop: this.settings('loop') === 'yes',
           duration:
-            this.settings("duration.size") !== ""
-              ? this.settings("duration.size")
+            this.settings('duration.size') !== ''
+              ? this.settings('duration.size')
               : 2000,
           delay:
-            this.settings("delay.size") !== ""
-              ? this.settings("delay.size")
+            this.settings('delay.size') !== ''
+              ? this.settings('delay.size')
               : 10,
           endDelay:
-            this.settings("end_delay.size") !== ""
-              ? this.settings("end_delay.size")
+            this.settings('end_delay.size') !== ''
+              ? this.settings('end_delay.size')
               : 10,
         };
         anime(options);

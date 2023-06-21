@@ -1076,13 +1076,13 @@ class Crypto_Currency_Table extends Module_Base {
                         <th class="bdt-hash-head">#</th>
                         <th class="bdt-coin-head">coin</th>
                         <th class="bdt-price-head">price</th>
-                        <th class="bdt-price-1h-pecentage">1h %</th>
-                        <th class="bdt-price-24h-pecentage">24h %</th>
-                        <th class="bdt-price-7d-pecentage">7d %</th>
+                        <!-- <th class="bdt-price-1h-pecentage">1h %</th> -->
+                        <th class="bdt-price-24h-pecentage">Change</th>
+                        <!-- <th class="bdt-price-7d-pecentage">7d %</th> -->
                         <th class="bdt-marketcap-head">marketcap</th>
                         <th class="bdt-volume-head">Volume (24h)</th>
-                        <th class="bdt-chat-head">Circulating Supply</th>
-                        <th class="bdt-last-24h-changes">changes</th>
+                        <th class="bdt-chat-head">Supply</th>
+                        <th class="bdt-last-24h-changes">LAST 24H</th>
                     </tr>
                 </thead>
             </table>

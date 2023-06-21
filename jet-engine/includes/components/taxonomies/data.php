@@ -277,6 +277,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Tax_Data' ) ) {
 				'add_or_remove_items',
 				'choose_from_most_used',
 				'not_found',
+				'back_to_items',
 			);
 
 			foreach ( $labels_list as $label_key ) {

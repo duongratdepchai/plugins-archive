@@ -166,6 +166,7 @@ class Mega_Menu_Walker extends Walker_Nav_Menu {
 
         $output         .= $indent . '<li' . $id . $class_names . $data_attr . '>';
         $atts           = [];
+        $atts['class']  = '';
         $atts['title']  = !empty($item->attr_title) ? $item->attr_title : '';
         $atts['target'] = !empty($item->target) ? $item->target : '';
         $atts['rel']    = !empty($item->xfn) ? $item->xfn : '';
@@ -174,7 +175,7 @@ class Mega_Menu_Walker extends Walker_Nav_Menu {
         $submenu_indicator = '';
 
         if ($depth === 0) {
-            $atts['class'] = 'ep-menu-nav-link';
+            $atts['class'] .= 'ep-menu-nav-link';
         }
 
         if (in_array('current-menu-item', $item->classes)) {
@@ -276,7 +277,7 @@ class Mega_Menu_Walker extends Walker_Nav_Menu {
                     }
                     // $builder_post       = get_page_by_title($builder_post_title, OBJECT, 'ep_megamenu_content');
                     $builder_post       = $page_got_by_title;
-                    $output             .= '<ul class="ep-megamenu-panel">';
+                    $output             .= '<ul class="ep-megamenu-panel bdt-drop">';
                     if ($builder_post != null) {
                         $elementor = Plugin::instance();
                         $output    .= $elementor->frontend->get_builder_content_for_display($builder_post->ID, true);

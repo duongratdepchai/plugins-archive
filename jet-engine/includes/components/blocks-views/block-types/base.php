@@ -242,7 +242,9 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Type_Base' ) ) {
 				$listing_id = jet_engine()->blocks_views->render->get_current_listing_id();
 			}
 
-			$render->setup_listing( $listing, $object_id, true, $listing_id );
+			if ( $listing_id ) {
+				$render->setup_listing( $listing, $object_id, true, $listing_id );
+			}
 
 			$content = $render->get_content();
 			$el_id = ! empty( $attributes['_element_id'] ) ? : '';

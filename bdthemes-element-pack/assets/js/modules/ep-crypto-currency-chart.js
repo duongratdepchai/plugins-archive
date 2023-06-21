@@ -170,7 +170,7 @@
                     }
                     if (true == $settings.showCurrencyCurrentPrice) {
                         price_html = `<div class="bdt-crypto-currency-chart-price-l">
-                        <span>${amount}</span>
+                        <span class="price-int">${amount}</span>
                     </div>`;
                     }
                     if (true == $settings.showPriceChangePercentage) {
@@ -218,12 +218,21 @@
                         labels.push(index);
                         dataPointvalue.push(Number(element));
                     });
+
                     const dataCharts = {
                         labels: labels,
                         datasets: [{
                             label: "",
-                            backgroundColor: $settings.backgroundColor || "#777",
-                            borderColor: $settings.borderColor || "#777",
+                            // backgroundColor: $settings.backgroundColor || "#777",
+                            // borderColor: $settings.borderColor || "#777",
+                            backgroundColor: "rgba(30,135,240,0.2)",
+                            borderColor: "#1e87f0",
+                            fill: true,
+                            lineTension: 0.4,
+                            pointStyle: 'circle',
+                            pointBackgroundColor: "#1e87f0",
+                            pointBorderWidth: 1,
+                            borderWidth: 2,
                             data: dataPointvalue,
                         }, ],
                     };
@@ -237,7 +246,7 @@
                                     display: false,
                                 },
                                 tooltip: {
-                                    enabled: false
+                                    enabled: true
                                 }
                             },
                             scales: {

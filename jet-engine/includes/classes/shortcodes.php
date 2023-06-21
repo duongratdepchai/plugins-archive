@@ -42,8 +42,8 @@ class Jet_Engine_Shortcodes {
 
 		// Convert filter callbacks string into array
 		if ( ! empty( $atts['filter_callbacks'] ) ) {
-			
-			$filter_callbacks = rtrim( ltrim( $atts['filter_callbacks'], '{' ), '}' );
+			$filter_callbacks = str_replace( '&amp;', '&', $atts['filter_callbacks'] );
+			$filter_callbacks = rtrim( ltrim( $filter_callbacks, '{' ), '}' );
 			$filter_callbacks = explode( '},{', $filter_callbacks );
 			
 			$atts['filter_callbacks'] = array_map( function( $row ) {

@@ -3286,9 +3286,11 @@ class WC_Products extends Module_Base {
 			} else {
 				while ($wp_query->have_posts()) : $wp_query->the_post();
 					$terms = get_the_terms(get_the_ID(), 'product_cat');
-					foreach ($terms as $term) {
-						$product_categories[] = esc_attr($term->slug);
-					};
+					if (!empty($terms)) {
+						foreach ($terms as $term) {
+							$product_categories[] = esc_attr($term->slug);
+						};
+					}
 				endwhile;
 
 				wp_reset_postdata();
@@ -3416,9 +3418,11 @@ class WC_Products extends Module_Base {
 					<?php if ($settings['show_filter_bar']) {
 						$terms = get_the_terms(get_the_ID(), 'product_cat');
 						$product_filter_cat = [];
-						foreach ($terms as $term) {
-							$product_filter_cat[] = 'bdtf-' . esc_attr($term->slug);
-						};
+						if (!empty($terms)) {
+							foreach ($terms as $term) {
+								$product_filter_cat[] = 'bdtf-' . esc_attr($term->slug);
+							};
+						}
 						$this->add_render_attribute('wc-product', 'data-filter', implode(' ', $product_filter_cat), true);
 					} ?>
 

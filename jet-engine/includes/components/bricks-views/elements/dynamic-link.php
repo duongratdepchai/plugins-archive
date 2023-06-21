@@ -124,7 +124,7 @@ class Dynamic_Link extends Base {
 				'tab'         => 'content',
 				'label'       => esc_html__( 'Redirect after delete', 'jet-engine' ),
 				'type'        => 'text',
-				'description' => esc_html__( 'If empty will redirect to home page', 'jet-engine' ),
+				'description' => esc_html__( 'If empty will redirect to home page. Use the %current_page_url% macro to redirect to the current page.', 'jet-engine' ),
 				'required'    => [ 'dynamic_link_source', '=', 'delete_post_link' ],
 			]
 		);

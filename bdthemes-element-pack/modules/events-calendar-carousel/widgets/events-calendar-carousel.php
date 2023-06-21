@@ -1435,10 +1435,13 @@ class Events_Calendar_Carousel extends Module_Base
 
         $this->render_header();
 
-        foreach ($query_args as $post) {
-
-            $this->render_loop_item($post);
-        }
+        if(!empty($query_args)){
+			foreach ($query_args as $post) {
+				$this->render_loop_item($post);
+			}
+		} else {
+			echo '<div class="bdt-alert bdt-alert-warning">'.__('No events!', 'bdthemes-element-pack').'</div>';
+		}
 
         $this->render_footer();
 

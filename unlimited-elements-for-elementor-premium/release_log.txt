@@ -1,5 +1,69 @@
 
 
+version 1.5.70:
+
+-bug fix: change the comment from // to /* */ in filters js output to allow proper page compression.
+-bug fix: the "time ago" string is now translatable 
+-bug fix: fixed the wpml elementor template id output
+-bug fix: fixed backgrounds bug with containers in editor
+-bug fix: fixed some small bugs with the checkbox filter
+-feature: added "truncate text" modifier to multisource fields
+-feature: dynamic tags now works inside posts and products related widgets
+-feature: added twig highlighting in codemirror editor
+-bug fix: fixed sequence animation sliders bug (fields didn't loaded in elementor)
+
+
+
+version 1.5.69:
+
+-bug fix: allow to install webp images in widgets
+
+
+
+version 1.5.68:
+
+- change: added functionality for sort filter 
+- bug fix: fixed slider control min max values in case of multiple units
+- bug fix: add do shortcode from ajax items response
+- feature: added field: "form conditions" for the upcoming form
+- feature: added link translation to wpml integration
+- feature: added link_attributes field to post list fields in twig
+- bug fix: fixed posts grid output with "product" taxonomy without woocommerce
+- bug fix: fixed getting cross sell products query in product list
+
+
+version 1.5.67:
+
+-bug fix: fixed some more securaty issues related to assets manager
+
+
+version 1.5.66:
+
+-bug fix: fixed some securaty issues related to non editor users operations and not allowed to upload php files in assets manager
+
+
+version 1.5.65:
+
+-bug fix: fixed instagram api related bugs 
+
+
+version 1.5.64:
+
+-change: update freemius to latest version 2.5.8
+-bug fix: fixed a small php bug
+-feature: added order in post search
+
+
+
+version 1.5.63:
+
+-change: expand in widget editor is now connected to the screen height
+-bug fix: fixed the dynamic popup with multiple fields code 
+-bug fix: fixed some sync if the clicked item is link
+-feature: added support for sort post filter
+-feature: hide "show only insalled" checkbox in widgets manager if no widget installed.
+
+
 
 version 1.5.62:
 
@@ -18,7 +82,7 @@ change: updated freemius sdk to 2.5.7 version.
 -feature: added support for woocommerce jet wishlist
 -feature: did option to disable third party hooks in ajax
 -bug fix: click on link on sync didn't worked
--bug fix: added some protections to nonce and to file manager zip exctract 
+-bug fix: added some protections to nonce and to file manager zip exctract (securaty issues fix) 
 
 
 version 1.5.60:

@@ -693,10 +693,10 @@ class Jet_Engine_Tools {
 
 				if ( is_numeric( $img_data ) ) {
 					$id = $img_data;
-				} elseif ( filter_var( $img_data, FILTER_VALIDATE_URL ) ) {
-					$id = attachment_url_to_postid( $img_data );
 				} elseif ( is_array( $img_data ) && isset( $img_data['id'] ) && isset( $img_data['url'] ) ) {
 					$id = $img_data['id'];
+				} else {
+					$id = attachment_url_to_postid( $img_data );
 				}
 
 				$result = array(
@@ -710,10 +710,10 @@ class Jet_Engine_Tools {
 
 				if ( is_numeric( $img_data ) ) {
 					$url = wp_get_attachment_url( $img_data );
-				} elseif ( filter_var( $img_data, FILTER_VALIDATE_URL ) ) {
-					$url = $img_data;
 				} elseif ( is_array( $img_data ) && isset( $img_data['id'] ) && isset( $img_data['url'] ) ) {
 					$url = $img_data['url'];
+				} else {
+					$url = $img_data;
 				}
 
 				$result = array(
@@ -729,12 +729,12 @@ class Jet_Engine_Tools {
 				if ( is_numeric( $img_data ) ) {
 					$id  = $img_data;
 					$url = wp_get_attachment_url( $img_data );
-				} elseif ( filter_var( $img_data, FILTER_VALIDATE_URL ) ) {
-					$id  = attachment_url_to_postid( $img_data );
-					$url = $img_data;
 				} elseif ( is_array( $img_data ) && isset( $img_data['id'] ) && isset( $img_data['url'] ) ) {
 					$id  = $img_data['id'];
 					$url = $img_data['url'];
+				} else {
+					$id  = attachment_url_to_postid( $img_data );
+					$url = $img_data;
 				}
 
 				$result = array(

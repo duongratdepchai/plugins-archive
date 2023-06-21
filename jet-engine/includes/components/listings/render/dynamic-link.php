@@ -31,7 +31,17 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Link' ) ) {
 		 */
 		public function get_delete_url( $settings ) {
 
-			$redirect = ! empty( $settings['delete_link_redirect'] ) ? esc_url( $settings['delete_link_redirect'] ) : home_url( '/' );
+			$redirect = null;
+
+			if ( ! empty( $settings['delete_link_redirect'] ) ) {
+				$redirect = jet_engine()->listings->macros->do_macros( $settings['delete_link_redirect'] );
+				$redirect = esc_url( $redirect );
+			}
+
+			if ( empty( $redirect ) ) {
+				$redirect = home_url( '/' );
+			}
+
 			$type = ! empty( $settings['delete_link_type'] ) ? $settings['delete_link_type'] : 'trash';
 
 			return jet_engine()->listings->delete_post->get_delete_url( apply_filters( 'jet-engine/listings/dynamic-link/delete-url-args', array(
@@ -165,7 +175,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Link' ) ) {
 
 		public function get_link_label( $settings, $base_class, $url ) {
 
-			$label = ! empty( $settings['link_label'] ) ? $settings['link_label'] : false;
+			$label = ! Jet_Engine_Tools::is_empty( $settings['link_label'] ) ? $settings['link_label'] : false;
 
 			if ( $label ) {
 

@@ -42,6 +42,7 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 	private $putItemButtonsType = "multiple";
 	private $isInsideParent = false;
 	private $isWebCatalogMode = false;
+	private $showAddonFilters = true;
 	
 	public static $stateLabelCounter = 0;
 	
@@ -1679,6 +1680,16 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 						
 		$arrCats = $objAddons->getAddonsWidthCategories(true, true, $this->filterAddonType, $params);
 		
+		//hide filters if no addons installed
+		
+		if( (count($arrCats) == 1 && 
+			 isset($arrCats["Uncategorized"]))  && 
+			empty($params) && 
+			$filterCatalog == self::FILTER_CATALOG_MIXED){
+							
+			$this->showAddonFilters = false;
+		}
+		
 		if(empty($params))
 			$arrCats = $this->modifyLocalCats($arrCats);
 			
@@ -1747,15 +1758,16 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 	/**
 	 * get categories
 	 */
-	protected function getArrCats($params = array()){
+	protected function getArrCats($params = array(), $forceCatalog = false){
 		
 		$filterCatalog = $this->getStateFilterCatalog();
 		
 		switch($filterCatalog){
 			case self::FILTER_CATALOG_MIXED:
 			case self::FILTER_CATALOG_WEB:
+				
 				$arrCats = $this->getCatsWithCatalog($filterCatalog, $params);
-								
+				
 			break;
 			default:	//installed type
 				
@@ -1772,9 +1784,10 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 				$arrCats = $this->objCats->getListExtra($this->objAddonType, "","", false, $catsParams);
 				
 				$arrCats = $this->modifyLocalCats($arrCats);
-				
+								
 			break;
 		}
+		
 		
 		//don't clear uncategorized at elements master
 		$isClear = true;
@@ -1789,7 +1802,8 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 		
 		if($isClear == true)
 			$arrCats = $this->getArrCats_clearUncategorized($arrCats);
-				
+		
+		
 		return($arrCats);
 	}
 	
@@ -1819,17 +1833,23 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 		
 		if($arrCats === null)
 			$arrCats = $this->getArrCats($params);
-				
+		
 		//check for error
 		if(empty($arrCats)){
 			
-			$urlApiConnectivity = HelperUC::getViewUrl("troubleshooting-connectivity");
+			$state = $this->getStateFilterCatalog();
 			
-			HelperUC::addAdminNotice("No widgets fetched from the API. Please check <a href='$urlApiConnectivity'>api connectivity</a> from general settings - troubleshooting");
+			if($state !== self::FILTER_CATALOG_INSTALLED){
+				
+				$urlApiConnectivity = HelperUC::getViewUrl("troubleshooting-connectivity");
+				
+				HelperUC::addAdminNotice("No widgets fetched from the API. Please check <a href='$urlApiConnectivity'>api connectivity</a> from general settings - troubleshooting");
+			}
+			
 		}
 		
 		$htmlCatList = $this->objCats->getHtmlCatList($selectCatID, $this->objAddonType, $arrCats);
-		
+				
 		return($htmlCatList);
 	}
 	
@@ -1888,6 +1908,7 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 	 * put catalog filters
 	 */
 	protected function putFiltersCatalog(){
+		
 		
 		if(GlobalsUC::$enableWebCatalog == false)
 			return(false);
@@ -1978,6 +1999,9 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 	 * put filters - function for override
 	 */
 	private function putHeaderLineFilters(){
+				
+		if($this->showAddonFilters == false)
+			return(false);
 		
 		?>
 		
@@ -2028,7 +2052,6 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 	 * function for override
 	 */
 	protected function putHtmlHeaderLine(){
-		
 		
 		?>
 		<div class="uc-manager-header-line">

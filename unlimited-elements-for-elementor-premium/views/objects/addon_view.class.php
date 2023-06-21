@@ -741,11 +741,13 @@ class UniteCreatorAddonView{
 	/**
 	 * put expand link
 	 */
-	private function putLinkExpand(){
+	private function putLinkExpand($textareaID = ""){
+		
 		?>
-			<a class="uc-tabcontent-link-expand" href="javascript:void(0)"><?php esc_html_e("expand", "unlimited-elements-for-elementor");?></a>
+			<a class="uc-tabcontent-link-expand" href="javascript:void(0)" data-forid="<?php echo $textareaID?>"><?php esc_html_e("expand", "unlimited-elements-for-elementor");?></a>
 		<?php 
 	}
+	
 	
 	/**
 	 * put html js left content
@@ -760,7 +762,7 @@ class UniteCreatorAddonView{
 	 * put html tab content
 	 */
 	private function putHtml_tabTableRow($textareaID, $title, $areaHtml, $paramsPanelID, $addVariableID = null, $isItemsRelated = false, $params = array()){
-				
+						
 		$rowClass = "";
 		$rowAddHtml = "";
 				
@@ -806,7 +808,7 @@ class UniteCreatorAddonView{
 							<div class="uc-editor-title"><?php echo esc_html($title)?></div>
 							<textarea id="<?php echo esc_attr($textareaID)?>" class="area_addon <?php echo esc_attr($textareaID)?>" <?php echo UniteProviderFunctionsUC::escAddParam($areaAddParams)?>><?php echo esc_html($areaHtml)?></textarea>
 							<?php if($isExpanded == false)
-									$this->putLinkExpand()?>
+									$this->putLinkExpand($textareaID)?>
 							<?php 
 							switch($textareaID){
 								case "area_addon_js":
@@ -1281,17 +1283,6 @@ class UniteCreatorAddonView{
 	}
 	
 	
-	/**
-	 * get post child params
-	 */
-	protected function getAddParams_form(){
-		
-		$arrParams = array();
-		$arrParams[] = $this->createChildParam("start",UniteCreatorDialogParam::PARAM_EDITOR);
-		$arrParams[] = $this->createChildParam("end",UniteCreatorDialogParam::PARAM_EDITOR);
-		
-		return($arrParams);
-	}
 	
 	/**
 	 * add responsive parameters
@@ -1325,17 +1316,6 @@ class UniteCreatorAddonView{
 		return($arrParams);
 	}
 	
-	/**
-	 * add param for form item
-	 */
-	protected function getAddParams_formItem(){
-		
-		$arrParams = array();
-		$arrParams[] = $this->createChildParam("form_field",UniteCreatorDialogParam::PARAM_EDITOR);
-		
-		
-		return($arrParams);
-	}
 	
 	/**
 	 * get post child params
@@ -1526,10 +1506,7 @@ class UniteCreatorAddonView{
 		
 		$arrAddKeys[UniteCreatorDialogParam::PARAM_MULTIPLE_SELECT] = $this->getAddParams_array();
 		$arrAddKeys[UniteCreatorDialogParam::PARAM_NUMBER] = $this->getAddParams_responsive();
-		
-		$arrAddKeys[UniteCreatorDialogParam::PARAM_FORM] = $this->getAddParams_form();
-		$arrAddKeys["uc_form_item"] = $this->getAddParams_formItem();
-		
+				
 		$arrAddKeys[UniteCreatorDialogParam::PARAM_POST_TERMS] = $this->objChildParams->getAddParams_terms();
 		$arrAddKeys[UniteCreatorDialogParam::PARAM_WOO_CATS] = $this->objChildParams->getAddParams_terms(true);
 		

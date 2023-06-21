@@ -182,7 +182,7 @@ class UniteCreatorManager{
 		
 		if(empty($htmlCatList))
 			$htmlCatList = $this->getCatList();
-		
+				
 		$showAllButtons = false;
 		
 		?>
@@ -764,12 +764,14 @@ class UniteCreatorManager{
 		try{
 			$htmlCatList = $this->getCatList();
 			
+			$isNoCats = empty($htmlCatList);
+			
 			HelperHtmlUC::putHtmlAdminNotices();
 			
 		?>
 		
 		<div id="uc_managerw" class="uc-manager-outer <?php echo esc_attr($managerClass)?>" data-managername="<?php echo esc_attr($this->managerName)?>" data-type="<?php echo esc_attr($this->type)?>" <?php echo UniteProviderFunctionsUC::escAddParam($htmlPassData)?> <?php echo UniteProviderFunctionsUC::escAddParam($this->managerAddHtml)?>>
-				
+			
 			<?php if($this->hasHeaderLine == true)
 							$this->putHtmlHeaderLine();
 			?>

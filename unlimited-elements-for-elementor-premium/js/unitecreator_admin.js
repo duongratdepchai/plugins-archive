@@ -242,9 +242,7 @@ function UniteCreatorAdmin(){
 					var objTextArea = jQuery("#area_addon_html");
 				    var textArea = objTextArea[0];
 					  
-				      var mixedMode = {
-				    	        name: "htmlmixed"
-				      };
+				      var mixedMode = {name: "twig", base: "text/html"};
 				      
 				      var mode = objTextArea.data("mode");
 					  if(mode)  		
@@ -1653,10 +1651,15 @@ function UniteCreatorAdmin(){
 		jQuery(".uc-tabcontent-link-expand").on("click",function(){
 			
 			var objLink = jQuery(this);
+			
 			var objRow = objLink.parents("tr");
-			objRow.addClass("uc-row-expanded");
+									
+			var rowClass = "uc-row-expanded";
+						
+			objRow.addClass(rowClass);
 			
 			objLink.hide();
+			
 			
 		});
 		

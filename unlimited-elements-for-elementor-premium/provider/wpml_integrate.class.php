@@ -155,7 +155,10 @@ class UniteCreatorWpmlIntegrate{
 				case UniteCreatorDialogParam::PARAM_TEXTAREA:
 					$editorType = "AREA";
 				break;
-			}
+				case UniteCreatorDialogParam::PARAM_LINK:
+					$editorType = "LINK";
+				break;
+			} 
 			
 			if(empty($editorType))
 				continue;

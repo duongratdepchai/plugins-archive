@@ -9,6 +9,7 @@ class Frontend {
 	public $menu = null;
 	public $current_user_obj = false;
 	public $user_page_title = null;
+	public $user_page_desc = null;
 
 	/**
 	 * Constructor for the class
@@ -39,6 +40,9 @@ class Frontend {
 		// SEO hooks.
 		add_filter( 'pre_get_document_title', array( $this, 'set_document_title_on_single_user_page' ), 99 );
 		add_filter( 'get_canonical_url',      array( $this, 'modify_canonical_url' ) );
+
+		// SEO description
+		add_action( 'wp_head', array( $this, 'print_description_meta_tag' ), 1 );
 	}
 
 	/**
@@ -315,9 +319,24 @@ class Frontend {
 			return $title;
 		}
 
+		$user_page_title = $this->apply_user_page_macros( $user_page_title );
+		$user_page_title = wp_strip_all_tags( stripslashes( $user_page_title ), true );
+		$user_page_title = esc_html( $user_page_title );
+
+		$this->user_page_title = $user_page_title;
+
+		return $this->user_page_title;
+	}
+
+	public function apply_user_page_macros( $string = '' ) {
+
+		if ( empty( $string ) ) {
+			return $string;
+		}
+
 		$title_macros = $this->get_user_page_title_macros();
 
-		$user_page_title = preg_replace_callback(
+		return preg_replace_callback(
 			'/%([a-z0-9_-]+)(\([a-zA-Z0-9_-]+\))?%/',
 			function( $matches ) use ( $title_macros ) {
 
@@ -346,15 +365,8 @@ class Frontend {
 
 				return $result;
 
-			}, $user_page_title
+			}, $string
 		);
-
-		$user_page_title = wp_strip_all_tags( stripslashes( $user_page_title ), true );
-		$user_page_title = esc_html( $user_page_title );
-
-		$this->user_page_title = $user_page_title;
-
-		return $this->user_page_title;
 	}
 
 	public function get_user_page_title_macros() {
@@ -431,6 +443,42 @@ class Frontend {
 		}
 
 		return $canonical_url;
+	}
+
+	public function get_user_page_seo_description( $default = null ) {
+
+		if ( ! Module::instance()->query->is_single_user_page() ) {
+			return $default;
+		}
+
+		if ( null !== $this->user_page_desc ) {
+			return $this->user_page_desc;
+		}
+
+		$user_page_desc = Module::instance()->settings->get( 'user_page_seo_desc' );
+
+		if ( empty( $user_page_desc ) ) {
+			return null;
+		}
+
+		$user_page_desc = $this->apply_user_page_macros( $user_page_desc );
+		$user_page_desc = wp_strip_all_tags( stripslashes( $user_page_desc ), true );
+		$user_page_desc = esc_html( $user_page_desc );
+
+		$this->user_page_desc = $user_page_desc;
+
+		return $this->user_page_desc;
+	}
+
+	public function print_description_meta_tag() {
+
+		$user_page_desc = $this->get_user_page_seo_description();
+
+		if ( empty( $user_page_desc ) ) {
+			return;
+		}
+
+		printf( '<meta name="description" content="%s" />', $user_page_desc );
 	}
 
 }

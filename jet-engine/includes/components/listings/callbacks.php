@@ -557,7 +557,13 @@ class Jet_Engine_Listings_Callbacks {
 				$args      = array( $result, $tag, $is_single, $is_linked, $delimiter );
 
 				if ( 'jet_related_items_list' === $callback ) {
-					$args[] = $settings['dynamic_field_post_object'];
+
+					if ( ! empty( $settings['dynamic_field_post_object'] ) ) {
+						$args[] = $settings['dynamic_field_post_object'];
+					} elseif ( ! empty( $settings['object_field'] ) ) {
+						$args[] = $settings['object_field'];
+					}
+
 				}
 
 				break;

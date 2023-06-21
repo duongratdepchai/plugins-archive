@@ -41,6 +41,12 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 				true
 			);
 
+			$this->register_jet_plugins_js();
+
+		}
+
+		public function register_jet_plugins_js() {
+
 			wp_register_script(
 				'jet-plugins',
 				jet_engine()->plugin_url( 'assets/lib/jet-plugins/jet-plugins.js' ),
@@ -369,6 +375,9 @@ if ( ! class_exists( 'Jet_Engine_Frontend' ) ) {
 			if ( $aria_label ) {
 				$link_attrs['aria-label'] = esc_attr( $aria_label );
 			}
+
+			$overlay_attrs = apply_filters( 'jet-engine/listings/frontend/listing-link/overlay-attrs', $overlay_attrs, $settings );
+			$link_attrs    = apply_filters( 'jet-engine/listings/frontend/listing-link/link-attrs', $link_attrs, $settings );
 
 			$link = sprintf( '<a %s></a>', Jet_Engine_Tools::get_attr_string( $link_attrs ) );
 

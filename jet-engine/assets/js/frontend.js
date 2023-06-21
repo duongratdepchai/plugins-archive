@@ -14,6 +14,7 @@
 		addedScripts: [],
 		addedStyles: [],
 		addedPostCSS: [],
+		assetsPromises: [],
 
 		initDone: false,
 
@@ -33,6 +34,23 @@
 				.on( 'click.JetEngine', '.jet-engine-gallery-grid__item-wrap', JetEngine.initPhotoswipe );
 
 			$( window ).on( 'jet-popup/render-content/ajax/success', JetEngine.initStores );
+
+			window.JetPlugins.hooks.addFilter(
+				'jet-popup.show-popup.data',
+				'JetEngine.popupData',
+				( popupData, $popup, $triggeredBy ) => {
+
+					if ( ! $triggeredBy ) {
+						return popupData;
+					}
+
+					if ( $triggeredBy.data( 'popupIsJetEngine' ) ) {
+						popupData = JetEngine.prepareJetPopup( popupData, { 'is-jet-engine': true }, $triggeredBy );
+					}
+
+					return popupData;
+				}
+			);
 
 			JetEngine.initStores();
 			JetEngine.customUrlActions.init();
@@ -139,6 +157,9 @@
 				JetEngine.widgetListingGrid( $blocksListing );
 			}
 
+			if ( window.JetPopupFrontend && window.JetPopupFrontend.initAttachedPopups ) {
+				window.JetPopupFrontend.initAttachedPopups( $provider );
+			}
 		},
 
 		init: function() {
@@ -166,23 +187,6 @@
 			window.elementorFrontend.hooks.addFilter(
 				'jet-popup/widget-extensions/popup-data',
 				JetEngine.prepareJetPopup
-			);
-
-			window.JetPlugins.hooks.addFilter( 
-				'jet-popup.show-popup.data', 
-				'JetEngine.popupData', 
-				( popupData, $popup, $triggeredBy ) => {
-
-					if ( ! $triggeredBy ) {
-						return popupData;
-					}
-
-					if ( $triggeredBy.data( 'popupIsJetEngine' ) ) {
-						popupData = JetEngine.prepareJetPopup( popupData, { 'is-jet-engine': true }, $triggeredBy );
-					}
-
-					return popupData;
-				} 
 			);
 
 			JetEngine.updateAddedStyles();
@@ -1310,7 +1314,20 @@
 
 					}
 
-					JetEngine.initElementsHandlers( $html );
+					Promise.all( JetEngine.assetsPromises ).then( function() {
+						JetEngine.initElementsHandlers( $html );
+						JetEngine.assetsPromises = [];
+					} );
+
+					if ( response.data.fragments ) {
+						for ( var selector in response.data.fragments ) {
+							var $selector = $( selector );
+
+							if ( $selector.length ) {
+								$selector.html( response.data.fragments[ selector ] );
+							}
+						}
+					}
 				}
 
 			} ).done( doneCallback ).fail( function() {
@@ -1882,6 +1899,10 @@
 				document.dispatchEvent( elementorLazyLoad );
 			}
 
+			if ( window.JetPopupFrontend && window.JetPopupFrontend.initAttachedPopups ) {
+				window.JetPopupFrontend.initAttachedPopups( $selector );
+			}
+
 		},
 
 		getElementorElementSettings: function( $scope ) {
@@ -1976,13 +1997,50 @@
 				return;
 			}
 
+			if ( ! scriptHtml ) {
+				return;
+			}
+
 			var selector = 'script[id="' + handle + '-js"]';
 
 			if ( $( selector ).length ) {
 				return;
 			}
 
-			$( 'body' ).append( scriptHtml );
+			//$( 'body' ).append( scriptHtml );
+
+			var scriptsTags = scriptHtml.match( /<script[\s\S]*?<\/script>/gm );
+			
+			if ( scriptsTags.length ) {
+
+				for ( var i = 0; i < scriptsTags.length; i++ ) {
+
+					JetEngine.assetsPromises.push(
+						new Promise( function( resolve, reject ) {
+
+							var $tag = $( scriptsTags[i] );
+
+							if ( $tag[0].src ) {
+
+								var tag = document.createElement( 'script' );
+
+								tag.type   = $tag[0].type;
+								tag.src    = $tag[0].src;
+								tag.id     = $tag[0].id;
+								tag.async  = false;
+								tag.onload = function() {
+									resolve();
+								};
+
+								document.body.append( tag );
+							} else {
+								$( 'body' ).append( scriptsTags[i] );
+								resolve();
+							}
+						} )
+					);
+				}
+			}
 
 			JetEngine.addedScripts.push( handle );
 		},

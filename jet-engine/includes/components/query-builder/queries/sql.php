@@ -23,6 +23,13 @@ class SQL_Query extends Base_Query {
 			$result = array_map( function( $item ) use ( $cast_to_class ) {
 				return new $cast_to_class( $item );
 			}, $result );
+		} else {
+			$start_index = $this->get_start_item_index_on_page() - 1;
+
+			$result = array_map( function( $item, $index ) use ( $start_index ) {
+				$item->sql_query_item_id = $this->id . '-' . ( $start_index + $index );
+				return $item;
+			}, $result, array_keys( $result ) );
 		}
 
 		return $result;

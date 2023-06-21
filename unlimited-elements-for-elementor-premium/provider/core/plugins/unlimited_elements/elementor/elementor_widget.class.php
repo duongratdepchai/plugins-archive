@@ -31,7 +31,8 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	protected $objControls;
 	protected $isAddSapBefore = false;
     protected $tabsCounter = 1;
-        
+    private $hasDynamicSettings = false;
+    
     const DEBUG_SETTINGS_VALUES = false;
     const DEBUG_WIDGETS_OUTPUT = false;
     
@@ -646,7 +647,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
          	     
 	    	//add some child params
 	    	$this->checkAddRelatedControls($param, $repeater);
-	    		    	
+	   
          }
 		 
 	       //if inside some tab, in last option - close tabs
@@ -814,6 +815,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	if(isset($param["value"]))
     		$value = $param["value"];
     	
+    		
     	$arrControl = array();
     	
     	//set by previous control
@@ -988,6 +990,10 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			$controlType = "raw_html";
     			$arrControl["label_block"] = true;
     		break;
+    		case UniteCreatorDialogParam::PARAM_REPEATER:
+    			$controlType = Controls_Manager::REPEATER;
+    			    			
+    		break;
     		default:
     			
     			$addonTitle = $this->objAddon->getTitle();
@@ -1087,17 +1093,6 @@ class UniteCreatorElementorWidget extends Widget_Base {
     		    
     			$options = UniteFunctionsUC::getVal($param, "options", array());
     			
-				$phpFilter = UniteFunctionsUC::getVal($param, "php_filter_name");
-				
-				if(!empty($phpFilter)){
-					
-					$options = apply_filters("ue_modify_dropdown_".$phpFilter, $options);
-										
-					if(is_string($value) && in_array($value, $options) == false)
-						$value = UniteFunctionsUC::getArrFirstValue($options);
-					
-				}
-				
     			$options = array_flip($options);
     			$arrControl["options"] = $options;
     			
@@ -1365,6 +1360,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			
     			$units = UniteFunctionsUC::getVal($param, "units");
 				
+    			
     			$rangeUnit = "px";
     			
     			switch($units){
@@ -1440,25 +1436,41 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			);
     			
     			$arrRange = array();
-    			$arrRange[$rangeUnit] = $arrRangeUnit;
     			
-    			//add percent units if multiple
-    			$arrUnits = $arrControl["size_units"];
-    			if($rangeUnit == "px" && count($arrUnits) > 1){
-    				
-    				foreach($arrUnits as $unit){
-    					switch($unit){
-	    					case "vh":
-    							$arrRange[$unit] = array("min"=>0,"max"=>200,"step"=>1);
-	    					break;
-	    					case "%":
-	    					case "vw":
-    							$arrRange[$unit] = array("min"=>0,"max"=>100,"step"=>1);
-	    					break;
-    					}
-    				}
-    				
+	    		$arrUnits = $arrControl["size_units"];
+				
+	    		if(empty($arrUnits))
+	    			$arrUnits = array();
+	    		
+    			$numUnits = count($arrUnits);
+    			
+    			if($numUnits == 0){
+    				$arrRange = $arrRangeUnit;
     			}
+    			if($numUnits == 1)
+    				$arrRange[$rangeUnit] = $arrRangeUnit;
+    			else{
+
+	    			//for multiple units - handle percent or others
+	    			    			    				
+	    				foreach($arrUnits as $unit){
+	    					
+	    					switch($unit){
+		    					case "vh":
+	    							$arrRange[$unit] = array("min"=>0,"max"=>200,"step"=>1);
+		    					break;
+		    					case "%":
+		    					case "vw":
+	    							$arrRange[$unit] = array("min"=>0,"max"=>100,"step"=>1);
+		    					break;
+		    					case "px":
+    								$arrRange[$unit] = $arrRangeUnit;
+		    					break;
+	    					}
+	    				}
+	    				
+    			}
+    				
     			
     			$arrControl["range"] = $arrRange;
     			
@@ -1466,6 +1478,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     				"size" => UniteFunctionsUC::getVal($param, "default_value"),
     				"unit" => $rangeUnit
     			);
+    			
     			
     			$isResponsive = UniteFunctionsUC::getVal($param, "is_responsive");
     			$isResponsive = UniteFunctionsUC::strToBool($isResponsive);
@@ -1513,7 +1526,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	    			
     			}
 				
-    			
+	    			
     		break;
     		case UniteCreatorDialogParam::PARAM_NUMBER:
     			
@@ -1642,6 +1655,43 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			
     			$param["add_dynamic"] = true;
     			
+    		break;
+    		case UniteCreatorDialogParam::PARAM_REPEATER:
+    			
+    			//prepeare the repeater items and default values
+    			
+    			$repeater = new Repeater();
+    			
+    			$settingsItems = UniteFunctionsUC::getVal($param, "settings_items");
+    			UniteFunctionsUC::validateNotEmpty($settingsItems,"settings_items");
+    			
+    			$hideLabel = UniteFunctionsUC::getVal($param, "hide_label");
+    			$hideLabel = UniteFunctionsUC::strToBool($hideLabel);
+    			
+    			if($hideLabel == true)
+    				$arrControl["show_label"] = false;
+    			
+    			$titleField = UniteFunctionsUC::getVal($param, "title_field");
+    				
+    			if(!empty($titleField))
+    				$arrControl["title_field"] = $titleField;
+    			
+    			$arrParamsItems = $settingsItems->getSettingsCreatorFormat();
+    			
+    			foreach($arrParamsItems as $itemParam)
+    				$this->addElementorParamUC($itemParam, $repeater);
+    			
+    			$arrItemValues = UniteFunctionsUC::getVal($param, "item_value");
+    			
+    			if(empty($arrItemValues))
+    				$arrItemValues = array();
+    			
+ 				$arrControl["fields"] = $repeater->get_controls();
+    			
+         		$arrControl["default"] = $arrItemValues;
+         		
+         		$arrControl["prevent_empty"] = false;
+         		
     		break;
     	}
     	
@@ -1880,7 +1930,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			$settings = new UniteCreatorSettings();
     			
     			$arrChildParams = $settings->getMultipleCreatorParams($param);
-    					
+    			
     			foreach($arrChildParams as $childParam){
     				
     				//add condition to child params
@@ -2371,7 +2421,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
      * register controls with not consolidated addon
      */
    protected function ucRegisterControls_addon(){
-
+		
    		//$name = $this->objAddon->getAlias();
    		   	
    		//check low memory
@@ -2819,9 +2869,6 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	        $this->end_controls_section();
         	
         }
-        
-        	
-        
         
         
         //add the gallery repeater
@@ -3362,12 +3409,12 @@ class UniteCreatorElementorWidget extends Widget_Base {
     /**
      * get settings values
      */
-    protected function getSettingsValuesUC(){
-    	    	    	
-		$arrSettings = $this->get_settings_for_display();
+    protected function getSettingsValuesUC($arrSettings){
 		
-		if(self::DEBUG_SETTINGS_VALUES === true)
+		if(self::DEBUG_SETTINGS_VALUES === true){
+			dmp("Debug settings values");
 			dmp($arrSettings);
+		}
 				
     	$arrValues = array();
     	foreach($arrSettings as $key=>$value){
@@ -3706,9 +3753,25 @@ class UniteCreatorElementorWidget extends Widget_Base {
     
     
     /**
+     * get dynamic settings values if exists
+     */
+    public function ueGetDynamicSettingsValues(){
+    	
+    	if($this->hasDynamicSettings == false)
+    		return(null);
+    	
+    	$arrDynamic = $this->parse_dynamic_settings(null);
+    	
+    	
+    	return($arrDynamic);
+    }
+    
+    
+    /**
      * render by addon
      */
     protected function ucRenderByAddon($objAddon){
+    	
     	try{
     		
 	    	if(empty($objAddon)){
@@ -3716,8 +3779,19 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	    		return(false);
 	    	}
 
+	    	GlobalsUnlimitedElements::$currentRenderingWidget = $this;
+			
+	    	$arrAllSettings = $this->get_settings_for_display();
 	    	
-	    	$arrValues = $this->getSettingsValuesUC();
+	    	//check if has dynamic
+	    	
+	    	$arrDynamicSettings = UniteFunctionsUC::getVal($arrAllSettings, "__dynamic__");
+	    	
+	    	if(!empty($arrDynamicSettings))
+	    		$this->hasDynamicSettings = true;
+	    	
+	    	$arrValues = $this->getSettingsValuesUC($arrAllSettings);
+	    	
 	    	
 	        $widgetID = $this->get_id();
 	    	
@@ -3796,6 +3870,11 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	        //set show debug data
 	        $isShowDebugData = UniteFunctionsUC::getVal($arrValues, "show_widget_debug_data");
 	        $isShowDebugData = UniteFunctionsUC::strToBool($isShowDebugData);
+	        
+	        $isDebugFromGet = HelperUC::hasPermissionsFromQuery("ucfieldsdebug");
+	        
+	        if($isDebugFromGet === true)
+	        	$isShowDebugData = true;
 	        
 	        if($isShowDebugData == true){
 	        	

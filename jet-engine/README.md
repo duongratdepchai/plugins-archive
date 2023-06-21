@@ -1,5 +1,28 @@
 # ChangeLog
 
+## 3.1.6.1
+* FIX: Prevent PHP warnings on PHP < 8.0.
+
+## 3.1.6
+* ADD: Allow to output "Show N of M" for Listing query with dynamically changed numbers when using Load More functionality;
+* ADD: `jet-engine/query-builder/types/posts-query/args` filter to modify Post query args before use;
+* ADD: Support of dynamic popups for SQL queries;
+* ADD: Option to stay on current global page after delete post with Dynamic Link;
+* ADD: Allow to trigger popup by click on listing item;
+* UPD: Glossaries support for Admin Columns;
+* UPD: Better compatibility Rank Math & Profile Builder User Page;
+* UPD: Better error messages for CCT edit page;
+* FIX: Prevent JS notices in Map listing;
+* FIX: Allow to set 0 as fallback value in dynamic tags;
+* FIX: Bricks: Listing grid - Not Found message control;
+* FIX: Dynamic Repeater throws critical error on PHP 8.2;
+* FIX: "Back to items" label not saved when creating new taxonomy;
+* FIX: Lazy load with tax query and tax filter;
+* FIX: Images gallery grid/slider does not work in repeater listing;
+* FIX: Glossary value 0 is not saved;
+* FIX: Shortcode result with filter field output;
+* FIX: Minor bug in admin filters functionality.
+
 ## 3.1.5
 * ADD: Query Builder: Before and After options for Advanced settings section of dynamic arguments;
 * ADD: Query Builder: Description field for Query. Crocoblock/suggestions#6194;

@@ -511,9 +511,6 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		        	case UniteCreatorDialogParam::PARAM_INSTAGRAM:
 		        		return("instagram");
 		        	break;
-		        	case UniteCreatorDialogParam::PARAM_FORM:
-		        		return self::ITEMS_TYPE_FORM;
-		        	break;
 		        	case UniteCreatorDialogParam::PARAM_DATASET:
 		        		return self::ITEMS_TYPE_DATASET;
 		        	break;

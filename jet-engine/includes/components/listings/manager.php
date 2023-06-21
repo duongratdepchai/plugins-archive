@@ -542,9 +542,14 @@ if ( ! class_exists( 'Jet_Engine_Listings' ) ) {
 				$meta_fields = jet_engine()->meta_boxes->get_fields_for_select( 'plain' );
 			}
 
+			$link_sources = apply_filters(
+				'jet-engine/listings/link/sources',
+				array_merge( array( $default ), $meta_fields )
+			);
+
 			return apply_filters(
 				'jet-engine/listings/dynamic-link/fields',
-				array_merge( array( $default ), $meta_fields )
+				$link_sources
 			);
 		}
 

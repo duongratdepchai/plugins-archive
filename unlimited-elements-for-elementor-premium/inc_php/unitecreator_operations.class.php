@@ -1151,7 +1151,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		 * get last query data
 		 */
 		public function getLastQueryData(){
-			
+						
 			$query = GlobalsProviderUC::$lastPostQuery;
 			
 			if(empty($query)){
@@ -1174,13 +1174,37 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			$totalPosts = 0;
 			if(isset($query->found_posts))
 				$totalPosts = $query->found_posts;
-				
+			
+			$arrQuery = $query->query;
+			
+			$postType = UniteFunctionsUC::getVal($arrQuery, "post_type");
+						
+			$orderBy = UniteFunctionsUC::getVal($arrQuery, "orderby");
+			$orderDir = UniteFunctionsUC::getVal($arrQuery, "order");
+			
+			$orderBy = strtolower($orderBy);
+			$orderDir = strtolower($orderDir);
+			
+			if($orderBy == "id")
+				$orderBy = "ID";
+			
 			$output = array();
 			$output["count_posts"] = $numPosts;
 			$output["total_posts"] = $totalPosts;
 			$output["page"] = UniteFunctionsUC::getVal($data, "current");
 			$output["num_pages"] = $totalPages;
 			
+			if(!empty($orderBy)){
+				$output["orderby"] = $orderBy;
+			}
+			
+			if(!empty($orderDir))
+				$output["orderdir"] = $orderDir;
+
+			if($postType == "product")
+				$output["woo"] = true;
+			
+				
 			return($output);
 		}
 		

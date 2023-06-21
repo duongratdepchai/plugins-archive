@@ -473,4 +473,31 @@ abstract class Base_Query {
 
 	public function before_preview_body() {}
 
+	public function get_start_item_index_on_page() {
+
+		$page = $this->get_current_items_page();
+
+		if ( 1 === $page ) {
+			return 1;
+		}
+
+		$per_page = $this->get_items_per_page();
+
+		return ( $page - 1 ) * $per_page + 1;
+	}
+
+	public function get_end_item_index_on_page() {
+
+		$page             = $this->get_current_items_page();
+		$items_page_count = $this->get_items_page_count();
+
+		if ( 1 === $page ) {
+			return $items_page_count;
+		}
+
+		$per_page = $this->get_items_per_page();
+
+		return ( $page - 1 ) * $per_page + $items_page_count;
+	}
+
 }

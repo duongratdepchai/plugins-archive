@@ -1238,6 +1238,67 @@ Note : This plugin works with Elementor. Make sure you have [Elementor](https://
 
 == Changelog ==
 
+version 1.5.70 2023-06-19:
+
+* Change: added some "birthday sale" banner
+* Feature: added "truncate text" modifier to multisource fields
+* Feature: dynamic tags now works inside posts and products related widgets
+* Feature: added twig highlighting in codemirror editor
+* Fix: fixed sequence animation sliders bug (fields didn't loaded in elementor)
+* Fix: change the comment from // to /* */ in filters js output to allow proper page compression.
+* Fix: the "time ago" string is now translatable 
+* Fix: fixed the wpml elementor template id output
+* Fix: fixed backgrounds bug with containers in editor
+* Fix: fixed some small bugs with the checkbox filter
+
+
+
+version 1.5.69: 2023-06-08:
+
+* Fix: allow to install webp images in widgets
+
+
+version 1.5.68: 2023-06-06:
+
+* Change: added functionality for sort filter 
+* Feature: added field: "form conditions" for the upcoming form
+* Feature: added link translation to wpml integration
+* Feature: added link_attributes field to post list fields in twig
+* Fix: fixed slider control min max values in case of multiple units
+* Fix: add do shortcode from ajax items response
+* Fix: fixed posts grid output with "product" taxonomy without woocommerce
+* Fix: fixed getting cross sell products query in product list
+
+
+
+version 1.5.67 - 2023-05-29:
+
+* Fix: fixed some more securaty issues related to assets manager
+
+version 1.5.66 - 2023-05-28:
+
+* Fix:  fixed some securaty issues related to non editor users operations and not allowed to upload php files in assets manager
+
+
+version 1.5.65 - 2023-05-26:
+
+* Fix: fixed instagram api related bugs 
+
+
+version 1.5.64 2023-05-23:
+
+* Change: update freemius to latest version 2.5.8
+* Fix: fixed a small php bug
+
+
+version 1.5.63 2023-05-23:
+
+* Change: expand in widget editor is now connected to the screen height
+* Fix: fixed the dynamic popup with multiple fields code 
+* Fix: fixed some sync if the clicked item is link
+* Feature: added support for sort post filter
+* Feature: hide "show only insalled" checkbox in widgets manager if no widget installed.
+
 
 version 1.5.62 2023-05-14:
 
@@ -1254,7 +1315,7 @@ version 1.5.61 - 2023-05-07:
 * Feature: added support for woocommerce jet wishlist
 * Feature: did option to disable third party hooks in ajax
 * Fix: click on link on sync didn't worked
-* Fix: added some protections to nonce and to file manager zip exctract 
+* Fix: added some protections to nonce and to file manager zip exctract (securaty issues fix) 
 * Change: updated freemius sdk to 2.5.7 version.
 
 

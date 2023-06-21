@@ -50,6 +50,8 @@ class Manager {
 
 		add_action( 'jet-engine/listings/document/get-preview/' . $this->source, array( $this, 'setup_preview' ) );
 
+		add_filter( 'jet-engine/listing/custom-post-id', array( $this, 'set_sql_query_item_id' ), 10, 2 );
+
 	}
 
 	public function get_query_id( $listing_id, $settings ) {
@@ -162,6 +164,15 @@ class Manager {
 			return false;
 		}
 
+	}
+
+	public function set_sql_query_item_id( $id, $object ) {
+
+		if ( isset( $object->sql_query_item_id ) ) {
+			$id = $object->sql_query_item_id;
+		}
+
+		return $id;
 	}
 
 }

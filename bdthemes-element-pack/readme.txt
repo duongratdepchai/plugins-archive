@@ -2,14 +2,14 @@
 Contributors: bdthemes, selimmw
 Donate link: http://bdthemes.com/
 Tags: elementor addons, elementor widget, elementor extensions, elementor addon, addons, elementor, addons for elementor, addons pack, live copy, template library, bdthemes
-Stable tag: 7.0.1
+Stable tag: 7.1.0
 Requires PHP: 7.4.0
 Requires at least: 5.0.0
-Tested up to: 6.2.1
+Tested up to: 6.2.2
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Elementor requires at least: 3.0.0
-Elementor tested up to: 3.13.2
+Elementor tested up to: 3.13.4
 
 The all-new Element Pack Pro brings incredibly advanced, and super-flexible widgets, and A to Z essential addons to the Elementor page builder for WordPress. Explore expertly-coded widgets with first-class support, risk-free! Get a full-refund if you’re not 100% satisfied.*
 
@@ -34,6 +34,27 @@ e.g.
 3. Start use it by go to elementor editor.
 
 == Changelog ==
+
+= 7.1.0 [8th June 2023] =
+
+= Added =
+
+* Badge arrow option added in content switcher widget
+* Empty product icon size option added in wc mini cart widget
+* No events warning message added in Events Calendar widget (Thanks to Rory Smith)
+* Testimonial carousel widget quatation offset option added
+
+= Fixed =
+
+* Filter error fixed in WC Product widget(Thanks to Webber)
+* Style 4 border radius issue fixed in content switcher widget
+* Glitching issue fixed in Mega Menu widget(Thanks to Shawn Palmer)
+* Target blank issue fixed in Icon Mobile Menu widget(Thanks to Charles-Dominique MAZY)
+* Age Gate Blink Modal issue fixed
+
+= Updated =
+
+* Map display region updated in SVG maps widget
 
 = 7.0.1 [18th May 2023] =
 

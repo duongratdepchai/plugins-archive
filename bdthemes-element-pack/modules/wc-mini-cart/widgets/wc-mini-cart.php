@@ -337,7 +337,6 @@ class WC_Mini_Cart extends Module_Base {
 			]
 		);
 
-
 		$this->add_control(
 			'custom_content_after',
 			[
@@ -1049,6 +1048,36 @@ class WC_Mini_Cart extends Module_Base {
 				'label' 	=> __('Empty Product Notice', 'bdthemes-element-pack') . BDTEP_NC,
 				'type' 		=> Controls_Manager::HEADING,
 				'separator' => 'before',
+			]
+		);
+
+		//icon size
+		$this->add_responsive_control(
+			'empty_product_icon_size',
+			[
+				'label' => esc_html__('Icon Size', 'bdthemes-element-pack') . BDTEP_NC,
+				'type'  => Controls_Manager::SLIDER,
+				'size_units' => ['px', 'em', '%'],
+				'range' => [
+					'px' => [
+						'min'  => 10,
+						'max'  => 200,
+						'step' => 1,
+					],
+					'em' => [
+						'min'  => 0.1,
+						'max'  => 20,
+						'step' => 0.1,
+					],
+					'%' => [
+						'min'  => 10,
+						'max'  => 200,
+						'step' => 1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}.elementor-widget-bdt-wc-mini-cart .wc-empty-mini-cart svg' => 'width: {{SIZE}}{{UNIT}};',
+				],
 			]
 		);
 

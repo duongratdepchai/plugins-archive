@@ -30,7 +30,7 @@ class Terms_Query extends Base_Query {
 		$args = $this->final_query;
 
 		if ( ! $is_count && ! empty( $args['number_per_page'] ) ) {
-			$args['number'] = absint( $args['number_per_page'] );
+			$args['number'] = $this->get_items_page_count();
 		}
 
 		if ( ! empty( $args['meta_query'] ) ) {
@@ -137,7 +137,24 @@ class Terms_Query extends Base_Query {
 	 * @return [type] [description]
 	 */
 	public function get_items_page_count() {
-		return $this->get_items_total_count();
+		$result   = $this->get_items_total_count();
+		$per_page = $this->get_items_per_page();
+
+		if ( $per_page < $result ) {
+
+			$page  = $this->get_current_items_page();
+			$pages = $this->get_items_pages_count();
+
+			if ( $page < $pages ) {
+				$result = $per_page;
+			} elseif ( $page == $pages ) {
+				$offset = $per_page * ( $page - 1 );
+				$result = $result - $offset;
+			}
+
+		}
+
+		return $result;
 	}
 
 	/**

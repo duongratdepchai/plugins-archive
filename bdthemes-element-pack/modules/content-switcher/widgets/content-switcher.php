@@ -253,6 +253,57 @@ class Content_Switcher extends Module_Base {
 			]
 		);
 
+		//badge left right align
+		$this->add_control(
+			'badge_align',
+			[
+				'label'   => esc_html__('Badge Align', 'bdthemes-element-pack'),
+				'type'    => Controls_Manager::CHOOSE,
+				'options' => [
+					'left'   => [
+						'title' => esc_html__('Left', 'bdthemes-element-pack'),
+						'icon'  => 'eicon-h-align-left',
+					],
+					'right'  => [
+						'title' => esc_html__('Right', 'bdthemes-element-pack'),
+						'icon'  => 'eicon-h-align-right',
+					],
+				],
+				'condition' => [
+					'badge' => 'yes',
+				],
+				'selectors_dictionary' => [
+					'left' => 'left: 0;',
+					'right' => 'right: 0;',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-content-switcher-badge' => '{{VALUE}};',
+				],
+				'toggle' => false,
+				'default' => 'left',
+				'render_type' => 'template',
+			]
+		);
+
+		//arrows style select	
+		$this->add_control(
+			'arrows_style',
+			[
+				'label'   => esc_html__('Arrow Style', 'bdthemes-element-pack'),
+				'type'    => Controls_Manager::SELECT,
+				'default' => '1',
+				'options' => [
+					'1'       => '01',
+					'2'       => '02',
+					'3'       => '03',
+					'4'       => '04',
+				],
+				'condition' => [
+					'badge' => 'yes',
+				],
+			]
+		);
+
 		$this->add_control(
 			'badge_offset_toggle',
 			[
@@ -269,10 +320,19 @@ class Content_Switcher extends Module_Base {
 
 		$this->start_popover();
 
+		$this->start_controls_tabs('tabs_offset_badge_controls');
+
+		$this->start_controls_tab(
+			'tab_offset_badge_controls',
+			[
+				'label' => __('Badge', 'bdthemes-element-pack'),
+			]
+		);
+
 		$this->add_responsive_control(
 			'badge_horizontal_offset',
 			[
-				'label' => __('Horizontal Offset', 'bdthemes-element-pack'),
+				'label' => __('Badge Horizontal Offset', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -304,7 +364,7 @@ class Content_Switcher extends Module_Base {
 		$this->add_responsive_control(
 			'badge_vertical_offset',
 			[
-				'label' => __('Vertical Offset', 'bdthemes-element-pack'),
+				'label' => __('Badge Vertical Offset', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => -40,
@@ -336,7 +396,7 @@ class Content_Switcher extends Module_Base {
 		$this->add_responsive_control(
 			'badge_rotate',
 			[
-				'label' => esc_html__('Rotate', 'bdthemes-element-pack'),
+				'label' => esc_html__('Badge Rotate', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SLIDER,
 				'default' => [
 					'size' => 0,
@@ -364,6 +424,149 @@ class Content_Switcher extends Module_Base {
 				],
 			]
 		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_offset_arrows_controls',
+			[
+				'label' => __('Arrow', 'bdthemes-element-pack'),
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrows_horizontal_offset_left',
+			[
+				'label' => __('Arrow Horizontal Offset', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => -35,
+				],
+				'tablet_default' => [
+					'size' => -35,
+				],
+				'mobile_default' => [
+					'size' => -35,
+				],
+				'range' => [
+					'px' => [
+						'min' => -300,
+						'step' => 1,
+						'max' => 300,
+					],
+				],
+				'condition' => [
+					'badge_offset_toggle' => 'yes',
+					'badge' => 'yes',
+					'badge_align' => 'left',
+				],
+				'render_type' => 'ui',
+				'selectors' => [
+					'{{WRAPPER}}' => '--ep-content-switcher-arrows-h-offset-left: {{SIZE}}px;'
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrows_horizontal_offset_right',
+			[
+				'label' => __('Arrow Horizontal Offset', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 40,
+				],
+				'tablet_default' => [
+					'size' => 40,
+				],
+				'mobile_default' => [
+					'size' => 40,
+				],
+				'range' => [
+					'px' => [
+						'min' => -300,
+						'step' => 1,
+						'max' => 300,
+					],
+				],
+				'condition' => [
+					'badge_offset_toggle' => 'yes',
+					'badge' => 'yes',
+					'badge_align' => 'right',
+				],
+				'render_type' => 'ui',
+				'selectors' => [
+					'{{WRAPPER}}' => '--ep-content-switcher-arrows-h-offset-right: {{SIZE}}px;'
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrows_vertical_offset',
+			[
+				'label' => __('Arrow Vertical Offset', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => -26,
+				],
+				'tablet_default' => [
+					'size' => -26,
+				],
+				'mobile_default' => [
+					'size' => -26,
+				],
+				'range' => [
+					'px' => [
+						'min' => -300,
+						'step' => 1,
+						'max' => 300,
+					],
+				],
+				'condition' => [
+					'badge_offset_toggle' => 'yes',
+					'badge' => 'yes',
+				],
+				'render_type' => 'ui',
+				'selectors' => [
+					'{{WRAPPER}}' => '--ep-content-switcher-arrows-v-offset: {{SIZE}}px;'
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'arrows_rotate',
+			[
+				'label' => esc_html__('Arrow Rotate', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0,
+				],
+				'tablet_default' => [
+					'size' => 0,
+				],
+				'mobile_default' => [
+					'size' => 0,
+				],
+				'range' => [
+					'px' => [
+						'min' => -360,
+						'max' => 360,
+						'step' => 5,
+					],
+				],
+				'condition' => [
+					'badge_offset_toggle' => 'yes',
+					'badge' => 'yes',
+				],
+				'render_type' => 'ui',
+				'selectors' => [
+					'{{WRAPPER}}' => '--ep-content-switcher-arrows-rotate: {{SIZE}}deg;'
+				],
+			]
+		);
+
+
+		$this->end_controls_tab();
+		$this->end_controls_tabs();
 
 		$this->end_popover();
 
@@ -677,7 +880,7 @@ class Content_Switcher extends Module_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', '%', 'em'],
 				'selectors' => [
-					'{{WRAPPER}} .bdt-content-switcher .bdt-layer' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .bdt-content-switcher .bdt-layer, {{WRAPPER}} .bdt-content-switcher .button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1021,6 +1224,17 @@ class Content_Switcher extends Module_Base {
 		);
 
 		$this->add_control(
+			'badge_arrows_color',
+			[
+				'label' => __('Arrow Color', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .bdt-switcher-arrows svg' => 'fill: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
 			'badge_background_color',
 			[
 				'label' => __('Background Color', 'bdthemes-element-pack'),
@@ -1083,8 +1297,49 @@ class Content_Switcher extends Module_Base {
 			]
 		);
 
+		//arrow size
+		$this->add_responsive_control(
+			'badge_arrows_size',
+			[
+				'label' => __('Arrow Size', 'bdthemes-element-pack'),
+				'type' => Controls_Manager::SLIDER,
+				'selectors' => [
+					'{{WRAPPER}} .bdt-switcher-arrows' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+				'separator' => 'before',
+			]
+		);
+
 		$this->end_controls_section();
 
+	}
+
+	public function render_badge(){
+		$settings = $this->get_settings_for_display();
+
+		if ( 'yes' !== $settings['badge'] ) {
+			return;
+		}
+
+		?>
+		<?php if ($settings['badge'] and '' != $settings['badge_text']) : ?>
+			<?php if($settings['badge_align'] == 'left') : ?>
+			<div class="bdt-switcher-arrows bdt-arrows-left">
+				<?php echo element_pack_svg_icon('left-badge-arrows-'.$settings['arrows_style']);?>
+			</div>
+			<?php endif; ?>
+
+			<?php if($settings['badge_align'] == 'right') : ?>
+			<div class="bdt-switcher-arrows bdt-arrows-right">
+				<?php echo element_pack_svg_icon('right-badge-arrows-'.$settings['arrows_style']);?>
+			</div>
+			<?php endif; ?>
+
+			<div class="bdt-content-switcher-badge">
+				<?php echo esc_html($settings['badge_text']); ?>
+			</div>
+		<?php endif; ?>
+		<?php
 	}
 
 	protected function render() {
@@ -1110,6 +1365,8 @@ class Content_Switcher extends Module_Base {
 
 				<?php if ('button' !== $settings['switcher_style']) : ?>
 
+					<?php $this->render_badge(); ?>
+
 					<?php if (!empty($primary['title']) or !empty($primary['switcher_icon']['value'])) : ?>
 					<div class="bdt-package-text bdt-primary-text <?php echo esc_attr(($primary['switcher_active'] == 'yes') ? 'bdt-active' : '') ?>">
 
@@ -1126,11 +1383,7 @@ class Content_Switcher extends Module_Base {
 					<?php endif; ?>
 
 
-					<?php if ($settings['badge'] and '' != $settings['badge_text']) : ?>
-					<div class="bdt-content-switcher-badge">
-						<?php echo esc_html($settings['badge_text']); ?>
-					</div>
-					<?php endif; ?>
+					
 
 					<div class="bdt-switch-container button bdt-toggle-button-<?php esc_html_e($settings['switcher_style']); ?>">
 						<input type="checkbox" class="checkbox" <?php echo esc_attr(($secondary['switcher_active'] == 'yes') ? 'checked' : ''); ?>>
@@ -1177,11 +1430,7 @@ class Content_Switcher extends Module_Base {
 						</a>
 					<?php endforeach; ?>
 
-					<?php if ($settings['badge'] and '' != $settings['badge_text']) : ?>
-					<div class="bdt-content-switcher-badge">
-						<?php echo esc_html($settings['badge_text']); ?>
-					</div>
-					<?php endif; ?>
+					<?php $this->render_badge(); ?>
 
 				<?php endif; ?>
 

@@ -287,6 +287,10 @@ class Plugin_Manager {
 	 */
 	public function check_update( $data ) {
 
+		if ( empty( $data ) ) {
+			return false;
+		}
+
 		delete_site_transient( 'jet_dashboard_remote_jet_plugin_list' );
 
 		$registered_plugins = Dashboard::get_instance()->get_registered_plugins();

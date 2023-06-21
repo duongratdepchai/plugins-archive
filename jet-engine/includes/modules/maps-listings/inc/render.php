@@ -638,6 +638,12 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 
 		jet_engine()->frontend->set_listing( $settings['lisitng_id'] );
 
+		// Ensure register scripts.
+		if ( ! wp_script_is( 'jet-maps-listings', 'registered' )  ) {
+			Module::instance()->register_scripts();
+			$this->add_inline_scripts();
+		}
+
 		do_action( 'jet-engine/maps-listings/assets', $query, $settings, $this );
 
 		wp_enqueue_script( 'jet-maps-listings' );
@@ -749,6 +755,31 @@ class Render extends \Jet_Engine_Render_Listing_Grid {
 		}
 
 		wp_localize_script( 'jet-maps-listings', 'JetEngineMapData', $data );
+	}
+
+	public function add_inline_scripts() {
+
+		if ( ! wp_doing_ajax() ) {
+			return;
+		}
+
+		// Re-init script after load on ajax.
+		$script = '
+			var initCb = function() {
+					if ( window.elementorFrontend ) {
+						window.JetEngineMaps.init();
+					}
+					window.JetEngineMaps.initBlocks();
+				};
+		
+			if ( undefined === window.JetEngineMaps ) {
+				jQuery( window ).on( "jet-engine/frontend-maps/loaded", initCb );
+			} else {
+				initCb();
+			}
+		';
+
+		wp_add_inline_script( 'jet-maps-listings', $script, 'after' );
 	}
 
 }

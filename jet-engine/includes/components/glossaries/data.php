@@ -134,8 +134,8 @@ class Data extends \Jet_Engine_Base_Data {
 		foreach ( $meta_fields as $key => $field ) {
 
 			$sanitized_field = array(
-				'value'      => ! empty( $field['value'] ) ? $field['value'] : '',
-				'label'      => ! empty( $field['label'] ) ? $field['label'] : '',
+				'value'      => ! \Jet_Engine_Tools::is_empty( $field['value'] ) ? $field['value'] : '',
+				'label'      => ! \Jet_Engine_Tools::is_empty( $field['label'] ) ? $field['label'] : '',
 				'is_checked' => isset( $field['is_checked'] ) ? filter_var( $field['is_checked'], FILTER_VALIDATE_BOOLEAN ) : false,
 			);
 

@@ -42,9 +42,17 @@ class Svg_Image extends Module_Base {
 
 	public function get_script_depends() {
 		if ($this->ep_is_edit_mode()) {
-			return ['draw-svg-plugin-js', 'scroll-trigger-js', 'magic-scroll-js', 'magic-scroll-animation-js', 'ep-scripts'];
+			if (true == is_ep_pro()) {
+				return ['draw-svg-plugin-js', 'scroll-trigger-js', 'magic-scroll-js', 'magic-scroll-animation-js', 'ep-scripts'];
+			} else {
+				return ['ep-scripts'];
+			}
 		} else {
-			return ['gsap', 'draw-svg-plugin-js', 'magic-scroll-js', 'magic-scroll-animation-js', 'scroll-trigger-js', 'ep-svg-image'];
+			if (true == is_ep_pro()) {
+				return ['gsap', 'draw-svg-plugin-js', 'magic-scroll-js', 'magic-scroll-animation-js', 'scroll-trigger-js', 'ep-svg-image'];
+			} else {
+				return ['ep-svg-image'];
+			}
 		}
 	}
 
@@ -53,6 +61,7 @@ class Svg_Image extends Module_Base {
 	}
 
 	protected function register_controls() {
+
 		$this->start_controls_section(
 			'section_image',
 			[
@@ -184,31 +193,29 @@ class Svg_Image extends Module_Base {
 			]
 		);
 
-		$pro_check = apply_filters('bdt_ep_init_pro', false);
-
-		if(true === $pro_check){
-			$this->add_control(
-				'svg_image_draw',
-				[
-					'label'              => esc_html__('Draw SVG', 'bdthemes-element-pack') . BDTEP_NC,
-					'type'               => Controls_Manager::SWITCHER,
-					'label_on'           => esc_html__('Yes', 'bdthemes-element-pack'),
-					'label_off'          => esc_html__('No', 'bdthemes-element-pack'),
-					'return_value'       => 'yes',
-					'frontend_available' => true,
-					'render_type'        => 'template',
-					'separator'          => 'before'
-				]
-			);
-		}
-
 		$this->end_controls_section();
 
-		if(true === $pro_check){
+		
 		$this->start_controls_section(
 			'section_svg_additionl',
 			[
-				'label' => esc_html__('Additional', 'bdthemes-element-pack'),
+				'label' => esc_html__('SVG Animation', 'bdthemes-element-pack'),
+			]
+		);
+
+		if(true === is_ep_pro()) {
+
+		$this->add_control(
+			'svg_image_draw',
+			[
+				'label'              => esc_html__('Draw SVG', 'bdthemes-element-pack') . BDTEP_NC,
+				'type'               => Controls_Manager::SWITCHER,
+				'label_on'           => esc_html__('Yes', 'bdthemes-element-pack'),
+				'label_off'          => esc_html__('No', 'bdthemes-element-pack'),
+				'return_value'       => 'yes',
+				'frontend_available' => true,
+				'render_type'        => 'template',
+				'separator'          => 'before'
 			]
 		);
 
@@ -371,6 +378,9 @@ class Svg_Image extends Module_Base {
 				'separator' 		 => 'after'
 			]
 		);
+		}
+
+		if(true !== is_ep_pro()) {
 		$this->add_control(
 			'on_hover_animation',
 			[
@@ -378,9 +388,9 @@ class Svg_Image extends Module_Base {
 				'description' => esc_html__('Make sure you select a stroke based svg image, otherwise hover animation will not work.', 'bdthemes-element-pack'),
 				'type' => Controls_Manager::SWITCHER,
 				'separator'     => 'before',
-				'condition' => [
-					'svg_image_draw!' => 'yes'
-				]
+				// 'condition' => [
+				// 	'svg_image_draw!' => 'yes'
+				// ]
 			]
 		);
 
@@ -402,9 +412,9 @@ class Svg_Image extends Module_Base {
 				'description' => esc_html__('Make sure you select a stroke based svg image, otherwise parallax stroke animation will not work.', 'bdthemes-element-pack'),
 				'type'        => Controls_Manager::SWITCHER,
 				'separator' => 'before',
-				'condition' => [
-					'svg_image_draw!' => 'yes'
-				]
+				// 'condition' => [
+				// 	'svg_image_draw!' => 'yes'
+				// ]
 			]
 		);
 
@@ -452,9 +462,10 @@ class Svg_Image extends Module_Base {
 				],
 			]
 		);
+		}
 
 		$this->end_controls_section();
-	}
+	
 
 		//Style
 		$this->start_controls_section(
@@ -840,13 +851,15 @@ class Svg_Image extends Module_Base {
 	public function render_image() {
 		$settings = $this->get_settings_for_display();
 
-		if ($settings['on_hover_animation']) {
-			$this->add_render_attribute('svg-image', 'class', 'bdt-animation-stroke');
-			$this->add_render_attribute('svg-image', 'data-bdt-svg', 'stroke-animation: true');
-		}
+		if (true !== is_ep_pro()) {
+			if ($settings['on_hover_animation']) {
+				$this->add_render_attribute('svg-image', 'class', 'bdt-animation-stroke');
+				$this->add_render_attribute('svg-image', 'data-bdt-svg', 'stroke-animation: true');
+			}
 
-		if ($settings['on_hover_reverse_animation']) {
-			$this->add_render_attribute('svg-image', 'class', 'bdt-animation-reverse');
+			if ($settings['on_hover_reverse_animation']) {
+				$this->add_render_attribute('svg-image', 'class', 'bdt-animation-reverse');
+			}
 		}
 
 		if ($settings['svg_color_preserved']) {
@@ -865,7 +878,7 @@ class Svg_Image extends Module_Base {
 				]
 			));
 		} else {
-			printf('<img src="%1$s" alt="%2$s">', BDTEP_ASSETS_URL . 'images/crane.svg', esc_html(get_the_title()));
+			printf('<img %3$s src="%1$s" alt="%2$s">', BDTEP_ASSETS_URL . 'images/crane.svg', esc_html(get_the_title()), $this->get_render_attribute_string('svg-image'));
 		}
 	}
 
@@ -877,11 +890,14 @@ class Svg_Image extends Module_Base {
 		}
 		$has_caption = $this->has_caption($settings);
 		$this->add_render_attribute('wrapper', 'class', 'elementor-image bdt-svg-image bdt-animation-toggle');
-		$parallax_stroke   = 100 - (isset($settings['parallax_effects_stroke_value']['size']) ? $settings['parallax_effects_stroke_value']['size'] : 0);
-		$parallax_viewport = (isset($settings['parallax_effects_viewport_value']['size']) ? $settings['parallax_effects_viewport_value']['size'] : 0.7);
-		if ($settings['svg_parallax_effects_show']) {
-			$this->add_render_attribute('wrapper', 'bdt-parallax', 'stroke: ' . $parallax_stroke . '%;');
-			$this->add_render_attribute('wrapper', 'bdt-parallax', 'viewport: ' . $parallax_viewport . ';');
+
+		if (true !== is_ep_pro()) {
+			$parallax_stroke   = 100 - (isset($settings['parallax_effects_stroke_value']['size']) ? $settings['parallax_effects_stroke_value']['size'] : 0);
+			$parallax_viewport = (isset($settings['parallax_effects_viewport_value']['size']) ? $settings['parallax_effects_viewport_value']['size'] : 0.7);
+			if ($settings['svg_parallax_effects_show']) {
+				$this->add_render_attribute('wrapper', 'bdt-parallax', 'stroke: ' . $parallax_stroke . '%;');
+				$this->add_render_attribute('wrapper', 'bdt-parallax', 'viewport: ' . $parallax_viewport . ';');
+			}
 		}
 
 		if (!empty($settings['shape'])) {

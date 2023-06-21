@@ -1209,9 +1209,9 @@ class Testimonial_Carousel extends Module_Base
 				'tab'   => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     '_skin' => 'bdt-twyla',
+                    'layout_style!' => 'style-1',
                 ],
 			]
-            
 		);
 
 		$this->add_control(
@@ -1291,6 +1291,116 @@ class Testimonial_Carousel extends Module_Base
 				'selector' => '{{WRAPPER}} .skin-twyla .testimonial-item-header::after',
 			]
 		);
+
+        $this->add_control(
+            'quatation_offset_toggle',
+            [
+                'label' => __('Offset', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::POPOVER_TOGGLE,
+                'label_off' => __('None', 'bdthemes-element-pack'),
+                'label_on' => __('Custom', 'bdthemes-element-pack'),
+                'return_value' => 'yes',
+                'separator' => 'before',
+
+            ]
+        );
+
+        $this->start_popover();
+
+        $this->add_responsive_control(
+            'quatation_horizontal_offset',
+            [
+                'label' => __('Horizontal Offset', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 0,
+                ],
+                'tablet_default' => [
+                    'size' => 0,
+                ],
+                'mobile_default' => [
+                    'size' => 0,
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => -300,
+                        'step' => 2,
+                        'max' => 300,
+                    ],
+                ],
+                'condition' => [
+                    'quatation_offset_toggle' => 'yes'
+                ],
+                'render_type' => 'ui',
+                'selectors' => [
+                    '{{WRAPPER}}' => '--ep-testimonial-carousel-quatation-h-offset: {{SIZE}}px;'
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'quatation_vertical_offset',
+            [
+                'label' => __('Vertical Offset', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 0,
+                ],
+                'tablet_default' => [
+                    'size' => 0,
+                ],
+                'mobile_default' => [
+                    'size' => 0,
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => -300,
+                        'step' => 2,
+                        'max' => 300,
+                    ],
+                ],
+                'condition' => [
+                    'quatation_offset_toggle' => 'yes'
+                ],
+                'render_type' => 'ui',
+                'selectors' => [
+                    '{{WRAPPER}}' => '--ep-testimonial-carousel-quatation-v-offset: {{SIZE}}px;'
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'quatation_rotate',
+            [
+                'label' => esc_html__('Rotate', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 0,
+                ],
+                'tablet_default' => [
+                    'size' => 0,
+                ],
+                'mobile_default' => [
+                    'size' => 0,
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => -360,
+                        'max' => 360,
+                        'step' => 5,
+                    ],
+                ],
+                'condition' => [
+                    'quatation_offset_toggle' => 'yes'
+                ],
+                'render_type' => 'ui',
+                'selectors' => [
+                    '{{WRAPPER}}' => '--ep-testimonial-carousel-quatation-rotate: {{SIZE}}deg;'
+                ],
+            ]
+        );
+
+        $this->end_popover();
 
 
 		$this->end_controls_section();

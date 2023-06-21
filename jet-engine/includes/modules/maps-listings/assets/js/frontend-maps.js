@@ -74,7 +74,7 @@
 				return;
 			}
 
-			$container.attr( 'id', 'map_' + mapID );
+			$container.attr( 'id', 'map_' + mapID + '_' + Math.floor( Math.random() * Math.floor( 999 ) ) );
 
 			var initMarker = function( markerData ) {
 				var marker,

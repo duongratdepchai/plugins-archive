@@ -631,6 +631,16 @@ class HelperProviderCoreUC_EL{
 	 */
 	public static function putElementorTemplate($templateID, $mode = null){
 		
+		$isWpmlExists = UniteCreatorWpmlIntegrate::isWpmlExists();
+				
+		//get right template
+		if($isWpmlExists == true){
+		
+			$template = get_post($templateID);
+			
+			$templateID = apply_filters( 'wpml_object_id', $templateID, $template->post_type, true);
+		}
+
 		
 		if(!isset(self::$arrTemplatesCounter[$templateID]))
 			self::$arrTemplatesCounter[$templateID] = 0;
@@ -643,7 +653,7 @@ class HelperProviderCoreUC_EL{
 			
 			dmp($text);
 			
-			if(self::isInfiniteLoopCode == false){
+			if(self::$isInfiniteLoopCode == false){
 				echo "<script>alert('Infinite Template Loop Found with id: $templateID')</script>";
 			}
 			
@@ -705,6 +715,23 @@ class HelperProviderCoreUC_EL{
 		
 		if(empty($templateID))
 			return(false);
+		
+			
+		//change the template ID according the language for wpml
+		
+		$isWpmlExists = UniteCreatorWpmlIntegrate::isWpmlExists();
+				
+		//get right template
+		if($isWpmlExists == true){
+		
+			$template = get_post($templateID);
+			
+			$templateID = apply_filters( 'wpml_object_id', $templateID, $template->post_type, true);
+		}
+
+		
+		//--------------------
+			
 		
 		global $wp_query;
 		

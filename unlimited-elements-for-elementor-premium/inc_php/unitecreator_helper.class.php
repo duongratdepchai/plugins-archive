@@ -2,14 +2,13 @@
 /**
  * @package Unlimited Elements
  * @author unlimited-elements.com
- * @copyright (C) 2021 Unlimited Elements, All Rights Reserved. 
+ * @copyright (C) 2021 Unlimited Elements, All Rights Reserved.
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  * */
 defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 
-
 /**
- * 
+ *
  * creator helper functions class
  *
  */
@@ -684,1200 +683,1116 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		 */
 		public static function pathToRelative($path, $addDots = true){
 
-			$realpath = realpath($path);
-			if(!$realpath)
-				return($path);
-							
-			$isDir = is_dir($realpath);
-			
-			$len = strlen($realpath);
-			$realBase = realpath(GlobalsUC::$path_base);
-			
-			if($realBase != "/")
-				$relativePath = str_replace($realBase, "", $realpath);
+		$realpath = realpath($path);
+		if(!$realpath)
+			return ($path);
+
+		$isDir = is_dir($realpath);
+
+		$len = strlen($realpath);
+		$realBase = realpath(GlobalsUC::$path_base);
+
+		if($realBase != "/")
+			$relativePath = str_replace($realBase, "", $realpath);
+		else
+			$relativePath = $realpath;
+
+		//add dots
+		if($addDots == true && strlen($relativePath) != strlen($realpath))
+			$relativePath = ".." . $relativePath;
+
+		$relativePath = UniteFunctionsUC::pathToUnix($relativePath);
+
+		if($addDots == false)
+			$relativePath = ltrim($relativePath, "/");
+
+		//add slash to end
+		if($isDir == true)
+			$relativePath = UniteFunctionsUC::addPathEndingSlash($relativePath);
+
+		return $relativePath;
+	}
+
+	/**
+	 * convert relative path to absolute path
+	 */
+	public static function pathToAbsolute($path){
+
+		$basePath = GlobalsUC::$path_base;
+		$basePath = UniteFunctionsUC::pathToUnix($basePath);
+
+		$path = UniteFunctionsUC::pathToUnix($path);
+
+		$realPath = UniteFunctionsUC::realpath($path, false);
+
+		if(!empty($realPath))
+			return ($path);
+
+		if(UniteFunctionsUC::isPathUnderBase($path, $basePath)){
+			$path = UniteFunctionsUC::pathToUnix($path);
+
+			return ($path);
+		}
+
+		$path = $basePath . "/" . $path;
+		$path = UniteFunctionsUC::pathToUnix($path);
+
+		return ($path);
+	}
+
+	/**
+	 * turn path to relative url
+	 */
+	public static function pathToRelativeUrl($path){
+
+		$path = self::pathToRelative($path, false);
+
+		$url = str_replace('\\', '/', $path);
+
+		//remove starting slash
+		$url = ltrim($url, '/');
+
+		return ($url);
+	}
+
+	/**
+	 * convert path to absolute url
+	 */
+	public static function pathToFullUrl($path){
+
+		if(empty($path))
+			return ("");
+
+		$url = self::pathToRelativeUrl($path);
+
+		$url = self::URLtoFull($url);
+
+		return ($url);
+	}
+
+	/**
+	 * get details of the image by the image url.
+	 */
+	public static function getImageDetails($urlImage){
+
+		$info = UniteFunctionsUC::getPathInfo($urlImage);
+		$urlDir = UniteFunctionsUC::getVal($info, "dirname");
+		if(!empty($urlDir))
+			$urlDir = $urlDir . "/";
+
+		$arrInfo = array();
+		$arrInfo["url_full"] = GlobalsUC::$url_base . $urlImage;
+		$arrInfo["url_dir_image"] = $urlDir;
+		$arrInfo["url_dir_thumbs"] = $urlDir . GlobalsUC::DIR_THUMBS . "/";
+
+		$filepath = GlobalsUC::$path_base . urldecode($urlImage);
+		$filepath = realpath($filepath);
+
+		$path = dirname($filepath) . "/";
+		$pathThumbs = $path . GlobalsUC::DIR_THUMBS . "/";
+
+		$arrInfo["filepath"] = $filepath;
+		$arrInfo["path"] = $path;
+		$arrInfo["path_thumbs"] = $pathThumbs;
+
+		return ($arrInfo);
+	}
+
+	/**
+	 * convert title to handle
+	 */
+	public static function convertTitleToHandle($title, $removeNonAscii = true){
+
+		$handle = strtolower($title);
+
+		$handle = str_replace(array("Ã¤", "Ã„"), "a", $handle);
+		$handle = str_replace(array("Ã¥", "Ã…"), "a", $handle);
+		$handle = str_replace(array("Ã¶", "Ã–"), "o", $handle);
+
+		if($removeNonAscii == true){
+			// Remove any character that is not alphanumeric, white-space, or a hyphen
+			$handle = preg_replace("/[^a-z0-9\s\_]/i", " ", $handle);
+		}
+
+		// Replace multiple instances of white-space with a single space
+		$handle = preg_replace("/\s\s+/", " ", $handle);
+		// Replace all spaces with underscores
+		$handle = preg_replace("/\s/", "_", $handle);
+		// Replace multiple underscore with a single underscore
+		$handle = preg_replace("/\_\_+/", "_", $handle);
+		// Remove leading and trailing underscores
+		$handle = trim($handle, "_");
+
+		return ($handle);
+	}
+
+	/**
+	 * convert title to alias
+	 */
+	public static function convertTitleToAlias($title){
+
+		$handle = self::convertTitleToHandle($title, false);
+		$alias = str_replace("_", "-", $handle);
+
+		return ($alias);
+	}
+
+	/**
+	 * get url handle
+	 */
+	public static function getUrlHandle($url, $addonName = null){
+
+		$urlNew = HelperUC::URLtoAssetsRelative($url);
+
+		if($urlNew != $url){  //is inside assets
+			$urlNew = "uc_assets_" . $urlNew;
+
+			//make handle by file name and size
+			$path = self::urlToPath($url);
+
+			if(!empty($path)){
+				$arrInfo = pathinfo($path);
+				$filename = UniteFunctionsUC::getVal($arrInfo, "basename");
+				$filesize = filesize($path);
+
+				$urlNew = "ac_assets_file_" . $filename . "_" . $filesize;
+			}
+		}else{
+			$urlNew = HelperUC::URLtoRelative($url);
+			if($urlNew != $url)
+				$urlNew = "uc_" . $urlNew;
 			else
-				$relativePath = $realpath;
-				
-			//add dots
-			if($addDots == true && strlen($relativePath) != strlen($realpath))
-				$relativePath = "..".$relativePath;				
-			
-			$relativePath = UniteFunctionsUC::pathToUnix($relativePath);
-			
-			if($addDots == false)
-				$relativePath = ltrim($relativePath, "/");
-						
-			//add slash to end
-			if($isDir == true)
-				$relativePath = UniteFunctionsUC::addPathEndingSlash($relativePath);
-			
-			return $relativePath;
+				$urlNew = $url;
 		}
-		
-		
-		/**
-		 * convert relative path to absolute path
-		 */
-		public static function pathToAbsolute($path){
-			
-			$basePath = GlobalsUC::$path_base;
-			$basePath = UniteFunctionsUC::pathToUnix($basePath);
-			
-			$path = UniteFunctionsUC::pathToUnix($path);
-						
-			$realPath = UniteFunctionsUC::realpath($path, false);
-			
-			if(!empty($realPath))
-				return($path);
-			
-			if(UniteFunctionsUC::isPathUnderBase($path, $basePath)){
-				$path = UniteFunctionsUC::pathToUnix($path);
-				return($path);
-			}
-			
-			$path = $basePath."/".$path;
-			$path = UniteFunctionsUC::pathToUnix($path);
-			
-			return($path);
+
+		$url = strtolower($urlNew);
+		$url = str_replace("https://", "", $url);
+		$url = str_replace("http://", "", $url);
+
+		if(strpos($url, "uc_") !== 0)
+			$url = "uc_" . $url;
+
+		$handle = self::convertTitleToHandle($url);
+
+		return ($handle);
+	}
+
+	/**
+	 * convert shortcode to url assets
+	 */
+	public static function convertFromUrlAssets($value, $urlAssets){
+
+		if(empty($urlAssets))
+			return ($value);
+
+		if(is_string($value) == false)
+			return ($value);
+
+		$value = str_replace("[url_assets]/", $urlAssets, $value);
+		$value = str_replace("{{url_assets}}/", $urlAssets, $value);
+
+		return ($value);
+	}
+
+	/**
+	 * if the website is ssl - convert url to ssl
+	 */
+	public static function urlToSSLCheck($url){
+
+		if(GlobalsUC::$is_ssl == true)
+			$url = UniteFunctionsUC::urlToSsl($url);
+
+		return ($url);
+	}
+
+	/**
+	 * download file given from some url to cache folder
+	 * return filepath
+	 */
+	public static function downloadFileToCacheFolder($urlFile){
+
+		$info = pathinfo($urlFile);
+		$filename = UniteFunctionsUC::getVal($info, "basename");
+		if(empty($filename))
+			UniteFunctionsUC::throwError("no file given");
+
+		$ext = $info["extension"];
+
+		if($ext != "zip")
+			UniteFunctionsUC::throwError("wrong file given");
+
+		$pathCache = GlobalsUC::$path_cache;
+		UniteFunctionsUC::mkdirValidate($pathCache, "cache folder");
+
+		$pathCacheImport = $pathCache . "import/";
+		UniteFunctionsUC::mkdirValidate($pathCacheImport, "cache import folder");
+
+		$filepath = $pathCacheImport . $filename;
+
+		$content = @file_get_contents($urlFile);
+		if(empty($content))
+			UniteFunctionsUC::throwError("Can't dowonload file from url: $urlFile");
+
+		UniteFunctionsUC::writeFile($content, $filepath);
+
+		return ($filepath);
+	}
+
+	/**
+	 * get url content
+	 */
+	public static function getFileContentByUrl($url, $filterExtention = null){
+
+		if(!empty($filterExtention)){
+			$info = pathinfo($url);
+			$ext = UniteFunctionsUC::getVal($info, "extension");
+			$ext = strtolower($ext);
+
+			if($ext != $filterExtention)
+				return (null);
 		}
-		
-		
-		/**
-		 * turn path to relative url
-		 */
-		public static function pathToRelativeUrl($path){
-			
-			$path = self::pathToRelative($path, false);
-			
-			$url = str_replace('\\', '/', $path);
-						
-			//remove starting slash
-			$url = ltrim($url, '/');
-			
-			return($url);
+
+		$pathFile = self::urlToPath($url);
+
+		if(empty($pathFile))
+			return (null);
+
+		if(file_exists($pathFile) == false)
+			return (null);
+
+		$content = @file_get_contents($pathFile);
+
+		return ($content);
+	}
+
+ 	public static function a________VIEW_TEMPLATE_____(){}
+
+	/**
+	 * get ajax url for export
+	 */
+	public static function getUrlAjax($action, $params = ""){
+
+		$nonce = UniteProviderFunctionsUC::getNonce();
+
+		$url = UniteFunctionsUC::addUrlParams(GlobalsUC::$url_ajax_full, array(
+			'action' => GlobalsUC::PLUGIN_NAME . '_ajax_action',
+			'client_action' => $action,
+			'nonce' => $nonce,
+		));
+
+		if(!empty($params))
+			$url = UniteFunctionsUC::addUrlParams($url, $params);
+
+		return $url;
+	}
+
+	/**
+	 *
+	 * get url to some view.
+	 */
+	public static function getViewUrl($viewName, $urlParams = "", $isBlankWindow = false, $isFront = false){
+
+		$params = "view=" . $viewName;
+
+		if(!empty($urlParams))
+			$params .= "&" . $urlParams;
+
+		if($isFront == false)
+			$link = UniteFunctionsUC::addUrlParams(GlobalsUC::$url_component_admin, $params);
+		else
+			$link = UniteFunctionsUC::addUrlParams(GlobalsUC::$url_component_client, $params);
+
+		if($isBlankWindow == true)
+			$link = UniteProviderFunctionsUC::convertUrlToBlankWindow($link);
+
+		$link = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_MODIFY_URL_VIEW, $link, $viewName, $params, $isBlankWindow, $isFront);
+
+		return ($link);
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_Addons($type = ""){
+
+		if(empty($type))
+			return self::getViewUrl(GlobalsUC::VIEW_ADDONS_LIST);
+
+		$params = array();
+		$type = urldecode($type);
+		$params = "addontype=$type";
+
+		$urlView = self::getViewUrl(GlobalsUC::VIEW_ADDONS_LIST, $params);
+
+		return ($urlView);
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_Default($params = ""){
+
+		return self::getViewUrl(GlobalsUC::$view_default, $params);
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_TemplatesList($params = array(), $layoutType = null){
+
+		$urlParams = "";
+		if(!empty($layoutType)){
+			$params["layout_type"] = $layoutType;
+			$urlParams = "layout_type=" . $layoutType;
 		}
-		
-		
-		
-		/**
-		 * convert path to absolute url
-		 */
-		public static function pathToFullUrl($path){
-			
-			if(empty($path))
-				return("");
-			
-			$url = self::pathToRelativeUrl($path);
-						
-			$url = self::URLtoFull($url);
-			return($url);
+
+		$url = self::getViewUrl(GlobalsUC::VIEW_TEMPLATES_LIST, $urlParams);
+
+		$url = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_URL_TEMPLATES_LIST, $url, $params, $layoutType);
+
+		return ($url);
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_LayoutsList($params = array(), $layoutType = ""){
+
+		$urlParams = "";
+		if(!empty($layoutType)){
+			$params["layout_type"] = $layoutType;
+			$urlParams = "layout_type=" . $layoutType;
 		}
-		
-		
-		/**
-		 * get details of the image by the image url.
-		 */
-		public static function getImageDetails($urlImage){
-		
-			$info = UniteFunctionsUC::getPathInfo($urlImage);
-			$urlDir = UniteFunctionsUC::getVal($info, "dirname");
-			if(!empty($urlDir))
-				$urlDir = $urlDir."/";
-		
-			$arrInfo = array();
-			$arrInfo["url_full"] = GlobalsUC::$url_base.$urlImage;
-			$arrInfo["url_dir_image"] = $urlDir;
-			$arrInfo["url_dir_thumbs"] = $urlDir.GlobalsUC::DIR_THUMBS."/";
-		
-			$filepath = GlobalsUC::$path_base.urldecode($urlImage);
-			$filepath = realpath($filepath);
-		
-			$path = dirname($filepath)."/";
-			$pathThumbs = $path.GlobalsUC::DIR_THUMBS."/";
-		
-			$arrInfo["filepath"] = $filepath;
-			$arrInfo["path"] = $path;
-			$arrInfo["path_thumbs"] = $pathThumbs;
-		
-			return($arrInfo);
-		}
-		
-		
-		/**
-		 * convert title to handle
-		 */
-		public static function convertTitleToHandle($title, $removeNonAscii = true){
-			
-			$handle = strtolower($title);
-			
-			$handle = str_replace(array("ä", "Ä"), "a", $handle);
-			$handle = str_replace(array("å", "Å"), "a", $handle);
-			$handle = str_replace(array("ö", "Ö"), "o", $handle);
-			
-			if($removeNonAscii == true){
-				
-				// Remove any character that is not alphanumeric, white-space, or a hyphen
-				$handle = preg_replace("/[^a-z0-9\s\_]/i", " ", $handle);
-			
-			}
-			
-			// Replace multiple instances of white-space with a single space
-			$handle = preg_replace("/\s\s+/", " ", $handle);
-			// Replace all spaces with underscores
-			$handle = preg_replace("/\s/", "_", $handle);
-			// Replace multiple underscore with a single underscore
-			$handle = preg_replace("/\_\_+/", "_", $handle);
-			// Remove leading and trailing underscores
-			$handle = trim($handle, "_");
-			
-			return($handle);
-		}
-		
-		
-		/**
-		 * convert title to alias
-		 */
-		public static function convertTitleToAlias($title){
-			
-			$handle = self::convertTitleToHandle($title, false);
-			$alias = str_replace("_", "-", $handle);
-			
-			return($alias);
-		}
-		
-		
-		
-		/**
-		 * get url handle
-		 */
-		public static function getUrlHandle($url, $addonName = null){
-			
-			$urlNew = HelperUC::URLtoAssetsRelative($url);
-			
-			
-			if($urlNew != $url){	//is inside assets
-				$urlNew = "uc_assets_".$urlNew;
-				
-				//make handle by file name and size
-				$path = self::urlToPath($url);
-								
-				if(!empty($path)){
-					$arrInfo = pathinfo($path);
-					$filename = UniteFunctionsUC::getVal($arrInfo, "basename");
-					$filesize = filesize($path);
-					
-					$urlNew = "ac_assets_file_".$filename."_".$filesize;
-				}
-				
-			}else{
-				$urlNew = HelperUC::URLtoRelative($url);
-				if($urlNew != $url)
-					$urlNew = "uc_".$urlNew;
-				else
-					$urlNew = $url;
-			}
-			
-			$url = strtolower($urlNew);
-			$url = str_replace("https://","",$url);
-			$url = str_replace("http://","",$url);
-			
-			if(strpos($url,"uc_") !== 0)
-				$url = "uc_".$url;
-			
-			$handle = self::convertTitleToHandle($url);
-			
-			
-			return($handle);
-		}
-		
-		
-		/**
-		 * convert shortcode to url assets
-		 */
-		public static function convertFromUrlAssets($value, $urlAssets){
-			
-			if(empty($urlAssets))
-				return($value);
-			
-			if(is_string($value) == false)
-				return($value);
-			
-			$value = str_replace("[url_assets]/", $urlAssets, $value);
-			$value = str_replace("{{url_assets}}/", $urlAssets, $value);
-			
-			return($value);
-		}
-		
-		
-		/**
-		 * if the website is ssl - convert url to ssl
-		 */
-		public static function urlToSSLCheck($url){
-			
-			if(GlobalsUC::$is_ssl == true)
-				$url = UniteFunctionsUC::urlToSsl($url);
-			
-			return($url);
-		}
-		
-		
-		/**
-		 * download file given from some url to cache folder
-		 * return filepath
-		 */
-		public static function downloadFileToCacheFolder($urlFile){
-			
-			$info = pathinfo($urlFile);
-			$filename = UniteFunctionsUC::getVal($info, "basename");
-			if(empty($filename))
-				UniteFunctionsUC::throwError("no file given");
-			
-			$ext = $info["extension"];
-			
-			if($ext != "zip")
-				UniteFunctionsUC::throwError("wrong file given");
-			
-			$pathCache = GlobalsUC::$path_cache;
-			UniteFunctionsUC::mkdirValidate($pathCache, "cache folder");
-			
-			$pathCacheImport = $pathCache."import/";
-			UniteFunctionsUC::mkdirValidate($pathCacheImport, "cache import folder");
-			
-			$filepath = $pathCacheImport.$filename;
-			
-			$content = @file_get_contents($urlFile);
-			if(empty($content))
-				UniteFunctionsUC::throwError("Can't dowonload file from url: $urlFile");
-			
-			UniteFunctionsUC::writeFile($content, $filepath);
-			
-			return($filepath);
-		}
-		
-		
-		/**
-		 * get url content
-		 */
-		public static function getFileContentByUrl($url, $filterExtention = null){
-			
-			
-			if(!empty($filterExtention)){
-				$info = pathinfo($url);
-				$ext = UniteFunctionsUC::getVal($info, "extension");
-				$ext = strtolower($ext);
-				
-				if($ext != $filterExtention)
-					return(null);
-			}
-			
-			$pathFile = self::urlToPath($url);
-			
-			if(empty($pathFile))
-				return(null);
-				
-			if(file_exists($pathFile) == false)
-				return(null);
-				
-			$content = @file_get_contents($pathFile);
-			
-			return($content);
-		}
-		
-		
-		public static function a________VIEW_TEMPLATE_____(){}
-		
-		
-		/**
-		 * get ajax url for export
-		 */
-		public static function getUrlAjax($action, $params = ""){
-			
-			$urlAjax = GlobalsUC::$url_ajax_full;
-			
-			$urlAjax = UniteFunctionsUC::addUrlParams($urlAjax, "action=".GlobalsUC::PLUGIN_NAME."_ajax_action&client_action={$action}");
-			
-			$nonce = UniteProviderFunctionsUC::getNonce();
-			
-			$urlAjax .= "&nonce=$nonce";
-			
+
+		$url = self::getViewUrl(GlobalsUC::VIEW_LAYOUTS_LIST, $urlParams);
+
+		$url = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_URL_LAYOUTS_LIST, $url, $params);
+
+		return ($url);
+	}
+
+	/**
+	 * get some object url
+	 */
+	private static function getUrlViewObject($view, $objectID, $optParams, $isBlankWindow = false){
+
+		$params = "";
+		if(!empty($objectID))
+			$params = "id=$objectID";
+
+		if(!empty($optParams)){
 			if(!empty($params))
-				$urlAjax .= "&".$params;
-			
-			return($urlAjax);
-		}
-		
-		
-		/**
-		 *
-		 * get url to some view.
-		 */
-		public static function getViewUrl($viewName, $urlParams="", $isBlankWindow = false, $isFront = false){
-			
-			$params = "view=".$viewName;
-			
-			if(!empty($urlParams))
-				$params .= "&".$urlParams;
-			
-			
-			if($isFront == false)
-				$link = UniteFunctionsUC::addUrlParams(GlobalsUC::$url_component_admin, $params);
-			else
-				$link = UniteFunctionsUC::addUrlParams(GlobalsUC::$url_component_client, $params);
-			
-			if($isBlankWindow == true)
-				$link = UniteProviderFunctionsUC::convertUrlToBlankWindow($link);
-			
-			$link = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_MODIFY_URL_VIEW, $link, $viewName, $params, $isBlankWindow, $isFront);
-			
-			return($link);
-		}
-		
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_Addons($type = ""){
-			
-			if(empty($type))
-				return self::getViewUrl(GlobalsUC::VIEW_ADDONS_LIST);
-			
-			$params = array();
-			$type = urldecode($type);
-			$params = "addontype=$type";
-			
-			$urlView = self::getViewUrl(GlobalsUC::VIEW_ADDONS_LIST, $params);
+				$params .= "&";
 
-			
-			return($urlView);
-		}
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_Default($params = ""){
-		
-			return self::getViewUrl(GlobalsUC::$view_default, $params);
-		}
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_TemplatesList($params = array(), $layoutType = null){
-			
-			$urlParams = "";
-			if(!empty($layoutType)){
-				$params["layout_type"] = $layoutType;
-				$urlParams = "layout_type=".$layoutType;
-			}
-			
-			$url = self::getViewUrl(GlobalsUC::VIEW_TEMPLATES_LIST, $urlParams);
-			
-			$url = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_URL_TEMPLATES_LIST, $url, $params, $layoutType);
-			
-			return($url);
-		}
-		
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_LayoutsList($params = array(), $layoutType = ""){
-						
-			$urlParams = "";
-			if(!empty($layoutType)){
-				$params["layout_type"] = $layoutType;
-				$urlParams = "layout_type=".$layoutType;
-			}
-			
-			$url = self::getViewUrl(GlobalsUC::VIEW_LAYOUTS_LIST, $urlParams);
-			
-			
-			$url = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_URL_LAYOUTS_LIST, $url, $params);
-			
-			return($url);
-		}
-		
-		
-		/**
-		 * get some object url
-		 */
-		private static function getUrlViewObject($view, $objectID, $optParams, $isBlankWindow = false){
-			
-			$params = "";
-			if(!empty($objectID))
-				$params = "id=$objectID";
-			
-			if(!empty($optParams)){
-				if(!empty($params))
-					$params .= "&";
-				
-				$params .= $optParams;
-			}
-			
-			return(self::getViewUrl($view, $params, $isBlankWindow));
-		} 
-		
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_Layout($layoutID = null, $optParams = "", $layoutType = ""){
-			
-			if(!empty($layoutType)){
-				if(!empty($optParams))
-					$optParams .= "&";
-				
-				$optParams .= "layout_type=".$layoutType;
-			}
-			
-			$url = self::getUrlViewObject(GlobalsUC::VIEW_LAYOUT, $layoutID, $optParams, true);
-			
-			return $url;
+			$params .= $optParams;
 		}
 
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_Template($templateID = null, $templateType="", $optParams = ""){
-			
-			UniteFunctionsUC::validateNotEmpty($templateType);
-			
+		return (self::getViewUrl($view, $params, $isBlankWindow));
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_Layout($layoutID = null, $optParams = "", $layoutType = ""){
+
+		if(!empty($layoutType)){
 			if(!empty($optParams))
 				$optParams .= "&";
-			
-			$optParams .= "layout_type=".$templateType;
-			
-			return self::getViewUrl_Layout($templateID, $optParams);
+
+			$optParams .= "layout_type=" . $layoutType;
 		}
 
-		
-		 /**
-		 * get addons view url
-		 */
-		public static function getViewUrl_LayoutPreviewTemplate(){
-			
-			$urlTemplate = self::getViewUrl_LayoutPreview("[page]", true);
-			
-			return($urlTemplate);
-		}
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_LayoutPreview($layoutID, $isBlankWindow = false, $addParams = "", $isFront = true){
+		$url = self::getUrlViewObject(GlobalsUC::VIEW_LAYOUT, $layoutID, $optParams, true);
 
-			
-			if($layoutID == "[page]"){
-				$urlPreviewTemplate = UniteProviderFunctionsUC::applyFilters("get_layout_preview_byid", null, $layoutID);
-				if(!empty($urlPreviewTemplate))
-					return($urlPreviewTemplate);
-			}
-			
-			$layoutID = (int)$layoutID;
-			
-			UniteFunctionsUC::validateNotEmpty($layoutID, "layout id");
-			
-			$urlPreview = null;
-			$urlPreview = UniteProviderFunctionsUC::applyFilters("get_layout_preview_byid", $urlPreview, $layoutID);
-			if(!empty($urlPreview))
-				return($urlPreview);
-			
-			$params = "id=$layoutID";
-			
+		return $url;
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_Template($templateID = null, $templateType = "", $optParams = ""){
+
+		UniteFunctionsUC::validateNotEmpty($templateType);
+
+		if(!empty($optParams))
+			$optParams .= "&";
+
+		$optParams .= "layout_type=" . $templateType;
+
+		return self::getViewUrl_Layout($templateID, $optParams);
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_LayoutPreviewTemplate(){
+
+		$urlTemplate = self::getViewUrl_LayoutPreview("[page]", true);
+
+		return ($urlTemplate);
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_LayoutPreview($layoutID, $isBlankWindow = false, $addParams = "", $isFront = true){
+
+		if($layoutID == "[page]"){
+			$urlPreviewTemplate = UniteProviderFunctionsUC::applyFilters("get_layout_preview_byid", null, $layoutID);
+			if(!empty($urlPreviewTemplate))
+				return ($urlPreviewTemplate);
+		}
+
+		$layoutID = (int)$layoutID;
+
+		UniteFunctionsUC::validateNotEmpty($layoutID, "layout id");
+
+		$urlPreview = null;
+		$urlPreview = UniteProviderFunctionsUC::applyFilters("get_layout_preview_byid", $urlPreview, $layoutID);
+		if(!empty($urlPreview))
+			return ($urlPreview);
+
+		$params = "id=$layoutID";
+
+		if(!empty($addParams))
+			$params .= "&" . $addParams;
+
+		$url = self::getViewUrl(GlobalsUC::VIEW_LAYOUT_PREVIEW, $params, $isBlankWindow, $isFront);
+
+		return ($url);
+	}
+
+	/**
+	 * get layout preview url
+	 */
+	public static function getUrlLayoutPreviewFront($layoutID, $addParams = null, $outputMode = null){
+
+		//add output mode
+		if(!empty($outputMode)){
+			if(empty($addParams))
+				$addParams = "";
+
 			if(!empty($addParams))
-				$params .= "&".$addParams;
-			
-			$url = self::getViewUrl(GlobalsUC::VIEW_LAYOUT_PREVIEW, $params, $isBlankWindow, $isFront);
-			
-			return($url);
-		}
-		
-		
-		
-		/**
-		 * get layout preview url
-		 */
-		public static function getUrlLayoutPreviewFront($layoutID, $addParams = null, $outputMode = null){
-			
-			//add output mode
-			if(!empty($outputMode)){
-				if(empty($addParams))
-					$addParams = "";
-				
-				if(!empty($addParams))
-					$addParams .= "&";
-				
-				$addParams .= "outputmode=".$outputMode;
-			}
-						
-			$url = HelperUC::getViewUrl_LayoutPreview($layoutID, true, $addParams, true);
-			
-			$url = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_MODIFY_URL_LAYOUT_PREVIEW_FRONT, $url, $layoutID, $addParams);
-			
-			return($url);
-		}
-		
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_EditAddon($addonID, $params = "", $hash = ""){
-		 
-			$addonID = (int)$addonID;
-			
-			$strParams = "id={$addonID}";
-			if(!empty($params))
-				$strParams .= "&".$params;
-				
-			if(!empty($hash))
-				$strParams .= "#".$hash;
-			
-			return(self::getViewUrl(GlobalsUC::VIEW_EDIT_ADDON, $strParams));
+				$addParams .= "&";
+
+			$addParams .= "outputmode=" . $outputMode;
 		}
 
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_TestAddon($addonID, $optParams=""){
-			$params = "id={$addonID}";
-			if(!empty($optParams))
-				$params .= "&".$optParams;
-			
-			return(self::getViewUrl(GlobalsUC::VIEW_TEST_ADDON, $params));
-		}
-		
-		
-		/**
-		 * get addons view url
-		 */
-		public static function getViewUrl_AddonDefaults($addonID, $optParams=""){
-			$params = "id={$addonID}";
-			if(!empty($optParams))
-				$params .= "&".$optParams;
-			
-			return(self::getViewUrl(GlobalsUC::VIEW_ADDON_DEFAULTS, $params));
-		}
-		
-		
-		
-		/**
-		 * get filename title from some url
-		 * used to get item title from image url
-		 */
-		public static function getTitleFromUrl($url, $defaultTitle = "item"){
-		
-			$info = pathinfo($url);
-			$filename = UniteFunctionsUC::getVal($info, "filename");
-			$filename = urldecode($filename);
-		
-			$title = $defaultTitle;
-			if(!empty($filename))
-				$title = $filename;
-			
-			return($title);
-		}
-		
-		
-		/**
-		 * get file path
-		 * @param  $filena
-		 */
-		private static function getPathFile($filename, $path, $defaultPath, $validateName, $ext="php"){
-			
-			if(empty($path))
-				$path = $defaultPath;
-			
-			$filepath = $path.$filename.".".$ext;
-			UniteFunctionsUC::validateFilepath($filepath, $validateName);
-			
-			return($filepath);
-		}
-		
-		
-		/**
-		 * require some template from "templates" folder
-		 */
-		public static function getPathTemplate($templateName, $path = null){
-		
-			return self::getPathFile($templateName,$path,GlobalsUC::$pathTemplates,"Template");
-		}
-		
-		/**
-		 * require some template from "templates" folder
-		 */
-		public static function getPathView($viewName, $path = null){
-		
-			return self::getPathFile($viewName,$path,GlobalsUC::$pathViews,"View");
-		}
-		
-		/**
-		 * require some template from "templates" folder
-		 */
-		public static function getPathViewObject($viewObjectName, $path = null){
-			
-			return self::getPathFile($viewObjectName,$path,GlobalsUC::$pathViewsObjects,"View Object");
-		}
-		
-		
-		/**
-		 * get settings path
-		 */
-		public static function getPathSettings($settingsName, $path=null){
-			
-			return self::getPathFile($settingsName,$path,GlobalsUC::$pathSettings,"Settings","xml");
-		}
-		
-		/**
-		 * get path provider template
-		 */
-		public static function getPathTemplateProvider($templateName){
-			
-			return self::getPathFile($templateName,GlobalsUC::$pathProviderTemplates,"","Provider Template");			
-		}
-		
-		
-		/**
-		 * get path provider view
-		 */
-		public static function getPathViewProvider($viewName){
+		$url = HelperUC::getViewUrl_LayoutPreview($layoutID, true, $addParams, true);
 
-			return self::getPathFile($viewName, GlobalsUC::$pathProviderViews,"","Provider View");
-						
-		}
-		
-		/**
-		 * get font awesome url
-		 */
-		public static function getUrlFontAwesome($version = null){
-			
-			if(empty($version))
-				$version = "fa5";
-			
-			if($version == "fa4")
-				$url = GlobalsUC::$url_assets_libraries."font-awsome/css/font-awesome.min.css";
-			else		//fa5
-				$url = GlobalsUC::$url_assets_libraries."font-awesome5/css/fontawesome-all.min.css";
-			
-			return($url);
-		}
+		$url = UniteProviderFunctionsUC::applyFilters(UniteCreatorFilters::FILTER_MODIFY_URL_LAYOUT_PREVIEW_FRONT, $url, $layoutID, $addParams);
 
-		
-		public static function a______SCRIPTS______(){}
-		
-		
-		/**
-		 * put smooth scroll include
-		 */
-		public static function putSmoothScrollIncludes($putJSInit = false){
-			
-			$urlSmoothScroll = GlobalsUC::$url_assets_libraries."smooth-scroll/smooth-scroll.min.js";
-			HelperUC::addScriptAbsoluteUrl($urlSmoothScroll, "smooth-scroll");
-			
-			if($putJSInit == false)
-				return(false);
-			
-			$script = "
+		return ($url);
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_EditAddon($addonID, $params = "", $hash = ""){
+
+		$addonID = (int)$addonID;
+
+		$strParams = "id={$addonID}";
+		if(!empty($params))
+			$strParams .= "&" . $params;
+
+		if(!empty($hash))
+			$strParams .= "#" . $hash;
+
+		return (self::getViewUrl(GlobalsUC::VIEW_EDIT_ADDON, $strParams));
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_TestAddon($addonID, $optParams = ""){
+
+		$params = "id={$addonID}";
+		if(!empty($optParams))
+			$params .= "&" . $optParams;
+
+		return (self::getViewUrl(GlobalsUC::VIEW_TEST_ADDON, $params));
+	}
+
+	/**
+	 * get addons view url
+	 */
+	public static function getViewUrl_AddonDefaults($addonID, $optParams = ""){
+
+		$params = "id={$addonID}";
+		if(!empty($optParams))
+			$params .= "&" . $optParams;
+
+		return (self::getViewUrl(GlobalsUC::VIEW_ADDON_DEFAULTS, $params));
+	}
+
+	/**
+	 * get filename title from some url
+	 * used to get item title from image url
+	 */
+	public static function getTitleFromUrl($url, $defaultTitle = "item"){
+
+		$info = pathinfo($url);
+		$filename = UniteFunctionsUC::getVal($info, "filename");
+		$filename = urldecode($filename);
+
+		$title = $defaultTitle;
+		if(!empty($filename))
+			$title = $filename;
+
+		return ($title);
+	}
+
+	/**
+	 * get file path
+	 *
+	 * @param  $filena
+	 */
+	private static function getPathFile($filename, $path, $defaultPath, $validateName, $ext = "php"){
+
+		if(empty($path))
+			$path = $defaultPath;
+
+		$filepath = $path . $filename . "." . $ext;
+		UniteFunctionsUC::validateFilepath($filepath, $validateName);
+
+		return ($filepath);
+	}
+
+	/**
+	 * require some template from "templates" folder
+	 */
+	public static function getPathTemplate($templateName, $path = null){
+
+		return self::getPathFile($templateName, $path, GlobalsUC::$pathTemplates, "Template");
+	}
+
+	/**
+	 * require some template from "templates" folder
+	 */
+	public static function getPathView($viewName, $path = null){
+
+		return self::getPathFile($viewName, $path, GlobalsUC::$pathViews, "View");
+	}
+
+	/**
+	 * require some template from "templates" folder
+	 */
+	public static function getPathViewObject($viewObjectName, $path = null){
+
+		return self::getPathFile($viewObjectName, $path, GlobalsUC::$pathViewsObjects, "View Object");
+	}
+
+	/**
+	 * get settings path
+	 */
+	public static function getPathSettings($settingsName, $path = null){
+
+		return self::getPathFile($settingsName, $path, GlobalsUC::$pathSettings, "Settings", "xml");
+	}
+
+	/**
+	 * get path provider template
+	 */
+	public static function getPathTemplateProvider($templateName){
+
+		return self::getPathFile($templateName, GlobalsUC::$pathProviderTemplates, "", "Provider Template");
+	}
+
+	/**
+	 * get path provider view
+	 */
+	public static function getPathViewProvider($viewName){
+
+		return self::getPathFile($viewName, GlobalsUC::$pathProviderViews, "", "Provider View");
+	}
+
+	/**
+	 * get font awesome url
+	 */
+	public static function getUrlFontAwesome($version = null){
+
+		if(empty($version))
+			$version = "fa5";
+
+		if($version == "fa4")
+			$url = GlobalsUC::$url_assets_libraries . "font-awsome/css/font-awesome.min.css";
+		else    //fa5
+			$url = GlobalsUC::$url_assets_libraries . "font-awesome5/css/fontawesome-all.min.css";
+
+		return ($url);
+	}
+
+	public static function a______SCRIPTS______(){
+	}
+
+	/**
+	 * put smooth scroll include
+	 */
+	public static function putSmoothScrollIncludes($putJSInit = false){
+
+		$urlSmoothScroll = GlobalsUC::$url_assets_libraries . "smooth-scroll/smooth-scroll.min.js";
+		HelperUC::addScriptAbsoluteUrl($urlSmoothScroll, "smooth-scroll");
+
+		if($putJSInit == false)
+			return (false);
+
+		$script = "
 				window.addEventListener('load', function(){
 					var g_ucSmoothScroll = new SmoothScroll('a[href*=\"#\"]',{speed:1000});
 				});
 			";
-			
-			HelperUC::putCustomScript($script);
-			
-		}
-		
-		
-		/**
-		 * add animations scripts and styles
-		 */
-		public static function putAnimationIncludes($animateOnly = false){
 
-			if(self::$isPutAnimations == true)
-				return(false);
-			
-			$urlAnimateCss = GlobalsUC::$url_assets_libraries."animate/animate.css";
-			self::addStyleAbsoluteUrl($urlAnimateCss, "animate");
-			
-			if($animateOnly == true)
-				return(false);
-			
-			UniteProviderFunctionsUC::addAdminJQueryInclude();
-			
-			$urlWowJs = GlobalsUC::$url_assets_libraries."animate/wow.min.js";
-			self::addScriptAbsoluteUrl($urlWowJs, "wowjs");
-			
-			$script = "jQuery(document).ready(function(){new WOW().init()});";
-			UniteProviderFunctionsUC::printCustomScript($script);
-			
-			
-			self::$isPutAnimations = true;
-		}
-		
-		
-		/**
-		 *
-		 * register script helper function
-		 * @param $scriptFilename
-		 */
-		public static function addScript($scriptName, $handle=null, $folder="js", $inFooter = false){
-			if($handle == null)
-				$handle = GlobalsUC::PLUGIN_NAME."-".$scriptName;
-
-			$url = GlobalsUC::$urlPlugin .$folder."/".$scriptName.".js";
-			
-			UniteProviderFunctionsUC::addScript($handle, $url, $inFooter);
-		}
-		
-		
-
-		/**
-		 *
-		 * register script helper function
-		 * @param $scriptFilename
-		 */
-		public static function addScriptAbsoluteUrl($urlScript, $handle, $inFooter=false){
-		
-			UniteProviderFunctionsUC::addScript($handle, $urlScript,$inFooter);
-			
-			if(GlobalsProviderUC::$isInsideEditor == true)
-				self::$arrWidgetScripts[$handle] = $urlScript;
-			
-		}
-		
-		/**
-		 * add remote script
-		 */
-		public static function addRemoteControlsScript(){
-
-			UniteProviderFunctionsUC::addAdminJQueryInclude();
-			
-			$urlFiltersJS = GlobalsUC::$url_assets_libraries."remote/ue-remote-controls.js";
-			HelperUC::addScriptAbsoluteUrl($urlFiltersJS, "ue_remote_controls");
-			
-			$isDebug = HelperUC::hasPermissionsFromQuery("ucremotedebug");
-			
-			if($isDebug == true){
-				HelperUC::putCustomScript("var ucRemoteDebugEnabled=true;",false,"remote_controls_debug");
-			}
-			
-		}
-		
-		
-		/**
-		 *
-		 * register style helper function
-		 * @param $styleFilename
-		 */
-		public static function addStyle($styleName,$handle=null,$folder="css"){
-			if($handle == null)
-				$handle = GlobalsUC::PLUGIN_NAME."-".$styleName;
-			
-			UniteProviderFunctionsUC::addStyle($handle, GlobalsUC::$urlPlugin .$folder."/".$styleName.".css");
-			
-		}
-		
-		/**
-		 * print custom script
-		 */
-		public static function putCustomScript($script, $hardCoded = false, $putOnceHandle=null){
-			
-			UniteProviderFunctionsUC::printCustomScript($script, $hardCoded,false,$putOnceHandle, true);
-			
-		}
-		
-		
-		/**
-		 * put inline style
-		 */
-		public static function putInlineStyle($css){
-			
-			//prevent duplicates
-			if(empty($css))
-				return(false);
-			
-			
-			//allow print style only once
-			$hash = md5($css);
-			if(isset(self::$arrHashCache[$hash]))
-				return(false);
-			self::$arrHashCache[$hash] = true;
-			
-			
-			UniteProviderFunctionsUC::printCustomStyle($css);
-			
-		}
-		
-		
-		/**
-		 *
-		 * register style absolute url helper function
-		 */
-		public static function addStyleAbsoluteUrl($styleUrl, $handle){
-			
-			UniteProviderFunctionsUC::addStyle($handle, $styleUrl);
-			
-		}
-		
-		
-		/**
-		 * output system message
-		 */
-		public static function outputNote($message){
-			
-			$message = esc_html($message);
-			
-			$message = "system note: <b>&nbsp;&nbsp;&nbsp;&nbsp;".$message."</b>";
-			
-			?>
-			<div class='unite-note'><?php echo esc_html($message)?></div>;
-			<?php 
-		}
-		
-		
-		
-		/**
-		 * output addon from storred data
-		 */
-		public static function outputAddonFromData($data){
-			
-			$addons = new UniteCreatorAddons();
-			$objAddon = $addons->initAddonByData($data);
-			
-			$objOutput = new UniteCreatorOutput();
-			$objOutput->initByAddon($objAddon);
-			$html = $objOutput->getHtmlBody();
-			$objOutput->processIncludes();
-			
-			echo UniteProviderFunctionsUC::escCombinedHtml($html);
-		}
-		
-		
-		
-		/**
-		 * get error message html
-		 */
-		public static function getHtmlErrorMessage($message, $trace="", $prefix=null){
-			
-			if(empty($prefix))
-				$prefix = HelperUC::getText("addon_library")." Error: ";
-			
-			$message = $prefix.$message;
-			
-			$html = self::$operations->getErrorMessageHtml($message, $trace);
-			return($html);
-		}
-		
-		
-		
-		public static function a______ASSETS_PATH______(){}
-		
-		
-		/**
-		 * get assets path
-		 */
-		public static function getAssetsPath($objAddonType = null){
-			
-			if(empty($objAddonType))
-				return(GlobalsUC::$pathAssets);
-			
-			if(!empty($objAddonType->pathAssets))
-				return($objAddonType->pathAssets);
-			
-			return(GlobalsUC::$pathAssets);
-		}
-		
-		
-		/**
-		 * get assets url according addons type
-		 */
-		public static function getAssetsUrl($objAddonType = null){
-			
-			if(empty($objAddonType))
-				return(GlobalsUC::$url_assets);
-			
-			if(!empty($objAddonType->urlAssets))
-				return($objAddonType->urlAssets);
-			
-			return(GlobalsUC::$url_assets);
-		}
-		
-		
-		/**
-		 * validate that path located under assets folder
-		 */
-		public static function validatePathUnderAssets($path, $objAddonType = null){
-			
-			$isUnderAssets = self::isPathUnderAssetsPath($path, $objAddonType);
-			if(!$isUnderAssets)
-				UniteFunctionsUC::throwError("The path should be under assets folder");
-			
-		}
-
-		/**
-		 * validate db tables exists
-		 */
-		public static function validateDBTablesExists(){
-    		
-			$db = self::getDB();
-			
-			if($db->isTableExists(GlobalsUC::$table_categories.",".GlobalsUC::$table_addons) == false)
-				UniteFunctionsUC::throwError("Some DB table not exists");
-			
-		}
-		
-		
-		/**
-		 * return true if some path under base path
-		 */
-		public static function isPathUnderAssetsPath($path, $objAddonType = null){
-			
-			$assetsPath = self::getAssetsPath($objAddonType);
-			
-			$path = self::pathToAbsolute($path);
-			
-			$assetsPath = self::pathToAbsolute($assetsPath);
-						
-			$isUnderAssets = UniteFunctionsUC::isPathUnderBase($path, $assetsPath);
-			
-			return($isUnderAssets);
-		}
-		
-		
-		/**
-		 * is url under assets
-		 */
-		public static function isUrlUnderAssets($url, $objAddonType = null){
-			
-			$urlAssets = self::getAssetsUrl($objAddonType);
-			
-			$url = self::URLtoFull($url);
-			$url = strtolower($url);
-			if(strpos($url, $urlAssets) !== false)
-				return(true);
-			
-			return(false);
-		}
-		
-		
-		/**
-		 * check if some path is assets path
-		 */
-		public static function isPathAssets($path, $objAddonType = null){
-
-			$assetsPath = self::getAssetsPath($objAddonType);
-			
-			$assetsPath = self::pathToAbsolute($assetsPath);
-			
-			$path = self::pathToAbsolute($path);
-			
-			if(!empty($path) && $path === $assetsPath)
-				return(true);
-			
-			return(false);
-		}
-		
-		
-		/**
-		 * convert path to assets relative path
-		 */
-		public static function pathToAssetsRelative($path, $objAddonType = null){
-			
-			$assetsPath = self::getAssetsPath($objAddonType);
-			
-			$assetsPath = self::pathToAbsolute($assetsPath);
-			
-			$path = self::pathToAbsolute($path);
-			
-			$relativePath = UniteFunctionsUC::pathToRelative($path, $assetsPath);
-			
-			return($relativePath);
-		}
-		
-		
-		/**
-		 * path to assets absolute
-		 * @param $path
-		 */
-		public static function pathToAssetsAbsolute($path, $objAddonType = null){
-			
-			if(self::isPathUnderAssetsPath($path, $objAddonType) == true)
-				return($path);
-			
-			$assetsPath = self::getAssetsPath($objAddonType);
-			$path = UniteFunctionsUC::joinPaths($assetsPath, $path);
-			
-			return($path);
-		}
-
-		
-		public static function a______OUTPUT_LAYOUT______(){}
-		
-		/**
-		 * get default preview image by type
-		 */
-		public static function getDefaultPreviewImage($typeName){
-			
-			$filenameDefaultPreview = "preview_$typeName.jpg";			
-			$urlPreview = GlobalsUC::$urlPlugin."images/".$filenameDefaultPreview;
-			
-			return($urlPreview);
-		}
-		
-		
-		/**
-		 * check if elementor pro active
-		 */
-		public static function isElementorProActive(){
-			
-			if(defined("ELEMENTOR_PRO_VERSION"))
-				return(true);
-		
-			return(false);
-		}
-		
-		
-	    /**
-	     * check if edit mode
-	     */
-	    public static function isElementorEditMode(){
-	    	
-			if(isset($_GET["elementor-preview"]))
-				return(true);
-	    					
-	    	$argPost = UniteFunctionsUC::getPostGetVariable("post", "", UniteFunctionsUC::SANITIZE_KEY);
-	    	$argAction = UniteFunctionsUC::getPostGetVariable("action", "", UniteFunctionsUC::SANITIZE_KEY);
-
-	    	if($argAction == "elementor_render_widget" || $argAction == "elementor_ajax" || $argAction == "unlimitedelements_ajax_action")
-	    		return(true);
-	    	
-	    	if(!empty($argPost) && !empty($argAction))
-	    		return(true);
-	    	
-	    	return(false);
-	    }
-		
-		
-		/**
-		 * start buffering widget output
-		 */
-		public static function startBufferingWidgetsOutput(){
-			
-			UniteCreatorOutput::$isBufferingCssActive = true;
-			
-		}
-		
-		/**
-		 * output widgets css buffer
-		 */
-		public static function outputWidgetsCssBuffer(){
-			
-			$htmlCssIncludes = UniteCreatorOutput::$bufferCssIncludes;
-			
-			echo "\n";
-			echo $htmlCssIncludes;
-			
-			$css = UniteCreatorOutput::$bufferBodyCss;
-			if(!empty($css)){
-				echo "\n<style type='text/css'> \n";
-				echo "\n/* Unlimited Elements Css */ \n\n";
-				echo $css."\n";
-				echo "</style>\n";
-			}
-			
-			//clear the buffer
-			UniteCreatorOutput::$bufferCssIncludes = "";
-			UniteCreatorOutput::$bufferBodyCss = "";
-		}
-		
-		
-		/**
-		 * output template part
-		 */
-		public static function outputTemplatePart($layoutType){
-			
-			try{
-				
-				$objLayouts = new UniteCreatorLayouts();
-				$objLayout = $objLayouts->getActiveTempaltePart($layoutType);
-			
-			}catch(Exception $e){
-				HelperHtmlUC::outputException($e);
-				return(false);
-			}
-			
-			if(empty($objLayout)){
-				
-				$typeTitle = $objLayouts->getLayoutTypeTitle($layoutType);
-				$message = esc_html__("Template part","unlimited-elements-for-elementor") .": ". $typeTitle .esc_html__(" not found. Please create one in template parts page", "unlimited-elements-for-elementor");
-				$html = HelperHtmlUC::getErrorMessageHtml($message);
-				echo UniteProviderFunctionsUC::escCombinedHtml($html);
-				return(false);
-			}
-			
-			
-			self::outputLayout($objLayout);
-		}
-		
-		
-		/**
-		 * output layout
-		 */
-		public static function outputLayout($layoutID, $getHtml = false, $outputFullPage = false, $mode = null){
-			
-			try{
-				
-				if(is_numeric($layoutID)){
-					$layoutID = UniteProviderFunctionsUC::sanitizeVar($layoutID, UniteFunctionsUC::SANITIZE_ID);
-					
-					$layout = new UniteCreatorLayout();
-					$layout->initByID($layoutID);
-				}else
-					$layout = $layoutID;		//if object passed
-				
-				$outputLayout = new UniteCreatorLayoutOutput();
-				$outputLayout->initByLayout($layout);
-				
-				if(!empty($mode))
-					$outputLayout->setOutputMode($mode);
-				
-				
-				if($getHtml == true){
-					
-					if($outputFullPage == false)
-						$html = $outputLayout->getHtml();
-					else
-						$html = $outputLayout->getFullPreviewHtml();
-						
-					return($html);
-				}
-				
-				if($outputFullPage == false)
-					$outputLayout->putHtml();
-				else
-					$outputLayout->putFullPreviewHtml();
-				
-				
-				return($outputLayout);
-					
-			}catch(Exception $e){
-				if($getHtml == true){
-					throw $e;
-				}
-				else
-					HelperHtmlUC::outputExceptionBox($e, HelperUC::getText("addon_library"). " Error");
-			}
-			
-		}
-		
-				
+		HelperUC::putCustomScript($script);
 	}
-	
-	
-	
-	//init the operations
-	HelperUC::$operations = new UCOperations();
-	
-	
+
+	/**
+	 * add animations scripts and styles
+	 */
+	public static function putAnimationIncludes($animateOnly = false){
+
+		if(self::$isPutAnimations == true)
+			return (false);
+
+		$urlAnimateCss = GlobalsUC::$url_assets_libraries . "animate/animate.css";
+		self::addStyleAbsoluteUrl($urlAnimateCss, "animate");
+
+		if($animateOnly == true)
+			return (false);
+
+		UniteProviderFunctionsUC::addAdminJQueryInclude();
+
+		$urlWowJs = GlobalsUC::$url_assets_libraries . "animate/wow.min.js";
+		self::addScriptAbsoluteUrl($urlWowJs, "wowjs");
+
+		$script = "jQuery(document).ready(function(){new WOW().init()});";
+		UniteProviderFunctionsUC::printCustomScript($script);
+
+		self::$isPutAnimations = true;
+	}
+
+	/**
+	 *
+	 * register script helper function
+	 *
+	 * @param $scriptFilename
+	 */
+	public static function addScript($scriptName, $handle = null, $folder = "js", $inFooter = false){
+
+		if($handle == null)
+			$handle = GlobalsUC::PLUGIN_NAME . "-" . $scriptName;
+
+		$url = GlobalsUC::$urlPlugin . $folder . "/" . $scriptName . ".js";
+
+		UniteProviderFunctionsUC::addScript($handle, $url, $inFooter);
+	}
+
+	/**
+	 *
+	 * register script helper function
+	 *
+	 * @param $scriptFilename
+	 */
+	public static function addScriptAbsoluteUrl($urlScript, $handle, $inFooter = false){
+
+		UniteProviderFunctionsUC::addScript($handle, $urlScript, $inFooter);
+
+		if(GlobalsProviderUC::$isInsideEditor == true)
+			self::$arrWidgetScripts[$handle] = $urlScript;
+	}
+
+	/**
+	 * add remote script
+	 */
+	public static function addRemoteControlsScript(){
+
+		UniteProviderFunctionsUC::addAdminJQueryInclude();
+
+		$urlFiltersJS = GlobalsUC::$url_assets_libraries . "remote/ue-remote-controls.js";
+		HelperUC::addScriptAbsoluteUrl($urlFiltersJS, "ue_remote_controls");
+
+		$isDebug = HelperUC::hasPermissionsFromQuery("ucremotedebug");
+
+		if($isDebug == true){
+			HelperUC::putCustomScript("var ucRemoteDebugEnabled=true;", false, "remote_controls_debug");
+		}
+	}
+
+	/**
+	 *
+	 * register style helper function
+	 *
+	 * @param $styleFilename
+	 */
+	public static function addStyle($styleName, $handle = null, $folder = "css"){
+
+		if($handle == null)
+			$handle = GlobalsUC::PLUGIN_NAME . "-" . $styleName;
+
+		UniteProviderFunctionsUC::addStyle($handle, GlobalsUC::$urlPlugin . $folder . "/" . $styleName . ".css");
+	}
+
+	/**
+	 * print custom script
+	 */
+	public static function putCustomScript($script, $hardCoded = false, $putOnceHandle = null){
+
+		UniteProviderFunctionsUC::printCustomScript($script, $hardCoded, false, $putOnceHandle, true);
+	}
+
+	/**
+	 * put inline style
+	 */
+	public static function putInlineStyle($css){
+
+		//prevent duplicates
+		if(empty($css))
+			return (false);
+
+		//allow print style only once
+		$hash = md5($css);
+		if(isset(self::$arrHashCache[$hash]))
+			return (false);
+		self::$arrHashCache[$hash] = true;
+
+		UniteProviderFunctionsUC::printCustomStyle($css);
+	}
+
+	/**
+	 *
+	 * register style absolute url helper function
+	 */
+	public static function addStyleAbsoluteUrl($styleUrl, $handle){
+
+		UniteProviderFunctionsUC::addStyle($handle, $styleUrl);
+	}
+
+	/**
+	 * output system message
+	 */
+	public static function outputNote($message){
+
+		$message = esc_html($message);
+
+		$message = "system note: <b>&nbsp;&nbsp;&nbsp;&nbsp;" . $message . "</b>";
+
+		?>
+		<div class='unite-note'><?php
+			echo esc_html($message) ?></div>;
+		<?php
+	}
+
+	/**
+	 * output addon from storred data
+	 */
+	public static function outputAddonFromData($data){
+
+		$addons = new UniteCreatorAddons();
+		$objAddon = $addons->initAddonByData($data);
+
+		$objOutput = new UniteCreatorOutput();
+		$objOutput->initByAddon($objAddon);
+		$html = $objOutput->getHtmlBody();
+		$objOutput->processIncludes();
+
+		echo UniteProviderFunctionsUC::escCombinedHtml($html);
+	}
+
+	/**
+	 * get error message html
+	 */
+	public static function getHtmlErrorMessage($message, $trace = "", $prefix = null){
+
+		if(empty($prefix))
+			$prefix = HelperUC::getText("addon_library") . " Error: ";
+
+		$message = $prefix . $message;
+
+		$html = self::$operations->getErrorMessageHtml($message, $trace);
+
+		return ($html);
+	}
+
+	public static function a______ASSETS_PATH______(){
+	}
+
+	/**
+	 * get assets path
+	 */
+	public static function getAssetsPath($objAddonType = null){
+
+		if(empty($objAddonType))
+			return (GlobalsUC::$pathAssets);
+
+		if(!empty($objAddonType->pathAssets))
+			return ($objAddonType->pathAssets);
+
+		return (GlobalsUC::$pathAssets);
+	}
+
+	/**
+	 * get assets url according addons type
+	 */
+	public static function getAssetsUrl($objAddonType = null){
+
+		if(empty($objAddonType))
+			return (GlobalsUC::$url_assets);
+
+		if(!empty($objAddonType->urlAssets))
+			return ($objAddonType->urlAssets);
+
+		return (GlobalsUC::$url_assets);
+	}
+
+	/**
+	 * validate that path located under assets folder
+	 */
+	public static function validatePathUnderAssets($path, $objAddonType = null){
+
+		$isUnderAssets = self::isPathUnderAssetsPath($path, $objAddonType);
+		if(!$isUnderAssets)
+			UniteFunctionsUC::throwError("The path should be under assets folder");
+	}
+
+	/**
+	 * validate db tables exists
+	 */
+	public static function validateDBTablesExists(){
+
+		$db = self::getDB();
+
+		if($db->isTableExists(GlobalsUC::$table_categories . "," . GlobalsUC::$table_addons) == false)
+			UniteFunctionsUC::throwError("Some DB table not exists");
+	}
+
+	/**
+	 * return true if some path under base path
+	 */
+	public static function isPathUnderAssetsPath($path, $objAddonType = null){
+
+		$assetsPath = self::getAssetsPath($objAddonType);
+
+		$path = self::pathToAbsolute($path);
+
+		$assetsPath = self::pathToAbsolute($assetsPath);
+
+		$isUnderAssets = UniteFunctionsUC::isPathUnderBase($path, $assetsPath);
+
+		return ($isUnderAssets);
+	}
+
+	/**
+	 * is url under assets
+	 */
+	public static function isUrlUnderAssets($url, $objAddonType = null){
+
+		$urlAssets = self::getAssetsUrl($objAddonType);
+
+		$url = self::URLtoFull($url);
+		$url = strtolower($url);
+		if(strpos($url, $urlAssets) !== false)
+			return (true);
+
+		return (false);
+	}
+
+	/**
+	 * check if some path is assets path
+	 */
+	public static function isPathAssets($path, $objAddonType = null){
+
+		$assetsPath = self::getAssetsPath($objAddonType);
+
+		$assetsPath = self::pathToAbsolute($assetsPath);
+
+		$path = self::pathToAbsolute($path);
+
+		if(!empty($path) && $path === $assetsPath)
+			return (true);
+
+		return (false);
+	}
+
+	/**
+	 * convert path to assets relative path
+	 */
+	public static function pathToAssetsRelative($path, $objAddonType = null){
+
+		$assetsPath = self::getAssetsPath($objAddonType);
+
+		$assetsPath = self::pathToAbsolute($assetsPath);
+
+		$path = self::pathToAbsolute($path);
+
+		$relativePath = UniteFunctionsUC::pathToRelative($path, $assetsPath);
+
+		return ($relativePath);
+	}
+
+	/**
+	 * path to assets absolute
+	 *
+	 * @param $path
+	 */
+	public static function pathToAssetsAbsolute($path, $objAddonType = null){
+
+		if(self::isPathUnderAssetsPath($path, $objAddonType) == true)
+			return ($path);
+
+		$assetsPath = self::getAssetsPath($objAddonType);
+		$path = UniteFunctionsUC::joinPaths($assetsPath, $path);
+
+		return ($path);
+	}
+
+	public static function a______OUTPUT_LAYOUT______(){
+	}
+
+	/**
+	 * get default preview image by type
+	 */
+	public static function getDefaultPreviewImage($typeName){
+
+		$filenameDefaultPreview = "preview_$typeName.jpg";
+		$urlPreview = GlobalsUC::$urlPlugin . "images/" . $filenameDefaultPreview;
+
+		return ($urlPreview);
+	}
+
+	/**
+	 * check if elementor pro active
+	 */
+	public static function isElementorProActive(){
+
+		if(defined("ELEMENTOR_PRO_VERSION"))
+			return (true);
+
+		return (false);
+	}
+
+	/**
+	 * check if edit mode
+	 */
+	public static function isElementorEditMode(){
+
+		if(isset($_GET["elementor-preview"]))
+			return (true);
+
+		$argPost = UniteFunctionsUC::getPostGetVariable("post", "", UniteFunctionsUC::SANITIZE_KEY);
+		$argAction = UniteFunctionsUC::getPostGetVariable("action", "", UniteFunctionsUC::SANITIZE_KEY);
+
+		if($argAction == "elementor_render_widget" || $argAction == "elementor_ajax" || $argAction == "unlimitedelements_ajax_action")
+			return (true);
+
+		if(!empty($argPost) && !empty($argAction))
+			return (true);
+
+		return (false);
+	}
+
+	/**
+	 * start buffering widget output
+	 */
+	public static function startBufferingWidgetsOutput(){
+
+		UniteCreatorOutput::$isBufferingCssActive = true;
+	}
+
+	/**
+	 * output widgets css buffer
+	 */
+	public static function outputWidgetsCssBuffer(){
+
+		$htmlCssIncludes = UniteCreatorOutput::$bufferCssIncludes;
+
+		echo "\n";
+		echo $htmlCssIncludes;
+
+		$css = UniteCreatorOutput::$bufferBodyCss;
+		if(!empty($css)){
+			echo "\n<style type='text/css'> \n";
+			echo "\n/* Unlimited Elements Css */ \n\n";
+			echo $css . "\n";
+			echo "</style>\n";
+		}
+
+		//clear the buffer
+		UniteCreatorOutput::$bufferCssIncludes = "";
+		UniteCreatorOutput::$bufferBodyCss = "";
+	}
+
+	/**
+	 * output template part
+	 */
+	public static function outputTemplatePart($layoutType){
+
+		try{
+			$objLayouts = new UniteCreatorLayouts();
+			$objLayout = $objLayouts->getActiveTempaltePart($layoutType);
+		}catch(Exception $e){
+			HelperHtmlUC::outputException($e);
+
+			return (false);
+		}
+
+		if(empty($objLayout)){
+			$typeTitle = $objLayouts->getLayoutTypeTitle($layoutType);
+			$message = esc_html__("Template part", "unlimited-elements-for-elementor") . ": " . $typeTitle . esc_html__(" not found. Please create one in template parts page", "unlimited-elements-for-elementor");
+			$html = HelperHtmlUC::getErrorMessageHtml($message);
+			echo UniteProviderFunctionsUC::escCombinedHtml($html);
+
+			return (false);
+		}
+
+		self::outputLayout($objLayout);
+	}
+
+	/**
+	 * output layout
+	 */
+	public static function outputLayout($layoutID, $getHtml = false, $outputFullPage = false, $mode = null){
+
+		try{
+			if(is_numeric($layoutID)){
+				$layoutID = UniteProviderFunctionsUC::sanitizeVar($layoutID, UniteFunctionsUC::SANITIZE_ID);
+
+				$layout = new UniteCreatorLayout();
+				$layout->initByID($layoutID);
+			}else
+				$layout = $layoutID;    //if object passed
+
+			$outputLayout = new UniteCreatorLayoutOutput();
+			$outputLayout->initByLayout($layout);
+
+			if(!empty($mode))
+				$outputLayout->setOutputMode($mode);
+
+			if($getHtml == true){
+				if($outputFullPage == false)
+					$html = $outputLayout->getHtml();
+				else
+					$html = $outputLayout->getFullPreviewHtml();
+
+				return ($html);
+			}
+
+			if($outputFullPage == false)
+				$outputLayout->putHtml();
+			else
+				$outputLayout->putFullPreviewHtml();
+
+			return ($outputLayout);
+		}catch(Exception $e){
+			if($getHtml == true){
+				throw $e;
+			}else
+				HelperHtmlUC::outputExceptionBox($e, HelperUC::getText("addon_library") . " Error");
+		}
+	}
+
+}
+
+//init the operations
+HelperUC::$operations = new UCOperations();
+
 ?>

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JetEngine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-10 10:44+0300\n"
+"POT-Creation-Date: 2023-05-05 14:26+0300\n"
 "PO-Revision-Date: 2022-01-10 15:58+0200\n"
 "Last-Translator: \n"
 "Language-Team: Crocoblock\n"
@@ -33,7 +33,7 @@ msgstr ""
 #: includes/components/listings/admin-screen.php:98
 #: includes/components/meta-boxes/data.php:36
 #: includes/components/post-types/data.php:397
-#: includes/components/taxonomies/data.php:596
+#: includes/components/taxonomies/data.php:597
 #: includes/dashboard/skins-import.php:47
 msgid "You don't have permissions to do this"
 msgstr ""
@@ -71,7 +71,7 @@ msgid "Related plugin:"
 msgstr ""
 
 #: includes/classes/help-video-popup.php:26
-#: includes/components/post-types/templates/edit.php:430
+#: includes/components/post-types/templates/edit.php:439
 msgid "What is this?"
 msgstr ""
 
@@ -121,7 +121,7 @@ msgstr ""
 #: includes/components/relations/dynamic-tags/related-item-meta.php:63
 #: includes/components/relations/listing.php:489
 #: includes/components/relations/macros/get-related-item-meta.php:101
-#: includes/dashboard/manager.php:144 includes/modules/forms/editor.php:130
+#: includes/dashboard/manager.php:147 includes/modules/forms/editor.php:130
 #: includes/modules/maps-listings/inc/module.php:225
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:274
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:314
@@ -146,7 +146,7 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:59
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:74
 #: includes/components/listings/macros/option-value.php:27
-#: includes/dashboard/manager.php:148
+#: includes/dashboard/manager.php:151
 msgid "Option"
 msgstr ""
 
@@ -184,7 +184,7 @@ msgstr ""
 #: includes/classes/shortcodes.php:150
 #: includes/components/bricks-views/elements/dynamic-field.php:306
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:294
-#: includes/components/post-types/templates/edit.php:316
+#: includes/components/post-types/templates/edit.php:325
 #: includes/modules/maps-listings/inc/bricks-views/maps-listings.php:330
 #: includes/modules/maps-listings/inc/widgets/maps-listings-widget.php:362
 msgid "Callback"
@@ -221,7 +221,7 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-tags/tags/user-image-tag.php:49
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:349
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:336
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:338
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:342
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:212
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:194
 #: includes/components/query-builder/templates/admin/dynamic-args.php:36
@@ -230,7 +230,7 @@ msgstr ""
 #: includes/modules/data-stores/inc/macros/get-users-for-store-item.php:33
 #: includes/modules/data-stores/inc/widgets/button.php:199
 #: includes/modules/dynamic-visibility/inc/module.php:142
-#: includes/modules/listing-injections/listing-injections.php:906
+#: includes/modules/listing-injections/listing-injections.php:928
 #: includes/modules/profile-builder/inc/assets/src/blocks/profile-menu/edit.js:53
 #: includes/modules/profile-builder/inc/bricks-views/elements/profile-menu.php:49
 #: includes/modules/profile-builder/inc/dynamic-tags/profile-page-url.php:49
@@ -268,7 +268,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1220
 #: includes/components/elementor-views/static-widgets/grid.php:1415
 #: includes/modules/custom-content-types/inc/query-dialog.php:95
-#: includes/modules/listing-injections/listing-injections.php:796
+#: includes/modules/listing-injections/listing-injections.php:818
 msgid "Like"
 msgstr ""
 
@@ -277,7 +277,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1221
 #: includes/components/elementor-views/static-widgets/grid.php:1416
 #: includes/modules/custom-content-types/inc/query-dialog.php:99
-#: includes/modules/listing-injections/listing-injections.php:797
+#: includes/modules/listing-injections/listing-injections.php:819
 msgid "Not like"
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1419
 #: includes/modules/custom-content-types/inc/query-dialog.php:111
 #: includes/modules/dynamic-visibility/inc/conditions/between.php:21
-#: includes/modules/listing-injections/listing-injections.php:800
+#: includes/modules/listing-injections/listing-injections.php:822
 #: templates/forms/admin/form-builder.php:191
 msgid "Between"
 msgstr ""
@@ -309,7 +309,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1225
 #: includes/components/elementor-views/static-widgets/grid.php:1420
 #: includes/modules/custom-content-types/inc/query-dialog.php:115
-#: includes/modules/listing-injections/listing-injections.php:801
+#: includes/modules/listing-injections/listing-injections.php:823
 msgid "Not between"
 msgstr ""
 
@@ -376,7 +376,7 @@ msgstr ""
 
 #: includes/classes/tools.php:545
 #: includes/components/meta-boxes/pages/edit.php:101
-#: includes/components/meta-boxes/post.php:822
+#: includes/components/meta-boxes/post.php:830
 #: includes/modules/forms/manager.php:417
 msgid "Time"
 msgstr ""
@@ -464,9 +464,9 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:163
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:257
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:311
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:163
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:264
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:328
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:167
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:268
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:332
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:202
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:306
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:550
@@ -489,13 +489,14 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1847
 #: includes/components/elementor-views/static-widgets/grid.php:1863
 #: includes/components/elementor-views/static-widgets/grid.php:1910
-#: includes/components/glossaries/settings.php:230
+#: includes/components/glossaries/settings.php:256
 #: includes/components/listings/callbacks.php:340
 #: includes/components/listings/callbacks.php:352
 #: includes/components/listings/callbacks.php:364
 #: includes/components/listings/callbacks.php:439
 #: includes/components/options-pages/templates/edit.php:129
-#: includes/components/post-types/templates/edit.php:492
+#: includes/components/post-types/templates/edit.php:501
+#: includes/components/relations/controls/base.php:320
 #: includes/components/taxonomies/templates/edit.php:273
 #: includes/modules/calendar/widget.php:124
 #: includes/modules/calendar/widget.php:154
@@ -525,7 +526,7 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:52
 #: includes/components/elementor-views/static-widgets/grid.php:728
 #: includes/components/listings/data.php:275
-#: includes/components/post-types/manager.php:878
+#: includes/components/post-types/manager.php:880
 #: includes/components/query-builder/templates/admin/types/comments.php:64
 #: includes/components/query-builder/templates/admin/types/posts.php:667
 #: includes/modules/data-stores/inc/assets/js/admin/blocks/src/blocks.js:216
@@ -589,6 +590,77 @@ msgstr ""
 #: includes/classes/tools.php:815
 #: includes/modules/data-stores/inc/assets/js/admin/blocks/src/blocks.js:260
 msgid "Tag"
+msgstr ""
+
+#: includes/classes/tools.php:861
+msgid "Dashboard"
+msgstr ""
+
+#: includes/classes/tools.php:865
+msgid "First Separator"
+msgstr ""
+
+#: includes/classes/tools.php:869
+#: includes/components/listings/post-type.php:172
+#: includes/components/meta-boxes/pages/edit.php:157
+#: includes/components/relations/types/posts.php:24
+#: includes/dashboard/skins-import.php:458
+#: includes/modules/dynamic-visibility/inc/conditions/manager.php:129
+#: includes/modules/forms/editor.php:128
+msgid "Posts"
+msgstr ""
+
+#: includes/classes/tools.php:873
+#: includes/components/meta-boxes/pages/edit.php:129
+#: includes/modules/forms/manager.php:420
+msgid "Media"
+msgstr ""
+
+#: includes/classes/tools.php:877
+msgid "Links"
+msgstr ""
+
+#: includes/classes/tools.php:881
+#: includes/modules/profile-builder/inc/templates/admin/settings.php:24
+msgid "Pages"
+msgstr ""
+
+#: includes/classes/tools.php:885
+#: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:53
+#: includes/components/post-types/manager.php:868
+#: includes/components/query-builder/templates/admin/types/posts.php:600
+msgid "Comments"
+msgstr ""
+
+#: includes/classes/tools.php:889
+msgid "Second Separator"
+msgstr ""
+
+#: includes/classes/tools.php:893
+msgid "Appearance"
+msgstr ""
+
+#: includes/classes/tools.php:897
+msgid "Plugins"
+msgstr ""
+
+#: includes/classes/tools.php:901
+#: includes/components/listings/post-type.php:175
+#: includes/components/relations/types/mix.php:36
+msgid "Users"
+msgstr ""
+
+#: includes/classes/tools.php:905
+msgid "Tools"
+msgstr ""
+
+#: includes/classes/tools.php:909 includes/components/meta-boxes/post.php:85
+#: jet-engine.php:338
+msgid "Settings"
+msgstr ""
+
+#: includes/classes/tools.php:913
+msgid "Third Separator"
 msgstr ""
 
 #: includes/classes/url-shemes-manager.php:66
@@ -679,9 +751,9 @@ msgstr ""
 #: includes/components/bricks-views/elements/dynamic-image.php:367
 #: includes/components/bricks-views/elements/dynamic-link.php:413
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:553
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:693
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:697
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:53
-#: includes/components/listings/data.php:1253
+#: includes/components/listings/data.php:1257
 #: includes/components/listings/manager.php:533
 #: includes/dashboard/skins-import.php:607
 msgid "Options"
@@ -698,7 +770,7 @@ msgstr ""
 
 #: includes/compatibility/packages/jet-form-builder/inc/listings/dynamic-tag-form-field.php:39
 #: includes/compatibility/packages/jet-form-builder/inc/listings/macros-form-field.php:58
-#: includes/components/post-types/templates/edit.php:284
+#: includes/components/post-types/templates/edit.php:293
 #: includes/core/dynamic-functions.php:346
 msgid "Field Name"
 msgstr ""
@@ -741,7 +813,7 @@ msgstr ""
 #: includes/components/bricks-views/elements/listing-grid.php:212
 #: includes/components/elementor-views/static-widgets/grid.php:107
 #: includes/components/query-builder/templates/admin/types/comments.php:520
-#: includes/modules/custom-content-types/inc/manager.php:349
+#: includes/modules/custom-content-types/inc/manager.php:354
 #: includes/modules/custom-content-types/inc/templates/admin/query-editor.php:36
 #: includes/modules/rest-api-listings/inc/settings.php:360
 msgid "Status"
@@ -931,7 +1003,7 @@ msgstr ""
 #: includes/modules/dynamic-visibility/inc/module.php:127
 #: includes/modules/forms/block-types/booking-form.php:1041
 #: includes/modules/forms/widgets/booking-form.php:1002
-#: includes/modules/listing-injections/listing-injections.php:812
+#: includes/modules/listing-injections/listing-injections.php:834
 #: includes/modules/rest-api-listings/inc/templates/admin/query-editor.php:49
 msgid "Value"
 msgstr ""
@@ -947,7 +1019,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1444
 #: includes/components/listings/data.php:285
 #: includes/components/meta-boxes/templates/fields.php:597
-#: includes/components/post-types/templates/edit.php:274
+#: includes/components/post-types/templates/edit.php:283
 #: includes/components/post-types/templates/filters.php:35
 #: includes/components/query-builder/templates/admin/types/comments.php:166
 #: includes/components/query-builder/templates/admin/types/comments.php:528
@@ -1066,9 +1138,9 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:162
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:256
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:310
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:162
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:263
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:327
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:166
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:267
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:331
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:201
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:305
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:549
@@ -1091,12 +1163,13 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1846
 #: includes/components/elementor-views/static-widgets/grid.php:1862
 #: includes/components/elementor-views/static-widgets/grid.php:1909
-#: includes/components/glossaries/settings.php:230
+#: includes/components/glossaries/settings.php:256
 #: includes/components/listings/callbacks.php:339
 #: includes/components/listings/callbacks.php:351
 #: includes/components/listings/callbacks.php:363
 #: includes/components/listings/callbacks.php:438
-#: includes/components/post-types/templates/edit.php:489
+#: includes/components/post-types/templates/edit.php:498
+#: includes/components/relations/controls/base.php:319
 #: includes/components/taxonomies/templates/edit.php:270
 #: includes/modules/calendar/widget.php:123
 #: includes/modules/calendar/widget.php:153
@@ -1142,7 +1215,7 @@ msgid ""
 msgstr ""
 
 #: includes/compatibility/packages/seo.php:165
-#: includes/components/glossaries/settings.php:176
+#: includes/components/glossaries/settings.php:202
 #: includes/components/options-pages/options-page.php:410
 #: includes/modules/custom-content-types/inc/pages/edit-content-type-item.php:200
 #: includes/modules/data-stores/inc/settings.php:293
@@ -1157,9 +1230,10 @@ msgid "Save"
 msgstr ""
 
 #: includes/compatibility/packages/seo.php:284
-#: includes/components/glossaries/settings.php:26
-#: includes/components/glossaries/settings.php:59
-#: includes/components/glossaries/settings.php:112
+#: includes/components/glossaries/settings.php:27
+#: includes/components/glossaries/settings.php:60
+#: includes/components/glossaries/settings.php:113
+#: includes/components/glossaries/settings.php:140
 #: includes/components/relations/ajax-handlers.php:476
 #: includes/modules/data-stores/inc/settings.php:28
 #: includes/modules/maps-listings/inc/settings.php:38
@@ -1170,11 +1244,12 @@ msgid "Access denied"
 msgstr ""
 
 #: includes/compatibility/packages/seo.php:290
-#: includes/components/glossaries/settings.php:32
-#: includes/components/glossaries/settings.php:65
-#: includes/components/glossaries/settings.php:118
+#: includes/components/glossaries/settings.php:33
+#: includes/components/glossaries/settings.php:66
+#: includes/components/glossaries/settings.php:119
+#: includes/components/glossaries/settings.php:146
 #: includes/components/listings/admin-screen.php:80
-#: includes/components/listings/admin-screen.php:324
+#: includes/components/listings/admin-screen.php:327
 #: includes/dashboard/skins-import.php:43
 #: includes/modules/data-stores/inc/settings.php:34
 #: includes/modules/maps-listings/inc/settings.php:44
@@ -1463,7 +1538,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-meta.php:484
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:287
 #: includes/components/blocks-views/block-types/dynamic-terms.php:188
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:370
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:374
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:308
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:513
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:359
@@ -1647,7 +1722,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-meta.php:547
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:350
 #: includes/components/blocks-views/block-types/dynamic-terms.php:251
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:448
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:452
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:368
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:573
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:419
@@ -1694,7 +1769,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-terms.php:293
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:515
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:483
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:494
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:498
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:411
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:616
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:438
@@ -1754,7 +1829,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:619
 #: includes/components/blocks-views/block-types/dynamic-terms.php:280
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:501
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:481
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:485
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:398
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:603
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:482
@@ -1802,7 +1877,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:401
 #: includes/components/blocks-views/block-types/dynamic-terms.php:267
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:488
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:468
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:472
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:386
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:591
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:467
@@ -1885,7 +1960,7 @@ msgstr ""
 #: includes/components/bricks-views/elements/listing-grid.php:1266
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:524
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:492
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:503
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:507
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:420
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:625
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:447
@@ -1954,8 +2029,8 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:729
 #: includes/components/listings/data.php:245
 #: includes/components/listings/macros/title.php:20
-#: includes/components/post-types/manager.php:858
-#: includes/components/post-types/templates/edit.php:265
+#: includes/components/post-types/manager.php:860
+#: includes/components/post-types/templates/edit.php:274
 #: includes/components/relations/relation.php:466
 #: includes/components/relations/types/posts.php:153
 #: includes/modules/profile-builder/inc/templates/admin/settings.php:245
@@ -1982,7 +2057,7 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:157
 #: includes/components/elementor-views/static-widgets/grid.php:1098
 #: includes/components/meta-boxes/templates/fields.php:922
-#: includes/components/query-builder/manager.php:530
+#: includes/components/query-builder/manager.php:531
 #: includes/components/query-builder/templates/admin/edit.php:29
 #: includes/components/taxonomies/templates/edit.php:212
 #: includes/modules/forms/block-types/booking-form.php:1223
@@ -2108,14 +2183,14 @@ msgstr ""
 #: includes/components/bricks-views/elements/dynamic-image.php:349
 #: includes/components/bricks-views/elements/dynamic-link.php:404
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:534
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:684
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:688
 #: includes/components/listings/manager.php:526
 msgid "Permalink"
 msgstr ""
 
 #: includes/compatibility/packages/woocommerce/inc/listings/manager.php:517
 #: includes/compatibility/packages/woocommerce/inc/listings/manager.php:548
-#: includes/components/post-types/manager.php:786
+#: includes/components/post-types/manager.php:788
 msgid "Featured Image"
 msgstr ""
 
@@ -2148,8 +2223,8 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-tags/tags/custom-image-tag.php:180
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:524
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:532
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:351
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:682
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:355
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:686
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:252
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:225
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:207
@@ -2541,6 +2616,7 @@ msgstr ""
 #: includes/compatibility/packages/woocommerce/inc/templates/admin/query-editor.php:665
 #: includes/components/elementor-views/dynamic-tags/tags/object-property-tag.php:85
 #: includes/components/elementor-views/static-widgets/grid.php:507
+#: includes/components/query-builder/templates/admin/dynamic-args.php:55
 #: includes/components/query-builder/templates/admin/types/comments.php:247
 #: includes/components/query-builder/templates/admin/types/posts.php:432
 #: includes/components/query-builder/templates/admin/types/users.php:323
@@ -2555,6 +2631,7 @@ msgstr ""
 #: includes/compatibility/packages/woocommerce/inc/templates/admin/query-editor.php:675
 #: includes/components/elementor-views/dynamic-tags/tags/object-property-tag.php:78
 #: includes/components/elementor-views/static-widgets/grid.php:529
+#: includes/components/query-builder/templates/admin/dynamic-args.php:49
 #: includes/components/query-builder/templates/admin/types/comments.php:255
 #: includes/components/query-builder/templates/admin/types/posts.php:440
 #: includes/components/query-builder/templates/admin/types/users.php:331
@@ -2628,7 +2705,7 @@ msgid ""
 msgstr ""
 
 #: includes/compatibility/packages/woocommerce/inc/templates/admin/query-editor.php:788
-#: includes/components/post-types/pages/edit.php:235
+#: includes/components/post-types/pages/edit.php:237
 #: includes/components/query-builder/templates/admin/types/comments.php:180
 #: includes/components/query-builder/templates/admin/types/comments.php:302
 #: includes/components/query-builder/templates/admin/types/posts.php:237
@@ -2641,7 +2718,7 @@ msgstr ""
 #: includes/components/relations/admin-filters.php:148
 #: includes/components/relations/filters.php:103
 #: includes/core/dynamic-functions.php:373
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:103
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:105
 msgid "Relation"
 msgstr ""
 
@@ -2671,13 +2748,13 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:802
 #: includes/components/listings/macros/current-terms.php:29
 #: includes/components/meta-boxes/manager.php:115
-#: includes/components/post-types/templates/edit.php:300
+#: includes/components/post-types/templates/edit.php:309
 #: includes/components/post-types/templates/filters.php:47
 #: includes/components/query-builder/templates/admin/types/posts.php:280
 #: includes/components/query-builder/templates/admin/types/terms.php:22
 #: includes/core/dynamic-functions.php:399
 #: includes/modules/dynamic-visibility/inc/conditions/post-has-terms.php:60
-#: includes/modules/listing-injections/listing-injections.php:826
+#: includes/modules/listing-injections/listing-injections.php:848
 msgid "Taxonomy"
 msgstr ""
 
@@ -2697,7 +2774,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:852
 #: includes/components/elementor-views/static-widgets/grid.php:1097
 #: includes/components/listings/data.php:258
-#: includes/components/query-builder/manager.php:526
+#: includes/components/query-builder/manager.php:527
 #: includes/components/query-builder/templates/admin/types/posts.php:295
 msgid "Term ID"
 msgstr ""
@@ -2707,9 +2784,9 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:730
 #: includes/components/elementor-views/static-widgets/grid.php:854
 #: includes/components/elementor-views/static-widgets/grid.php:1094
-#: includes/components/glossaries/settings.php:275
+#: includes/components/glossaries/settings.php:301
 #: includes/components/meta-boxes/templates/fields.php:588
-#: includes/components/query-builder/manager.php:514
+#: includes/components/query-builder/manager.php:515
 #: includes/components/query-builder/templates/admin/edit.php:20
 #: includes/components/query-builder/templates/admin/list.php:11
 #: includes/components/query-builder/templates/admin/types/posts.php:299
@@ -2729,7 +2806,7 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:154
 #: includes/components/elementor-views/static-widgets/grid.php:853
 #: includes/components/elementor-views/static-widgets/grid.php:1095
-#: includes/components/query-builder/manager.php:518
+#: includes/components/query-builder/manager.php:519
 #: includes/components/query-builder/templates/admin/types/posts.php:303
 #: includes/components/query-builder/templates/admin/types/terms.php:135
 #: includes/modules/custom-content-types/inc/templates/admin/copy-dialog.php:21
@@ -2752,7 +2829,7 @@ msgstr ""
 #: includes/components/query-builder/templates/admin/types/posts.php:315
 #: includes/dashboard/skins-import.php:493
 #: includes/modules/forms/editor.php:129
-#: includes/modules/listing-injections/listing-injections.php:839
+#: includes/modules/listing-injections/listing-injections.php:861
 msgid "Terms"
 msgstr ""
 
@@ -2880,7 +2957,7 @@ msgstr ""
 #: includes/components/listings/manager.php:177
 #: includes/components/post-types/templates/list.php:23
 #: includes/components/taxonomies/templates/list.php:23
-#: includes/dashboard/manager.php:42 includes/dashboard/manager.php:43
+#: includes/dashboard/manager.php:45 includes/dashboard/manager.php:46
 msgid "JetEngine"
 msgstr ""
 
@@ -2907,8 +2984,8 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-terms.php:206
 #: includes/components/blocks-views/block-types/dynamic-terms.php:239
 #: includes/components/blocks-views/block-types/listing-grid.php:425
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:385
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:425
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:389
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:429
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:326
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:357
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:531
@@ -3020,7 +3097,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-field.php:185
 #: includes/components/bricks-views/elements/dynamic-field.php:371
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:395
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:312
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:316
 #: includes/modules/forms/block-types/booking-form.php:1983
 #: includes/modules/forms/widgets/booking-form.php:1884
 msgid "Fullwidth"
@@ -3035,7 +3112,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:163
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:425
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:287
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:300
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:304
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:262
 #: includes/components/relations/templates/edit.php:22
 #: includes/modules/calendar/block.php:815
@@ -3067,7 +3144,7 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:429
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:459
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:291
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:304
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:308
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:270
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:266
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:225
@@ -3102,7 +3179,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:171
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:433
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:295
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:308
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:312
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:270
 #: includes/modules/calendar/block.php:823
 #: includes/modules/calendar/block.php:848
@@ -3174,8 +3251,8 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-link.php:167
 #: includes/components/blocks-views/block-types/dynamic-meta.php:419
 #: includes/components/blocks-views/block-types/dynamic-terms.php:339
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:396
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:436
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:400
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:440
 #: includes/modules/data-stores/inc/block-types/button.php:213
 #: includes/modules/data-stores/inc/block-types/button.php:257
 #: includes/modules/data-stores/inc/block-types/button.php:313
@@ -3198,7 +3275,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-link.php:368
 #: includes/components/blocks-views/block-types/dynamic-meta.php:431
 #: includes/components/blocks-views/block-types/dynamic-terms.php:352
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:555
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:559
 #: includes/modules/data-stores/inc/block-types/button.php:132
 #: includes/modules/data-stores/inc/widgets/button.php:246
 #: includes/modules/forms/block-types/booking-form.php:1628
@@ -3217,10 +3294,10 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-link.php:430
 #: includes/components/blocks-views/block-types/dynamic-meta.php:449
 #: includes/components/blocks-views/block-types/dynamic-terms.php:364
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:573
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:596
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:619
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:641
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:577
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:600
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:623
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:645
 msgid "Icon Gap"
 msgstr ""
 
@@ -3239,7 +3316,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:653
 #: includes/components/blocks-views/block-types/dynamic-terms.php:127
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:282
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:295
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:299
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:261
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:257
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:685
@@ -3320,28 +3397,28 @@ msgid "Justify"
 msgstr ""
 
 #: includes/components/blocks-views/block-types/dynamic-link.php:322
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:523
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:527
 msgid "Icon Position"
 msgstr ""
 
 #: includes/components/blocks-views/block-types/dynamic-link.php:328
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:527
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:531
 msgid "Before Label"
 msgstr ""
 
 #: includes/components/blocks-views/block-types/dynamic-link.php:332
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:528
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:532
 msgid "After Label"
 msgstr ""
 
 #: includes/components/blocks-views/block-types/dynamic-link.php:345
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:539
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:543
 msgid "Icon Orientation"
 msgstr ""
 
 #: includes/components/blocks-views/block-types/dynamic-link.php:351
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:137
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:543
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:547
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:239
 #: includes/components/meta-boxes/templates/fields.php:124
 #: includes/components/meta-boxes/templates/fields.php:326
@@ -3355,7 +3432,7 @@ msgstr ""
 
 #: includes/components/blocks-views/block-types/dynamic-link.php:355
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:141
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:544
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:548
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:243
 #: includes/components/meta-boxes/templates/fields.php:128
 #: includes/components/meta-boxes/templates/fields.php:322
@@ -3371,7 +3448,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-meta.php:517
 #: includes/components/blocks-views/block-types/dynamic-repeater.php:320
 #: includes/components/blocks-views/block-types/dynamic-terms.php:221
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:410
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:414
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:339
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:544
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:390
@@ -3408,7 +3485,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-meta.php:629
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:87
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:647
-#: includes/components/post-types/templates/edit.php:348
+#: includes/components/post-types/templates/edit.php:357
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:375
 msgid "Prefix"
 msgstr ""
@@ -3434,7 +3511,7 @@ msgstr ""
 #: includes/components/blocks-views/block-types/dynamic-meta.php:683
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:96
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:694
-#: includes/components/post-types/templates/edit.php:357
+#: includes/components/post-types/templates/edit.php:366
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:382
 msgid "Suffix"
 msgstr ""
@@ -3461,8 +3538,8 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:82
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:451
 #: includes/components/listings/callbacks.php:387
-#: includes/components/post-types/pages/edit.php:271
-#: includes/components/post-types/pages/edit.php:320
+#: includes/components/post-types/pages/edit.php:273
+#: includes/components/post-types/pages/edit.php:322
 msgid "Delimiter"
 msgstr ""
 
@@ -3548,8 +3625,8 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:463
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:265
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:471
-#: includes/components/post-types/pages/edit.php:286
-#: includes/components/post-types/pages/edit.php:301
+#: includes/components/post-types/pages/edit.php:288
+#: includes/components/post-types/pages/edit.php:303
 #: includes/modules/forms/block-types/booking-form.php:1784
 #: includes/modules/forms/widgets/booking-form.php:1691
 msgid "Size"
@@ -3716,8 +3793,8 @@ msgstr ""
 #: includes/components/listings/manager.php:235
 #: includes/components/listings/manager.php:246
 #: includes/components/meta-boxes/manager.php:904
-#: includes/components/options-pages/manager.php:374
-#: includes/components/post-types/pages/edit.php:237
+#: includes/components/options-pages/manager.php:376
+#: includes/components/post-types/pages/edit.php:239
 #: includes/components/query-builder/listings/filters-options-source.php:166
 #: includes/components/relations/dynamic-tags/related-item-meta.php:39
 #: includes/components/relations/macros/get-related-grandparents.php:95
@@ -3809,7 +3886,7 @@ msgstr ""
 #: includes/components/bricks-views/elements/dynamic-link.php:241
 #: includes/components/elementor-views/document-types/listing-item.php:221
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:254
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:261
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:265
 #: includes/modules/data-stores/inc/assets/js/admin/blocks/src/blocks.js:196
 #: includes/modules/data-stores/inc/bricks-views/button.php:172
 #: includes/modules/data-stores/inc/widgets/button.php:173
@@ -3821,7 +3898,7 @@ msgstr ""
 #: includes/components/bricks-views/elements/dynamic-link.php:251
 #: includes/components/elementor-views/document-types/listing-item.php:237
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:269
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:273
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:277
 #: includes/modules/data-stores/inc/assets/js/admin/blocks/src/blocks.js:203
 #: includes/modules/data-stores/inc/bricks-views/button.php:183
 #: includes/modules/data-stores/inc/widgets/button.php:186
@@ -3831,7 +3908,7 @@ msgstr ""
 #: includes/components/blocks-views/editor.php:236
 #: includes/components/bricks-views/elements/dynamic-link.php:261
 #: includes/components/elementor-views/document-types/listing-item.php:251
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:283
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:287
 msgid "Aria label attr"
 msgstr ""
 
@@ -3874,7 +3951,7 @@ msgstr ""
 
 #: includes/components/blocks-views/editor.php:629
 #: includes/components/bricks-views/elements/dynamic-link.php:405
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:685
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:689
 msgid "Delete current post link"
 msgstr ""
 
@@ -3882,7 +3959,7 @@ msgstr ""
 #: includes/components/bricks-views/elements/dynamic-image.php:354
 #: includes/components/bricks-views/elements/dynamic-link.php:417
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:540
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:697
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:701
 #: includes/modules/profile-builder/inc/dynamic-tags/profile-page-url.php:39
 #: includes/modules/profile-builder/inc/dynamic-visibility/is-profile-page.php:110
 #: includes/modules/profile-builder/inc/elementor-integration.php:166
@@ -3977,7 +4054,7 @@ msgstr ""
 #: includes/components/bricks-views/elements/dynamic-link.php:271
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:253
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:308
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:325
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:329
 #: includes/components/elementor-views/dynamic-widgets/dynamic-repeater.php:199
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:181
 msgid "Hide if value is empty"
@@ -4110,7 +4187,7 @@ msgstr ""
 #: includes/components/bricks-views/elements/dynamic-image.php:204
 #: includes/components/bricks-views/elements/dynamic-link.php:189
 #: includes/components/elementor-views/dynamic-widgets/dynamic-image.php:244
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:191
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:195
 msgid "Add prefix to the URL, for example tel:, mailto: etc."
 msgstr ""
 
@@ -4158,27 +4235,29 @@ msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:127
 #: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:112
-msgid "If empty will redirect to home page"
+msgid ""
+"If empty will redirect to home page. Use the %current_page_url% macro to "
+"redirect to the current page."
 msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:136
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:125
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:129
 #: includes/components/post-types/templates/delete-dialog.php:3
 msgid "Delete post type"
 msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:139
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:129
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:133
 msgid "Move to trash"
 msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:140
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:130
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:134
 msgid "Delete permanently"
 msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:151
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:141
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:145
 #: includes/components/meta-boxes/templates/fields.php:45
 #: includes/components/meta-boxes/templates/fields.php:579
 #: includes/modules/data-stores/inc/assets/js/admin/blocks/src/blocks.js:70
@@ -4203,7 +4282,7 @@ msgid "Query arguments"
 msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:178
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:177
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:181
 #: includes/modules/profile-builder/inc/dynamic-tags/profile-page-url.php:78
 msgid "One argument per line. Separate key and value with \"=\""
 msgstr ""
@@ -4217,12 +4296,12 @@ msgid "URL anchor"
 msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:199
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:202
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:206
 msgid "Add anchor to the URL. Without #."
 msgstr ""
 
 #: includes/components/bricks-views/elements/dynamic-link.php:221
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:242
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:246
 msgid "HTML wrapper"
 msgstr ""
 
@@ -4390,7 +4469,7 @@ msgstr ""
 
 #: includes/components/bricks-views/elements/listing-grid.php:400
 #: includes/components/elementor-views/static-widgets/grid.php:371
-#: includes/components/post-types/manager.php:917
+#: includes/components/post-types/manager.php:919
 #: includes/modules/calendar/widget.php:163
 #: includes/modules/profile-builder/inc/templates/admin/settings.php:461
 msgid "Post Types"
@@ -4905,8 +4984,8 @@ msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:210
 #: includes/components/elementor-views/dynamic-widgets/dynamic-field.php:221
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:217
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:229
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:221
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:233
 msgid "Field Icon"
 msgstr ""
 
@@ -4958,44 +5037,36 @@ msgstr ""
 msgid "Media File"
 msgstr ""
 
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:144
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:148
 msgid "Read More"
 msgstr ""
 
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:145
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:149
 msgid "You can use JetEngine/Macros dynamic tag to add macros"
 msgstr ""
 
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:160
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:164
 #: includes/modules/profile-builder/inc/dynamic-tags/profile-page-url.php:62
 msgid "Add Query Arguments"
 msgstr ""
 
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:173
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:177
 #: includes/components/query-builder/templates/admin/types/repeater.php:65
 #: includes/modules/profile-builder/inc/dynamic-tags/profile-page-url.php:74
 #: includes/modules/rest-api-listings/inc/listings/elementor.php:74
 msgid "Query Arguments"
 msgstr ""
 
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:187
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:191
 msgid "URL Prefix"
 msgstr ""
 
-#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:198
+#: includes/components/elementor-views/dynamic-widgets/dynamic-link.php:202
 msgid "URL Anchor"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:18
 msgid "Dynamic Meta"
-msgstr ""
-
-#: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:53
-#: includes/components/options-pages/pages/edit.php:202
-#: includes/components/post-types/manager.php:866
-#: includes/components/query-builder/templates/admin/types/posts.php:600
-#: includes/modules/custom-content-types/inc/pages/edit.php:177
-msgid "Comments"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:128
@@ -5022,12 +5093,13 @@ msgstr ""
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:150
 #: includes/components/listings/callbacks.php:209
 #: includes/components/listings/macros/current-date.php:41
+#: includes/components/query-builder/traits/query-count.php:35
 msgid "Format"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-meta.php:153
 #: includes/components/listings/callbacks.php:217
-#: includes/components/post-types/pages/edit.php:205
+#: includes/components/post-types/pages/edit.php:207
 #: templates/forms/admin/form-builder.php:394
 msgid "Documentation on date and time formatting"
 msgstr ""
@@ -5219,7 +5291,7 @@ msgid "Text after terms list"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:155
-#: includes/components/query-builder/manager.php:522
+#: includes/components/query-builder/manager.php:523
 msgid "Term group"
 msgstr ""
 
@@ -5228,19 +5300,19 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1099
 #: includes/components/elementor-views/static-widgets/grid.php:1170
 #: includes/components/listings/data.php:286
-#: includes/components/query-builder/manager.php:534
+#: includes/components/query-builder/manager.php:535
 #: includes/components/query-builder/templates/admin/types/comments.php:38
 #: includes/components/query-builder/templates/admin/types/terms.php:212
 msgid "Parent"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:159
-#: includes/components/query-builder/manager.php:538
+#: includes/components/query-builder/manager.php:539
 msgid "Term Order"
 msgstr ""
 
 #: includes/components/elementor-views/dynamic-widgets/dynamic-terms.php:160
-#: includes/components/query-builder/manager.php:542
+#: includes/components/query-builder/manager.php:543
 msgid "By the number of objects associated with the term"
 msgstr ""
 
@@ -5264,35 +5336,35 @@ msgstr ""
 msgid "Back to Edit Parent Post"
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:230
+#: includes/components/elementor-views/manager.php:233
 msgid ""
 "You need an <b>Elementor Page Builder</b> plugin to create and edit listing "
 "items"
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:234
+#: includes/components/elementor-views/manager.php:237
 msgid "Install Elementor Page Builder"
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:318
+#: includes/components/elementor-views/manager.php:321
 msgid "Listing Elements"
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:445
+#: includes/components/elementor-views/manager.php:448
 msgid ""
 "Please install <a href=\"https://wordpress.org/plugins/elementor/\" target="
 "\"_blank\">Elementor page builder</a> to manage listings layout"
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:446
+#: includes/components/elementor-views/manager.php:449
 msgid "Elementor missed"
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:455
+#: includes/components/elementor-views/manager.php:458
 msgid "Incorrect template type. Please try again."
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:456
+#: includes/components/elementor-views/manager.php:459
 #: includes/components/listings/admin-screen.php:61
 #: includes/components/listings/legacy.php:23
 #: includes/modules/forms/block-types/booking-form.php:2416
@@ -5300,7 +5372,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/components/elementor-views/manager.php:478
+#: includes/components/elementor-views/manager.php:481
 msgid "Elementor"
 msgstr ""
 
@@ -5474,7 +5546,7 @@ msgid "Menu order"
 msgstr ""
 
 #: includes/components/elementor-views/static-widgets/grid.php:739
-#: includes/components/query-builder/manager.php:501
+#: includes/components/query-builder/manager.php:502
 msgid "Meta value"
 msgstr ""
 
@@ -5546,7 +5618,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1210
 #: includes/components/elementor-views/static-widgets/grid.php:1405
 #: includes/components/meta-boxes/templates/fields.php:1236
-#: includes/modules/listing-injections/listing-injections.php:786
+#: includes/modules/listing-injections/listing-injections.php:808
 msgid "Operator"
 msgstr ""
 
@@ -5563,7 +5635,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1030
 #: includes/components/elementor-views/static-widgets/grid.php:1270
 #: includes/components/elementor-views/static-widgets/grid.php:1471
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:107
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:109
 msgid "AND"
 msgstr ""
 
@@ -5586,7 +5658,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:895
 #: includes/components/elementor-views/static-widgets/grid.php:1201
 #: includes/components/elementor-views/static-widgets/grid.php:1396
-#: includes/modules/listing-injections/listing-injections.php:774
+#: includes/modules/listing-injections/listing-injections.php:796
 msgid "Key (name/ID)"
 msgstr ""
 
@@ -5596,7 +5668,7 @@ msgstr ""
 #: includes/components/meta-boxes/templates/fields.php:1246
 #: includes/modules/custom-content-types/inc/query-dialog.php:71
 #: includes/modules/dynamic-visibility/inc/conditions/equal.php:21
-#: includes/modules/listing-injections/listing-injections.php:790
+#: includes/modules/listing-injections/listing-injections.php:812
 #: templates/forms/admin/form-builder.php:188
 msgid "Equal"
 msgstr ""
@@ -5605,7 +5677,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1215
 #: includes/components/elementor-views/static-widgets/grid.php:1410
 #: includes/modules/custom-content-types/inc/query-dialog.php:75
-#: includes/modules/listing-injections/listing-injections.php:791
+#: includes/modules/listing-injections/listing-injections.php:813
 msgid "Not equal"
 msgstr ""
 
@@ -5614,7 +5686,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1411
 #: includes/modules/custom-content-types/inc/query-dialog.php:79
 #: includes/modules/dynamic-visibility/inc/conditions/greater-than.php:21
-#: includes/modules/listing-injections/listing-injections.php:792
+#: includes/modules/listing-injections/listing-injections.php:814
 #: templates/forms/admin/form-builder.php:189
 msgid "Greater than"
 msgstr ""
@@ -5623,7 +5695,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1217
 #: includes/components/elementor-views/static-widgets/grid.php:1412
 #: includes/modules/custom-content-types/inc/query-dialog.php:83
-#: includes/modules/listing-injections/listing-injections.php:793
+#: includes/modules/listing-injections/listing-injections.php:815
 msgid "Greater or equal"
 msgstr ""
 
@@ -5632,7 +5704,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1413
 #: includes/modules/custom-content-types/inc/query-dialog.php:87
 #: includes/modules/dynamic-visibility/inc/conditions/less-than.php:21
-#: includes/modules/listing-injections/listing-injections.php:794
+#: includes/modules/listing-injections/listing-injections.php:816
 #: templates/forms/admin/form-builder.php:190
 msgid "Less than"
 msgstr ""
@@ -5641,7 +5713,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1219
 #: includes/components/elementor-views/static-widgets/grid.php:1414
 #: includes/modules/custom-content-types/inc/query-dialog.php:91
-#: includes/modules/listing-injections/listing-injections.php:795
+#: includes/modules/listing-injections/listing-injections.php:817
 msgid "Equal or less"
 msgstr ""
 
@@ -5649,7 +5721,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1222
 #: includes/components/elementor-views/static-widgets/grid.php:1417
 #: includes/modules/custom-content-types/inc/query-dialog.php:103
-#: includes/modules/listing-injections/listing-injections.php:798
+#: includes/modules/listing-injections/listing-injections.php:820
 msgid "In"
 msgstr ""
 
@@ -5657,7 +5729,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1223
 #: includes/components/elementor-views/static-widgets/grid.php:1418
 #: includes/modules/custom-content-types/inc/query-dialog.php:107
-#: includes/modules/listing-injections/listing-injections.php:799
+#: includes/modules/listing-injections/listing-injections.php:821
 msgid "Not in"
 msgstr ""
 
@@ -5675,7 +5747,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:941
 #: includes/components/elementor-views/static-widgets/grid.php:1239
 #: includes/components/elementor-views/static-widgets/grid.php:1434
-#: includes/modules/listing-injections/listing-injections.php:816
+#: includes/modules/listing-injections/listing-injections.php:838
 msgid ""
 "For <b>In</b>, <b>Not in</b>, <b>Between</b> and <b>Not between</b> compare "
 "separate multiple values with comma"
@@ -5710,7 +5782,7 @@ msgstr ""
 #: includes/components/elementor-views/static-widgets/grid.php:1031
 #: includes/components/elementor-views/static-widgets/grid.php:1271
 #: includes/components/elementor-views/static-widgets/grid.php:1472
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:108
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:110
 msgid "OR"
 msgstr ""
 
@@ -5919,131 +5991,154 @@ msgstr ""
 msgid "Select Glossary:"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:38
+#: includes/components/glossaries/settings.php:39
 #: includes/modules/rest-api-listings/inc/settings.php:37
 msgid "Item ID not found in the request"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:44
-#: includes/components/glossaries/settings.php:85
+#: includes/components/glossaries/settings.php:45
+#: includes/components/glossaries/settings.php:86
 msgid "Item settings updated"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:126
+#: includes/components/glossaries/settings.php:127
 msgid "Order of items updated"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:130
+#: includes/components/glossaries/settings.php:131
 msgid "Items orders not updated"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:177
+#: includes/components/glossaries/settings.php:153
+msgid "File is empty"
+msgstr ""
+
+#: includes/components/glossaries/settings.php:158
+msgid "Item source converted"
+msgstr ""
+
+#: includes/components/glossaries/settings.php:203
 #: includes/modules/rest-api-listings/inc/settings.php:235
 msgid "Saving..."
 msgstr ""
 
-#: includes/components/glossaries/settings.php:229
-#: includes/components/post-types/templates/edit.php:484
+#: includes/components/glossaries/settings.php:255
+#: includes/components/post-types/templates/edit.php:493
+#: includes/components/relations/controls/base.php:325
 #: includes/components/taxonomies/templates/edit.php:265
 #: includes/modules/rest-api-listings/inc/settings.php:275
 #: templates/forms/admin/form-builder.php:154
 msgid "Are you sure?"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:250
+#: includes/components/glossaries/settings.php:276
 msgid "+ New Glossary"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:268
+#: includes/components/glossaries/settings.php:294
 msgid "Select file"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:276
+#: includes/components/glossaries/settings.php:302
 msgid "Human-readable name for the glossary"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:282
+#: includes/components/glossaries/settings.php:308
 #: includes/core/dynamic-functions.php:332
 msgid "Data Source"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:283
+#: includes/components/glossaries/settings.php:309
 msgid "The way to get the data for glossary"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:290
+#: includes/components/glossaries/settings.php:316
 msgid "Set items manually"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:294
+#: includes/components/glossaries/settings.php:320
 msgid "Get items from uploaded file"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:300
+#: includes/components/glossaries/settings.php:326
 msgid "File to Get Data From"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:301
+#: includes/components/glossaries/settings.php:327
 msgid ""
 "Select file from the media library to get data from. At the moment supports "
 "only JSON or CSV files"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:311
+#: includes/components/glossaries/settings.php:337
 msgid "Value Column"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:312
+#: includes/components/glossaries/settings.php:338
 msgid ""
 "Get value from the column (or key for JSON objects). Leave empty to detect "
 "automatically. <b>Please note:</b> columns names are case-sensitive."
 msgstr ""
 
-#: includes/components/glossaries/settings.php:319
+#: includes/components/glossaries/settings.php:345
 msgid "Label Column"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:320
+#: includes/components/glossaries/settings.php:346
 msgid ""
 "Get label from the column (or key for JSON objects). Leave empty to detect "
 "automatically. <b>Please note:</b> columns names are case-sensitive."
 msgstr ""
 
-#: includes/components/glossaries/settings.php:332
+#: includes/components/glossaries/settings.php:353
+msgid "Convert to Manual Source"
+msgstr ""
+
+#: includes/components/glossaries/settings.php:354
+msgid ""
+"Convert to manual source to be able to edit the glossary fields.<br> "
+"<b>Please note:</b> save settings after converting."
+msgstr ""
+
+#: includes/components/glossaries/settings.php:367
+msgid "Convert"
+msgstr ""
+
+#: includes/components/glossaries/settings.php:377
 msgid "New field"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:349
+#: includes/components/glossaries/settings.php:394
 msgid "Field Value"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:350
+#: includes/components/glossaries/settings.php:395
 #: includes/components/meta-boxes/templates/fields.php:289
 #: includes/components/meta-boxes/templates/fields.php:673
 msgid "This value will be saved into Database"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:357
+#: includes/components/glossaries/settings.php:402
 msgid "Field Label"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:358
+#: includes/components/glossaries/settings.php:403
 msgid "This will be shown for the user"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:365
+#: includes/components/glossaries/settings.php:410
 #: includes/components/meta-boxes/templates/fields.php:304
 #: includes/components/meta-boxes/templates/fields.php:688
 msgid "Is checked (selected)"
 msgstr ""
 
-#: includes/components/glossaries/settings.php:366
+#: includes/components/glossaries/settings.php:411
 #: includes/components/meta-boxes/templates/fields.php:305
 #: includes/components/meta-boxes/templates/fields.php:689
 msgid "Check this to make this field checked or selected by default."
 msgstr ""
 
-#: includes/components/glossaries/settings.php:521
+#: includes/components/glossaries/settings.php:566
 #: includes/dashboard/skins-import.php:165
 #: templates/admin/pages/dashboard/export.php:86
 msgid "Glossaries"
@@ -6061,11 +6156,11 @@ msgstr ""
 msgid "Listing view instance is not found"
 msgstr ""
 
-#: includes/components/listings/admin-screen.php:282
+#: includes/components/listings/admin-screen.php:285
 msgid "Edit Listing Settings"
 msgstr ""
 
-#: includes/components/listings/ajax-handlers.php:332
+#: includes/components/listings/ajax-handlers.php:334
 msgid "Request data is incorrect"
 msgstr ""
 
@@ -6326,7 +6421,7 @@ msgstr ""
 
 #: includes/components/listings/data.php:244
 #: includes/components/listings/data.php:274
-#: includes/components/post-types/manager.php:677
+#: includes/components/post-types/manager.php:679
 #: includes/components/query-builder/templates/admin/types/comments.php:446
 #: includes/components/query-builder/templates/admin/types/posts.php:566
 #: templates/forms/admin/components/form-preset-editor.php:37
@@ -6354,7 +6449,7 @@ msgid "Date Modified"
 msgstr ""
 
 #: includes/components/listings/data.php:251
-#: includes/components/post-types/manager.php:882
+#: includes/components/post-types/manager.php:884
 msgid "Excerpt"
 msgstr ""
 
@@ -6417,26 +6512,26 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: includes/components/listings/data.php:1247
+#: includes/components/listings/data.php:1251
 msgid "Post/Term/User/Object Data"
 msgstr ""
 
-#: includes/components/listings/data.php:1248
+#: includes/components/listings/data.php:1252
 #: includes/components/relations/relation.php:482
 msgid "Meta Data"
 msgstr ""
 
-#: includes/components/listings/data.php:1249
+#: includes/components/listings/data.php:1253
 #: includes/components/listings/macros/query-var.php:20
 #: includes/components/relations/sources.php:24
 msgid "Query Variable"
 msgstr ""
 
-#: includes/components/listings/data.php:1257
+#: includes/components/listings/data.php:1261
 msgid "Relations Hierarchy"
 msgstr ""
 
-#: includes/components/listings/data.php:1269
+#: includes/components/listings/data.php:1273
 #: includes/components/listings/post-type.php:176
 #: includes/modules/custom-content-types/inc/listings/blocks.php:225
 msgid "Repeater Field"
@@ -6554,6 +6649,10 @@ msgstr ""
 msgid "Current meta value"
 msgstr ""
 
+#: includes/components/listings/macros/current-page-url.php:20
+msgid "Current Page URL (global)"
+msgstr ""
+
 #: includes/components/listings/macros/current-tags.php:20
 msgid "Current tags"
 msgstr ""
@@ -6629,7 +6728,7 @@ msgstr ""
 #: includes/components/listings/macros/related-parents-from.php:29
 #: includes/components/relations/legacy/hierarchy.php:45
 #: includes/components/relations/legacy/hierarchy.php:57
-#: includes/modules/listing-injections/listing-injections.php:853
+#: includes/modules/listing-injections/listing-injections.php:875
 msgid "Post type"
 msgstr ""
 
@@ -6692,69 +6791,51 @@ msgstr ""
 msgid "What is Listing Grid?"
 msgstr ""
 
-#: includes/components/listings/post-type.php:172
-#: includes/components/meta-boxes/pages/edit.php:157
-#: includes/components/options-pages/pages/edit.php:186
-#: includes/components/relations/types/posts.php:24
-#: includes/dashboard/skins-import.php:458
-#: includes/modules/custom-content-types/inc/pages/edit.php:161
-#: includes/modules/dynamic-visibility/inc/conditions/manager.php:129
-#: includes/modules/forms/editor.php:128
-msgid "Posts"
-msgstr ""
-
 #: includes/components/listings/post-type.php:173
-#: includes/components/query-builder/manager.php:307
+#: includes/components/query-builder/manager.php:308
 msgid "Query Builder"
-msgstr ""
-
-#: includes/components/listings/post-type.php:175
-#: includes/components/options-pages/pages/edit.php:218
-#: includes/components/relations/types/mix.php:36
-#: includes/modules/custom-content-types/inc/pages/edit.php:193
-msgid "Users"
 msgstr ""
 
 #: includes/components/listings/post-type.php:182
 msgid "Blocks (Gutenberg)"
 msgstr ""
 
-#: includes/components/listings/post-type.php:223 jet-engine.php:315
+#: includes/components/listings/post-type.php:223 jet-engine.php:343
 msgid "Listing Items"
 msgstr ""
 
 #: includes/components/listings/post-type.php:225
 #: includes/components/meta-boxes/pages/list.php:41
 #: includes/components/options-pages/pages/list.php:41
-#: includes/components/post-types/manager.php:702
+#: includes/components/post-types/manager.php:704
 #: includes/components/post-types/pages/list.php:43
-#: includes/components/post-types/templates/edit.php:247
+#: includes/components/post-types/templates/edit.php:256
 #: includes/components/post-types/templates/filters.php:2
 #: includes/components/query-builder/pages/list.php:36
 #: includes/components/relations/pages/list.php:41
 #: includes/components/taxonomies/pages/list.php:42
 #: includes/modules/custom-content-types/inc/pages/list.php:37
-#: includes/modules/custom-content-types/inc/type-pages.php:284
+#: includes/modules/custom-content-types/inc/type-pages.php:289
 #: includes/modules/forms/editor.php:633
 msgid "Add New"
 msgstr ""
 
 #: includes/components/listings/post-type.php:226
 #: includes/components/listings/post-type.php:228
-#: includes/components/post-types/manager.php:709
+#: includes/components/post-types/manager.php:711
 #: includes/modules/forms/editor.php:636
 msgid "Add New Item"
 msgstr ""
 
 #: includes/components/listings/post-type.php:227
-#: includes/components/post-types/manager.php:723
+#: includes/components/post-types/manager.php:725
 #: includes/modules/custom-content-types/inc/list-table.php:208
 #: includes/modules/custom-content-types/inc/pages/edit-content-type-item.php:199
 msgid "Edit Item"
 msgstr ""
 
 #: includes/components/listings/post-type.php:229
-#: includes/components/post-types/manager.php:730
+#: includes/components/post-types/manager.php:732
 #: includes/components/taxonomies/manager.php:614
 msgid "View Item"
 msgstr ""
@@ -6976,13 +7057,6 @@ msgstr ""
 msgid "Iconpicker"
 msgstr ""
 
-#: includes/components/meta-boxes/pages/edit.php:129
-#: includes/components/options-pages/pages/edit.php:190
-#: includes/modules/custom-content-types/inc/pages/edit.php:165
-#: includes/modules/forms/manager.php:420
-msgid "Media"
-msgstr ""
-
 #: includes/components/meta-boxes/pages/edit.php:133
 msgid "Gallery"
 msgstr ""
@@ -7048,7 +7122,7 @@ msgstr ""
 msgid "JetEngine meta fields overview"
 msgstr ""
 
-#: includes/components/meta-boxes/pages/list.php:66 jet-engine.php:330
+#: includes/components/meta-boxes/pages/list.php:66 jet-engine.php:358
 msgid "Meta Boxes List"
 msgstr ""
 
@@ -7062,13 +7136,6 @@ msgstr ""
 #: templates/admin/pages/dashboard/macros-generator.php:52
 #: templates/admin/pages/dashboard/shortcode-generator.php:73
 msgid "Copied!"
-msgstr ""
-
-#: includes/components/meta-boxes/post.php:85
-#: includes/components/options-pages/pages/edit.php:226
-#: includes/modules/custom-content-types/inc/pages/edit.php:201
-#: jet-engine.php:310
-msgid "Settings"
 msgstr ""
 
 #: includes/components/meta-boxes/post.php:343
@@ -7086,13 +7153,13 @@ msgstr ""
 
 #: includes/components/meta-boxes/post.php:526
 #: includes/components/meta-boxes/post.php:542
-#: includes/components/meta-boxes/post.php:930
-#: includes/components/meta-boxes/post.php:946
+#: includes/components/meta-boxes/post.php:938
+#: includes/components/meta-boxes/post.php:954
 msgid "Choose Media"
 msgstr ""
 
 #: includes/components/meta-boxes/post.php:609
-#: includes/components/meta-boxes/post.php:1094
+#: includes/components/meta-boxes/post.php:1102
 #: includes/components/meta-boxes/templates/fields.php:1291
 #: includes/modules/custom-content-types/inc/forms/converting-jfb-fields/switcher-field.php:24
 #: includes/modules/custom-content-types/inc/forms/create-form.php:174
@@ -7102,7 +7169,7 @@ msgid "On"
 msgstr ""
 
 #: includes/components/meta-boxes/post.php:610
-#: includes/components/meta-boxes/post.php:1095
+#: includes/components/meta-boxes/post.php:1103
 #: includes/components/meta-boxes/templates/fields.php:1295
 #: includes/modules/custom-content-types/inc/forms/converting-jfb-fields/switcher-field.php:28
 #: includes/modules/custom-content-types/inc/forms/create-form.php:178
@@ -7111,28 +7178,28 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#: includes/components/meta-boxes/post.php:821
+#: includes/components/meta-boxes/post.php:829
 msgid "Choose Time"
 msgstr ""
 
-#: includes/components/meta-boxes/post.php:823
+#: includes/components/meta-boxes/post.php:831
 msgid "Hour"
 msgstr ""
 
-#: includes/components/meta-boxes/post.php:824
+#: includes/components/meta-boxes/post.php:832
 msgid "Minute"
 msgstr ""
 
-#: includes/components/meta-boxes/post.php:825
+#: includes/components/meta-boxes/post.php:833
 msgid "Now"
 msgstr ""
 
-#: includes/components/meta-boxes/post.php:826
+#: includes/components/meta-boxes/post.php:834
 #: templates/forms/admin/form-builder.php:980
 msgid "Done"
 msgstr ""
 
-#: includes/components/meta-boxes/post.php:888
+#: includes/components/meta-boxes/post.php:896
 msgid "name: "
 msgstr ""
 
@@ -7179,7 +7246,7 @@ msgstr ""
 #: includes/components/meta-boxes/templates/edit.php:128
 #: includes/components/options-pages/templates/delete-dialog.php:4
 #: includes/components/post-types/templates/delete-dialog.php:4
-#: includes/components/post-types/templates/edit.php:526
+#: includes/components/post-types/templates/edit.php:535
 #: includes/components/query-builder/templates/admin/delete-dialog.php:4
 #: includes/components/relations/templates/delete-dialog.php:4
 #: includes/components/relations/templates/edit.php:23
@@ -7304,9 +7371,9 @@ msgstr ""
 #: includes/components/meta-boxes/templates/list.php:13
 #: includes/components/options-pages/templates/edit.php:155
 #: includes/components/options-pages/templates/list.php:13
-#: includes/components/post-types/templates/edit.php:443
+#: includes/components/post-types/templates/edit.php:452
 #: includes/components/post-types/templates/list.php:14
-#: includes/components/query-builder/templates/admin/edit.php:63
+#: includes/components/query-builder/templates/admin/edit.php:68
 #: includes/components/query-builder/templates/admin/list.php:13
 #: includes/components/relations/relation.php:485
 #: includes/components/relations/templates/edit.php:105
@@ -7321,8 +7388,8 @@ msgstr ""
 
 #: includes/components/meta-boxes/templates/edit.php:139
 #: includes/components/options-pages/templates/edit.php:157
-#: includes/components/post-types/templates/edit.php:445
-#: includes/components/query-builder/templates/admin/edit.php:65
+#: includes/components/post-types/templates/edit.php:454
+#: includes/components/query-builder/templates/admin/edit.php:70
 #: includes/components/relations/templates/edit.php:107
 #: includes/components/taxonomies/templates/edit.php:226
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:417
@@ -7335,9 +7402,9 @@ msgstr ""
 #: includes/components/meta-boxes/templates/list.php:39
 #: includes/components/options-pages/templates/edit.php:181
 #: includes/components/options-pages/templates/list.php:39
-#: includes/components/post-types/templates/edit.php:478
+#: includes/components/post-types/templates/edit.php:487
 #: includes/components/post-types/templates/list.php:77
-#: includes/components/query-builder/templates/admin/edit.php:89
+#: includes/components/query-builder/templates/admin/edit.php:94
 #: includes/components/query-builder/templates/admin/list.php:39
 #: includes/components/relations/templates/delete-dialog.php:3
 #: includes/components/relations/templates/edit.php:131
@@ -7355,8 +7422,8 @@ msgstr ""
 
 #: includes/components/meta-boxes/templates/edit.php:181
 #: includes/components/options-pages/templates/edit.php:199
-#: includes/components/post-types/templates/edit.php:510
-#: includes/components/query-builder/templates/admin/edit.php:107
+#: includes/components/post-types/templates/edit.php:519
+#: includes/components/query-builder/templates/admin/edit.php:112
 #: includes/components/relations/templates/edit.php:149
 #: includes/components/taxonomies/templates/edit.php:291
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:460
@@ -7757,6 +7824,7 @@ msgstr ""
 #: includes/components/options-pages/templates/list.php:30
 #: includes/components/post-types/templates/list.php:64
 #: includes/components/query-builder/templates/admin/list.php:30
+#: includes/components/relations/controls/base.php:321
 #: includes/components/relations/templates/list.php:33
 #: includes/components/taxonomies/templates/list.php:64
 #: includes/modules/custom-content-types/inc/list-table.php:206
@@ -7776,30 +7844,30 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: includes/components/options-pages/manager.php:426
+#: includes/components/options-pages/manager.php:428
 #: includes/components/options-pages/pages/list.php:68
-#: includes/dashboard/skins-import.php:300 jet-engine.php:345
+#: includes/dashboard/skins-import.php:300 jet-engine.php:373
 #: templates/admin/pages/dashboard/export.php:76
 msgid "Options Pages"
 msgstr ""
 
-#: includes/components/options-pages/manager.php:466
+#: includes/components/options-pages/manager.php:468
 msgid "Please, set page title"
 msgstr ""
 
-#: includes/components/options-pages/manager.php:467
+#: includes/components/options-pages/manager.php:469
 msgid "Please, set page slug"
 msgstr ""
 
-#: includes/components/options-pages/manager.php:468
+#: includes/components/options-pages/manager.php:470
 msgid "Page updated"
 msgstr ""
 
-#: includes/components/options-pages/manager.php:473
+#: includes/components/options-pages/manager.php:475
 msgid "Creating an Options page with JetEngine"
 msgstr ""
 
-#: includes/components/options-pages/manager.php:477
+#: includes/components/options-pages/manager.php:479
 msgid "Getting an option value in the PHP code"
 msgstr ""
 
@@ -7838,78 +7906,32 @@ msgstr ""
 msgid "Add Page"
 msgstr ""
 
-#: includes/components/options-pages/pages/edit.php:139
+#: includes/components/options-pages/pages/edit.php:140
 msgid "Manage options"
 msgstr ""
 
-#: includes/components/options-pages/pages/edit.php:143
+#: includes/components/options-pages/pages/edit.php:144
 msgid "Activate plugins"
 msgstr ""
 
-#: includes/components/options-pages/pages/edit.php:147
+#: includes/components/options-pages/pages/edit.php:148
 msgid "Create users"
 msgstr ""
 
-#: includes/components/options-pages/pages/edit.php:151
+#: includes/components/options-pages/pages/edit.php:152
 msgid "Switch themes"
 msgstr ""
 
-#: includes/components/options-pages/pages/edit.php:155
+#: includes/components/options-pages/pages/edit.php:156
 msgid "Edit pages"
 msgstr ""
 
-#: includes/components/options-pages/pages/edit.php:159
+#: includes/components/options-pages/pages/edit.php:160
 msgid "Edit posts"
 msgstr ""
 
-#: includes/components/options-pages/pages/edit.php:163
+#: includes/components/options-pages/pages/edit.php:164
 msgid "Upload files"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:178
-#: includes/modules/custom-content-types/inc/pages/edit.php:153
-msgid "Dashboard"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:182
-#: includes/modules/custom-content-types/inc/pages/edit.php:157
-msgid "First Separator"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:194
-#: includes/modules/custom-content-types/inc/pages/edit.php:169
-msgid "Links"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:198
-#: includes/modules/custom-content-types/inc/pages/edit.php:173
-#: includes/modules/profile-builder/inc/templates/admin/settings.php:24
-msgid "Pages"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:206
-#: includes/modules/custom-content-types/inc/pages/edit.php:181
-msgid "Second Separator"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:210
-#: includes/modules/custom-content-types/inc/pages/edit.php:185
-msgid "Appearance"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:214
-#: includes/modules/custom-content-types/inc/pages/edit.php:189
-msgid "Plugins"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:222
-#: includes/modules/custom-content-types/inc/pages/edit.php:197
-msgid "Tools"
-msgstr ""
-
-#: includes/components/options-pages/pages/edit.php:230
-#: includes/modules/custom-content-types/inc/pages/edit.php:205
-msgid "Third Separator"
 msgstr ""
 
 #: includes/components/options-pages/pages/list.php:46
@@ -7984,13 +8006,13 @@ msgid ""
 msgstr ""
 
 #: includes/components/options-pages/templates/edit.php:52
-#: includes/components/post-types/templates/edit.php:216
+#: includes/components/post-types/templates/edit.php:225
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:98
 msgid "Menu Icon"
 msgstr ""
 
 #: includes/components/options-pages/templates/edit.php:53
-#: includes/components/post-types/templates/edit.php:217
+#: includes/components/post-types/templates/edit.php:226
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:99
 msgid "Icon will be visible in admin menu"
 msgstr ""
@@ -8004,11 +8026,13 @@ msgid "Select capability type to restrict access to created page"
 msgstr ""
 
 #: includes/components/options-pages/templates/edit.php:77
+#: includes/components/post-types/templates/edit.php:215
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:108
 msgid "Menu position"
 msgstr ""
 
 #: includes/components/options-pages/templates/edit.php:78
+#: includes/components/post-types/templates/edit.php:216
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:109
 msgid "Select existing menu item to add page after"
 msgstr ""
@@ -8079,7 +8103,7 @@ msgid "Page Slug (and option name)"
 msgstr ""
 
 #: includes/components/post-types/data.php:407
-#: includes/components/taxonomies/data.php:606
+#: includes/components/taxonomies/data.php:607
 msgid ""
 "Post type name not found in request. Please check your data and try again."
 msgstr ""
@@ -8092,303 +8116,303 @@ msgstr ""
 msgid "Filter by meta data"
 msgstr ""
 
-#: includes/components/post-types/manager.php:465
+#: includes/components/post-types/manager.php:467
 msgid "JetEngine Post Type"
 msgstr ""
 
-#: includes/components/post-types/manager.php:470
+#: includes/components/post-types/manager.php:472
 msgid "Edit post type settings"
 msgstr ""
 
-#: includes/components/post-types/manager.php:669
+#: includes/components/post-types/manager.php:671
 msgid "Meta Value"
 msgstr ""
 
-#: includes/components/post-types/manager.php:673
+#: includes/components/post-types/manager.php:675
 #: includes/modules/forms/editor.php:325
 #: templates/forms/admin/components/form-preset-editor.php:46
 #: templates/forms/admin/components/form-preset-editor.php:95
 msgid "Post Terms"
 msgstr ""
 
-#: includes/components/post-types/manager.php:681
+#: includes/components/post-types/manager.php:683
 msgid "Custom Callback"
 msgstr ""
 
-#: includes/components/post-types/manager.php:695
+#: includes/components/post-types/manager.php:697
 #: includes/components/taxonomies/manager.php:586
 msgid "Singular name"
 msgstr ""
 
-#: includes/components/post-types/manager.php:696
+#: includes/components/post-types/manager.php:698
 msgid "Name for one object of this post type"
 msgstr ""
 
-#: includes/components/post-types/manager.php:703
+#: includes/components/post-types/manager.php:705
 msgid ""
 "The add new text. The default is `Add New` for both hierarchical and non-"
 "hierarchical post types"
 msgstr ""
 
-#: includes/components/post-types/manager.php:705
+#: includes/components/post-types/manager.php:707
 msgctxt "Default value for add_new label"
 msgid "Add New %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:710
+#: includes/components/post-types/manager.php:712
 msgid "Default is Add New Post/Add New Page"
 msgstr ""
 
-#: includes/components/post-types/manager.php:712
+#: includes/components/post-types/manager.php:714
 msgctxt "Default value for add_new_item label"
 msgid "Add New %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:716
+#: includes/components/post-types/manager.php:718
 msgid "New Item"
 msgstr ""
 
-#: includes/components/post-types/manager.php:717
+#: includes/components/post-types/manager.php:719
 msgid "Default is New Post/New Page"
 msgstr ""
 
-#: includes/components/post-types/manager.php:719
+#: includes/components/post-types/manager.php:721
 msgctxt "Default value for new_item label"
 msgid "New %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:724
+#: includes/components/post-types/manager.php:726
 msgid "Default is Edit Post/Edit Page"
 msgstr ""
 
-#: includes/components/post-types/manager.php:726
+#: includes/components/post-types/manager.php:728
 msgctxt "Default value for edit_item label"
 msgid "Edit %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:731
+#: includes/components/post-types/manager.php:733
 msgid "Default is View Post/View Page"
 msgstr ""
 
-#: includes/components/post-types/manager.php:733
+#: includes/components/post-types/manager.php:735
 msgctxt "Default value for view_item label"
 msgid "View %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:737
+#: includes/components/post-types/manager.php:739
 msgid "All Items"
 msgstr ""
 
-#: includes/components/post-types/manager.php:738
+#: includes/components/post-types/manager.php:740
 msgid "String for the submenu"
 msgstr ""
 
-#: includes/components/post-types/manager.php:740
+#: includes/components/post-types/manager.php:742
 msgctxt "Default value for all_items label"
 msgid "All %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:744
+#: includes/components/post-types/manager.php:746
 msgid "Search for items"
 msgstr ""
 
-#: includes/components/post-types/manager.php:745
+#: includes/components/post-types/manager.php:747
 msgid "Default is Search Posts/Search Pages"
 msgstr ""
 
-#: includes/components/post-types/manager.php:747
+#: includes/components/post-types/manager.php:749
 msgctxt "Default value for search_items label"
 msgid "Search for %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:751
+#: includes/components/post-types/manager.php:753
 msgid "Parent Item"
 msgstr ""
 
-#: includes/components/post-types/manager.php:752
+#: includes/components/post-types/manager.php:754
 msgid ""
 "This string isn`t used on non-hierarchical types. In hierarchical ones the "
 "default is `Parent Page:`"
 msgstr ""
 
-#: includes/components/post-types/manager.php:754
-#: includes/components/post-types/manager.php:761
+#: includes/components/post-types/manager.php:756
+#: includes/components/post-types/manager.php:763
 msgctxt "Default value for parent_item_colon label"
 msgid "Parent %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:758
+#: includes/components/post-types/manager.php:760
 msgid "Not found"
 msgstr ""
 
-#: includes/components/post-types/manager.php:759
+#: includes/components/post-types/manager.php:761
 msgid "Default is No posts found/No pages found"
 msgstr ""
 
-#: includes/components/post-types/manager.php:765
+#: includes/components/post-types/manager.php:767
 msgid "Not found in trash"
 msgstr ""
 
-#: includes/components/post-types/manager.php:766
+#: includes/components/post-types/manager.php:768
 msgid "Default is No posts found in Trash/No pages found in Trash"
 msgstr ""
 
-#: includes/components/post-types/manager.php:768
+#: includes/components/post-types/manager.php:770
 #, php-format
 msgctxt "Default value for not_found_in_trash label"
 msgid "No %s% found in trash"
 msgstr ""
 
-#: includes/components/post-types/manager.php:772
+#: includes/components/post-types/manager.php:774
 msgid "Admin Menu"
 msgstr ""
 
-#: includes/components/post-types/manager.php:773
+#: includes/components/post-types/manager.php:775
 msgid "Default is the same as `name`"
 msgstr ""
 
-#: includes/components/post-types/manager.php:775
+#: includes/components/post-types/manager.php:777
 msgctxt "Default value for menu_name label"
 msgid "%s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:779
+#: includes/components/post-types/manager.php:781
 msgid "Add New on Toolbar"
 msgstr ""
 
-#: includes/components/post-types/manager.php:780
+#: includes/components/post-types/manager.php:782
 msgid "String for use in New in Admin menu bar"
 msgstr ""
 
-#: includes/components/post-types/manager.php:782
+#: includes/components/post-types/manager.php:784
 msgctxt "Default value for name_admin_bar label"
 msgid "%s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:787
+#: includes/components/post-types/manager.php:789
 msgid "Default is Featured Image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:789
+#: includes/components/post-types/manager.php:791
 msgctxt "Default value for featured_image label"
 msgid "Featured Image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:793
+#: includes/components/post-types/manager.php:795
 msgid "Set Featured Image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:794
+#: includes/components/post-types/manager.php:796
 msgid "Default is Set featured image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:796
+#: includes/components/post-types/manager.php:798
 msgctxt "Default value for set_featured_image label"
 msgid "Set featured image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:800
+#: includes/components/post-types/manager.php:802
 msgid "Remove Featured Image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:801
+#: includes/components/post-types/manager.php:803
 msgid "Default is Remove featured image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:803
+#: includes/components/post-types/manager.php:805
 msgctxt "Default value for remove_featured_image label"
 msgid "Remove featured image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:807
+#: includes/components/post-types/manager.php:809
 msgid "Use Featured Image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:808
+#: includes/components/post-types/manager.php:810
 msgid "Default is Use as featured image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:810
+#: includes/components/post-types/manager.php:812
 msgctxt "Default value for use_featured_image label"
 msgid "Use featured image"
 msgstr ""
 
-#: includes/components/post-types/manager.php:814
+#: includes/components/post-types/manager.php:816
 msgid "The post type archive label used in nav menus"
 msgstr ""
 
-#: includes/components/post-types/manager.php:815
+#: includes/components/post-types/manager.php:817
 msgid "String for use with archives in nav menus"
 msgstr ""
 
-#: includes/components/post-types/manager.php:817
+#: includes/components/post-types/manager.php:819
 msgctxt "Default value for archives label"
 msgid "%s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:821
+#: includes/components/post-types/manager.php:823
 msgid "Insert into post"
 msgstr ""
 
-#: includes/components/post-types/manager.php:822
+#: includes/components/post-types/manager.php:824
 msgid "String for the media frame button"
 msgstr ""
 
-#: includes/components/post-types/manager.php:824
+#: includes/components/post-types/manager.php:826
 msgctxt "Default value for insert_into_item label"
 msgid "Insert into %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:828
+#: includes/components/post-types/manager.php:830
 msgid "Uploaded to this post"
 msgstr ""
 
-#: includes/components/post-types/manager.php:829
+#: includes/components/post-types/manager.php:831
 msgid "String for the media frame filter"
 msgstr ""
 
-#: includes/components/post-types/manager.php:831
+#: includes/components/post-types/manager.php:833
 msgctxt "Default value for uploaded_to_this_item label"
 msgid "Uploaded to this %s%"
 msgstr ""
 
-#: includes/components/post-types/manager.php:862
+#: includes/components/post-types/manager.php:864
 msgid "Editor"
 msgstr ""
 
-#: includes/components/post-types/manager.php:870
+#: includes/components/post-types/manager.php:872
 msgid "Revisions"
 msgstr ""
 
-#: includes/components/post-types/manager.php:874
+#: includes/components/post-types/manager.php:876
 msgid "Trackbacks"
 msgstr ""
 
-#: includes/components/post-types/manager.php:886
+#: includes/components/post-types/manager.php:888
 msgid "Page Attributes"
 msgstr ""
 
-#: includes/components/post-types/manager.php:890
+#: includes/components/post-types/manager.php:892
 msgid "Thumbnail (Featured Image)"
 msgstr ""
 
-#: includes/components/post-types/manager.php:894
+#: includes/components/post-types/manager.php:896
 msgid "Custom Fields"
 msgstr ""
 
-#: includes/components/post-types/manager.php:898
+#: includes/components/post-types/manager.php:900
 msgid "Post Formats"
 msgstr ""
 
-#: includes/components/post-types/manager.php:971
+#: includes/components/post-types/manager.php:973
 msgid "Please, set post type name"
 msgstr ""
 
-#: includes/components/post-types/manager.php:972
+#: includes/components/post-types/manager.php:974
 msgid "Please, set post type slug"
 msgstr ""
 
-#: includes/components/post-types/manager.php:973
+#: includes/components/post-types/manager.php:975
 msgid "Post type updated"
 msgstr ""
 
@@ -8408,126 +8432,126 @@ msgstr ""
 msgid "Add Post Type"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:162
+#: includes/components/post-types/pages/edit.php:164
 msgid "Maximum 20 characters length"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:166
+#: includes/components/post-types/pages/edit.php:168
 msgid "Creating custom post type with JetEngine"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:170
+#: includes/components/post-types/pages/edit.php:172
 msgid "How to display date in an admin column"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:174
+#: includes/components/post-types/pages/edit.php:176
 msgid ""
 "How to use custom callback to display needed information in admin columns"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:178
+#: includes/components/post-types/pages/edit.php:180
 msgid "How to set the visibility of meta fields using conditional logic"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:196
+#: includes/components/post-types/pages/edit.php:198
 msgid "Format date (from timestamp)"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:199
-#: includes/components/post-types/pages/edit.php:214
-#: includes/components/post-types/pages/edit.php:224
-#: includes/components/post-types/pages/edit.php:246
-#: includes/components/post-types/pages/edit.php:266
-#: includes/components/post-types/pages/edit.php:281
-#: includes/components/post-types/pages/edit.php:296
-#: includes/components/post-types/pages/edit.php:315
+#: includes/components/post-types/pages/edit.php:201
+#: includes/components/post-types/pages/edit.php:216
+#: includes/components/post-types/pages/edit.php:226
+#: includes/components/post-types/pages/edit.php:248
+#: includes/components/post-types/pages/edit.php:268
+#: includes/components/post-types/pages/edit.php:283
+#: includes/components/post-types/pages/edit.php:298
+#: includes/components/post-types/pages/edit.php:317
 msgid "Set field"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:200
+#: includes/components/post-types/pages/edit.php:202
 msgid "Meta field to get date from"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:204
+#: includes/components/post-types/pages/edit.php:206
 msgid "Set format"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:211
+#: includes/components/post-types/pages/edit.php:213
 msgid "Get linked post title by post ID"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:215
-#: includes/components/post-types/pages/edit.php:225
+#: includes/components/post-types/pages/edit.php:217
+#: includes/components/post-types/pages/edit.php:227
 msgid "Meta field to get post ID from"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:221
+#: includes/components/post-types/pages/edit.php:223
 msgid "Get linked post title by post ID (for legacy relations)"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:231
+#: includes/components/post-types/pages/edit.php:233
 msgid "Get related items"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:236
+#: includes/components/post-types/pages/edit.php:238
 msgid "Select relation to get items from"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:243
+#: includes/components/post-types/pages/edit.php:245
 msgid "Render human-readable value from switcher field"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:247
-#: includes/components/post-types/pages/edit.php:267
-#: includes/components/post-types/pages/edit.php:282
-#: includes/components/post-types/pages/edit.php:297
-#: includes/components/post-types/pages/edit.php:316
+#: includes/components/post-types/pages/edit.php:249
+#: includes/components/post-types/pages/edit.php:269
+#: includes/components/post-types/pages/edit.php:284
+#: includes/components/post-types/pages/edit.php:299
+#: includes/components/post-types/pages/edit.php:318
 msgid "Meta field to get value from"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:251
+#: includes/components/post-types/pages/edit.php:253
 msgid "Label if enabled"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:252
+#: includes/components/post-types/pages/edit.php:254
 msgid "Show this if switcher is enabled"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:256
+#: includes/components/post-types/pages/edit.php:258
 msgid "Label if disabled"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:257
+#: includes/components/post-types/pages/edit.php:259
 msgid "Show this if switcher is disabled"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:263
+#: includes/components/post-types/pages/edit.php:265
 msgid "Render human-readable value from checkbox field"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:272
-#: includes/components/post-types/pages/edit.php:321
+#: includes/components/post-types/pages/edit.php:274
+#: includes/components/post-types/pages/edit.php:323
 msgid "If multiple values checked - them will be separated with this"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:278
+#: includes/components/post-types/pages/edit.php:280
 msgid "Render image tag by post thumbnail or image from meta"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:287
-#: includes/components/post-types/pages/edit.php:302
+#: includes/components/post-types/pages/edit.php:289
+#: includes/components/post-types/pages/edit.php:304
 msgid "Image size (numeric value)"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:293
+#: includes/components/post-types/pages/edit.php:295
 msgid "Render images tags from gallery field"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:308
+#: includes/components/post-types/pages/edit.php:310
 msgid "Get menu order value"
 msgstr ""
 
-#: includes/components/post-types/pages/edit.php:312
+#: includes/components/post-types/pages/edit.php:314
 msgid "Render human-readable value from select field"
 msgstr ""
 
@@ -8752,119 +8776,119 @@ msgstr ""
 msgid "Whether the post type is hierarchical (e.g. page)"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:208
+#: includes/components/post-types/templates/edit.php:207
 msgid "Menu Position"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:209
+#: includes/components/post-types/templates/edit.php:208
 msgid "The position in the menu order the post type should appear"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:227
+#: includes/components/post-types/templates/edit.php:236
 msgid "Supports"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:228
+#: includes/components/post-types/templates/edit.php:237
 msgid "Registers support of certain feature(s) for a current post type"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:243
+#: includes/components/post-types/templates/edit.php:252
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:357
 msgid "Admin Columns"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:266
+#: includes/components/post-types/templates/edit.php:275
 msgid "Current column title. Will be shown at the top of the posts list table"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:275
+#: includes/components/post-types/templates/edit.php:284
 msgid "Select type of data to fill column cells"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:285
+#: includes/components/post-types/templates/edit.php:294
 msgid "Custom field name to get value from"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:301
+#: includes/components/post-types/templates/edit.php:310
 msgid "Taxonomy slug to get post terms from"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:317
+#: includes/components/post-types/templates/edit.php:326
 msgid "Custom function name to get column cell value from"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:334
+#: includes/components/post-types/templates/edit.php:343
 msgid "Select from existing callbacks"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:339
+#: includes/components/post-types/templates/edit.php:348
 msgid "Column order"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:340
+#: includes/components/post-types/templates/edit.php:349
 msgid "Column order. Should be a positive integer"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:349
+#: includes/components/post-types/templates/edit.php:358
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:376
 msgid "Text to add before column cell value"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:358
+#: includes/components/post-types/templates/edit.php:367
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:383
 msgid "Text to add after column cell value"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:366
+#: includes/components/post-types/templates/edit.php:375
 msgid "Is Sortable"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:367
+#: includes/components/post-types/templates/edit.php:376
 msgid "Make this column sortable"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:381
+#: includes/components/post-types/templates/edit.php:390
 msgid "By field"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:382
+#: includes/components/post-types/templates/edit.php:391
 msgid ""
 "Sort can be done only by meta field value. Please set field name to sort "
 "posts by. If you are using `jet_engine_custom_cb_menu_order` callback leave "
 "this field empty"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:402
+#: includes/components/post-types/templates/edit.php:411
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:395
 msgid "Is Numeric Field"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:403
+#: includes/components/post-types/templates/edit.php:412
 #: includes/modules/custom-content-types/inc/templates/admin/edit.php:396
 msgid ""
 "Check this if field contain numbers. By default sorting will be alphabetical."
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:427
+#: includes/components/post-types/templates/edit.php:436
 msgid "Admin Filters"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:469
+#: includes/components/post-types/templates/edit.php:478
 #: includes/components/taxonomies/templates/edit.php:250
 msgid "Reset to defaults"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:525
-#: includes/components/query-builder/templates/admin/dynamic-args.php:71
+#: includes/components/post-types/templates/edit.php:534
+#: includes/components/query-builder/templates/admin/dynamic-args.php:83
 #: includes/modules/maps-listings/inc/settings.php:212
 msgid "Apply"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:532
+#: includes/components/post-types/templates/edit.php:541
 msgid "Select one of predefined callbacks"
 msgstr ""
 
-#: includes/components/post-types/templates/edit.php:536
+#: includes/components/post-types/templates/edit.php:545
 msgid "Click on callback name to paste it."
 msgstr ""
 
@@ -8997,35 +9021,6 @@ msgstr ""
 msgid "Query Has Not Items"
 msgstr ""
 
-#: includes/components/query-builder/dynamic-tags/query-count.php:17
-#: includes/components/query-builder/macros/query-count.php:19
-msgid "Query Results Count"
-msgstr ""
-
-#: includes/components/query-builder/dynamic-tags/query-count.php:41
-#: includes/components/query-builder/macros/query-count.php:28
-#: includes/components/query-builder/macros/query-results.php:29
-#: includes/components/query-builder/queries/base.php:241
-#: includes/modules/custom-content-types/inc/templates/admin/query-editor.php:124
-#: includes/modules/rest-api-listings/inc/templates/admin/query-editor.php:24
-msgid "Query"
-msgstr ""
-
-#: includes/components/query-builder/dynamic-tags/query-count.php:50
-#: includes/components/query-builder/macros/query-count.php:33
-msgid "Returned Count"
-msgstr ""
-
-#: includes/components/query-builder/dynamic-tags/query-count.php:55
-#: includes/components/query-builder/macros/query-count.php:37
-msgid "Total query results count"
-msgstr ""
-
-#: includes/components/query-builder/dynamic-tags/query-count.php:56
-#: includes/components/query-builder/macros/query-count.php:38
-msgid "Currently visible query results count (per page)"
-msgstr ""
-
 #: includes/components/query-builder/editor/comments.php:19
 #: includes/components/query-builder/templates/admin/types/comments.php:8
 msgid "Comments Query"
@@ -9096,6 +9091,14 @@ msgstr ""
 msgid "Query Results"
 msgstr ""
 
+#: includes/components/query-builder/macros/query-results.php:29
+#: includes/components/query-builder/queries/base.php:241
+#: includes/components/query-builder/traits/query-count.php:19
+#: includes/modules/custom-content-types/inc/templates/admin/query-editor.php:124
+#: includes/modules/rest-api-listings/inc/templates/admin/query-editor.php:24
+msgid "Query"
+msgstr ""
+
 #: includes/components/query-builder/macros/query-results.php:48
 msgid "List of items IDs"
 msgstr ""
@@ -9112,146 +9115,146 @@ msgstr ""
 msgid "Comma-separated fields list"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:334
-#: includes/components/query-builder/manager.php:340
+#: includes/components/query-builder/manager.php:335
+#: includes/components/query-builder/manager.php:341
 msgid "Select query..."
 msgstr ""
 
-#: includes/components/query-builder/manager.php:380
+#: includes/components/query-builder/manager.php:381
 msgid "Order by post id"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:384
+#: includes/components/query-builder/manager.php:385
 msgid "By author"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:388
+#: includes/components/query-builder/manager.php:389
 msgid "By title"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:392
+#: includes/components/query-builder/manager.php:393
 msgid "By post name (post slug)"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:396
+#: includes/components/query-builder/manager.php:397
 msgid "By post type (available since version 4.0)"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:400
+#: includes/components/query-builder/manager.php:401
 msgid "By date"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:404
+#: includes/components/query-builder/manager.php:405
 msgid "By last modified date"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:408
+#: includes/components/query-builder/manager.php:409
 msgid "By post/page parent id"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:412
-#: includes/modules/custom-content-types/inc/manager.php:362
+#: includes/components/query-builder/manager.php:413
+#: includes/modules/custom-content-types/inc/manager.php:367
 msgid "Random order"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:416
+#: includes/components/query-builder/manager.php:417
 msgid "By number of comments"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:420
+#: includes/components/query-builder/manager.php:421
 msgid "By search terms relevance"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:424
+#: includes/components/query-builder/manager.php:425
 msgid "By Page Order"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:428
+#: includes/components/query-builder/manager.php:429
 msgid "Order by string meta value"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:432
+#: includes/components/query-builder/manager.php:433
 msgid "Order by numeric meta value"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:436
-#: includes/components/query-builder/manager.php:554
+#: includes/components/query-builder/manager.php:437
+#: includes/components/query-builder/manager.php:555
 msgid "Order by meta clause"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:440
+#: includes/components/query-builder/manager.php:441
 msgid "Preserve post ID order given in the `Post in` option"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:444
+#: includes/components/query-builder/manager.php:445
 msgid "Preserve post slug order given in the `Post Name in` option"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:448
+#: includes/components/query-builder/manager.php:449
 msgid "Preserve post parent order given in the `Post Parent in` option"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:452
+#: includes/components/query-builder/manager.php:453
 msgid "No order"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:461
+#: includes/components/query-builder/manager.php:462
 msgid "By user ID"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:465
+#: includes/components/query-builder/manager.php:466
 msgid "By user display name"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:469
+#: includes/components/query-builder/manager.php:470
 msgid "By user name"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:473
+#: includes/components/query-builder/manager.php:474
 msgid "By the included list of user IDs (requires the Include parameter)"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:477
+#: includes/components/query-builder/manager.php:478
 msgid "By user login"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:481
+#: includes/components/query-builder/manager.php:482
 msgid "By user nicename"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:485
+#: includes/components/query-builder/manager.php:486
 msgid "By user email"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:489
+#: includes/components/query-builder/manager.php:490
 msgid "By user url"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:493
+#: includes/components/query-builder/manager.php:494
 msgid "By user registered date"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:497
+#: includes/components/query-builder/manager.php:498
 msgid "By user post count"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:505
+#: includes/components/query-builder/manager.php:506
 msgid "Numeric meta value"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:546
+#: includes/components/query-builder/manager.php:547
 msgid "Match the order of the `Include` param"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:550
+#: includes/components/query-builder/manager.php:551
 msgid "Match the order of the `Slug` param"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:588
+#: includes/components/query-builder/manager.php:589
 msgid "Please, set query name"
 msgstr ""
 
-#: includes/components/query-builder/manager.php:589
+#: includes/components/query-builder/manager.php:590
 msgid "Query updated"
 msgstr ""
 
@@ -9279,7 +9282,7 @@ msgstr ""
 msgid "JetEngine Query Builder overview"
 msgstr ""
 
-#: includes/components/query-builder/pages/list.php:62 jet-engine.php:320
+#: includes/components/query-builder/pages/list.php:62 jet-engine.php:348
 msgid "Queries List"
 msgstr ""
 
@@ -9348,7 +9351,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: includes/components/query-builder/templates/admin/dynamic-args.php:51
+#: includes/components/query-builder/templates/admin/dynamic-args.php:63
 msgid "All Macros"
 msgstr ""
 
@@ -9386,25 +9389,34 @@ msgid ""
 "filter settings and ID of appropriate widget where this query is used."
 msgstr ""
 
-#: includes/components/query-builder/templates/admin/edit.php:121
+#: includes/components/query-builder/templates/admin/edit.php:53
+msgid "Warning!"
+msgstr ""
+
+#: includes/components/query-builder/templates/admin/edit.php:54
+msgid ""
+"Please make sure you set up the same ID for any filters used with this query."
+msgstr ""
+
+#: includes/components/query-builder/templates/admin/edit.php:126
 msgid "Preview from page"
 msgstr ""
 
-#: includes/components/query-builder/templates/admin/edit.php:122
+#: includes/components/query-builder/templates/admin/edit.php:127
 msgid "Select post/page to preview current query from"
 msgstr ""
 
-#: includes/components/query-builder/templates/admin/edit.php:137
+#: includes/components/query-builder/templates/admin/edit.php:142
 msgid "Preview query string"
 msgstr ""
 
-#: includes/components/query-builder/templates/admin/edit.php:138
+#: includes/components/query-builder/templates/admin/edit.php:143
 msgid ""
 "Enter GET parameters string to preview current query with. Example: "
 "<i>arg_1=10&arg_2=text-value</i>"
 msgstr ""
 
-#: includes/components/query-builder/templates/admin/edit.php:147
+#: includes/components/query-builder/templates/admin/edit.php:152
 msgid "Results Count:"
 msgstr ""
 
@@ -10396,6 +10408,48 @@ msgstr ""
 msgid "When used with number, defines the page of results to return"
 msgstr ""
 
+#: includes/components/query-builder/traits/query-count.php:13
+msgid "Query Results Count"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:24
+msgid "Returned Count"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:29
+#: includes/components/query-builder/traits/query-count.php:51
+msgid "Total query results count"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:30
+msgid "Currently visible query results count (per page)"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:31
+msgid "Custom format for several counters"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:38
+msgid "Showing %start-item%-%end-item% of %total% items"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:49
+#: templates/forms/admin/notifications.php:310
+msgid "Available macros:"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:52
+msgid "Currently visible query results count"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:53
+msgid "Start item index on page"
+msgstr ""
+
+#: includes/components/query-builder/traits/query-count.php:54
+msgid "End item index on page"
+msgstr ""
+
 #: includes/components/relations/admin-filters.php:135
 #: includes/components/relations/filters.php:104
 #: includes/components/relations/forms/jet-engine/preset.php:90
@@ -10461,7 +10515,24 @@ msgstr ""
 msgid "Connect %s"
 msgstr ""
 
-#: includes/components/relations/controls/base.php:338
+#: includes/components/relations/controls/base.php:322
+msgid "View"
+msgstr ""
+
+#: includes/components/relations/controls/base.php:323
+msgid "Disconnect"
+msgstr ""
+
+#: includes/components/relations/controls/base.php:324
+#: includes/modules/custom-content-types/inc/list-table.php:209
+msgid "Delete Item"
+msgstr ""
+
+#: includes/components/relations/controls/base.php:326
+msgid "Are you sure? This item will be removed from your website."
+msgstr ""
+
+#: includes/components/relations/controls/base.php:348
 msgid ""
 "Relations management are not allowed at this moment. You need to update post "
 "to edit relations"
@@ -10840,7 +10911,7 @@ msgstr ""
 msgid "JetEngine relations overview"
 msgstr ""
 
-#: includes/components/relations/pages/list.php:67 jet-engine.php:340
+#: includes/components/relations/pages/list.php:67 jet-engine.php:368
 msgid "Relations List"
 msgstr ""
 
@@ -11332,7 +11403,7 @@ msgstr ""
 msgid "Please change taxonomy slug. Current is reserved for WordPress needs"
 msgstr ""
 
-#: includes/components/taxonomies/data.php:703
+#: includes/components/taxonomies/data.php:704
 #: includes/components/taxonomies/rest-api/copy-taxonomy.php:51
 #: includes/components/taxonomies/rest-api/get-taxonomy.php:47
 msgid "Taxonomy not found"
@@ -11895,11 +11966,11 @@ msgstr ""
 msgid "Query by posts with types"
 msgstr ""
 
-#: includes/dashboard/manager.php:152
+#: includes/dashboard/manager.php:155
 msgid "Saved!"
 msgstr ""
 
-#: includes/dashboard/manager.php:153
+#: includes/dashboard/manager.php:156
 msgid ""
 "Saved! One of activated/deactivated modules requires page reloading. Page "
 "will be reloaded automatically in few seconds."
@@ -12483,7 +12554,7 @@ msgstr ""
 #: includes/modules/custom-content-types/custom-content-types.php:35
 #: includes/modules/custom-content-types/inc/dashboard/skins-export-import.php:116
 #: includes/modules/custom-content-types/inc/dashboard/skins-export-import.php:180
-#: includes/modules/custom-content-types/inc/manager.php:259
+#: includes/modules/custom-content-types/inc/manager.php:264
 #: includes/modules/custom-content-types/inc/relations/type.php:26
 msgid "Custom Content Types"
 msgstr ""
@@ -12562,6 +12633,14 @@ msgstr ""
 msgid "Please change Content Type slug. Current is already in use"
 msgstr ""
 
+#: includes/modules/custom-content-types/inc/delete-users.php:41
+msgid "JetEngine - Custom Content Types"
+msgstr ""
+
+#: includes/modules/custom-content-types/inc/delete-users.php:42
+msgid "Please note that this user has Custom Content Types items."
+msgstr ""
+
 #: includes/modules/custom-content-types/inc/elementor/controls/query-dialog.php:65
 #: includes/modules/custom-content-types/inc/elementor/manager.php:51
 msgid "Query Settings"
@@ -12616,7 +12695,7 @@ msgstr ""
 
 #: includes/modules/custom-content-types/inc/factory.php:212
 #: includes/modules/custom-content-types/inc/listings/manager.php:309
-#: includes/modules/custom-content-types/inc/manager.php:311
+#: includes/modules/custom-content-types/inc/manager.php:316
 msgid "Item ID"
 msgstr ""
 
@@ -12735,10 +12814,6 @@ msgstr ""
 msgid "Quick Edit"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/list-table.php:209
-msgid "Delete Item"
-msgstr ""
-
 #: includes/modules/custom-content-types/inc/list-table.php:211
 msgid "Duplicate Item"
 msgstr ""
@@ -12794,31 +12869,31 @@ msgstr ""
 msgid "Custom Content Type Dynamic Image"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/manager.php:295
+#: includes/modules/custom-content-types/inc/manager.php:300
 msgid "Please, set content type title"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/manager.php:296
+#: includes/modules/custom-content-types/inc/manager.php:301
 msgid "Please, set content type slug"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/manager.php:297
+#: includes/modules/custom-content-types/inc/manager.php:302
 msgid "Content type updated"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/manager.php:320
+#: includes/modules/custom-content-types/inc/manager.php:325
 msgid "Single Post ID"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/manager.php:328
+#: includes/modules/custom-content-types/inc/manager.php:333
 msgid "Item Author"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/manager.php:335
+#: includes/modules/custom-content-types/inc/manager.php:340
 msgid "Created Date"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/manager.php:342
+#: includes/modules/custom-content-types/inc/manager.php:347
 msgid "Modified Date"
 msgstr ""
 
@@ -12859,7 +12934,7 @@ msgid "Are you sure? All unsaved changes will be lost."
 msgstr ""
 
 #: includes/modules/custom-content-types/inc/pages/edit-content-type-item.php:362
-#: includes/modules/custom-content-types/inc/type-pages.php:291
+#: includes/modules/custom-content-types/inc/type-pages.php:296
 msgid "Are you sure you want to delete this item?"
 msgstr ""
 
@@ -12879,11 +12954,11 @@ msgstr ""
 msgid "Add Content Type"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/pages/edit.php:128
+#: includes/modules/custom-content-types/inc/pages/edit.php:129
 msgid "How to Create a Custom Content Type"
 msgstr ""
 
-#: includes/modules/custom-content-types/inc/pages/edit.php:132
+#: includes/modules/custom-content-types/inc/pages/edit.php:133
 msgid "How to choose: Custom Content Type vs Custom Post Type"
 msgstr ""
 
@@ -13804,31 +13879,31 @@ msgstr ""
 msgid "Days of Week"
 msgstr ""
 
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:42
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:44
 msgid "Dynamic Visibility"
 msgstr ""
 
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:50
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:52
 msgid "Enable"
 msgstr ""
 
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:61
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:63
 msgid "Visibility condition type"
 msgstr ""
 
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:65
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:67
 msgid "Show element if condition met"
 msgstr ""
 
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:66
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:68
 msgid "Hide element if condition met"
 msgstr ""
 
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:84
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:86
 msgid "Conditions"
 msgstr ""
 
-#: includes/modules/dynamic-visibility/inc/elementor-settings.php:121
+#: includes/modules/dynamic-visibility/inc/elementor-settings.php:123
 msgid "Resize other columns"
 msgstr ""
 
@@ -14946,88 +15021,88 @@ msgstr ""
 msgid "Slides to show"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:42
+#: includes/modules/listing-injections/listing-injections.php:44
 msgid "Listing Grid injections"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:705
+#: includes/modules/listing-injections/listing-injections.php:727
 msgid "Inject alternative listing items"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:715
+#: includes/modules/listing-injections/listing-injections.php:737
 msgid "Listing template"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:727
+#: includes/modules/listing-injections/listing-injections.php:749
 msgid "Inject on"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:731
+#: includes/modules/listing-injections/listing-injections.php:753
 msgid "On each N item"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:732
+#: includes/modules/listing-injections/listing-injections.php:754
 msgid "Depends on item meta field value"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:733
+#: includes/modules/listing-injections/listing-injections.php:755
 msgid "If post has terms"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:734
+#: includes/modules/listing-injections/listing-injections.php:756
 msgid "If post type is"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:735
+#: includes/modules/listing-injections/listing-injections.php:757
 msgid "If term taxonomy is"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:744
+#: includes/modules/listing-injections/listing-injections.php:766
 msgid "Item number"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:750
+#: includes/modules/listing-injections/listing-injections.php:772
 msgid "Use negative numbers to start count from the last item"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:760
+#: includes/modules/listing-injections/listing-injections.php:782
 msgid "Start from first"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:763
+#: includes/modules/listing-injections/listing-injections.php:785
 msgid ""
 "If checked - alternative item will be injected on first item and then on "
 "each N item after first. If not - on each N item from start. If \"Item number"
 "\" is negative converts into \"Start from last\""
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:840
+#: includes/modules/listing-injections/listing-injections.php:862
 msgid "Comma-separated string of term ids or slugs"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:866
+#: includes/modules/listing-injections/listing-injections.php:888
 msgid "Inject this item only once"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:877
+#: includes/modules/listing-injections/listing-injections.php:899
 msgid "Column span"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:880
+#: includes/modules/listing-injections/listing-injections.php:902
 msgid "Note: Can't be bigger than Columns Number value"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:895
+#: includes/modules/listing-injections/listing-injections.php:917
 msgid "Static item"
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:898
+#: includes/modules/listing-injections/listing-injections.php:920
 msgid ""
 "If checked - alternative item will be injected without current post context. "
 "Use this to inject static items into listing."
 msgstr ""
 
-#: includes/modules/listing-injections/listing-injections.php:907
+#: includes/modules/listing-injections/listing-injections.php:929
 msgid "Select object to to use as default inside static item"
 msgstr ""
 
@@ -16696,11 +16771,11 @@ msgid ""
 "Callback not attached properly or success was not thrown during callback"
 msgstr ""
 
-#: jet-engine.php:325
+#: jet-engine.php:353
 msgid "Post Types List"
 msgstr ""
 
-#: jet-engine.php:335
+#: jet-engine.php:363
 msgid "Taxonomies List"
 msgstr ""
 
@@ -17781,10 +17856,6 @@ msgstr ""
 
 #: templates/forms/admin/notifications.php:308
 msgid "Content:"
-msgstr ""
-
-#: templates/forms/admin/notifications.php:310
-msgid "Available macros:"
 msgstr ""
 
 #: templates/forms/admin/notifications.php:325

@@ -1214,9 +1214,10 @@ class UniteCreatorExporter extends UniteCreatorExporterBase{
 						
 			$this->extractImportAddonFile($arrTempFile);
 			
-			//validate there is no php in uploaded file
-			UniteFunctionsUC::validatePHPInExtracted($this->pathImportAddon);
+			$objAssets = new UniteCreatorAssets();
 			
+			$objAssets->validateAllowedFilesInExtracted($this->pathImportAddon);
+						
 			$isSingle = $this->isExtractedAddonSingle();
 			
 			if($isSingle == true){

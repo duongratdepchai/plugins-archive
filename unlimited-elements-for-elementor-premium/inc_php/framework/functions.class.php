@@ -273,6 +273,23 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			return($arrValues);
 		}
 		
+		/**
+		 * convert posts array to assoc by ID
+		 */
+		public static function arrPostsToAssoc($arrPosts){
+			
+			if(empty($arrPosts))
+				return(array());
+			
+			$arrOutput = array();
+			foreach($arrPosts as $post){
+				
+				$arrOutput[$post->ID] = $post;
+			}
+			
+			return($arrOutput);
+		}
+		
 		
 		/**
 		 *
@@ -293,9 +310,10 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 					
 					if(!empty($field2))
 						$arrAssoc[$item[$field]] = $item[$field2];
-					else
+					else{
+												
 						$arrAssoc[$item[$field]] = $item;
-					
+					}
 				}
 			}
 		
@@ -2091,30 +2109,6 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		    return $arrErrors;
 		}
 		
-		/**
-		 * validate extracted files for unwanted files like php
-		 */
-		public static function validatePHPInExtracted($path, $isDelete = true){
-			
-			if(is_dir($path) == false)
-				return(false);
-			
-			$arrFiles = self::getFileListTree($path,"php");
-						
-			if(empty($arrFiles))
-				return(false);
-				
-			//if php files found - throw error and delete all files
-				
-			$firstFile = $arrFiles[0];
-			$filename = basename($firstFile);
-			
-			self::throwError("Found some dengerous files in the uploaded like <b>$filename</b>. ");
-			
-			if($isDelete == true)
-				self::deleteDir($path, false);
-			
-		}
 		
 		
 		public static function z________FILE_SYSTEM________(){}
@@ -2267,10 +2261,15 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 				
 				$filepath = $path.$file;
 				
-				if(is_dir($filepath)){
+				$isDir = is_dir($filepath);
+				
+				if($isDir == true){
+					
 					//add dirs
-					if(is_array($filetype) && array_search("dir", $filetype) !== false || !is_array($filetype) && $filetype == "dir")
+					if(is_array($filetype) && array_search("dir", $filetype) !== false || !is_array($filetype) && $filetype == "dir"){
 						$arrFiles[] = $filepath;
+					}
+					
 					$arrFiles = self::getFileListTree($filepath, $filetype, $arrFiles);
 				}
 
@@ -2283,6 +2282,9 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 					continue;
 				}
 				if(!empty($filetype) && is_array($filetype) == false && $filetype != $ext)
+					continue;
+				
+				if($isDir == true)
 					continue;
 				
 				$arrFiles[] = $filepath;
@@ -2713,26 +2715,26 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 			//year
 			if ($time_difference >= 60 * 60 * 24 * 365.242199)
-				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24 * 365.242199, 'years','year');
+				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24 * 365.242199, __('years',"unlimited-elements-for-elementor"),__('year',"unlimited-elements-for-elementor"));
 			
 			//month
 			if ($time_difference >= 60 * 60 * 24 * 30.4368499)
-				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24 * 30.4368499, 'months','month');
+				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24 * 30.4368499,__('months',"unlimited-elements-for-elementor"),__('month',"unlimited-elements-for-elementor"));
 			
 			//week
 			if ($time_difference >= 60 * 60 * 24 * 7)
-				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24 * 7, 'weeks','week');
+				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24 * 7, __('weeks',"unlimited-elements-for-elementor"),__('week',"unlimited-elements-for-elementor"));
 			
 			//day
 			if ($time_difference >= 60 * 60 * 24)
-				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24, 'days','day');
+				return self::getTimeAgoStringUnit($time_stamp, 60 * 60 * 24, __('days',"unlimited-elements-for-elementor"),__('day',"unlimited-elements-for-elementor"));
 			
 			//hour
 			if($time_difference >= 60 * 60)
-				return self::getTimeAgoStringUnit($time_stamp, 60 * 60, 'hours','hour');
+				return self::getTimeAgoStringUnit($time_stamp, 60 * 60, __('hours',"unlimited-elements-for-elementor") ,__('hour',"unlimited-elements-for-elementor"));
 			
 			//minute
-			return self::getTimeAgoStringUnit($time_stamp, 60, 'minutes','minute');
+			return self::getTimeAgoStringUnit($time_stamp, 60, __('minutes',"unlimited-elements-for-elementor"),__('minute',"unlimited-elements-for-elementor"));
 		}
 		
 		

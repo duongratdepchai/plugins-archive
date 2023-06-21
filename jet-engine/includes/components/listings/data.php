@@ -725,8 +725,11 @@ if ( ! class_exists( 'Jet_Engine_Listings_Data' ) ) {
 				return $this->default_object;
 			}
 
-			$default_object     = false;
-			$this->current_user = wp_get_current_user();
+			$default_object = false;
+
+			if ( ! $this->current_user ) {
+				$this->current_user = wp_get_current_user();
+			}
 
 			global $post;
 
@@ -1216,6 +1219,10 @@ if ( ! class_exists( 'Jet_Engine_Listings_Data' ) ) {
 
 			if ( ! $object ) {
 				$object = $this->get_current_object();
+			}
+
+			if ( ! $object || ! is_object( $object ) ) {
+				return null;
 			}
 
 			$class  = get_class( $object );

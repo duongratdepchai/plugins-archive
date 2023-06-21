@@ -541,7 +541,31 @@ console.log(arrItems);
 		";
 		
 		$arrParams[] = $this->createChildParam_code($key, $text);
-				
+
+		
+		//----- putAttrebutesJson() --------
+		
+		$key = "putAttributesJson()";
+		$text = "\n{# the options:  put_attributes_json(\"clean\"(optional),\"key\"(optional)) #}	\n
+		
+var strJsonAttr = {{put_attributes_json()}};
+var arrAttributes = JSON.parse(strJsonAttr);
+
+console.log(arrAttributes);
+
+
+//example with a single attribute
+
+var strJsonAttrSpecific = {{put_attributes_json(null, \"key\")}};
+var arrAttribute = JSON.parse(strJsonAttrSpecific);
+
+console.log(arrAttribute);
+
+		";
+		
+		$arrParams[] = $this->createChildParam_code($key, $text);
+		
+		
 		
 		return($arrParams);
 	}
@@ -976,7 +1000,7 @@ console.log(arrItems);
 	private function getChildParams_post_addTerms($arrParams){
 		
 		$strCode = "";
-		
+		$strCode .= "{# to show all terms for debug use: {{ ucfunc(\"put_post_terms_string\") }} #}\n\n";
 		$strCode .= "{# for get with custom fields write \"true\" in 3-th attribute: getPostTerms([param_prefix].id, \"post_tag\", true) #}\n\n";
 
 		$strCode .= "{% set terms = getPostTerms([param_prefix].id, \"post_tag\", false) %}\n\n";
@@ -1319,6 +1343,8 @@ console.log(arrItems);
 		$arrParams[] = $this->createChildParam("intro_full",null,array("raw_insert_text"=>"{{[param_name]|truncate(100)}}"));
 		
 		$arrParams[] = $this->createChildParam("link");
+		$arrParams[] = $this->createChildParam("link_attributes",null,array("raw_insert_text"=>"{{[param_name]|raw"));
+		
 		$arrParams[] = $this->createChildParam("date",null,array("raw_insert_text"=>"{{[param_name]|ucdate(\"d F Y, H:i\")|raw}}"));
 		$arrParams[] = $this->createChildParam("date_modified",null,array("raw_insert_text"=>"{{[param_name]|ucdate(\"d F Y, H:i\")|raw}}"));
 		$arrParams[] = $this->createChildParam("post_type",null,array("raw_insert_text"=>"{{[param_name]}}\n\n{{ucfunc(\"put_post_type_title\",[param_name])}}\n"));

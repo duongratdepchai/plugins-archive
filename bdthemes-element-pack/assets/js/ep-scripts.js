@@ -990,9 +990,10 @@ function returnCurrencySymbol(currency = null) {
                     });
 
                     bdtUIkit.util.on($this, 'hidden', function () {
-                        // debug last time - BDTU-011
-                        // console.log('ssss');
-                        // console.log(firedNotify);
+                        if(editMode){
+                            return;
+                        }
+
                         if (redirect_link == false && firedNotify <= 0) {
 
                             setTimeout( function(){
@@ -1506,24 +1507,20 @@ $(window).on('elementor/frontend/init', function () {
         options = {
           targets: firstSVG,
           d: [{ value: path || [] }],
-          easing: this.settings("easing_type")
-            ? this.settings("easing_type")
-            : "easeOutQuad",
-          direction: this.settings("direction")
-            ? this.settings("direction")
-            : "alternate",
-          loop: this.settings("loop") === "yes" ? true : false,
+          easing: 'easeOutQuad',
+          direction: 'alternate',
+          loop: this.settings('loop') === 'yes',
           duration:
-            this.settings("duration.size") !== ""
-              ? this.settings("duration.size")
+            this.settings('duration.size') !== ''
+              ? this.settings('duration.size')
               : 2000,
           delay:
-            this.settings("delay.size") !== ""
-              ? this.settings("delay.size")
+            this.settings('delay.size') !== ''
+              ? this.settings('delay.size')
               : 10,
           endDelay:
-            this.settings("end_delay.size") !== ""
-              ? this.settings("end_delay.size")
+            this.settings('end_delay.size') !== ''
+              ? this.settings('end_delay.size')
               : 10,
         };
         anime(options);
@@ -5935,9 +5932,32 @@ var widgetVideoAccordion = function ($scope, $) {
           let markerIsLinkable = [];
 
           // set region
-          options.region = self.settings("display_region")
-            ? self.settings("display_region")
-            : "world";
+          switch (self.settings("region_type")) {
+            case "continent":
+              options.region = self.settings("display_region_continent")
+                ? self.settings("display_region_continent")
+                : "002";
+              break;
+
+            case "subcontinent":
+              options.region = self.settings("display_region_sub_continent")
+                ? self.settings("display_region_sub_continent")
+                : "015";
+              break;
+
+            case "countries":
+              options.region = self.settings("display_region_countries")
+                ? self.settings("display_region_countries")
+                : "AU";
+              break;
+
+            default:
+              options.region = "world";
+              break;
+          }
+          // options.region = self.settings("display_region") ? self.settings("display_region") : "world";
+
+
           options.width = self.settings("width")
             ? self.settings("width").size
             : 600;
@@ -13673,19 +13693,7 @@ jQuery(document).ready(function () {
                     },
                 },
                 {
-                    data: "price_change_percentage_1h",
-                    render: function (data, type, row, meta) {
-                        return Number(data) === data && data % 1 !== 0 ? data.toFixed(2) + "%" : data + "%";
-                    },
-                },
-                {
                     data: "price_change_percentage_24h",
-                    render: function (data, type, row, meta) {
-                        return Number(data) === data && data % 1 !== 0 ? data.toFixed(2) + "%" : data + "%";
-                    },
-                },
-                {
-                    data: "price_change_percentage_7d",
                     render: function (data, type, row, meta) {
                         return Number(data) === data && data % 1 !== 0 ? data.toFixed(2) + "%" : data + "%";
                     },
@@ -13729,14 +13737,14 @@ jQuery(document).ready(function () {
                 searchable: false,
                 orderable: false,
                 //targets: [0, 8],
-                targets: [9],
+                targets: [7],
             }, ],
             //order: [[1, "asc"]],
             order: [
                 [0, "asc"]
             ],
             createdRow: function (row, data, index) {
-                let getCanvasElement = $("td", row).eq(9);
+                let getCanvasElement = $("td", row).eq(7);
                 //let canvas_id = $(getCanvasElement).find("canvas").attr("id");
                 let getHiddenData = $(getCanvasElement).find("input").val();
                 let splitData = getHiddenData.split(",");
@@ -13756,12 +13764,20 @@ jQuery(document).ready(function () {
                     labels.push(index);
                     dataPointvalue.push(Number(element));
                 });
+
+
                 const dataCharts = {
                     labels: labels,
                     datasets: [{
                         label: "",
-                        backgroundColor: "rgb(255, 99, 132)",
-                        borderColor: "rgb(255, 99, 132)",
+                        backgroundColor: "rgba(30,135,240,0.2)",
+                        borderColor: "#1e87f0",
+                        fill: true,
+                        lineTension: 0.4,
+                        pointStyle: 'circle',
+                        pointBackgroundColor: "#1e87f0",
+                        pointBorderWidth: 1,
+                        borderWidth: 2,
                         data: dataPointvalue,
                     }, ],
                 };
@@ -13775,7 +13791,7 @@ jQuery(document).ready(function () {
                                 display: false,
                             },
                             tooltip: {
-                                enabled: false
+                                enabled: true
                             }
                         },
                         scales: {
@@ -13805,7 +13821,8 @@ jQuery(document).ready(function () {
                     },
                 };
                 const chart = new Chart(dom_canvas_element, config);
-                chart.canvas.parentNode.style.width = "150px";
+                chart.canvas.parentNode.style.width = "100%";
+                chart.canvas.style.width = "100%";
                 chart.canvas.parentNode.style.height = "50px";
             },
         });
@@ -14697,7 +14714,7 @@ jQuery(document).ready(function () {
                     }
                     if (true == $settings.showCurrencyCurrentPrice) {
                         price_html = `<div class="bdt-crypto-currency-chart-price-l">
-                        <span>${amount}</span>
+                        <span class="price-int">${amount}</span>
                     </div>`;
                     }
                     if (true == $settings.showPriceChangePercentage) {
@@ -14745,12 +14762,21 @@ jQuery(document).ready(function () {
                         labels.push(index);
                         dataPointvalue.push(Number(element));
                     });
+
                     const dataCharts = {
                         labels: labels,
                         datasets: [{
                             label: "",
-                            backgroundColor: $settings.backgroundColor || "#777",
-                            borderColor: $settings.borderColor || "#777",
+                            // backgroundColor: $settings.backgroundColor || "#777",
+                            // borderColor: $settings.borderColor || "#777",
+                            backgroundColor: "rgba(30,135,240,0.2)",
+                            borderColor: "#1e87f0",
+                            fill: true,
+                            lineTension: 0.4,
+                            pointStyle: 'circle',
+                            pointBackgroundColor: "#1e87f0",
+                            pointBorderWidth: 1,
+                            borderWidth: 2,
                             data: dataPointvalue,
                         }, ],
                     };
@@ -14764,7 +14790,7 @@ jQuery(document).ready(function () {
                                     display: false,
                                 },
                                 tooltip: {
-                                    enabled: false
+                                    enabled: true
                                 }
                             },
                             scales: {
@@ -15060,8 +15086,16 @@ jQuery(document).ready(function () {
                         labels: labels,
                         datasets: [{
                             label: "",
-                            backgroundColor: $settings.backgroundColor || "#777",
-                            borderColor: $settings.borderColor || "#777",
+                            // backgroundColor: $settings.backgroundColor || "#777",
+                            // borderColor: $settings.borderColor || "#777",
+                            backgroundColor: "rgba(30,135,240,0.2)",
+                            borderColor: "#1e87f0",
+                            fill: true,
+                            lineTension: 0.4,
+                            pointStyle: 'circle',
+                            pointBackgroundColor: "#1e87f0",
+                            pointBorderWidth: 1,
+                            borderWidth: 2,
                             data: dataPointvalue,
                         }, ],
                     };
@@ -15075,7 +15109,7 @@ jQuery(document).ready(function () {
                                     display: false,
                                 },
                                 tooltip: {
-                                    enabled: false
+                                    enabled: true
                                 }
                             },
                             scales: {

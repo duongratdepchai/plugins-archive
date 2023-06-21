@@ -605,7 +605,15 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 				
 				$arrTerms = array_values($arrTerms);
 			}else{
+				
 				$arrTerms = wp_get_post_terms($postID, $taxonomyName);
+				
+				if(is_wp_error($arrTerms)){
+					
+					$errorMessage = "get terms error: post: $postID , tax: $taxonomyName |". $arrTerms->get_error_message();
+					UniteFunctionsUC::throwError($errorMessage);
+				}
+				
 			}
 			
 			$arrTerms = self::getTermsObjectsData($arrTerms, $taxonomyName);
@@ -688,6 +696,24 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			return(null);
 		}
 		
+		/**
+		 * get post terms title string
+		 */
+		public static function getPostTermsTitlesString($post, $withTax = false){
+			
+			if(is_numeric($post))
+				$post = get_post($post);
+			
+			$arrTerms = self::getPostTermsTitles($post, $withTax);
+			
+			if(empty($arrTerms))
+				return("");
+			
+			$strTerms = implode(", ", $arrTerms);
+			
+			return($strTerms);
+		}
+			
 		/**
 		 * get post terms titles
 		 */
@@ -868,30 +894,28 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 	 * set arguments tax query, merge with existing if avaliable
 	 */
 	public static function mergeArgsTaxQuery($args, $arrTaxQuery){
-		
+
 		if(empty($arrTaxQuery))
-			return($args);
-		
+			return ($args);
+
 		$existingTaxQuery = UniteFunctionsUC::getVal($args, "tax_query");
-		
+
 		if(empty($existingTaxQuery)){
-			
 			$args["tax_query"] = $arrTaxQuery;
-						
-			return($args);
+
+			return ($args);
 		}
-				
+
 		$newTaxQuery = array(
 			$existingTaxQuery, 
 			$arrTaxQuery
 		);
-				
+
 		$newTaxQuery["relation"] = "AND";
-		
-		
+
 		$args["tax_query"] = $newTaxQuery;
-		
-		return($args);
+
+		return ($args);
 	}
 		
 		
@@ -1308,7 +1332,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		 *
 		 * get sort by with the names
 		 */
-		public static function getArrSortBy($isForWoo = false){
+		public static function getArrSortBy($isForWoo = false, $forFilter = false){
 			
 			$arr = array();
 			$arr["default"] = __("Default", "unlimited-elements-for-elementor");
@@ -1331,10 +1355,15 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			$arr[self::SORTBY_NONE] = __("Unsorted", "unlimited-elements-for-elementor");
 			$arr[self::SORTBY_MENU_ORDER] = __("Menu Order", "unlimited-elements-for-elementor");
 			$arr[self::SORTBY_PARENT] = __("Parent Post", "unlimited-elements-for-elementor");
-			$arr["post__in"] = __("Preserve Posts In Order", "unlimited-elements-for-elementor");
 			
-			$arr[self::SORTBY_META_VALUE] = __("Meta Field Value", "unlimited-elements-for-elementor");
-			$arr[self::SORTBY_META_VALUE_NUM] = __("Meta Field Value (numeric)", "unlimited-elements-for-elementor");
+			if($forFilter !== true){
+				
+				$arr["post__in"] = __("Preserve Posts In Order", "unlimited-elements-for-elementor");
+				
+				$arr[self::SORTBY_META_VALUE] = __("Meta Field Value", "unlimited-elements-for-elementor");
+				$arr[self::SORTBY_META_VALUE_NUM] = __("Meta Field Value (numeric)", "unlimited-elements-for-elementor");
+				
+			}
 			
 			return($arr);
 		}
@@ -1585,1841 +1614,1760 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			if(empty($termID))
 				return(null);
 
-			if($metaKey == "debug"){
-				
-				$arrMeta = get_term_meta($termID);
-				
-				dmp("term: $termID meta: ");
-				
-				dmp($arrMeta);
-			}
-				
-			if(empty($metaKey))
-				return(null);
-				
-			$attachmentID = get_term_meta($termID,$metaKey, true);
-			
-			if(empty($attachmentID))
-				return(null);
-			
-			$arrImage = self::getAttachmentData($attachmentID);
-			
-			return($arrImage);
+		if($metaKey == "debug"){
+			$arrMeta = get_term_meta($termID);
+
+			dmp("term: $termID meta: ");
+
+			dmp($arrMeta);
 		}
 
-		
-		/**
-		 * get term meta
-		 */
-		public static function getPostImage($postID, $metaKey){
-			
-			if(empty($postID) || $postID === "current")
-				$postID = get_post();
-			
-			if(empty($postID))
-				return(null);
+		if(empty($metaKey))
+			return (null);
 
-			if($metaKey == "debug"){
-				
-				$arrMeta = get_post_meta($postID);
-				
-				dmp("post: $postID meta: ");
-				
-				dmp($arrMeta);
-			}
-				
-			if(empty($metaKey))
-				return(null);
-			
-			$attachmentID = get_post_meta($postID,$metaKey, true);
-			
-			if(empty($attachmentID))
-				return(null);
-			
-			$arrImage = self::getAttachmentData($attachmentID);
-			
-			return($arrImage);
+		$attachmentID = get_term_meta($termID, $metaKey, true);
+
+		if(empty($attachmentID))
+			return (null);
+
+		$arrImage = self::getAttachmentData($attachmentID);
+
+		return ($arrImage);
+	}
+
+	/**
+	 * get term meta
+	 */
+	public static function getPostImage($postID, $metaKey){
+
+		if(empty($postID) || $postID === "current")
+			$postID = get_post();
+
+		if(empty($postID))
+			return (null);
+
+		if($metaKey == "debug"){
+			$arrMeta = get_post_meta($postID);
+
+			dmp("post: $postID meta: ");
+
+			dmp($arrMeta);
 		}
-		
-		
-		
-		/**
-		 * get pods meta keys
-		 */
-		public static function getPostMetaKeys_PODS($postID){
-			
-			$isPodsExists = UniteCreatorPodsIntegrate::isPodsExists();
-			
-			if($isPodsExists == false)
-				return(array());
-			
-			$objPods = UniteCreatorPodsIntegrate::getObjPodsIntegrate();
-			$arrCustomFields = $objPods->getPodsFields($postID);
-			
-			if(empty($arrCustomFields))
-				return(array());
-				
-			$arrMetaKeys = array_keys($arrCustomFields);
-			
-			return($arrMetaKeys);
+
+		if(empty($metaKey))
+			return (null);
+
+		$attachmentID = get_post_meta($postID, $metaKey, true);
+
+		if(empty($attachmentID))
+			return (null);
+
+		$arrImage = self::getAttachmentData($attachmentID);
+
+		return ($arrImage);
+	}
+
+	/**
+	 * get pods meta keys
+	 */
+	public static function getPostMetaKeys_PODS($postID){
+
+		$isPodsExists = UniteCreatorPodsIntegrate::isPodsExists();
+
+		if($isPodsExists == false)
+			return (array());
+
+		$objPods = UniteCreatorPodsIntegrate::getObjPodsIntegrate();
+		$arrCustomFields = $objPods->getPodsFields($postID);
+
+		if(empty($arrCustomFields))
+			return (array());
+
+		$arrMetaKeys = array_keys($arrCustomFields);
+
+		return ($arrMetaKeys);
+	}
+
+	/**
+	 * get post meta keys
+	 */
+	public static function getPostMetaKeys_TOOLSET($postID){
+
+		$isToolsetExists = UniteCreatorToolsetIntegrate::isToolsetExists();
+		if($isToolsetExists == false)
+			return (array());
+
+		$objToolset = new UniteCreatorToolsetIntegrate();
+		$arrFieldsKeys = $objToolset->getPostFieldsKeys($postID);
+		if(empty($arrFieldsKeys))
+			return ($arrFieldsKeys);
+
+		return ($arrFieldsKeys);
+	}
+
+	/**
+	 * get post meta data
+	 */
+	public static function getPostMetaKeys($postID, $prefix = null, $includeUnderscore = false){
+
+		$postMeta = get_post_meta($postID);
+
+		if(empty($postMeta))
+			return (array());
+
+		$arrMetaKeys = array_keys($postMeta);
+
+		$arrKeysOutput = array();
+		foreach($arrMetaKeys as $key){
+			$firstSign = $key[0];
+
+			if($firstSign == "_" && $includeUnderscore == false)
+				continue;
+
+			if(!empty($prefix))
+				$key = $prefix . $key;
+
+			$arrKeysOutput[] = $key;
 		}
-		
-		/**
-		 * get post meta keys
-		 */
-		public static function getPostMetaKeys_TOOLSET($postID){
-			
-			$isToolsetExists = UniteCreatorToolsetIntegrate::isToolsetExists();			
-			if($isToolsetExists == false)
-				return(array());
-			
-			$objToolset = new UniteCreatorToolsetIntegrate();
-			$arrFieldsKeys = $objToolset->getPostFieldsKeys($postID);
-			if(empty($arrFieldsKeys))
-				return($arrFieldsKeys);
-			
-			return($arrFieldsKeys);
+
+		return ($arrKeysOutput);
+	}
+
+	/**
+	 * get term custom field
+	 */
+	public static function getUserCustomFields($userID, $addPrefixes = true){
+
+		$cacheKey = $termID;
+		if($addPrefixes == true)
+			$cacheKey = $userID . "_prefixes";
+
+		if(isset(self::$cacheUserCustomFields[$cacheKey]))
+			return (self::$cacheUserCustomFields[$cacheKey]);
+
+		$isAcfActive = UniteCreatorAcfIntegrate::isAcfActive();
+
+		if($isAcfActive == false){
+			$arrMeta = self::getUserMeta($userID, array(), $addPrefixes);
+
+			return ($arrMeta);
 		}
-		
-		/**
-		 * get post meta data
-		 */
-		public static function getPostMetaKeys($postID, $prefix = null, $includeUnderscore = false){
-			
-			$postMeta = get_post_meta($postID);
-			
-			if(empty($postMeta))
-				return(array());
-			
-			$arrMetaKeys = array_keys($postMeta);
-			
-			$arrKeysOutput = array();
-			foreach($arrMetaKeys as $key){
-				
-				$firstSign = $key[0];
-				
-				if($firstSign == "_" && $includeUnderscore == false)
-					continue;
-				
-				if(!empty($prefix))
-					$key = $prefix.$key;
-				
-				$arrKeysOutput[] = $key;				
-			}
-			
-			
-			return($arrKeysOutput);
+
+		$objAcf = self::getObjAcfIntegrate();
+		$arrCustomFields = $objAcf->getAcfFields($userID, "user", $addPrefixes);
+
+		self::$cacheUserCustomFields[$cacheKey] = $arrCustomFields;
+
+		return ($arrCustomFields);
+	}
+
+	public static function a__________POST_GETTERS__________(){	}
+
+	/**
+	 *
+	 * get single post
+	 */
+	public static function getPost($postID, $addAttachmentImage = false, $getMeta = false){
+
+		$post = get_post($postID);
+		if(empty($post))
+			UniteFunctionsUC::throwError("Post with id: $postID not found");
+
+		$arrPost = $post->to_array();
+
+		if($addAttachmentImage == true){
+			$arrImage = self::getPostAttachmentImage($postID);
+			if(!empty($arrImage))
+				$arrPost["image"] = $arrImage;
 		}
-		
-		
-		/**
-		 * get term custom field
-		 */
-		public static function getUserCustomFields($userID, $addPrefixes = true){
-			
-			$cacheKey = $termID;
-			if($addPrefixes == true)
-				$cacheKey = $userID."_prefixes";
-			
-			if(isset(self::$cacheUserCustomFields[$cacheKey]))
-				return(self::$cacheUserCustomFields[$cacheKey]);
-			
-			$isAcfActive = UniteCreatorAcfIntegrate::isAcfActive();
-			
-			if($isAcfActive == false){
-				
-				$arrMeta = self::getUserMeta($userID,array(),$addPrefixes);
-				
-				return($arrMeta);
-			}
-			
-			$objAcf = self::getObjAcfIntegrate();
-			$arrCustomFields = $objAcf->getAcfFields($userID, "user",$addPrefixes);
-			
-			self::$cacheUserCustomFields[$cacheKey] = $arrCustomFields;
-			
-			return($arrCustomFields);
-		}
-		
-		
-		public static function a__________POST_GETTERS__________(){}
-		
-		
-		/**
-		 *
-		 * get single post
-		 */
-		public static function getPost($postID, $addAttachmentImage = false, $getMeta = false){
-			
-			$post = get_post($postID);
-			if(empty($post))
-				UniteFunctionsUC::throwError("Post with id: $postID not found");
-		
-			$arrPost = $post->to_array();
-			
-			if($addAttachmentImage == true){
-				$arrImage = self::getPostAttachmentImage($postID);
-				if(!empty($arrImage))
-					$arrPost["image"] = $arrImage;
-			}
-		
-			if($getMeta == true)
-				$arrPost["meta"] = self::getPostMeta($postID);
-		
-			return($arrPost);
-		}
-		
-		/**
-		 * get post by name
-		 */
-		public static function getPostByName($name, $postType = null){
-			
-			if(!empty($postType)){
-				$query = array(
-					'name'=>$name,
-					'post_type'=>$postType
-				);			
-				
-				$arrPosts = get_posts($query);
-				$post = $arrPosts[0];
-				return($post);
-			}
-			
-			//get only by name
-			$postID = self::getPostIDByPostName($name);
-			if(empty($postID))
-				return(null);
-			
-			$post = get_post($postID);
-						
-			return($post);
-		}
-		
-		
-		/**
-		 * get post children
-		 */
-		public static function getPostChildren($post){
-			
-			if(empty($post))
-				return(array());
-			
-			$args = array();
-			$args["post_parent"] = $post->ID;
-			$args["post_type"] = $post->post_type;
-						
-			$arrPosts = get_posts($args);
-						
-			return($arrPosts);
-		}
-		
-		
-		/**
-		 * get post id by post name
-		 */
-		public static function getPostIDByPostName($postName){
-			
-			$tablePosts = UniteProviderFunctionsUC::$tablePosts;
-			
-			$db = self::getDB();
-			$response = $db->fetch($tablePosts, array("post_name"=>$postName));
-			
-			if(empty($response))
-				return(null);
-			
-			$postID = $response[0]["ID"];
-			
-			return($postID);
-		}
-		
-		
-		/**
-		 * get post id by name, using DB
-		 */
-		public static function isPostNameExists($postName){
-			
-			$tablePosts = UniteProviderFunctionsUC::$tablePosts;
-			
-			$db = self::getDB();
-			$response = $db->fetch($tablePosts, array("post_name"=>$postName));
-			
-			$isExists = !empty($response);
-			
-			return($isExists);
-		}
-		
-		/**
-		 * where filter, add the search query
-		 */
-		public static function getPosts_whereFilter($where, $wp_query){
-			global $wpdb;
-			
-			$arrQuery = $wp_query->query;
-			$titleFilter = UniteFunctionsUC::getVal($arrQuery, "title_filter");
-			
-			if(!empty($titleFilter)){
-				
-				if(!empty($where))
-					$where .= " AND";
-				
-				$where .= " wp_posts.post_title like '%$titleFilter%'";
-			}
-			
-			
-			return($where);
-		}
-		
-		/**
-		 *
-		 * get posts post type
-		 */
-		public static function getPostsByType($postType, $sortBy = self::SORTBY_TITLE, $addParams = array(),$returnPure = false){
-			
-			if(empty($postType))
-				$postType = "any";
-			
+
+		if($getMeta == true)
+			$arrPost["meta"] = self::getPostMeta($postID);
+
+		return ($arrPost);
+	}
+
+	/**
+	 * get post by name
+	 */
+	public static function getPostByName($name, $postType = null){
+
+		if(!empty($postType)){
 			$query = array(
-					'post_type'=>$postType,
-					'orderby'=>$sortBy
+				'name' => $name,
+				'post_type' => $postType,
 			);
-			
-			if($sortBy == self::SORTBY_MENU_ORDER)
-				$query["order"] = self::ORDER_DIRECTION_ASC;
-			
-			$query["posts_per_page"] = 2000;	//no limit
-			
-			if(!empty($addParams))
-				$query = array_merge($query, $addParams);	
-			
-			$titleFilter = UniteFunctionsUC::getVal($query, "title_filter");
-			if(!empty($titleFilter)){
-				$query["suppress_filters"] = false;	//no limit
-				add_filter( 'posts_where', array("UniteFunctionsWPUC", "getPosts_whereFilter"), 10, 2 );
-			}
-			
-			
+
 			$arrPosts = get_posts($query);
-			
-			if(!empty($titleFilter))
-				remove_filter("posts_where", array("UniteFunctionsWPUC", "getPosts_whereFilter"));
-			
-			if($returnPure == true)
-				return($arrPosts);
-		
-			foreach($arrPosts as $key=>$post){
-				
-				if(method_exists($post, "to_array"))
-					$arrPost = $post->to_array();
-				else
-					$arrPost = (array)$post;
-				
-				$arrPosts[$key] = $arrPost;
-			}
-			
-			return($arrPosts);
+			$post = $arrPosts[0];
+
+			return ($post);
 		}
-		
-		
-		/**
-		 * get tax query from a gived category
-		 */
-		private static function getPosts_getTaxQuery_getArrQuery($arrQuery, $category, $categoryRelation, $isIncludeChildren, $isExclude){
-			
-			if($isIncludeChildren !== true)
-				$isIncludeChildren = false;
-				
-			if(is_array($category))
-				$arrCategories = $category;
+
+		//get only by name
+		$postID = self::getPostIDByPostName($name);
+		if(empty($postID))
+			return (null);
+
+		$post = get_post($postID);
+
+		return ($post);
+	}
+
+	/**
+	 * get post children
+	 */
+	public static function getPostChildren($post){
+
+		if(empty($post))
+			return (array());
+
+		$args = array();
+		$args["post_parent"] = $post->ID;
+		$args["post_type"] = $post->post_type;
+
+		$arrPosts = get_posts($args);
+
+		return ($arrPosts);
+	}
+
+	/**
+	 * get post id by post name
+	 */
+	public static function getPostIDByPostName($postName){
+
+		$tablePosts = UniteProviderFunctionsUC::$tablePosts;
+
+		$db = self::getDB();
+		$response = $db->fetch($tablePosts, array("post_name" => $postName));
+
+		if(empty($response))
+			return (null);
+
+		$postID = $response[0]["ID"];
+
+		return ($postID);
+	}
+
+	/**
+	 * get post id by name, using DB
+	 */
+	public static function isPostNameExists($postName){
+
+		$tablePosts = UniteProviderFunctionsUC::$tablePosts;
+
+		$db = self::getDB();
+		$response = $db->fetch($tablePosts, array("post_name" => $postName));
+
+		$isExists = !empty($response);
+
+		return ($isExists);
+	}
+
+	/**
+	 * where filter, add the search query
+	 */
+	public static function getPosts_whereFilter($where, $wp_query){
+
+		global $wpdb;
+
+		$arrQuery = $wp_query->query;
+		$titleFilter = UniteFunctionsUC::getVal($arrQuery, "title_filter");
+
+		if(!empty($titleFilter)){
+			if(!empty($where))
+				$where .= " AND";
+
+			$where .= " wp_posts.post_title like '%$titleFilter%'";
+		}
+
+		return ($where);
+	}
+
+	/**
+	 *
+	 * get posts post type
+	 */
+	public static function getPostsByType($postType, $sortBy = self::SORTBY_TITLE, $addParams = array(), $returnPure = false){
+
+		if(empty($postType))
+			$postType = "any";
+
+		$query = array(
+			'post_type' => $postType,
+			'orderby' => $sortBy,
+		);
+
+		if($sortBy == self::SORTBY_MENU_ORDER)
+			$query["order"] = self::ORDER_DIRECTION_ASC;
+
+		$query["posts_per_page"] = 2000;  //no limit
+
+		if(!empty($addParams))
+			$query = array_merge($query, $addParams);
+
+		$titleFilter = UniteFunctionsUC::getVal($query, "title_filter");
+		if(!empty($titleFilter)){
+			$query["suppress_filters"] = false;  //no limit
+			add_filter('posts_where', array("UniteFunctionsWPUC", "getPosts_whereFilter"), 10, 2);
+		}
+
+		$arrPosts = get_posts($query);
+
+		if(!empty($titleFilter))
+			remove_filter("posts_where", array("UniteFunctionsWPUC", "getPosts_whereFilter"));
+
+		if($returnPure == true)
+			return ($arrPosts);
+
+		foreach($arrPosts as $key => $post){
+			if(method_exists($post, "to_array"))
+				$arrPost = $post->to_array();
 			else
-				$arrCategories = explode(",", $category);
-			
-			foreach($arrCategories as $cat){
-				
-				//check for empty category - mean all categories
-				if($cat == "all" || empty($cat))
-					continue;
-				
-				//set taxanomy name
-				$taxName = "category";
-				$catID = $cat;
-				
-				if(is_numeric($cat) == false){
-					
-					$arrTax = explode("--", $cat);
-					if(count($arrTax) == 2){
-						$taxName = $arrTax[0];
-						$catID = $arrTax[1];
-					}
-				}
-				
-				//add the search item
-				
-				$field = "id";
-				if(is_numeric($catID) == false)
-					$field = "slug";
-				
-				//check for special chars
-				
-				$lastChar = substr($catID, -1);
-				switch($lastChar){
-					case "*":		//force include children
-						$isIncludeChildren = true;
-						$catID = substr($catID, 0, -1);		//remove last char						
-					break;
-				}
-								
-				$arrSearchItem = array();
-				$arrSearchItem["taxonomy"] = $taxName;
-				$arrSearchItem["field"] = $field;
-				$arrSearchItem["terms"] = $catID;
-				$arrSearchItem["include_children"] = $isIncludeChildren;
-				
-				if($isExclude == true){
-					$arrSearchItem["operator"] = "NOT IN";
-				}
-				
-				$arrQuery[] = $arrSearchItem;
-			}
-						
-			return($arrQuery);
+				$arrPost = (array)$post;
+
+			$arrPosts[$key] = $arrPost;
 		}
-		
-		
-		/**
-		 * get taxanomy query
-		 */
-		public static function getPosts_getTaxQuery($category, $categoryRelation = null, $isIncludeChildren = false, $excludeCategory=null, $isExcludeChildren = true){
-			
-			if(empty($category) && empty($excludeCategory))
-				return(null);
-			
-			if($category == "all" && empty($excludeCategory))
-				return(null);
-			
-			
-			//get the query
-			$arrQuery = array();
-			$arrQueryExclude = array();
-			
-			if(!empty($category))
-				$arrQuery = self::getPosts_getTaxQuery_getArrQuery($arrQuery, $category, $categoryRelation, $isIncludeChildren, false);
-			
-			$numQueryItems = count($arrQuery);
-				
-			if(!empty($excludeCategory))
-				$arrQueryExclude = self::getPosts_getTaxQuery_getArrQuery($arrQueryExclude, $excludeCategory, $categoryRelation, $isExcludeChildren, true);
-			
-			//make nested - if both filled
-			if(!empty($arrQueryExclude) && !empty($arrQuery) && $numQueryItems > 1 && $categoryRelation === "OR"){
-				
-				//check and add relation
-				$arrQuery["relation"] = "OR";
-				
-				$arrQueryCombined = array();
-				$arrQueryCombined[] = $arrQuery;
-				$arrQueryCombined[] = $arrQueryExclude;
-				
-				return($arrQueryCombined);
+
+		return ($arrPosts);
+	}
+
+	/**
+	 * get tax query from a gived category
+	 */
+	private static function getPosts_getTaxQuery_getArrQuery($arrQuery, $category, $categoryRelation, $isIncludeChildren, $isExclude){
+
+		if($isIncludeChildren !== true)
+			$isIncludeChildren = false;
+
+		if(is_array($category))
+			$arrCategories = $category;
+		else
+			$arrCategories = explode(",", $category);
+
+		foreach($arrCategories as $cat){
+			//check for empty category - mean all categories
+			if($cat == "all" || empty($cat))
+				continue;
+
+			//set taxanomy name
+			$taxName = "category";
+			$catID = $cat;
+
+			if(is_numeric($cat) == false){
+				$arrTax = explode("--", $cat);
+				if(count($arrTax) == 2){
+					$taxName = $arrTax[0];
+					$catID = $arrTax[1];
+				}
 			}
-			
-			
-			//in case there is exclude only
-			if(!empty($arrQueryExclude))
-				$arrQuery = array_merge($arrQuery, $arrQueryExclude);
-			
-			//for single query
-			if(empty($arrQuery))
-				return(null);
-			
-			if(count($arrQuery) == 1)
-				return($arrQuery);
-				
-			//check and add relation
-			if($categoryRelation === "OR" && $numQueryItems > 1){
-				
-				$arrQuery = array($arrQuery);
-				
-				$arrQuery[0]["relation"] = "OR";
-			}
-			
-				
-			return($arrQuery);			
-		}
-		
-		/**
-		 * update order by
-		 */
-		public static function updatePostArgsOrderBy($args, $orderBy){
-			
-			$arrOrderKeys = self::getArrSortBy();
-			
-			if(isset($arrOrderKeys[$orderBy])){
-				$args["orderby"] = $orderBy;
-				
-				return($args);
-			}
-			
-			switch($orderBy){
-				case "price":
-					$args["orderby"] = "meta_value_num";
-					$args["meta_key"] = "_price";
+
+			//add the search item
+
+			$field = "id";
+			if(is_numeric($catID) == false)
+				$field = "slug";
+
+			//check for special chars
+
+			$lastChar = substr($catID, -1);
+			switch($lastChar){
+				case "*":    //force include children
+					$isIncludeChildren = true;
+					$catID = substr($catID, 0, -1);    //remove last char
 				break;
 			}
-			
-			return($args);
-		}
-				
-		/**
-		 * get posts arguments by filters
-		 * filters: search, category, category_relation, posttype, orderby, limit
-		 */
-		public static function getPostsArgs($filters, $isTaxonly = false){
-			
-			$args = array();
-			
-			$category = UniteFunctionsUC::getVal($filters, "category");
-			$categoryRelation = UniteFunctionsUC::getVal($filters, "category_relation");
-			$categoryIncludeChildren = UniteFunctionsUC::getVal($filters, "category_include_children");
-			
-			$excludeCategory = UniteFunctionsUC::getVal($filters, "exclude_category");
-			
-			$categoryExcludeChildren = UniteFunctionsUC::getVal($filters, "category_exclude_children");
-			$categoryExcludeChildren = UniteFunctionsUC::strToBool($categoryExcludeChildren);
-			
-			$arrTax = self::getPosts_getTaxQuery($category, $categoryRelation, $categoryIncludeChildren, $excludeCategory, $categoryExcludeChildren);
-			
-			if($isTaxonly === true){
-				if(!empty($arrTax)){
-					
-					if(count($arrTax) > 1){
-						$arrTax = array($arrTax);
-					}
-					
-					$args["tax_query"] = $arrTax;
-				}
-				return($args);
-			}
-			
-			
-			$search = UniteFunctionsUC::getVal($filters, "search");
-			if(!empty($search))
-				$args["s"] = $search;
-			
-			$postType = UniteFunctionsUC::getVal($filters, "posttype");
-				
-			if(is_array($postType) && count($postType) == 1)
-				$postType = $postType[0];
-			
-			$args["post_type"] = $postType;
-			
-			if(!empty($arrTax))
-				$args["tax_query"] = $arrTax;
-			
-			//process orderby
-			$orderby = UniteFunctionsUC::getVal($filters, "orderby");
 
-			if(!empty($orderby))
-				$args["orderby"] = $orderby;
-			
-			if($orderby == self::SORTBY_META_VALUE || $orderby == self::SORTBY_META_VALUE_NUM)
-				$args["meta_key"] = UniteFunctionsUC::getVal($filters, "meta_key");
-			
-			$isProduct = ($postType == "product");
-			
-			//order product by price
-			if($isProduct && $orderby == self::SORTBY_PRICE){
+			$arrSearchItem = array();
+			$arrSearchItem["taxonomy"] = $taxName;
+			$arrSearchItem["field"] = $field;
+			$arrSearchItem["terms"] = $catID;
+			$arrSearchItem["include_children"] = $isIncludeChildren;
+
+			if($isExclude == true){
+				$arrSearchItem["operator"] = "NOT IN";
+			}
+
+			$arrQuery[] = $arrSearchItem;
+		}
+
+		return ($arrQuery);
+	}
+
+	/**
+	 * get taxanomy query
+	 */
+	public static function getPosts_getTaxQuery($category, $categoryRelation = null, $isIncludeChildren = false, $excludeCategory = null, $isExcludeChildren = true){
+
+		if(empty($category) && empty($excludeCategory))
+			return (null);
+
+		if($category == "all" && empty($excludeCategory))
+			return (null);
+
+		//get the query
+		$arrQuery = array();
+		$arrQueryExclude = array();
+
+		if(!empty($category))
+			$arrQuery = self::getPosts_getTaxQuery_getArrQuery($arrQuery, $category, $categoryRelation, $isIncludeChildren, false);
+
+		$numQueryItems = count($arrQuery);
+
+		if(!empty($excludeCategory))
+			$arrQueryExclude = self::getPosts_getTaxQuery_getArrQuery($arrQueryExclude, $excludeCategory, $categoryRelation, $isExcludeChildren, true);
+
+		//make nested - if both filled
+		if(!empty($arrQueryExclude) && !empty($arrQuery) && $numQueryItems > 1 && $categoryRelation === "OR"){
+			//check and add relation
+			$arrQuery["relation"] = "OR";
+
+			$arrQueryCombined = array();
+			$arrQueryCombined[] = $arrQuery;
+			$arrQueryCombined[] = $arrQueryExclude;
+
+			return ($arrQueryCombined);
+		}
+
+		//in case there is exclude only
+		if(!empty($arrQueryExclude))
+			$arrQuery = array_merge($arrQuery, $arrQueryExclude);
+
+		//for single query
+		if(empty($arrQuery))
+			return (null);
+
+		if(count($arrQuery) == 1)
+			return ($arrQuery);
+
+		//check and add relation
+		if($categoryRelation === "OR" && $numQueryItems > 1){
+			$arrQuery = array($arrQuery);
+
+			$arrQuery[0]["relation"] = "OR";
+		}
+
+		return ($arrQuery);
+	}
+
+	/**
+	 * update order by
+	 */
+	public static function updatePostArgsOrderBy($args, $orderBy){
+
+		$arrOrderKeys = self::getArrSortBy();
+
+		if(isset($arrOrderKeys[$orderBy])){
+			$args["orderby"] = $orderBy;
+
+			return ($args);
+		}
+
+		switch($orderBy){
+			case "price":
 				$args["orderby"] = "meta_value_num";
 				$args["meta_key"] = "_price";
-			}
-			
-			if($isProduct && $orderby == self::SORTBY_SALE_PRICE){
-				$args["orderby"] = "meta_value_num";
-				$args["meta_key"] = "_sale_price";
-			}
-			
-			$orderDir = UniteFunctionsUC::getVal($filters, "orderdir");
-			
-			if(!empty($orderDir))
-				$args["order"] = $orderDir;
-			
-			$args["posts_per_page"] = UniteFunctionsUC::getVal($filters, "limit");
-			
-			$postStatus = UniteFunctionsUC::getVal($filters, "status");
-			if(!empty($postStatus))
-				$args["post_status"] = $postStatus;
+			break;
+		}
 
-			//get exlude posts
-			$excludeCurrentPost = UniteFunctionsUC::getVal($filters, "exclude_current_post");
-			$excludeCurrentPost = UniteFunctionsUC::strToBool($excludeCurrentPost);
-			
-			if($excludeCurrentPost == true){
-				$postID = get_the_ID();
-				if(!empty($postID)){
-					$args["post__not_in"] = array($postID);
+		return ($args);
+	}
+
+	/**
+	 * get posts arguments by filters
+	 * filters: search, category, category_relation, posttype, orderby, limit
+	 */
+	public static function getPostsArgs($filters, $isTaxonly = false){
+
+		$args = array();
+
+		$category = UniteFunctionsUC::getVal($filters, "category");
+		$categoryRelation = UniteFunctionsUC::getVal($filters, "category_relation");
+		$categoryIncludeChildren = UniteFunctionsUC::getVal($filters, "category_include_children");
+
+		$excludeCategory = UniteFunctionsUC::getVal($filters, "exclude_category");
+
+		$categoryExcludeChildren = UniteFunctionsUC::getVal($filters, "category_exclude_children");
+		$categoryExcludeChildren = UniteFunctionsUC::strToBool($categoryExcludeChildren);
+
+		$arrTax = self::getPosts_getTaxQuery($category, $categoryRelation, $categoryIncludeChildren, $excludeCategory, $categoryExcludeChildren);
+
+		if($isTaxonly === true){
+			if(!empty($arrTax)){
+				if(count($arrTax) > 1){
+					$arrTax = array($arrTax);
 				}
+
+				$args["tax_query"] = $arrTax;
 			}
-			
-			
-			return($args);
-		}
-		
-		/**
-		 * get posts post type
-		 */
-		public static function getPosts($filters){
 
-			$args = self::getPostsArgs($filters);
-			
-			$arrPosts = get_posts($args);
-			
-			if(empty($arrPosts))
-				$arrPosts = array();
-			
-			return($arrPosts);
+			return ($args);
 		}
 
-		/**
-		 * order posts by id's
-		 */
-		public static function orderPostsByIDs($arrPosts, $arrPostIDs){
+		$search = UniteFunctionsUC::getVal($filters, "search");
+		if(!empty($search))
+			$args["s"] = $search;
 
-			if(empty($arrPostIDs))
-				return($arrPosts);
-			
-			$arrPostsAssoc = array();
-			foreach($arrPosts as $post)
-				$arrPostsAssoc[$post->ID] = $post;
+		$postType = UniteFunctionsUC::getVal($filters, "posttype");
 
-			$arrOutput = array();
-			foreach($arrPostIDs as $postID){
-				$post = UniteFunctionsUC::getVal($arrPostsAssoc, $postID);
-				if(empty($post))
-					continue;
-				
-				$arrOutput[] = $post;
+		if(is_array($postType) && count($postType) == 1)
+			$postType = $postType[0];
+
+		$args["post_type"] = $postType;
+
+		if(!empty($arrTax))
+			$args["tax_query"] = $arrTax;
+
+		//process orderby
+		$orderby = UniteFunctionsUC::getVal($filters, "orderby");
+
+		if(!empty($orderby))
+			$args["orderby"] = $orderby;
+
+		if($orderby == self::SORTBY_META_VALUE || $orderby == self::SORTBY_META_VALUE_NUM)
+			$args["meta_key"] = UniteFunctionsUC::getVal($filters, "meta_key");
+
+		$isProduct = ($postType == "product");
+
+		//order product by price
+		if($isProduct && $orderby == self::SORTBY_PRICE){
+			$args["orderby"] = "meta_value_num";
+			$args["meta_key"] = "_price";
+		}
+
+		if($isProduct && $orderby == self::SORTBY_SALE_PRICE){
+			$args["orderby"] = "meta_value_num";
+			$args["meta_key"] = "_sale_price";
+		}
+
+		$orderDir = UniteFunctionsUC::getVal($filters, "orderdir");
+
+		if(!empty($orderDir))
+			$args["order"] = $orderDir;
+
+		$args["posts_per_page"] = UniteFunctionsUC::getVal($filters, "limit");
+
+		$postStatus = UniteFunctionsUC::getVal($filters, "status");
+		if(!empty($postStatus))
+			$args["post_status"] = $postStatus;
+
+		//get exlude posts
+		$excludeCurrentPost = UniteFunctionsUC::getVal($filters, "exclude_current_post");
+		$excludeCurrentPost = UniteFunctionsUC::strToBool($excludeCurrentPost);
+
+		if($excludeCurrentPost == true){
+			$postID = get_the_ID();
+			if(!empty($postID)){
+				$args["post__not_in"] = array($postID);
 			}
-			
-			return($arrOutput);			
 		}
-		
-		
-		/**
-		 * get page template
-		 */
-		public static function getPostPageTemplate($post){
-			
+
+		return ($args);
+	}
+
+	/**
+	 * get posts post type
+	 */
+	public static function getPosts($filters){
+
+		$args = self::getPostsArgs($filters);
+
+		$arrPosts = get_posts($args);
+
+		if(empty($arrPosts))
+			$arrPosts = array();
+
+		return ($arrPosts);
+	}
+
+	/**
+	 * order posts by id's
+	 */
+	public static function orderPostsByIDs($arrPosts, $arrPostIDs){
+
+		if(empty($arrPostIDs))
+			return ($arrPosts);
+
+		$arrPostsAssoc = array();
+		foreach($arrPosts as $post){
+			$arrPostsAssoc[$post->ID] = $post;
+		}
+
+		$arrOutput = array();
+		foreach($arrPostIDs as $postID){
+			$post = UniteFunctionsUC::getVal($arrPostsAssoc, $postID);
 			if(empty($post))
-				return("");
-			
-			$arrPost = $post->to_array();
-			$pageTemplate = UniteFunctionsUC::getVal($arrPost, "page_template");
-			
-			return($pageTemplate);
-		}
-		
-		/**
-		 * get edit post url
-		 */
-		public static function getUrlEditPost($postID, $encodeForJS = false){
-			
-			$context = "display";
-			if($encodeForJS == false)
-				$context = "normal";
-			
-			$urlEditPost = get_edit_post_link( $postID, $context); 
-			
-			return($urlEditPost);
-		}
-		
-		
-		/**
-		 * check if current user can edit post
-		 */
-		public static function isUserCanEditPost($postID){
-			
-			$post = get_post($postID);
-			
-			if(empty($post))
-				return(false);
+				continue;
 
-			$postStatus = $post->post_status;
-			if($postStatus == "trash")
-				return(false);
-			
-			$postType = $post->post_type;
-			
-			$objPostType = get_post_type_object($postType);
-			if(empty($objPostType))
-				return(false);
-			
-			if(isset($objPostType->cap->edit_post) == false ){
-				return false;
-			}
-			
-			$editCap = $objPostType->cap->edit_post;
-			
-			$isCanEdit = current_user_can( $editCap, $postID );
-			if($isCanEdit == false)
-				return(false);
-			
-			$postsPageID = get_option( 'page_for_posts' );
-			if($postsPageID === $postID)
-				return(false);
+			$arrOutput[] = $post;
+		}
 
-			
-			return(true);
+		return ($arrOutput);
+	}
+
+	/**
+	 * get page template
+	 */
+	public static function getPostPageTemplate($post){
+
+		if(empty($post))
+			return ("");
+
+		$arrPost = $post->to_array();
+		$pageTemplate = UniteFunctionsUC::getVal($arrPost, "page_template");
+
+		return ($pageTemplate);
+	}
+
+	/**
+	 * get edit post url
+	 */
+	public static function getUrlEditPost($postID, $encodeForJS = false){
+
+		$context = "display";
+		if($encodeForJS == false)
+			$context = "normal";
+
+		$urlEditPost = get_edit_post_link($postID, $context);
+
+		return ($urlEditPost);
+	}
+
+	/**
+	 * check if current user can edit post
+	 */
+	public static function isUserCanEditPost($postID){
+
+		$post = get_post($postID);
+
+		if(empty($post))
+			return (false);
+
+		$postStatus = $post->post_status;
+		if($postStatus == "trash")
+			return (false);
+
+		$postType = $post->post_type;
+
+		$objPostType = get_post_type_object($postType);
+		if(empty($objPostType))
+			return (false);
+
+		if(isset($objPostType->cap->edit_post) == false){
+			return false;
 		}
-		
-		/**
-		 * get post titles by ids
-		 */
-		public static function getPostTitlesByIDs($arrIDs){
-			
-			$db = self::getDB();
-			
-			$tablePosts = UniteProviderFunctionsUC::$tablePosts;
-			
-			$strIDs = implode(",", $arrIDs);
-			
-			if(empty($strIDs))
-				return(array());
-				
-			$strIDs = $db->escape($strIDs);
-			
-			$sql = "select ID as id,post_title as title, post_type as type from $tablePosts where ID in($strIDs)";
-			
-			$response = $db->fetchSql($sql);
-			
-			if(empty($response))
-				return(array());
-			
-			//--- keep original order
-			
-			$response = UniteFunctionsUC::arrayToAssoc($response, "id");
-			
-			$output = array();
-			foreach($arrIDs as $id){
-				
-				$item = UniteFunctionsUC::getVal($response, $id);
-				if(empty($item))
-					continue;
-					
-				$output[] = $item;
-			}
-			
-			return($output);
+
+		$editCap = $objPostType->cap->edit_post;
+
+		$isCanEdit = current_user_can($editCap, $postID);
+		if($isCanEdit == false)
+			return (false);
+
+		$postsPageID = get_option('page_for_posts');
+		if($postsPageID === $postID)
+			return (false);
+
+		return (true);
+	}
+
+	/**
+	 * get post titles by ids
+	 */
+	public static function getPostTitlesByIDs($arrIDs){
+
+		$db = self::getDB();
+
+		$tablePosts = UniteProviderFunctionsUC::$tablePosts;
+
+		$strIDs = implode(",", $arrIDs);
+
+		if(empty($strIDs))
+			return (array());
+
+		$strIDs = $db->escape($strIDs);
+
+		$sql = "select ID as id,post_title as title, post_type as type from $tablePosts where ID in($strIDs)";
+
+		$response = $db->fetchSql($sql);
+
+		if(empty($response))
+			return (array());
+
+		//--- keep original order
+
+		$response = UniteFunctionsUC::arrayToAssoc($response, "id");
+
+		$output = array();
+		foreach($arrIDs as $id){
+			$item = UniteFunctionsUC::getVal($response, $id);
+			if(empty($item))
+				continue;
+
+			$output[] = $item;
 		}
-		
-	
-		/**
-		 * get post content
-		 */
-		public static function getPostContent($post){
-			
-			if(empty($post))
-				return("");
-						
-			//UniteFunctionsUC::showTrace();
-			//dmp($post);
-				
+
+		return ($output);
+	}
+
+	/**
+	 * get post content
+	 */
+	public static function getPostContent($post){
+
+		if(empty($post))
+			return ("");
+
+		//UniteFunctionsUC::showTrace();
+		//dmp($post);
+
+		$postID = $post->ID;
+
+		//protection against infinate loops
+
+		if(isset(self::$cachePostContent[$postID]))
+			return (self::$cachePostContent[$postID]);
+
+		self::$cachePostContent[$postID] = $post->post_content;
+
+		$isEditMode = GlobalsProviderUC::$isInsideEditor;
+
+		if($isEditMode == false)
+			$content = get_the_content(null, false, $post);
+		else
+			$content = $post->post_content;
+
+		if(GlobalsProviderUC::$disablePostContentFiltering !== true)
+			$content = apply_filters("widget_text_content", $content);
+
+		self::$cachePostContent[$postID] = $content;
+
+		return ($content);
+	}
+
+	/**
+	 * get next or previous post
+	 */
+	public static function getNextPrevPostData($type = "next", $taxonomy = "category"){
+
+		if(empty($taxonomy))
+			$taxonomy = "category";
+
+		if(empty($type))
+			$type = "next";
+
+		$previous = !($type == "next");
+
+		if($previous && is_attachment()){
+			$post = get_post(get_post()->post_parent);
+		}else{
+			$in_same_term = false;
+			$excluded_terms = '';
+
+			$post = get_adjacent_post($in_same_term, $excluded_terms, $previous, $taxonomy);
+		}
+
+		if(empty($post))
+			return (null);
+
+		$title = $post->post_title;
+
+		$link = get_permalink($post);
+
+		$output = array();
+
+		$output["title"] = $title;
+		$output["link"] = $link;
+
+		return ($output);
+	}
+
+	public static function a__________POST_ACTIONS_________(){
+	}
+
+	/**
+	 * update post type
+	 */
+	public static function updatePost($postID, $arrUpdate){
+
+		if(empty($arrUpdate))
+			UniteFunctionsUC::throwError("nothing to update post");
+
+		$arrUpdate["ID"] = $postID;
+
+		$wpError = wp_update_post($arrUpdate, true);
+
+		if(is_wp_error($wpError)){
+			UniteFunctionsUC::throwError("Error updating post: $postID");
+		}
+	}
+
+	/**
+	 * add prefix to post permalink
+	 */
+	public static function addPrefixToPostName($postID, $prefix){
+
+		$post = get_post($postID);
+		if(empty($post))
+			return (false);
+
+		$postName = $post->post_name;
+
+		//check if already exists
+		if(strpos($postName, $prefix) === 0)
+			return (false);
+
+		$newPostName = $prefix . $postName;
+
+		$arrUpdate = array();
+		$arrUpdate["post_name"] = $newPostName;
+
+		self::updatePost($postID, $arrUpdate);
+
+		$post = get_post($postID);
+	}
+
+	/**
+	 * update post ordering
+	 */
+	public static function updatePostOrdering($postID, $ordering){
+
+		$arrUpdate = array(
+			'menu_order' => $ordering,
+		);
+
+		self::updatePost($postID, $arrUpdate);
+	}
+
+	/**
+	 * update post content
+	 */
+	public static function updatePostContent($postID, $content){
+
+		$arrUpdate = array("post_content" => $content);
+		self::updatePost($postID, $arrUpdate);
+	}
+
+	/**
+	 * update post page template attribute in meta
+	 */
+	public static function updatePageTemplateAttribute($pageID, $pageTemplate){
+
+		update_post_meta($pageID, "_wp_page_template", $pageTemplate);
+	}
+
+	/**
+	 * insert post
+	 * params: [cat_slug, content]
+	 */
+	public static function insertPost($title, $alias, $params = array()){
+
+		$catSlug = UniteFunctionsUC::getVal($params, "cat_slug");
+		$content = UniteFunctionsUC::getVal($params, "content");
+		$isPage = UniteFunctionsUC::getVal($params, "ispage");
+		$isPage = UniteFunctionsUC::strToBool($isPage);
+
+		$catID = null;
+		if(!empty($catSlug)){
+			$catID = self::getCatIDBySlug($catSlug);
+			if(empty($catID))
+				UniteFunctionsUC::throwError("Category id not found by slug: $slug");
+		}
+
+		$isPostExists = self::isPostNameExists($alias);
+
+		if($isPostExists == true)
+			UniteFunctionsUC::throwError("Post with name: <b> {$alias} </b> already exists");
+
+		$arguments = array();
+		$arguments["post_title"] = $title;
+		$arguments["post_name"] = $alias;
+		$arguments["post_status"] = "publish";
+
+		if(!empty($content))
+			$arguments["post_content"] = $content;
+
+		if(!empty($catID))
+			$arguments["post_category"] = array($catID);
+
+		if($isPage == true)
+			$arguments["post_type"] = "page";
+
+		$postType = UniteFunctionsUC::getVal($params, "post_type");
+		if(!empty($postType))
+			$arguments["post_type"] = $postType;
+
+		$newPostID = wp_insert_post($arguments, true);
+
+		if(is_wp_error($newPostID)){
+			$errorMessage = $newPostID->get_error_message();
+			UniteFunctionsUC::throwError($errorMessage);
+		}
+
+		return ($newPostID);
+	}
+
+	/**
+	 * insert new page
+	 */
+	public static function insertPage($title, $alias, $params = array()){
+
+		$params["ispage"] = true;
+
+		$pageID = self::insertPost($title, $alias, $params);
+
+		return ($pageID);
+	}
+
+	/**
+	 * delete all post metadata
+	 */
+	public static function deletePostMetadata($postID){
+
+		$postID = (int)$postID;
+
+		$tablePostMeta = UniteProviderFunctionsUC::$tablePostMeta;
+
+		$db = self::getDB();
+		$db->delete($tablePostMeta, "post_id=$postID");
+	}
+
+	/**
+	 * delete multiple posts
+	 */
+	public static function deleteMultiplePosts($arrPostIDs){
+
+		if(empty($arrPostIDs))
+			return (false);
+
+		if(is_array($arrPostIDs) == false)
+			return (false);
+
+		foreach($arrPostIDs as $postID){
+			self::deletePost($postID);
+		}
+	}
+
+	/**
+	 * delete post
+	 */
+	public static function deletePost($postID){
+
+		wp_delete_post($postID, true);
+	}
+
+	/**
+	 * cache attachment images query calls. one call instead of many
+	 * input - post array.
+	 */
+	public static function cachePostsAttachmentsQueries($arrPosts){
+
+		if(empty($arrPosts))
+			return (false);
+
+		$arrAttachmentIDs = self::getPostsAttachmentsIDs($arrPosts);
+
+		if(empty($arrAttachmentIDs))
+			return (false);
+
+		self::cachePostMetaQueries($arrAttachmentIDs);
+	}
+
+	/**
+	 * cache post meta queries by id's
+	 */
+	public static function cachePostMetaQueries($arrPostIDs){
+
+		if(empty($arrPostIDs))
+			return (false);
+
+		_prime_post_caches($arrPostIDs);
+	}
+
+	/**
+	 * get post terms queries
+	 */
+	public static function cachePostsTermsQueries($arrPosts){
+
+		if(empty($arrPosts))
+			return (false);
+
+		$arrIDs = array();
+
+		//single type for now
+		$postType = null;
+
+		foreach($arrPosts as $post){
+			if(empty($postType))
+				$postType = $post->post_type;
+
+			$arrIDs[] = $post->ID;
+		}
+
+		$arrTaxonomies = self::getPostTypeTaxomonies($postType);
+
+		if(empty($arrTaxonomies))
+			return (false);
+
+		$arrTaxKeys = array_keys($arrTaxonomies);
+
+		//get all terms
+
+		$args = array();
+		$args["fields"] = "all_with_object_id";
+
+		$arrTerms = wp_get_object_terms($arrIDs, $arrTaxKeys, $args);
+
+		$arrTermsByPosts = array();
+
+		foreach($arrTerms as $term){
+			$postID = $term->object_id;
+
+			if(isset(GlobalsProviderUC::$arrPostTermsCache[$postID]) == false)
+				$arrTermsByPosts[$postID] = array();
+
+			$taxonomy = $term->taxonomy;
+
+			$termID = $term->term_id;
+
+			GlobalsProviderUC::$arrPostTermsCache[$postID][$taxonomy][$termID] = $term;
+		}
+	}
+
+	public static function a__________ATTACHMENT________(){
+	}
+
+	/**
+	 * get attachmet id's from post
+	 */
+	public static function getPostsAttachmentsIDs($arrPosts){
+
+		if(empty($arrPosts))
+			return (false);
+
+		$arrIDs = array();
+
+		foreach($arrPosts as $post){
 			$postID = $post->ID;
-			
-			//protection against infinate loops
-			
-			if(isset(self::$cachePostContent[$postID]))
-				return(self::$cachePostContent[$postID]);
-			
-			self::$cachePostContent[$postID] = $post->post_content;
-			
-			$isEditMode = GlobalsProviderUC::$isInsideEditor;
-			
-			if($isEditMode == false)
-				$content = get_the_content( null, false, $post);
-			else
-				$content = $post->post_content;
-			
-			if(GlobalsProviderUC::$disablePostContentFiltering !== true)
-				$content = apply_filters("widget_text_content", $content);
-			
-			self::$cachePostContent[$postID] = $content;
-			
-			
-			return($content);
-		}
-		
-		/**
-		 * get next or previous post
-		 */
-		public static function getNextPrevPostData($type = "next", $taxonomy = "category"){
-			
-			if(empty($taxonomy))
-				$taxonomy = "category";
-			
-			if(empty($type))
-				$type = "next";
-				
-			$previous = !($type == "next");
-			
-			if ( $previous && is_attachment() ) {
-				$post = get_post( get_post()->post_parent );
-			} else {
-				$in_same_term = false;
-				$excluded_terms = '';
-				
-				$post = get_adjacent_post( $in_same_term, $excluded_terms, $previous, $taxonomy );
-			}
-			
-			if(empty($post))
-				return(null);
-				
-			$title = $post->post_title;
-			
-			$link = get_permalink($post);
-			
-			$output = array();
-			
-			$output["title"] = $title;
-			$output["link"] = $link;
-			
-			return($output);
-		}
-		
-		
-		public static function a__________POST_ACTIONS_________(){}
-		
-		
-		/**
-		 * update post type
-		 */
-		public static function updatePost($postID, $arrUpdate){
-			
-			if(empty($arrUpdate))
-				UniteFunctionsUC::throwError("nothing to update post");
-				
-			$arrUpdate["ID"] = $postID;
-			
-			$wpError = wp_update_post( $arrUpdate ,true);
-			
-			if (is_wp_error($wpError)) {
-    			UniteFunctionsUC::throwError("Error updating post: $postID");
-			}
-			
+
+			$featuredImageID = self::getFeaturedImageID($postID);
+
+			if(empty($featuredImageID))
+				continue;
+
+			$arrIDs[] = $featuredImageID;
 		}
 
-		/**
-		 * add prefix to post permalink
-		 */
-		public static function addPrefixToPostName($postID, $prefix){
-			
-			$post = get_post($postID);
-			if(empty($post))
-				return(false);
+		return ($arrIDs);
+	}
 
-			$postName = $post->post_name;
-			
-			//check if already exists
-			if(strpos($postName, $prefix) === 0)
-				return(false);
-			
-			$newPostName = $prefix.$postName;
-			
-			$arrUpdate = array();
-			$arrUpdate["post_name"] = $newPostName;
-			
-			self::updatePost($postID, $arrUpdate);
-			
-			$post = get_post($postID);
-			
-		}
-		
-		
-		/**
-		 * update post ordering
-		 */
-		public static function updatePostOrdering($postID, $ordering){
-			
-			$arrUpdate = array(
-			      'menu_order' => $ordering,
-			 );		
-			
-			self::updatePost($postID, $arrUpdate);
-		}
-		
-		/**
-		 * update post content
-		 */
-		public static function updatePostContent($postID, $content){
-			
-			$arrUpdate = array("post_content"=>$content);
-			self::updatePost($postID, $arrUpdate);
-		}
-		
-		/**
-		 * update post page template attribute in meta
-		 */
-		public static function updatePageTemplateAttribute($pageID, $pageTemplate){
-			
-			update_post_meta($pageID, "_wp_page_template", $pageTemplate);
-		}
-		
-		
-		/**
-		 * insert post
-		 * params: [cat_slug, content]
-		 */
-		public static function insertPost($title, $alias, $params = array()){
-			
-			$catSlug = UniteFunctionsUC::getVal($params, "cat_slug");
-			$content = UniteFunctionsUC::getVal($params, "content");
-			$isPage = UniteFunctionsUC::getVal($params, "ispage");
-			$isPage = UniteFunctionsUC::strToBool($isPage);
-			
-			$catID = null;
-			if(!empty($catSlug)){
-				$catID = self::getCatIDBySlug($catSlug);
-				if(empty($catID))
-					UniteFunctionsUC::throwError("Category id not found by slug: $slug");
-			}
-			
-			$isPostExists = self::isPostNameExists($alias);
-			
-			if($isPostExists == true)
-				UniteFunctionsUC::throwError("Post with name: <b> {$alias} </b> already exists");
-			
-			
-			$arguments = array();
-			$arguments["post_title"] = $title;
-			$arguments["post_name"] = $alias;
-			$arguments["post_status"] = "publish";
-			
-			if(!empty($content))
-				$arguments["post_content"] = $content;
-			
-			if(!empty($catID))
-				$arguments["post_category"] = array($catID);
-			
-			if($isPage == true)
-				$arguments["post_type"] = "page";
-			
-			$postType = UniteFunctionsUC::getVal($params, "post_type");
-			if(!empty($postType))
-				$arguments["post_type"] = $postType;
-			
-			$newPostID = wp_insert_post($arguments, true);
-			
-			if(is_wp_error($newPostID)){
-				$errorMessage = $newPostID->get_error_message();
-				UniteFunctionsUC::throwError($errorMessage);
-			}
-			
-			
-			return($newPostID);
-		}
-		
-		
-		/**
-		 * insert new page
-		 */
-		public static function insertPage($title, $alias, $params = array()){
-			
-			$params["ispage"] = true;
-			
-			$pageID = self::insertPost($title, $alias, $params);
-			
-			return($pageID);
-		}
-		
-		
-		/**
-		 * delete all post metadata
-		 */
-		public static function deletePostMetadata($postID){
-			
-			$postID = (int)$postID;
-			
-			$tablePostMeta = UniteProviderFunctionsUC::$tablePostMeta;
-			
-			$db = self::getDB();
-			$db->delete($tablePostMeta, "post_id=$postID");
-		}
-		
-		
-		/**
-		 * delete multiple posts
-		 */
-		public static function deleteMultiplePosts($arrPostIDs){
-			
-			if(empty($arrPostIDs))
-				return(false);
-			
-			if(is_array($arrPostIDs) == false)
-				return(false);
-			
-			foreach($arrPostIDs as $postID)
-				self::deletePost($postID);
-			
-		}
-		
-		
-		/**
-		 * delete post
-		 */
-		public static function deletePost($postID){
-			
-			wp_delete_post($postID, true);
-			
-		}
-		
-		/**
-		 * cache attachment images query calls. one call instead of many
-		 * input - post array. 
-		 */
-		public static function cachePostsAttachmentsQueries($arrPosts){
-			
-			if(empty($arrPosts))
-				return(false);
-			
-			$arrAttachmentIDs = self::getPostsAttachmentsIDs($arrPosts);
-						
-			if(empty($arrAttachmentIDs))
-				return(false);
-			
-			self::cachePostMetaQueries($arrAttachmentIDs);
-		}
-		
-		/**
-		 * cache post meta queries by id's
-		 */
-		public static function cachePostMetaQueries($arrPostIDs){
-			
-			if(empty($arrPostIDs))
-				return(false);
-			
-			_prime_post_caches($arrPostIDs);
-			
-		}
-		
-		/**
-		 * get post terms queries
-		 */
-		public static function cachePostsTermsQueries($arrPosts){
-			
-			if(empty($arrPosts))
-				return(false);
-			
-			$arrIDs = array();
-			
-			//single type for now
-			$postType = null;
-			
-			foreach($arrPosts as $post){
-				
-				if(empty($postType))
-					$postType = $post->post_type;
-				
-				$arrIDs[] = $post->ID;
-			}
-			
-			
-			$arrTaxonomies = self::getPostTypeTaxomonies($postType);
-			
-			if(empty($arrTaxonomies))
-				return(false);
-			
-			$arrTaxKeys = array_keys($arrTaxonomies);
-			
-			//get all terms
-			
-			$args = array();
-			$args["fields"] = "all_with_object_id";
-			
-			$arrTerms = wp_get_object_terms($arrIDs, $arrTaxKeys, $args);
-			
-			$arrTermsByPosts = array();
-			
-			foreach($arrTerms as $term){
-				
-				$postID = $term->object_id;
-				
-				if(isset(GlobalsProviderUC::$arrPostTermsCache[$postID]) == false)
-					$arrTermsByPosts[$postID] = array();
+	/**
+	 * get first image id from content
+	 */
+	public static function getFirstImageIDFromContent($content){
 
-				$taxonomy = $term->taxonomy;
-					
-				$termID = $term->term_id;
-				
-				GlobalsProviderUC::$arrPostTermsCache[$postID][$taxonomy][$termID] = $term;
-			}
-			
-		}
-		
-		
-		public static function a__________ATTACHMENT________(){}
-		
-		/**
-		 * get attachmet id's from post
-		 */
-		public static function getPostsAttachmentsIDs($arrPosts){
-			
-			if(empty($arrPosts))
-				return(false);
-			
-			$arrIDs = array();
-						
-			foreach($arrPosts as $post){
-				
-				$postID = $post->ID;
-				
-				$featuredImageID = self::getFeaturedImageID($postID);
-				
-				if(empty($featuredImageID))
-					continue;
-				
-				$arrIDs[] = $featuredImageID;
-			}
-			
-			
-			return($arrIDs);
-		}
-		
-		
-		/**
-		 * get first image id from content
-		 */
-		public static function getFirstImageIDFromContent($content){
-								
-			$strSearch = "class=\"wp-image-";
-			
-			$posImageClass = strpos($content, $strSearch); 
-			
-			if($posImageClass === false)
-				return(null);
-			
-			$posSearch2 = $posImageClass + strlen($strSearch);
-			
-			$posIDEnd = strpos($content, "\"", $posSearch2);
-			
-			if($posIDEnd === false)
-				return(null);
-			
-			$imageID = substr($content, $posSearch2, $posIDEnd-$posSearch2);
-			
-			$imageID = (int)$imageID;
-			
-			return($imageID);
-		}
-		
-		/**
-		 * get post thumb id from post id
-		 */
-		public static function getFeaturedImageID($postID){
-			$thumbID = get_post_thumbnail_id( $postID );
-			return($thumbID);
-		}
-		
-		
-		/**
-		 *
-		 * get attachment image url
-		 */
-		public static function getUrlAttachmentImage($thumbID, $size = self::THUMB_FULL){
-			
-			$handle = "thumb_{$thumbID}_{$size}";
-			
-			if(isset(self::$arrUrlThumbCache[$handle]))	
-				return(self::$arrUrlThumbCache[$handle]);
-			
-			//wpml integration - get translated media id for current language
-			
-			$isWPML = UniteCreatorWpmlIntegrate::isWpmlExists();
-			
-			if($isWPML)
-				$thumbID = UniteCreatorWpmlIntegrate::getTranslatedAttachmentID($thumbID);
-			
-			$arrImage = wp_get_attachment_image_src($thumbID, $size);
-			if(empty($arrImage))
-				return(false);
-			
-			$url = UniteFunctionsUC::getVal($arrImage, 0);
-			
-			self::$arrUrlThumbCache[$handle] = $url;
-			
-			return($url);
-		}
-		
-		/**
-		 * get image data by url
-		 */
-		public static function getImageDataByUrl($urlImage){
-						
-			$title = HelperUC::getTitleFromUrl($urlImage, "image");
-			
-			$item = array();
-			$item["image_id"] = "";
-			$item["image"] = $urlImage;
-			$item["thumb"] = $urlImage;
-			$item["title"] = $title;
-			$item["description"] = "";
-			
-			return($item);
-		}
-		
-		/**
-		 * get product category image
-		 */
-		public static function getProductCatImage($productCatID){
-			
-			$imageID = get_term_meta( $productCatID, "thumbnail_id", true);
-			
-			if(empty($imageID))
-				return("");
-			
-			$urlImage = self::getUrlAttachmentImage($imageID, UniteFunctionsWPUC::THUMB_LARGE);
-			
-			return($urlImage);
-		}
-		
-		
-		/**
-		 * get attachment data
-		 */
-		public static function getAttachmentData($thumbID){
-			
-			//try to return data by url
-			/*
+		$strSearch = "class=\"wp-image-";
+
+		$posImageClass = strpos($content, $strSearch);
+
+		if($posImageClass === false)
+			return (null);
+
+		$posSearch2 = $posImageClass + strlen($strSearch);
+
+		$posIDEnd = strpos($content, "\"", $posSearch2);
+
+		if($posIDEnd === false)
+			return (null);
+
+		$imageID = substr($content, $posSearch2, $posIDEnd - $posSearch2);
+
+		$imageID = (int)$imageID;
+
+		return ($imageID);
+	}
+
+	/**
+	 * get post thumb id from post id
+	 */
+	public static function getFeaturedImageID($postID){
+
+		$thumbID = get_post_thumbnail_id($postID);
+
+		return ($thumbID);
+	}
+
+	/**
+	 *
+	 * get attachment image url
+	 */
+	public static function getUrlAttachmentImage($thumbID, $size = self::THUMB_FULL){
+
+		$handle = "thumb_{$thumbID}_{$size}";
+
+		if(isset(self::$arrUrlThumbCache[$handle]))
+			return (self::$arrUrlThumbCache[$handle]);
+
+		//wpml integration - get translated media id for current language
+
+		$isWPML = UniteCreatorWpmlIntegrate::isWpmlExists();
+
+		if($isWPML)
+			$thumbID = UniteCreatorWpmlIntegrate::getTranslatedAttachmentID($thumbID);
+
+		$arrImage = wp_get_attachment_image_src($thumbID, $size);
+		if(empty($arrImage))
+			return (false);
+
+		$url = UniteFunctionsUC::getVal($arrImage, 0);
+
+		self::$arrUrlThumbCache[$handle] = $url;
+
+		return ($url);
+	}
+
+	/**
+	 * get image data by url
+	 */
+	public static function getImageDataByUrl($urlImage){
+
+		$title = HelperUC::getTitleFromUrl($urlImage, "image");
+
+		$item = array();
+		$item["image_id"] = "";
+		$item["image"] = $urlImage;
+		$item["thumb"] = $urlImage;
+		$item["title"] = $title;
+		$item["description"] = "";
+
+		return ($item);
+	}
+
+	/**
+	 * get product category image
+	 */
+	public static function getProductCatImage($productCatID){
+
+		$imageID = get_term_meta($productCatID, "thumbnail_id", true);
+
+		if(empty($imageID))
+			return ("");
+
+		$urlImage = self::getUrlAttachmentImage($imageID, UniteFunctionsWPUC::THUMB_LARGE);
+
+		return ($urlImage);
+	}
+
+	/**
+	 * get attachment data
+	 */
+	public static function getAttachmentData($thumbID){
+
+		//try to return data by url
+		/*
 			if(is_numeric($thumbID) == false){
-								
+
 				$urlImage = $thumbID;
 				$thumbID = self::getAttachmentIDFromImageUrl($thumbID);
-				
+
 				if(empty($thumbID)){
-					
+
 					$imageData = self::getImageDataByUrl($urlImage);
-					
+
 					return($imageData);
 				}
 			}
 			*/
-			
-			if(empty($thumbID))
-				return(null);
-			
-			if(is_numeric($thumbID) == false){
-				$imageData = self::getImageDataByUrl($thumbID);
-				return($imageData);
-			}
-			
-			$handle = "attachment_data_$thumbID";
-			if(isset(self::$arrUrlAttachmentDataCache[$handle]))
-				return(self::$arrUrlAttachmentDataCache[$handle]);
-			
-			$post = get_post($thumbID);
-			if(empty($post))
-				return(null);
-			
-			$title = wp_get_attachment_caption($thumbID);
-			
-			$rawCaption = $title;
-			
-			$item = array();
-			$item["image_id"] = $post->ID;
-			$item["image"] = $post->guid;
-			
-			if(empty($title))
-				$title = $post->post_title;
-			
-			$rawTitle = $post->post_title;
-			
-			$urlThumb = self::getUrlAttachmentImage($thumbID,self::THUMB_MEDIUM_LARGE);
-			if(empty($urlThumb))
-				$urlThumb = $post->guid;
-			
-			$urlThumbLarge = self::getUrlAttachmentImage($thumbID,self::THUMB_LARGE);
-			if(empty($urlThumbLarge))
-				$urlThumbLarge = $urlThumb;
-			
-			$item["thumb"] = $urlThumb;
-			$item["thumb_large"] = $urlThumb;
-			
-			$item["title"] = $title;
-			$item["description"] = $post->post_content;
-			
-			$item["raw_caption"] = $rawCaption;
-			$item["raw_title"] = $rawTitle;
-			
-			self::$arrUrlAttachmentDataCache[$handle] = $item;
-			
-			return($item);
+
+		if(empty($thumbID))
+			return (null);
+
+		if(is_numeric($thumbID) == false){
+			$imageData = self::getImageDataByUrl($thumbID);
+
+			return ($imageData);
 		}
-		
-		
-		/**
-		 * get thumbnail sizes array
-		 */
-		public static function getArrThumbSizes(){
-			
-			if(!empty(self::$arrThumbSizesCache))
-				return(self::$arrThumbSizesCache);
-			
-			global $_wp_additional_image_sizes;
-						
-			$arrWPSizes = get_intermediate_image_sizes();
-					
-			$arrSizes = array();
-		
-			
-			foreach($arrWPSizes as $size){
-								
-				$title = UniteFunctionsUC::convertHandleToTitle($size);
-				
-				$maxWidth = null;
-				$maxHeight = null;
-				$isCrop = false;
-				
-				//get max width from option or additional sizes array
-				$arrSize = UniteFunctionsUC::getVal($_wp_additional_image_sizes, $size);
-				if(!empty($arrSize)){
-					$maxWidth = UniteFunctionsUC::getVal($arrSize, "width");
-					$maxHeight = UniteFunctionsUC::getVal($arrSize, "height");
-					$crop = UniteFunctionsUC::getVal($arrSize, "crop");
-				}
-				
-				if(empty($maxWidth)){
-					$maxWidth = intval(get_option("{$size}_size_w"));
-					$maxHeight = intval(get_option("{$size}_size_h"));
-					$crop = intval(get_option("{$size}_crop"));
-				}
-				
-				if(empty($maxWidth)){
-					$arrSizes[$size] = $title;
-					continue;
-				}
-				
-				//add the text addition
-				$addition = "";
-				if($crop == true)
-					$addition = "({$maxWidth}x{$maxHeight})";
-				else
-					$addition = "(max width $maxWidth)";
-				
-				$title .= " ".$addition;
-				
+
+		$handle = "attachment_data_$thumbID";
+		if(isset(self::$arrUrlAttachmentDataCache[$handle]))
+			return (self::$arrUrlAttachmentDataCache[$handle]);
+
+		$post = get_post($thumbID);
+		if(empty($post))
+			return (null);
+
+		$title = wp_get_attachment_caption($thumbID);
+
+		$rawCaption = $title;
+
+		$item = array();
+		$item["image_id"] = $post->ID;
+		$item["image"] = $post->guid;
+
+		if(empty($title))
+			$title = $post->post_title;
+
+		$rawTitle = $post->post_title;
+
+		$urlThumb = self::getUrlAttachmentImage($thumbID, self::THUMB_MEDIUM_LARGE);
+		if(empty($urlThumb))
+			$urlThumb = $post->guid;
+
+		$urlThumbLarge = self::getUrlAttachmentImage($thumbID, self::THUMB_LARGE);
+		if(empty($urlThumbLarge))
+			$urlThumbLarge = $urlThumb;
+
+		$item["thumb"] = $urlThumb;
+		$item["thumb_large"] = $urlThumb;
+
+		$item["title"] = $title;
+		$item["description"] = $post->post_content;
+
+		$item["raw_caption"] = $rawCaption;
+		$item["raw_title"] = $rawTitle;
+
+		self::$arrUrlAttachmentDataCache[$handle] = $item;
+
+		return ($item);
+	}
+
+	/**
+	 * get thumbnail sizes array
+	 */
+	public static function getArrThumbSizes(){
+
+		if(!empty(self::$arrThumbSizesCache))
+			return (self::$arrThumbSizesCache);
+
+		global $_wp_additional_image_sizes;
+
+		$arrWPSizes = get_intermediate_image_sizes();
+
+		$arrSizes = array();
+
+		foreach($arrWPSizes as $size){
+			$title = UniteFunctionsUC::convertHandleToTitle($size);
+
+			$maxWidth = null;
+			$maxHeight = null;
+			$isCrop = false;
+
+			//get max width from option or additional sizes array
+			$arrSize = UniteFunctionsUC::getVal($_wp_additional_image_sizes, $size);
+			if(!empty($arrSize)){
+				$maxWidth = UniteFunctionsUC::getVal($arrSize, "width");
+				$maxHeight = UniteFunctionsUC::getVal($arrSize, "height");
+				$crop = UniteFunctionsUC::getVal($arrSize, "crop");
+			}
+
+			if(empty($maxWidth)){
+				$maxWidth = intval(get_option("{$size}_size_w"));
+				$maxHeight = intval(get_option("{$size}_size_h"));
+				$crop = intval(get_option("{$size}_crop"));
+			}
+
+			if(empty($maxWidth)){
 				$arrSizes[$size] = $title;
+				continue;
 			}
-			
-			$arrSizes["full"] = __("Full Size", "unlimited-elements-for-elementor");
-			
-			//sort
-			$arrNew = array();
-			
-			$topKeys = array("medium_large", "large", "medium", "thumbnail", "full");
-			
-			foreach($topKeys as $key){
-				
-				if(!isset($arrSizes[$key]))
-					continue;
-				
-				$arrNew[$key] = $arrSizes[$key];
-				unset($arrSizes[$key]);
-			}
-						
-			$arrNew = array_merge($arrNew, $arrSizes);
 
-			self::$arrThumbSizesCache = $arrNew;
-			
-			return($arrNew);
+			//add the text addition
+			$addition = "";
+			if($crop == true)
+				$addition = "({$maxWidth}x{$maxHeight})";
+			else
+				$addition = "(max width $maxWidth)";
+
+			$title .= " " . $addition;
+
+			$arrSizes[$size] = $title;
 		}
-		
-		
-		/**
-		 * Get an attachment ID given a URL.
-		*
-		* @param string $url
-		*
-		* @return int Attachment ID on success, 0 on failure
-		*/
-		public static function getAttachmentIDFromImageUrl( $url ) {
-			
-			if(empty($url))
-				return(null);
-			
-			$attachment_id = 0;
-		
-			$dir = wp_upload_dir();
-			
-			if ( false !== strpos( $url, $dir['baseurl'] . '/' ) ) { // Is URL in uploads directory?
-		
-				$file = basename( $url );
-		
-				$query_args = array(
-						'post_type'   => 'attachment',
-						'post_status' => 'inherit',
-						'fields'      => 'ids',
-						'meta_query'  => array(
-								array(
-										'value'   => $file,
-										'compare' => 'LIKE',
-										'key'     => '_wp_attachment_metadata',
-								),
-						)
-				);
-				
-				$query = new WP_Query( $query_args );
-		
-				if ( $query->have_posts() ) {
-		
-					foreach ( $query->posts as $post_id ) {
-		
-						$meta = wp_get_attachment_metadata( $post_id );
-						
-						$original_file       = basename( $meta['file'] );
-						$cropped_image_files = wp_list_pluck( $meta['sizes'], 'file' );
-						
-						if ( $original_file === $file || in_array( $file, $cropped_image_files ) ) {
-							$attachment_id = $post_id;
-							break;
-						}
-		
+
+		$arrSizes["full"] = __("Full Size", "unlimited-elements-for-elementor");
+
+		//sort
+		$arrNew = array();
+
+		$topKeys = array("medium_large", "large", "medium", "thumbnail", "full");
+
+		foreach($topKeys as $key){
+			if(!isset($arrSizes[$key]))
+				continue;
+
+			$arrNew[$key] = $arrSizes[$key];
+			unset($arrSizes[$key]);
+		}
+
+		$arrNew = array_merge($arrNew, $arrSizes);
+
+		self::$arrThumbSizesCache = $arrNew;
+
+		return ($arrNew);
+	}
+
+	/**
+	 * Get an attachment ID given a URL.
+	 *
+	 * @param string $url
+	 *
+	 * @return int Attachment ID on success, 0 on failure
+	 */
+	public static function getAttachmentIDFromImageUrl($url){
+
+		if(empty($url))
+			return (null);
+
+		$attachment_id = 0;
+
+		$dir = wp_upload_dir();
+
+		if(false !== strpos($url, $dir['baseurl'] . '/')){ // Is URL in uploads directory?
+
+			$file = basename($url);
+
+			$query_args = array(
+				'post_type' => 'attachment',
+				'post_status' => 'inherit',
+				'fields' => 'ids',
+				'meta_query' => array(
+					array(
+						'value' => $file,
+						'compare' => 'LIKE',
+						'key' => '_wp_attachment_metadata',
+					),
+				),
+			);
+
+			$query = new WP_Query($query_args);
+
+			if($query->have_posts()){
+				foreach($query->posts as $post_id){
+					$meta = wp_get_attachment_metadata($post_id);
+
+					$original_file = basename($meta['file']);
+					$cropped_image_files = wp_list_pluck($meta['sizes'], 'file');
+
+					if($original_file === $file || in_array($file, $cropped_image_files)){
+						$attachment_id = $post_id;
+						break;
 					}
-		
 				}
-		
 			}
-		
-			return $attachment_id;
-		}		
-		
-		/**
-		 * get attachment post title
-		 */
-		public static function getAttachmentPostTitle($post){
-			
-			if(empty($post))
-				return("");
-			
-			$post = (array)$post;
-						
-			$title = UniteFunctionsUC::getVal($post, "post_title");
-			$filename = UniteFunctionsUC::getVal($post, "guid");
-			
-			if(empty($title))
-				$title = $filename;
-			
-			$info = pathinfo($title);
-			$name = UniteFunctionsUC::getVal($info, "filename");
-			
-			if(!empty($name))
-				$title = $name;
-			
-			return($title);
-			
 		}
-		
-		/**
-		 * get attachment post alt
-		 */
-		public static function getAttachmentPostAlt($postID){
-			
-			$alt = get_post_meta($postID, '_wp_attachment_image_alt', true);
-			
-			return($alt);
-		}
-		
-		public static function a___________USER_DATA__________(){}
-		
-		
-		/**
-		 *
-		 * validate permission that the user is admin, and can manage options.
-		 */
-		public static function isAdminPermissions(){
-			
-			if( is_admin() &&  current_user_can("manage_options") )
-				return(true);
-		
-			return(false);
-		}
-		
-		/**
-		 * check if current user has some permissions
-		 */
-		public static function isCurrentUserHasPermissions(){
-			
-			$canEdit = current_user_can("manage_options");
-			
-			return($canEdit);
-		}
-		
-		
-		/**
-		 * get keys of user meta
-		 */
-		public static function getUserMetaKeys(){
-			
-			$arrKeys = array(
-				"first_name",
-				"last_name",
-				"description",
-				
-				"billing_first_name",
-				"billing_last_name",
-				"billing_company",
-				"billing_address_1",
-				"billing_address_2",
-				"billing_city",
-				"billing_postcode",
-				"billing_country",
-				"billing_state",
-				"billing_phone",
-				"billing_email",
-				"billing_first_name",
-				"billing_last_name",
-				
-				"shipping_company",
-				"shipping_address_1",
-				"shipping_address_2",
-				"shipping_city",
-				"shipping_postcode",
-				"shipping_country",
-				"shipping_state",
-				"shipping_phone",
-				"shipping_email",
-			);
-			
-			return($arrKeys);
-		}
-		
-		
-		/**
-		 * get user avatar keys
-		 */
-		public static function getUserAvatarKeys(){
-			
-			$arrKeys = array(
-				"avatar_found",
-				"avatar_url",
-				"avatar_size"
-			);
-			
-			return($arrKeys);
-		}
-		
-		
-		/**
-		 * get user meta
-		 */
-		public static function getUserMeta($userID, $arrMetaKeys = null, $addPrefixed = false){
-			
-			$arrMeta = get_user_meta($userID,'',true);
-			
-			if(empty($arrMeta))
-				return(null);
-			
-			$arrKeys = self::getUserMetaKeys();
-			
-			if(is_array($arrMetaKeys) == false)
-				$arrMetaKeys = array();
-			
-			if(!empty($arrMetaKeys))
-				$arrKeys = array_merge($arrKeys, $arrMetaKeys);
-						
-			$arrMetaKeys = UniteFunctionsUC::arrayToAssoc($arrMetaKeys);
-						
-			$arrOutput = array();
-			foreach($arrKeys as $key){
-				
-				$metaValue = UniteFunctionsUC::getVal($arrMeta, $key);
-				
-				if(is_array($metaValue))
-					$metaValue = $metaValue[0];
-									
-				//from the additional - try to unserialize
-				if(isset($arrMetaKeys[$key]) && is_string($metaValue)){
-					
-					$arrOpened = maybe_unserialize($metaValue);
-					if(!empty($arrOpened))
-						$metaValue = $arrOpened;
-				}
-				
-				if($addPrefixed == true)
-					$key = "cf_".$key;
-				
-				$arrOutput[$key] = $metaValue;
-			}
-			
-			return($arrOutput);
-		}
-		
-		
-		/**
-		 * get user avatar data
-		 */
-		public static function getUserAvatarData($userID, $urlDefaultImage =""){
-			
-			$args = array();
-			
-			if(!empty($urlDefaultImage))
-			$args["default"] = $urlDefaultImage;
-			
-			$arrAvatar = get_avatar_data($userID, $args);
-			
-			$hasAvatar = UniteFunctionsUC::getVal($arrAvatar, "found_avatar");
-			$size = UniteFunctionsUC::getVal($arrAvatar, "size");
-			$url = UniteFunctionsUC::getVal($arrAvatar, "url");
-			
-			$arrOutput = array();
-			$arrOutput["avatar_found"] = $hasAvatar;
-			$arrOutput["avatar_url"] = $url;
-			$arrOutput["avatar_size"] = $size;
-			
-			return($arrOutput);
-		}
-		
-		
-		/**
-		 * get user data by object
-		 */
-		public static function getUserData($objUser, $getMeta = false, $getAvatar = false, $arrMetaKeys = null){
-			
-			if(is_numeric($objUser))
-				$objUser = get_user_by("id",$objUser);
-			
-			$userID = $objUser->ID;
-						
-			$urlPosts = get_author_posts_url($userID);
-			
-			if($getMeta == true)
-				$numPosts = count_user_posts($userID);
-			
-			$userData = $objUser->data;
-						
-			$userData = UniteFunctionsUC::convertStdClassToArray($userData);
-			
-			$arrData = array();
-			$arrData["id"] = UniteFunctionsUC::getVal($userData, "ID");
-			
-			$username = UniteFunctionsUC::getVal($userData, "user_nicename");
-			
-			$arrData["username"] = $username;
-			
-			$name = UniteFunctionsUC::getVal($userData, "display_name");
-			if(empty($name))
-				$name = $username;
-			
-			if(empty($name))
-				$name = UniteFunctionsUC::getVal($userData, "user_login");
-				
-			$arrData["name"] = $name;
-			
-			$arrData["user_login"] = UniteFunctionsUC::getVal($userData, "user_login");
-			
-			$arrData["email"] = UniteFunctionsUC::getVal($userData, "user_email");
-			
-			$arrData["url_posts"] = $urlPosts;
-			
-			if($getMeta == true)
-				$arrData["num_posts"] = $numPosts;
-			
-			if($getAvatar == true){
-			
-				$arrAvatar = self::getUserAvatarData($userID);
-				if(!empty($arrAvatar))
-					$arrData = $arrData + $arrAvatar;
-			}
-			
-			//add role
-			$arrRoles = $objUser->roles;
-			
-			$role = "";
-			if(!empty($arrRoles))
-				$role = implode(",",$arrRoles);
-			
-			$arrData["role"] = $role;
-			
-			$urlWebsite = UniteFunctionsUC::getVal($userData, "user_url");
-			$arrData["website"] = $urlWebsite;
-			
-			//add meta
-			if($getMeta == true){
-				
-				$arrMeta = self::getUserMeta($userID, $arrMetaKeys);
-				if(!empty($arrMeta))
-					$arrData = $arrData+$arrMeta;
-			}
-			
-			return($arrData);
-		}
-		
-		
-		/**
-		 * get user data by id
-		 * if user not found, return empty data
-		 */
-		public static function getUserDataById($userID, $getMeta = false, $getAvatar = false){
-			
-			if($userID == "loggedin_user")
-				$objUser = wp_get_current_user();
-			else{
-				if(is_numeric($userID))
-					$objUser = get_user_by("id", $userID);
-				else
-					$objUser = get_user_by("slug", $userID);
-			}
-			
-			
-			//if emtpy user - return empty
-			if(empty($objUser)){
-				
-				$arrEmpty = array();
-				$arrEmpty["id"] = "";
-				$arrEmpty["name"] = "";
-				$arrEmpty["email"] = "";
-				
-				return($arrEmpty);
-			}
-			
-			$arrData = self::getUserData($objUser, $getMeta, $getAvatar);
-			
-			
-			return($arrData);
-		}
-		
-		/**
-		 * get roles as name/value array
-		 */
-		public static function getRolesShort($addAll = false){
-			
-			$objRoles = wp_roles();
-						
-			$arrShort = $objRoles->role_names;
-			
-			if($addAll == true){
-				$arrAll["__all__"] = __("[All Roles]","unlimited-elements-for-elementor");
-				$arrShort = $arrAll + $arrShort;
-			}
-			
-			return($arrShort);
-		}
-		
-		/**
-		 * get menus list short - id / title
-		 */
-		public static function getMenusListShort(){
-			
-			$arrShort = array();
-			
-			$arrMenus = get_terms("nav_menu");
-			
-			if(empty($arrMenus))
-				return(array());
-				
-			foreach($arrMenus as $menu){
-				
-				$menuID = $menu->term_id;
-				$name = $menu->name;
-				
-				$arrShort[$menuID] = $name;				
-			}
-			
-			return($arrShort);
-		}
-		
-		/**
-		 * get users array short
-		 */
-		public static function getArrAuthorsShort($addCurrentUser = false){
-			
-			if(!empty(self::$cacheAuthorsShort)){
 
-				if($addCurrentUser){
-					$arrUsers = UniteFunctionsUC::addArrFirstValue(self::$cacheAuthorsShort, "-- Logged In User --", "uc_loggedin_user");
-					return($arrUsers);
-				}
-								
-				return(self::$cacheAuthorsShort);
+		return $attachment_id;
+	}
+
+	/**
+	 * get attachment post title
+	 */
+	public static function getAttachmentPostTitle($post){
+
+		if(empty($post))
+			return ("");
+
+		$post = (array)$post;
+
+		$title = UniteFunctionsUC::getVal($post, "post_title");
+		$filename = UniteFunctionsUC::getVal($post, "guid");
+
+		if(empty($title))
+			$title = $filename;
+
+		$info = pathinfo($title);
+		$name = UniteFunctionsUC::getVal($info, "filename");
+
+		if(!empty($name))
+			$title = $name;
+
+		return ($title);
+	}
+
+	/**
+	 * get attachment post alt
+	 */
+	public static function getAttachmentPostAlt($postID){
+
+		$alt = get_post_meta($postID, '_wp_attachment_image_alt', true);
+
+		return ($alt);
+	}
+
+	public static function a___________USER_DATA__________(){
+	}
+
+	/**
+	 *
+	 * validate permission that the user is admin, and can manage options.
+	 */
+	public static function isAdminPermissions(){
+
+		if(is_admin() && current_user_can("manage_options"))
+			return (true);
+
+		return (false);
+	}
+
+	/**
+	 * check if current user has some permissions
+	 */
+	public static function isCurrentUserHasPermissions(){
+
+		$canEdit = current_user_can("manage_options");
+
+		return ($canEdit);
+	}
+
+	/**
+	 * get keys of user meta
+	 */
+	public static function getUserMetaKeys(){
+
+		$arrKeys = array(
+			"first_name",
+			"last_name",
+			"description",
+
+			"billing_first_name",
+			"billing_last_name",
+			"billing_company",
+			"billing_address_1",
+			"billing_address_2",
+			"billing_city",
+			"billing_postcode",
+			"billing_country",
+			"billing_state",
+			"billing_phone",
+			"billing_email",
+			"billing_first_name",
+			"billing_last_name",
+
+			"shipping_company",
+			"shipping_address_1",
+			"shipping_address_2",
+			"shipping_city",
+			"shipping_postcode",
+			"shipping_country",
+			"shipping_state",
+			"shipping_phone",
+			"shipping_email",
+		);
+
+		return ($arrKeys);
+	}
+
+	/**
+	 * get user avatar keys
+	 */
+	public static function getUserAvatarKeys(){
+
+		$arrKeys = array(
+			"avatar_found",
+			"avatar_url",
+			"avatar_size",
+		);
+
+		return ($arrKeys);
+	}
+
+	/**
+	 * get user meta
+	 */
+	public static function getUserMeta($userID, $arrMetaKeys = null, $addPrefixed = false){
+
+		$arrMeta = get_user_meta($userID, '', true);
+
+		if(empty($arrMeta))
+			return (null);
+
+		$arrKeys = self::getUserMetaKeys();
+
+		if(is_array($arrMetaKeys) == false)
+			$arrMetaKeys = array();
+
+		if(!empty($arrMetaKeys))
+			$arrKeys = array_merge($arrKeys, $arrMetaKeys);
+
+		$arrMetaKeys = UniteFunctionsUC::arrayToAssoc($arrMetaKeys);
+
+		$arrOutput = array();
+		foreach($arrKeys as $key){
+			$metaValue = UniteFunctionsUC::getVal($arrMeta, $key);
+
+			if(is_array($metaValue))
+				$metaValue = $metaValue[0];
+
+			//from the additional - try to unserialize
+			if(isset($arrMetaKeys[$key]) && is_string($metaValue)){
+				$arrOpened = maybe_unserialize($metaValue);
+				if(!empty($arrOpened))
+					$metaValue = $arrOpened;
 			}
-			
-			$args = array("role__not_in"=>array("subscriber", "customer"));
-			$arrUsers = get_users($args);
-			
-			$arrUsersShort = array();
-			
-			$arrNames = array();
-			$arrAlternative = array();
-			
-			foreach($arrUsers as $objUser){
-				
-				$userID = $objUser->ID;
-				$userData = $objUser->data;
-				$name = $userData->display_name;
-				if(empty($name))
-					$name = $userData->user_nicename;
-				if(empty($name))
-					$name = $userData->user_login;
-				
-				$login = $userData->user_login;
-				$alternativeName = $name." ({$login})";
-					
-				
-				//avoid duplicate names
-				
-				if(isset($arrNames[$name])){
-					
-					$oridinalUserID = $arrNames[$name];
-					
-					$arrUsersShort[$oridinalUserID] = $arrAlternative[$name];
-					
-					$name = $alternativeName;
-					
-				}else{
-					$arrAlternative[$name] = $alternativeName;
-				}
-				
-				$arrNames[$name] = $userID;
-					
-				$arrUsersShort[$userID] = $name;
-			}
-			
-						
-			self::$cacheAuthorsShort = $arrUsersShort;
-			
-			if($addCurrentUser == true){
-				$arrUsers = UniteFunctionsUC::addArrFirstValue(self::$cacheAuthorsShort, "-- Logged In User --", "uc_loggedin_user");
-				return($arrUsers);
-			}
-			
-			return($arrUsersShort);
+
+			if($addPrefixed == true)
+				$key = "cf_" . $key;
+
+			$arrOutput[$key] = $metaValue;
 		}
-		
-		public static function a___________MENU__________(){}
+
+		return ($arrOutput);
+	}
+
+	/**
+	 * get user avatar data
+	 */
+	public static function getUserAvatarData($userID, $urlDefaultImage = ""){
+
+		$args = array();
+
+		if(!empty($urlDefaultImage))
+			$args["default"] = $urlDefaultImage;
+
+		$arrAvatar = get_avatar_data($userID, $args);
+
+		$hasAvatar = UniteFunctionsUC::getVal($arrAvatar, "found_avatar");
+		$size = UniteFunctionsUC::getVal($arrAvatar, "size");
+		$url = UniteFunctionsUC::getVal($arrAvatar, "url");
+
+		$arrOutput = array();
+		$arrOutput["avatar_found"] = $hasAvatar;
+		$arrOutput["avatar_url"] = $url;
+		$arrOutput["avatar_size"] = $size;
+
+		return ($arrOutput);
+	}
+
+	/**
+	 * get user data by object
+	 */
+	public static function getUserData($objUser, $getMeta = false, $getAvatar = false, $arrMetaKeys = null){
+
+		if(is_numeric($objUser))
+			$objUser = get_user_by("id", $objUser);
+
+		$userID = $objUser->ID;
+
+		$urlPosts = get_author_posts_url($userID);
+
+		if($getMeta == true)
+			$numPosts = count_user_posts($userID);
+
+		$userData = $objUser->data;
+
+		$userData = UniteFunctionsUC::convertStdClassToArray($userData);
+
+		$arrData = array();
+		$arrData["id"] = UniteFunctionsUC::getVal($userData, "ID");
+
+		$username = UniteFunctionsUC::getVal($userData, "user_nicename");
+
+		$arrData["username"] = $username;
+
+		$name = UniteFunctionsUC::getVal($userData, "display_name");
+		if(empty($name))
+			$name = $username;
+
+		if(empty($name))
+			$name = UniteFunctionsUC::getVal($userData, "user_login");
+
+		$arrData["name"] = $name;
+
+		$arrData["user_login"] = UniteFunctionsUC::getVal($userData, "user_login");
+
+		$arrData["email"] = UniteFunctionsUC::getVal($userData, "user_email");
+
+		$arrData["url_posts"] = $urlPosts;
+
+		if($getMeta == true)
+			$arrData["num_posts"] = $numPosts;
+
+		if($getAvatar == true){
+			$arrAvatar = self::getUserAvatarData($userID);
+			if(!empty($arrAvatar))
+				$arrData = $arrData + $arrAvatar;
+		}
+
+		//add role
+		$arrRoles = $objUser->roles;
+
+		$role = "";
+		if(!empty($arrRoles))
+			$role = implode(",", $arrRoles);
+
+		$arrData["role"] = $role;
+
+		$urlWebsite = UniteFunctionsUC::getVal($userData, "user_url");
+		$arrData["website"] = $urlWebsite;
+
+		//add meta
+		if($getMeta == true){
+			$arrMeta = self::getUserMeta($userID, $arrMetaKeys);
+			if(!empty($arrMeta))
+				$arrData = $arrData + $arrMeta;
+		}
+
+		return ($arrData);
+	}
+
+	/**
+	 * get user data by id
+	 * if user not found, return empty data
+	 */
+	public static function getUserDataById($userID, $getMeta = false, $getAvatar = false){
+
+		if($userID == "loggedin_user")
+			$objUser = wp_get_current_user();
+		else{
+			if(is_numeric($userID))
+				$objUser = get_user_by("id", $userID);
+			else
+				$objUser = get_user_by("slug", $userID);
+		}
+
+		//if emtpy user - return empty
+		if(empty($objUser)){
+			$arrEmpty = array();
+			$arrEmpty["id"] = "";
+			$arrEmpty["name"] = "";
+			$arrEmpty["email"] = "";
+
+			return ($arrEmpty);
+		}
+
+		$arrData = self::getUserData($objUser, $getMeta, $getAvatar);
+
+		return ($arrData);
+	}
+
+	/**
+	 * get roles as name/value array
+	 */
+	public static function getRolesShort($addAll = false){
+
+		$objRoles = wp_roles();
+
+		$arrShort = $objRoles->role_names;
+
+		if($addAll == true){
+			$arrAll["__all__"] = __("[All Roles]", "unlimited-elements-for-elementor");
+			$arrShort = $arrAll + $arrShort;
+		}
+
+		return ($arrShort);
+	}
+
+	/**
+	 * get menus list short - id / title
+	 */
+	public static function getMenusListShort(){
+
+		$arrShort = array();
+
+		$arrMenus = get_terms("nav_menu");
+
+		if(empty($arrMenus))
+			return (array());
+
+		foreach($arrMenus as $menu){
+			$menuID = $menu->term_id;
+			$name = $menu->name;
+
+			$arrShort[$menuID] = $name;
+		}
+
+		return ($arrShort);
+	}
+
+	/**
+	 * get users array short
+	 */
+	public static function getArrAuthorsShort($addCurrentUser = false){
+
+		if(!empty(self::$cacheAuthorsShort)){
+			if($addCurrentUser){
+				$arrUsers = UniteFunctionsUC::addArrFirstValue(self::$cacheAuthorsShort, "-- Logged In User --", "uc_loggedin_user");
+
+				return ($arrUsers);
+			}
+
+			return (self::$cacheAuthorsShort);
+		}
+
+		$args = array("role__not_in" => array("subscriber", "customer"));
+		$arrUsers = get_users($args);
+
+		$arrUsersShort = array();
+
+		$arrNames = array();
+		$arrAlternative = array();
+
+		foreach($arrUsers as $objUser){
+			$userID = $objUser->ID;
+			$userData = $objUser->data;
+			$name = $userData->display_name;
+			if(empty($name))
+				$name = $userData->user_nicename;
+			if(empty($name))
+				$name = $userData->user_login;
+
+			$login = $userData->user_login;
+			$alternativeName = $name . " ({$login})";
+
+			//avoid duplicate names
+
+			if(isset($arrNames[$name])){
+				$oridinalUserID = $arrNames[$name];
+
+				$arrUsersShort[$oridinalUserID] = $arrAlternative[$name];
+
+				$name = $alternativeName;
+			}else{
+				$arrAlternative[$name] = $alternativeName;
+			}
+
+			$arrNames[$name] = $userID;
+
+			$arrUsersShort[$userID] = $name;
+		}
+
+		self::$cacheAuthorsShort = $arrUsersShort;
+
+		if($addCurrentUser == true){
+			$arrUsers = UniteFunctionsUC::addArrFirstValue(self::$cacheAuthorsShort, "-- Logged In User --", "uc_loggedin_user");
+
+			return ($arrUsers);
+		}
+
+		return ($arrUsersShort);
+	}
+
+	public static function a___________MENU__________(){
+	}
 
 	/**
 	 * get menu items
 	 */
 	public static function getMenuItems($menuID){
-		
+
 		$objMenu = wp_get_nav_menu_object($menuID);
 
 		if(empty($objMenu))
-			return(array());
+			return (array());
 
 		$arrItems = wp_get_nav_menu_items($objMenu);
-		
+
 		if(empty($arrItems))
-			return(array());
-				
+			return (array());
+
 		$arrItemsData = array();
-		
+
 		foreach($arrItems as $objItem){
-						
 			$item = array();
-			
+
 			$url = $objItem->url;
 			$title = $objItem->title;
 			$titleAttribute = $objItem->attr_title;
 			$target = $objItem->target;
-			
-			
+
 			$item["id"] = $objItem->ID;
 			$item["type"] = $objItem->type_label;
 			$item["title"] = $objItem->title;
@@ -3427,485 +3375,458 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			$item["target"] = $objItem->target;
 			$item["title_attribute"] = $objItem->attr_title;
 			$item["description"] = $objItem->description;
-			
+
 			$arrClasses = $objItem->classes;
-			
+
 			$strClases = "";
 			if(!empty($arrClasses))
 				$strClases = implode(" ", $arrClasses);
-			
+
 			$strClases = trim($strClases);
 
 			$item["classes"] = $strClases;
-			
+
 			//make the html
-			
+
 			$addHtml = "";
 			if(!empty($target))
 				$addHtml .= " target='$target'";
-			
+
 			if(!empty($titleAttribute)){
 				$titleAttribute = esc_attr($titleAttribute);
 				$addHtml .= " title='$titleAttribute'";
 			}
-			
+
 			if(!empty($strClases))
 				$addHtml .= " class='$strClases'";
-			
-			
+
 			$html = "<a href='{$url}' {$addHtml}>{$title}</a>";
-			
+
 			$item["html_link"] = $html;
-			
-			
+
 			$arrItemsData[] = $item;
 		}
-		
-		return($arrItemsData);
+
+		return ($arrItemsData);
 	}
-		
-		
-		public static function a___________OTHER_FUNCTIONS__________(){}
-		
-		/**
-		 * get wordpress language
-		 */
-		public static function getLanguage(){
-			
-			$locale = get_locale();
-			if(is_string($locale) == false)
-				return("en");
-			
-			$pos = strpos($locale, "_");
-			
-			if($pos === false)
-				return($locale);
-				
-			$lang = substr($locale, 0, $pos);
-			
-			return($lang);
-		}
-		
-		
-		/**
-		 * get install plugin slug
-		 */
-		public static function getInstallPluginLink($slug = 'doubly'){
-			
-			$action = 'install-plugin';
-			
-			$urlInstall = wp_nonce_url(
-			    add_query_arg(
-			        array(
-			            'action' => $action,
-			            'plugin' => $slug
-			        ),
-			        admin_url( 'update.php' )
-			    ),
-			    $action.'_'.$slug
-			);
-			
-			return($urlInstall);
-		}
-		
-		
-		/**
-		 * get queried object by type
-		 * fill the empty objects by default objects
-		 */
-		public static function getQueriedObject($type = null, $defaultObjectID = null){
-			
-			$data = get_queried_object();
-			
-			switch($type){
-				case "user":		//if not user fetched - get first user
-					if(empty($data) || $data instanceof WP_User == false){
-						
-						if(!empty($defaultObjectID)){
-							$data = get_user_by("id", $defaultObjectID);
-							return($data);
-						}
-						
-						//get first object
-						$arrUsers = get_users(array("number"=>1));
-						if(empty($arrUsers))
-							return(false);
-							
-						$data = $arrUsers[0];
-						
-						return($data);
+
+	public static function a___________OTHER_FUNCTIONS__________(){
+	}
+
+	/**
+	 * get wordpress language
+	 */
+	public static function getLanguage(){
+
+		$locale = get_locale();
+		if(is_string($locale) == false)
+			return ("en");
+
+		$pos = strpos($locale, "_");
+
+		if($pos === false)
+			return ($locale);
+
+		$lang = substr($locale, 0, $pos);
+
+		return ($lang);
+	}
+
+	/**
+	 * get install plugin slug
+	 */
+	public static function getInstallPluginLink($slug){
+
+		$action = 'install-plugin';
+
+		$urlInstall = wp_nonce_url(
+			add_query_arg(
+				array(
+					'action' => $action,
+					'plugin' => $slug,
+				),
+				admin_url('update.php')
+			),
+			$action . '_' . $slug
+		);
+
+		return ($urlInstall);
+	}
+
+	/**
+	 * get queried object by type
+	 * fill the empty objects by default objects
+	 */
+	public static function getQueriedObject($type = null, $defaultObjectID = null){
+
+		$data = get_queried_object();
+
+		switch($type){
+			case "user":    //if not user fetched - get first user
+				if(empty($data) || $data instanceof WP_User == false){
+					if(!empty($defaultObjectID)){
+						$data = get_user_by("id", $defaultObjectID);
+
+						return ($data);
 					}
-				break;
-			}
-			
-			return($data);
+
+					//get first object
+					$arrUsers = get_users(array("number" => 1));
+					if(empty($arrUsers))
+						return (false);
+
+					$data = $arrUsers[0];
+
+					return ($data);
+				}
+			break;
 		}
-		
-		
-		/**
-		 * check if archive location
-		 */
-		public static function isArchiveLocation(){
-			
-			if(is_single())
-				return(false);
-			
-			if(( is_archive() || is_tax() || is_home() || is_search() ))
-				return(true);
-			
-			if(class_exists("UniteCreatorElementorIntegrate")){
-				$templateType = UniteCreatorElementorIntegrate::getCurrentTemplateType();
-				if($templateType == "archive")
-					return(true);
-			}
-			
-			return(false);
+
+		return ($data);
+	}
+
+	/**
+	 * check if archive location
+	 */
+	public static function isArchiveLocation(){
+
+		if(is_single())
+			return (false);
+
+		if((is_archive() || is_tax() || is_home() || is_search()))
+			return (true);
+
+		if(class_exists("UniteCreatorElementorIntegrate")){
+			$templateType = UniteCreatorElementorIntegrate::getCurrentTemplateType();
+			if($templateType == "archive")
+				return (true);
 		}
-		
-		
-		/**
-		 * get max menu order
-		 */
-		public static function getMaxMenuOrder($postType, $parentID = null){
-			
-			$tablePosts = UniteProviderFunctionsUC::$tablePosts;
-			
-			$db = self::getDB();
-						
-			$query = "select MAX(menu_order) as maxorder from {$tablePosts} where post_type='$postType'";
-			
-			if(!empty($parentID)){
-				$parentID = (int)$parentID;
-				$query .= " and post_parent={$parentID}";
-			}
-			
-			$rows = $db->fetchSql($query);
-		
+
+		return (false);
+	}
+
+	/**
+	 * get max menu order
+	 */
+	public static function getMaxMenuOrder($postType, $parentID = null){
+
+		$tablePosts = UniteProviderFunctionsUC::$tablePosts;
+
+		$db = self::getDB();
+
+		$query = "select MAX(menu_order) as maxorder from {$tablePosts} where post_type='$postType'";
+
+		if(!empty($parentID)){
+			$parentID = (int)$parentID;
+			$query .= " and post_parent={$parentID}";
+		}
+
+		$rows = $db->fetchSql($query);
+
+		$maxOrder = 0;
+		if(count($rows) > 0)
+			$maxOrder = $rows[0]["maxorder"];
+
+		if(!is_numeric($maxOrder))
 			$maxOrder = 0;
-			if(count($rows)>0)
-				$maxOrder = $rows[0]["maxorder"];
-		
-			if(!is_numeric($maxOrder))
-				$maxOrder = 0;
-			
-			return($maxOrder);
-		}
-		
-		
-		/**
-		 *
-		 * get wp-content path
-		 */
-		public static function getPathUploads(){
-			
-			if(is_multisite()){
-				if(!defined("BLOGUPLOADDIR")){
-					$pathBase = self::getPathBase();
-					$pathContent = $pathBase."wp-content/uploads/";
-				}else
-					$pathContent = BLOGUPLOADDIR;
+
+		return ($maxOrder);
+	}
+
+	/**
+	 *
+	 * get wp-content path
+	 */
+	public static function getPathUploads(){
+
+		if(is_multisite()){
+			if(!defined("BLOGUPLOADDIR")){
+				$pathBase = self::getPathBase();
+				$pathContent = $pathBase . "wp-content/uploads/";
+			}else
+				$pathContent = BLOGUPLOADDIR;
+		}else{
+			$pathContent = WP_CONTENT_DIR;
+			if(!empty($pathContent)){
+				$pathContent .= "/";
 			}else{
-				$pathContent = WP_CONTENT_DIR;
-				if(!empty($pathContent)){
-					$pathContent .= "/";
-				}
-				else{
-					$pathBase = self::getPathBase();
-					$pathContent = $pathBase."wp-content/uploads/";
-				}
+				$pathBase = self::getPathBase();
+				$pathContent = $pathBase . "wp-content/uploads/";
 			}
-		
-			return($pathContent);
 		}
-		
-		
-		
-		
-		
-		/**
-		 *
-		 * simple enqueue script
-		 */
-		public static function addWPScript($scriptName){
-			wp_enqueue_script($scriptName);
+
+		return ($pathContent);
+	}
+
+	/**
+	 *
+	 * simple enqueue script
+	 */
+	public static function addWPScript($scriptName){
+
+		wp_enqueue_script($scriptName);
+	}
+
+	/**
+	 *
+	 * simple enqueue style
+	 */
+	public static function addWPStyle($styleName){
+
+		wp_enqueue_style($styleName);
+	}
+
+	/**
+	 *
+	 * check if some db table exists
+	 */
+	public static function isDBTableExists($tableName){
+
+		global $wpdb;
+
+		if(empty($tableName))
+			UniteFunctionsUC::throwError("Empty table name!!!");
+
+		$sql = "show tables like '$tableName'";
+
+		$table = $wpdb->get_var($sql);
+
+		if($table == $tableName)
+			return (true);
+
+		return (false);
+	}
+
+	/**
+	 * add shortcode
+	 */
+	public static function addShortcode($shortcode, $function){
+
+		add_shortcode($shortcode, $function);
+	}
+
+	/**
+	 *
+	 * add all js and css needed for media upload
+	 */
+	public static function addMediaUploadIncludes(){
+
+		self::addWPScript("thickbox");
+		self::addWPStyle("thickbox");
+		self::addWPScript("media-upload");
+	}
+
+	/**
+	 * check if post exists by title
+	 */
+	public static function isPostExistsByTitle($title, $postType = "page"){
+
+		$post = get_page_by_title($title, ARRAY_A, $postType);
+
+		return !empty($post);
+	}
+
+	/**
+	 * tells if the page is posts of pages page
+	 */
+	public static function isAdminPostsPage(){
+
+		$screen = get_current_screen();
+		$screenID = $screen->base;
+		if(empty($screenID))
+			$screenID = $screen->id;
+
+		if($screenID != "page" && $screenID != "post")
+			return (false);
+
+		return (true);
+	}
+
+	/**
+	 *
+	 * register widget (must be class)
+	 */
+	public static function registerWidget($widgetName){
+
+		add_action('widgets_init', create_function('', 'return register_widget("' . $widgetName . '");'));
+	}
+
+	/**
+	 * get admin title
+	 */
+	public static function getAdminTitle($customTitle){
+
+		global $title;
+
+		if(!empty($customTitle))
+			$title = $customTitle;
+		else
+			get_admin_page_title();
+
+		$title = esc_html(strip_tags($title));
+
+		if(is_network_admin()){
+			/* translators: Network admin screen title. 1: Network name */
+			$admin_title = sprintf(__('Network Admin: %s'), esc_html(get_network()->site_name));
+		}elseif(is_user_admin()){
+			/* translators: User dashboard screen title. 1: Network name */
+			$admin_title = sprintf(__('User Dashboard: %s'), esc_html(get_network()->site_name));
+		}else{
+			$admin_title = get_bloginfo('name');
 		}
-		
-		/**
-		 *
-		 * simple enqueue style
-		 */
-		public static function addWPStyle($styleName){
-			wp_enqueue_style($styleName);
+
+		if($admin_title == $title){
+			/* translators: Admin screen title. 1: Admin screen name */
+			$admin_title = sprintf(__('%1$s &#8212; WordPress'), $title);
+		}else{
+			/* translators: Admin screen title. 1: Admin screen name, 2: Network or site name */
+			$admin_title = sprintf(__('%1$s &lsaquo; %2$s &#8212; WordPress'), $title, $admin_title);
 		}
-		
-		
-		/**
-		 *
-		 * check if some db table exists
-		 */
-		public static function isDBTableExists($tableName){
-			global $wpdb;
-		
-			if(empty($tableName))
-				UniteFunctionsUC::throwError("Empty table name!!!");
-		
-			$sql = "show tables like '$tableName'";
-		
-			$table = $wpdb->get_var($sql);
-		
-			if($table == $tableName)
-				return(true);
-		
-			return(false);
-		}
-		
-		
-		/**
-		 * add shortcode
-		 */
-		public static function addShortcode($shortcode, $function){
-		
-			add_shortcode($shortcode, $function);
-		
-		}
-		
-		/**
-		 *
-		 * add all js and css needed for media upload
-		 */
-		public static function addMediaUploadIncludes(){
-		
-			self::addWPScript("thickbox");
-			self::addWPStyle("thickbox");
-			self::addWPScript("media-upload");
-		
-		}
-		
-		
-		
-		
-		/**
-		 * check if post exists by title
-		 */
-		public static function isPostExistsByTitle($title, $postType="page"){
-			
-			$post = get_page_by_title( $title, ARRAY_A, $postType );
-			
-			return !empty($post);
-		}
-		
-		
-		
-		
-		/**
-		 * tells if the page is posts of pages page
-		 */
-		public static function isAdminPostsPage(){
-			
-			$screen = get_current_screen();
-			$screenID = $screen->base;
-			if(empty($screenID))
-				$screenID = $screen->id;
-			
-			
-			if($screenID != "page" && $screenID != "post")
-				return(false);
-			
-			
-			return(true);
-		}
-		
-		
-		/**
-		 *
-		 * register widget (must be class)
-		 */
-		public static function registerWidget($widgetName){
-			add_action('widgets_init', create_function('', 'return register_widget("'.$widgetName.'");'));
-		}
-		
-		
-		/**
-		 * get admin title
-		 */
-		public static function getAdminTitle($customTitle){
-			
-			global $title;
-			
-			if(!empty($customTitle))
-				$title = $customTitle;
-			else
-				get_admin_page_title();
-			
-			$title = esc_html( strip_tags( $title ) );
-			
-			if ( is_network_admin() ) {
-				/* translators: Network admin screen title. 1: Network name */
-				$admin_title = sprintf( __( 'Network Admin: %s' ), esc_html( get_network()->site_name ) );
-			} elseif ( is_user_admin() ) {
-				/* translators: User dashboard screen title. 1: Network name */
-				$admin_title = sprintf( __( 'User Dashboard: %s' ), esc_html( get_network()->site_name ) );
-			} else {
-				$admin_title = get_bloginfo( 'name' );
-			}
-			
-			if ( $admin_title == $title ) {
-				/* translators: Admin screen title. 1: Admin screen name */
-				$admin_title = sprintf( __( '%1$s &#8212; WordPress' ), $title );
-			} else {
-				/* translators: Admin screen title. 1: Admin screen name, 2: Network or site name */
-				$admin_title = sprintf( __( '%1$s &lsaquo; %2$s &#8212; WordPress' ), $title, $admin_title );
-			}
-			
-			return($admin_title);
-		}
+
+		return ($admin_title);
+	}
 
 	/**
 	 * get all filters callbacks
 	 */
 	public static function getFilterCallbacks($tag){
-		
+
 		global $wp_filter;
 		if(isset($wp_filter[$tag]) == false)
-			return(array());
-		
+			return (array());
+
 		$objFilter = $wp_filter[$tag];
 
 		$arrCallbacks = $objFilter->callbacks;
 		if(empty($arrCallbacks))
-			return(array());
-		
-		return($arrCallbacks);
+			return (array());
+
+		return ($arrCallbacks);
 	}
-		
-	
+
 	/**
 	 * get action functions of some tag
 	 */
 	public static function getActionFunctionsKeys($tag){
-		
+
 		$arrCallbacks = self::getFilterCallbacks($tag);
-		
-		foreach($arrCallbacks as $priority=>$callbacks){
+
+		foreach($arrCallbacks as $priority => $callbacks){
 			$arrKeys = array_keys($callbacks);
-			
+
 			foreach($arrKeys as $key){
-				$arrFunctions[$key]	= true;
+				$arrFunctions[$key] = true;
 			}
-			
 		}
-		
-		return($arrFunctions);
+
+		return ($arrFunctions);
 	}
-	
+
 	/**
 	 * clear filters from functions
 	 */
 	public static function clearFiltersFromFunctions($tag, $arrFunctionsAssoc){
+
 		global $wp_filter;
 		if(isset($wp_filter[$tag]) == false)
-			return(false);
-		
+			return (false);
+
 		if(empty($arrFunctionsAssoc))
-			return(false);
-			
+			return (false);
+
 		$objFilter = $wp_filter[$tag];
-		
+
 		$arrFunctions = array();
 		$arrCallbacks = $objFilter->callbacks;
 		if(empty($arrCallbacks))
-			return(array());
-		
-		foreach($arrCallbacks as $priority=>$callbacks){
+			return (array());
+
+		foreach($arrCallbacks as $priority => $callbacks){
 			$arrKeys = array_keys($callbacks);
-			
+
 			foreach($arrKeys as $key){
-				if(isset($arrFunctionsAssoc[$key]))				
+				if(isset($arrFunctionsAssoc[$key]))
 					unset($wp_filter[$tag]->callbacks[$priority][$key]);
 			}
-			
 		}
-			
 	}
-	
+
 	/**
 	 * get blog url
 	 */
 	public static function getUrlBlog(){
-		
+
 		//home page:
-		
-		$showOnFront = get_option( 'show_on_front' );
+
+		$showOnFront = get_option('show_on_front');
 		if($showOnFront != "page"){
 			$urlBlog = home_url();
-			return($urlBlog);
+
+			return ($urlBlog);
 		}
-		
+
 		//page is missing:
-		
-		$pageForPosts = get_option( 'page_for_posts' );
+
+		$pageForPosts = get_option('page_for_posts');
 		if(empty($pageForPosts)){
-			$urlBlog = home_url( '/?post_type=post' );
-			return($urlBlog);
+			$urlBlog = home_url('/?post_type=post');
+
+			return ($urlBlog);
 		}
-			
+
 		//some page:
-		$urlBlog = self::getPermalink( $pageForPosts );
-		
-		return($urlBlog);  
+		$urlBlog = self::getPermalink($pageForPosts);
+
+		return ($urlBlog);
 	}
-	
+
 	/**
 	 * get current page url
 	 */
 	public static function getUrlCurrentPage($isClear = false){
-		
+
 		global $wp;
 		$urlPage = home_url($wp->request);
-		
+
 		if($isClear == false)
-			return($urlPage);
-		
+			return ($urlPage);
+
 		$page = get_query_var("paged");
-				
+
 		if(empty($page))
-			return($urlPage);
-			
+			return ($urlPage);
+
 		$urlPage = str_replace("/page/$page", "/", $urlPage);
-		
-		
-		return($urlPage);
+
+		return ($urlPage);
 	}
-	
-	
-	
+
 	/**
 	 * get permalist with check of https
 	 */
 	public static function getPermalink($post){
-		
+
 		$url = get_permalink($post);
 		if(GlobalsUC::$is_ssl == true)
 			$url = UniteFunctionsUC::urlToSsl($url);
-		
-		return($url);
+
+		return ($url);
 	}
-	
-	
+
 	/**
 	 * tell wp plugins do not cache the page
 	 */
 	public static function preventCachingPage(){
-		
-		$arrNotCacheTags = array("DONOTCACHEPAGE","DONOTCACHEDB","DONOTMINIFY","DONOTCDN");
-		
+
+		$arrNotCacheTags = array("DONOTCACHEPAGE", "DONOTCACHEDB", "DONOTMINIFY", "DONOTCDN");
+
 		foreach($arrNotCacheTags as $tag){
-			if(defined( $tag ))
+			if(defined($tag))
 				continue;
-				
-			define($tag, true);			
+
+			define($tag, true);
 		}
-		
+
 		nocache_headers();
 	}
 
@@ -3913,78 +3834,71 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 	 * get all action keys
 	 */
 	public static function getAllWPActionKeys($action){
-		
+
 		global $wp_filter;
-		
+
 		$initFuncs = UniteFunctionsUC::getVal($wp_filter, "admin_init");
 		$callbacks = $initFuncs->callbacks;
-		
+
 		$arrAllKeys = array();
-		
+
 		foreach($callbacks as $arrCallbacks){
-			
 			$arrKeys = array_keys($arrCallbacks);
-			
-			$arrAllKeys = array_merge($arrAllKeys, $arrKeys);				
+
+			$arrAllKeys = array_merge($arrAllKeys, $arrKeys);
 		}
-		
-		return($arrAllKeys);
+
+		return ($arrAllKeys);
 	}
-	
+
 	/**
 	 * clean query args for debug
 	 */
 	public static function cleanQueryArgsForDebug($args){
-		
+
 		$argsNew = array();
-		
-		foreach($args as $name=>$value){
-			
+
+		foreach($args as $name => $value){
 			//keep
 			switch($name){
 				case "ignore_sticky_posts":
 				case "suppress_filters":
-					
+
 					$argsNew[$name] = $value;
 					continue(2);
 				break;
 			}
-			
+
 			if(empty($value))
 				continue;
-				
+
 			$argsNew[$name] = $value;
 		}
 
-		
-		return($argsNew);
+		return ($argsNew);
 	}
-	
-	
+
 	/**
 	 * print current query
 	 */
 	public static function printCurrentQuery($query = null){
-		
+
 		if(empty($query)){
 			global $wp_query;
 			$query = $wp_query;
 		}
-		
+
 		$queryVars = $query->query_vars;
-		
+
 		$queryVars = self::cleanQueryArgsForDebug($queryVars);
-		
-		
+
 		dmp("Current Query Is: ");
 		dmp($queryVars);
-		
 	}
-	
-	
-}	//end of the class
-	
-	//init the static vars
-	UniteFunctionsWPUC::initStaticVars();
-	
+
+}  //end of the class
+
+//init the static vars
+UniteFunctionsWPUC::initStaticVars();
+
 ?>

@@ -1629,7 +1629,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	 * get items html
 	 */
 	public function getHtmlItems(){
-		
+
 		$keyTemplate = "uc_template_items_special";
 		$htmlTemplate = "{{put_items()}}";
 		
@@ -1641,6 +1641,9 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 		
 		$html = $this->objTemplate->getRenderedHtml($keyTemplate);
 		$html2 = $this->objTemplate->getRenderedHtml($keyTemplate2);
+		
+		$html = $this->processHtml($html);
+		$html2 = $this->processHtml($html2);
 		
 		$output = array();
 		$output["html_items1"] = $html;
@@ -1709,7 +1712,7 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 			
 			$html = $this->objTemplate->getRenderedHtml(self::TEMPLATE_HTML);
 			$html = $this->processHtml($html);
-			
+						
 			//make css
 			$css = $this->objTemplate->getRenderedHtml(self::TEMPLATE_CSS);
 			

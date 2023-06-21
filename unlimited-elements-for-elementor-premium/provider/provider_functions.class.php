@@ -637,7 +637,6 @@ class UniteProviderFunctionsUC{
 	 */
 	public static function verifyNonce($nonce){
 		
-		
 		if(function_exists("wp_verify_nonce") == false){
 			
 			dmp("verify nonce function not found. some other plugin interrupting this call");

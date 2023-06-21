@@ -44,6 +44,8 @@ class UniteCreatorTemplateEngineWork{
 		
 		GlobalsProviderUC::$isUnderItem = true;
 		
+		$arrDynamicSettings = null;
+		
 		if($this->isItemsFromPosts == true){
 			
 			//HelperProviderUC::startDebugQueries();
@@ -56,7 +58,9 @@ class UniteCreatorTemplateEngineWork{
 						
 			$postType = UniteFunctionsUC::getVal($arrItem, "object_type");
 			
-			GlobalsProviderUC::$lastObjectID = UniteFunctionsUC::getVal($arrItem, "object_id");
+			$postID = UniteFunctionsUC::getVal($arrItem, "object_id");
+			
+			GlobalsProviderUC::$lastObjectID = $postID;
 			
 			//woo commerce global object product save			
 			
@@ -66,9 +70,47 @@ class UniteCreatorTemplateEngineWork{
 				$product = wc_get_product(GlobalsProviderUC::$lastObjectID);
 			}
 			
+			//save post to allow dynamic tags inside the item
+			
+			$post = UniteFunctionsUC::getVal(GlobalsProviderUC::$arrFetchedPostsObjectsCache, $postID);
+			
+			$isPostIDSaved = false;
+			
+			if(!empty($post)){
+				
+				$isPostIDSaved = true;
+				
+				global $wp_query;
+				
+				//backup the original querified object
+				$originalQueriedObject = $wp_query->queried_object;
+				$originalQueriedObjectID = $wp_query->queried_object_id;
+				
+				$originalPost = $GLOBALS['post'];
+				
+				$wp_query->queried_object = $post;
+				$wp_query->queried_object_id = $postID;
+				
+				$GLOBALS['post'] = $post;
+				
+				//get dynamic settings from the widget if exists
+				
+				$arrDynamicSettings = apply_filters("ue_get_current_widget_settings",array());
+				
+			}
+			
+			
 		}
 		
+		// handle params and html
+		
 		$params = array_merge($this->arrParams, $itemParams);
+		
+		if(!empty($arrDynamicSettings) && is_array($arrDynamicSettings)){
+			
+			$params = array_merge($params, $arrDynamicSettings);
+		}
+		
 		
 		GlobalsProviderUC::$lastItemParams = $params;
 				
@@ -88,6 +130,17 @@ class UniteCreatorTemplateEngineWork{
 		if($this->isItemsFromPosts == true){
 			
 			GlobalsProviderUC::$isUnderRenderPostItem = false;
+			
+			//restore the original queried object
+						
+			if($isPostIDSaved == true){
+				
+				$wp_query->queried_object = $originalQueriedObject;
+				$wp_query->queried_object_id = $originalQueriedObjectID;
+				$GLOBALS['post'] = $originalPost;
+								
+			}
+
 			
 			//HelperProviderUC::printDebugQueries();
 			//dmp("check queries");exit();
@@ -217,12 +270,15 @@ class UniteCreatorTemplateEngineWork{
 	/**
 	 * put data json for js
 	 */
-	public function putAttributesJson($type = null){
+	public function putAttributesJson($type = null, $key = null){
 		
 		$arrAttr = $this->arrParams;
 		
 		if($type == "clean")
 			$arrAttr = UniteFunctionsUC::removeArrItemsByKeys($arrAttr, GlobalsProviderUC::$arrAttrConstantKeys);
+		
+		if(!empty($key))
+			$arrAttr = UniteFunctionsUC::getVal($arrAttr, $key);
 		
 		$jsonAttr = UniteFunctionsUC::jsonEncodeForClientSide($arrAttr);
 		
@@ -835,7 +891,7 @@ class UniteCreatorTemplateEngineWork{
 	 * put dynamic loop template, similar to put listing template
 	 */
 	public function putDynamicLoopTemplate($item, $templateID){
-			
+		
 		$widgetID = UniteFunctionsUC::getVal($this->arrParams, "uc_id");
 		
 		$objFilters = new UniteCreatorFiltersProcess();
@@ -1302,11 +1358,30 @@ class UniteCreatorTemplateEngineWork{
 				echo $obj->labels->singular_name;
 				
 			break;
+			case "put_post_terms_string":
+				
+				if(empty($arg1))
+					$arg1 = GlobalsProviderUC::$lastObjectID;
+				
+				$strTermsNames = UniteFunctionsWPUC::getPostTermsTitlesString($arg1, true);
+				
+				echo $strTermsNames;
+			break;
+			case "get_sort_filter_data":
+				
+				$isForWooProducts = false;
+				if($arg1 == "woo")
+					$isForWooProducts = true;
+				
+				$arrSort = UniteFunctionsWPUC::getArrSortBy($isForWooProducts, true);
+				
+				return($arrSort);
+			break;
 			default:
 				
 				$type = UniteFunctionsUC::sanitizeAttr($type);
 				
-				dmp("ucfunc error: unknown action <b>'$type'</b>");
+				dmp("<span style='color:red;'>ucfunc error: unknown action <b>'$type'</b>. Please check that the plugin is at latest version.</span>");
 			break;
 		}
 		

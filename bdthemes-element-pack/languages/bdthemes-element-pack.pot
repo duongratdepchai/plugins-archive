@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Element Pack Pro\n"
-"POT-Creation-Date: 2023-05-15 20:07+0600\n"
+"POT-Creation-Date: 2023-05-18 23:40+0600\n"
 "PO-Revision-Date: 2021-06-04 01:43+0600\n"
 "Last-Translator: Selim Rana <selim@bdthemes.com>\n"
 "Language-Team: Selim Rana <selim@bdthemes.com>\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: bdthemes-element-pack.php\n"
@@ -56,45 +56,45 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#: admin/admin-settings.php:419
+#: admin/admin-settings.php:416
 msgid "Dashboard"
 msgstr ""
 
-#: admin/admin-settings.php:431 admin/admin-settings.php:508
+#: admin/admin-settings.php:428 admin/admin-settings.php:505
 msgid "Core Widgets"
 msgstr ""
 
-#: admin/admin-settings.php:440 admin/admin-settings.php:512
+#: admin/admin-settings.php:437 admin/admin-settings.php:509
 msgid "3rd Party Widgets"
 msgstr ""
 
-#: admin/admin-settings.php:449 admin/admin-settings.php:516
+#: admin/admin-settings.php:446 admin/admin-settings.php:513
 msgid "Extensions"
 msgstr ""
 
-#: admin/admin-settings.php:458 admin/admin-settings.php:520
+#: admin/admin-settings.php:455 admin/admin-settings.php:517
 msgid "API Settings"
 msgstr ""
 
-#: admin/admin-settings.php:469 admin/admin-settings.php:524
+#: admin/admin-settings.php:466 admin/admin-settings.php:521
 msgid "Other Settings"
 msgstr ""
 
-#: admin/admin-settings.php:478 admin/admin.php:119
+#: admin/admin-settings.php:475 admin/admin.php:119
 msgid "License"
 msgstr ""
 
-#: admin/admin-settings.php:561
+#: admin/admin-settings.php:558
 msgid ""
 "This feature is not working because the Elementor Usage Data Sharing feature "
 "is Not Enabled."
 msgstr ""
 
-#: admin/admin-settings.php:1041
+#: admin/admin-settings.php:1038
 msgid "Element Pack License Information"
 msgstr ""
 
-#: admin/admin-settings.php:1047
+#: admin/admin-settings.php:1044
 #: modules/edd-product-review-carousel/widgets/edd-product-review-carousel.php:237
 #: modules/edd-product-reviews/widgets/edd-product-reviews.php:190
 #: modules/give-donation-history/widgets/give-donation-history.php:96
@@ -103,79 +103,69 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: admin/admin-settings.php:1059
+#: admin/admin-settings.php:1056
 msgid "License Type"
 msgstr ""
 
-#: admin/admin-settings.php:1066
+#: admin/admin-settings.php:1063
 msgid "License Expired on"
 msgstr ""
 
-#: admin/admin-settings.php:1073
+#: admin/admin-settings.php:1070
 msgid "Support Expired on"
 msgstr ""
 
-#: admin/admin-settings.php:1080
+#: admin/admin-settings.php:1077
 msgid "License Email"
 msgstr ""
 
-#: admin/admin-settings.php:1087
+#: admin/admin-settings.php:1084
 msgid "Your License Key"
 msgstr ""
 
-#: admin/admin-settings.php:1126
+#: admin/admin-settings.php:1123
 msgid ""
 "Enter your license key here, to activate Element Pack Pro, and get full "
 "feature updates and premium support."
 msgstr ""
 
-#: admin/admin-settings.php:1130
+#: admin/admin-settings.php:1127
 #, php-format
 msgid ""
 "Log in to your <a href=\"%1s\" target=\"_blank\">bdthemes fastspring</a> or "
 "<a href=\"%2s\" target=\"_blank\">envato</a> account to get your license key."
 msgstr ""
 
-#: admin/admin-settings.php:1131
+#: admin/admin-settings.php:1128
 #, php-format
 msgid ""
 "If you don't yet have a license key, <a href=\"%s\" target=\"_blank\">get "
 "Element Pack Pro now</a>."
 msgstr ""
 
-#: admin/admin-settings.php:1132
+#: admin/admin-settings.php:1129
 msgid ""
 "Copy the license key from your account and paste it below for work element "
 "pack properly."
 msgstr ""
 
-#: admin/admin-settings.php:1316
+#: admin/admin-settings.php:1313
 msgid "Please wait, Saving settings..."
 msgstr ""
 
-#: admin/admin-settings.php:1324
+#: admin/admin-settings.php:1321
 msgid "Settings Saved Successfully."
 msgstr ""
 
-#: admin/admin-settings.php:1331
+#: admin/admin-settings.php:1328
 msgid "Unknown error, make sure access is correct!"
 msgstr ""
 
-#: admin/admin-settings.php:1412
+#: admin/admin-settings.php:1409
 msgid "Thank you for purchase Element Pack. Please <a href=\""
 msgstr ""
 
-#: admin/admin-settings.php:1432
-msgid ""
-"There are very important changes in our major version <strong>v6.0.0</"
-"strong>. If you are continuing with the Element Pack plugin from an earlier "
-"version of v6.0.0 then you must read this article carefully <a "
-"href=\"https://bdthemes.com/knowledge-base/read-before-upgrading-to-element-"
-"pack-pro-version-6-0\" target=\"_blank\">from here</a>. <br> And if you are "
-"using this plugin from v6.0.0 there is nothing to worry about you. Thank you."
-msgstr ""
-
-#: admin/admin-settings.php:1451
+#: admin/admin-settings.php:1428
 msgid ""
 "From version <strong>v7.5.0</strong>, the Pro/Premium versions of "
 "<strong>Element Pack</strong> would require the installation of the Free "
@@ -184,14 +174,14 @@ msgid ""
 "faster. Thank you."
 msgstr ""
 
-#: admin/admin-settings.php:1472
+#: admin/admin-settings.php:1449
 msgid ""
 "We can see you activated the <strong>Mini-Cart</strong> of Elementor Pro and "
 "also Element Pack Pro. We will recommend you to choose one of them, "
 "otherwise you will get conflict. Thank you."
 msgstr ""
 
-#: admin/admin-settings.php:1494 admin/admin-settings.php:1516
+#: admin/admin-settings.php:1471 admin/admin-settings.php:1493
 msgid ""
 "Please activate <strong>Usage Data Sharing</strong> features from Elementor, "
 "otherwise Widgets Analytics will not work. Please activate the settings from "
@@ -404,7 +394,7 @@ msgstr ""
 #: admin/module-settings.php:306 modules/comparison-list/module.info.php:5
 #: modules/comparison-list/widgets/comparison-list.php:28
 #: modules/comparison-list/widgets/comparison-list.php:60
-#: modules/comparison-list/widgets/comparison-list.php:119
+#: modules/comparison-list/widgets/comparison-list.php:120
 msgid "Comparison List"
 msgstr ""
 
@@ -3165,7 +3155,7 @@ msgstr ""
 #: modules/changelog/widgets/changelog.php:48
 #: modules/circle-info/widgets/circle-info.php:82
 #: modules/circle-info/widgets/circle-info.php:410
-#: modules/comparison-list/widgets/comparison-list.php:966
+#: modules/comparison-list/widgets/comparison-list.php:969
 #: modules/content-switcher/widgets/content-switcher.php:112
 #: modules/content-switcher/widgets/content-switcher.php:121
 #: modules/content-switcher/widgets/content-switcher.php:884
@@ -3475,7 +3465,7 @@ msgstr ""
 #: modules/scroll-image/widgets/scroll-image.php:173
 #: modules/scroll-image/widgets/scroll-image.php:981
 #: modules/svg-image/widgets/svg-image.php:105
-#: modules/svg-image/widgets/svg-image.php:688
+#: modules/svg-image/widgets/svg-image.php:696
 msgid "Caption"
 msgstr ""
 
@@ -4243,8 +4233,8 @@ msgstr ""
 #: modules/mega-menu/widgets/mega-menu.php:800
 #: modules/realistic-image-shadow/module.php:47
 #: modules/svg-image/widgets/svg-image.php:169
-#: modules/svg-image/widgets/svg-image.php:191
-#: modules/svg-image/widgets/svg-image.php:283
+#: modules/svg-image/widgets/svg-image.php:195
+#: modules/svg-image/widgets/svg-image.php:290
 #: modules/svg-maps/widgets/svg-maps.php:180
 #: modules/svg-maps/widgets/svg-maps.php:195
 #: modules/svg-maps/widgets/svg-maps.php:210
@@ -4277,8 +4267,8 @@ msgstr ""
 #: modules/mega-menu/widgets/mega-menu.php:801
 #: modules/realistic-image-shadow/module.php:48
 #: modules/svg-image/widgets/svg-image.php:170
-#: modules/svg-image/widgets/svg-image.php:192
-#: modules/svg-image/widgets/svg-image.php:284
+#: modules/svg-image/widgets/svg-image.php:196
+#: modules/svg-image/widgets/svg-image.php:291
 #: modules/svg-maps/widgets/svg-maps.php:181
 #: modules/svg-maps/widgets/svg-maps.php:196
 #: modules/svg-maps/widgets/svg-maps.php:211
@@ -4648,16 +4638,12 @@ msgstr ""
 #: modules/circle-menu/widgets/circle-menu.php:197
 #: modules/circle-menu/widgets/circle-menu.php:630
 #: modules/circle-menu/widgets/circle-menu.php:809
-#: modules/comparison-list/widgets/comparison-list.php:272
-#: modules/comparison-list/widgets/comparison-list.php:359
-#: modules/comparison-list/widgets/comparison-list.php:421
-#: modules/comparison-list/widgets/comparison-list.php:628
-#: modules/comparison-list/widgets/comparison-list.php:702
-#: modules/comparison-list/widgets/comparison-list.php:744
-#: modules/comparison-list/widgets/comparison-list.php:812
-#: modules/comparison-list/widgets/comparison-list.php:886
-#: modules/comparison-list/widgets/comparison-list.php:928
-#: modules/comparison-list/widgets/comparison-list.php:995
+#: modules/comparison-list/widgets/comparison-list.php:162
+#: modules/comparison-list/widgets/comparison-list.php:290
+#: modules/comparison-list/widgets/comparison-list.php:357
+#: modules/comparison-list/widgets/comparison-list.php:463
+#: modules/comparison-list/widgets/comparison-list.php:507
+#: modules/comparison-list/widgets/comparison-list.php:996
 #: modules/contact-form/widgets/contact-form.php:805
 #: modules/cookie-consent/widgets/cookie-consent.php:260
 #: modules/cookie-consent/widgets/cookie-consent.php:386
@@ -5095,12 +5081,10 @@ msgstr ""
 #: modules/circle-menu/widgets/circle-menu.php:652
 #: modules/circle-menu/widgets/circle-menu.php:831
 #: modules/circle-menu/widgets/circle-menu.php:1064
-#: modules/comparison-list/widgets/comparison-list.php:294
-#: modules/comparison-list/widgets/comparison-list.php:381
-#: modules/comparison-list/widgets/comparison-list.php:443
-#: modules/comparison-list/widgets/comparison-list.php:650
-#: modules/comparison-list/widgets/comparison-list.php:834
-#: modules/comparison-list/widgets/comparison-list.php:1017
+#: modules/comparison-list/widgets/comparison-list.php:184
+#: modules/comparison-list/widgets/comparison-list.php:312
+#: modules/comparison-list/widgets/comparison-list.php:423
+#: modules/comparison-list/widgets/comparison-list.php:762
 #: modules/contact-form-7/widgets/contact-form-7.php:259
 #: modules/contact-form-7/widgets/contact-form-7.php:337
 #: modules/contact-form/widgets/contact-form.php:750
@@ -5502,7 +5486,7 @@ msgstr ""
 #: modules/sub-menu/widgets/sub-menu.php:958
 #: modules/sub-menu/widgets/sub-menu.php:1211
 #: modules/sub-menu/widgets/sub-menu.php:1362
-#: modules/svg-image/widgets/svg-image.php:663
+#: modules/svg-image/widgets/svg-image.php:671
 #: modules/svg-maps/widgets/svg-maps.php:1283
 #: modules/switcher/widgets/switcher.php:594
 #: modules/switcher/widgets/switcher.php:678
@@ -5753,12 +5737,10 @@ msgstr ""
 #: modules/circle-info/widgets/circle-info.php:469
 #: modules/circle-menu/widgets/circle-menu.php:664
 #: modules/circle-menu/widgets/circle-menu.php:1040
-#: modules/comparison-list/widgets/comparison-list.php:306
-#: modules/comparison-list/widgets/comparison-list.php:393
-#: modules/comparison-list/widgets/comparison-list.php:455
-#: modules/comparison-list/widgets/comparison-list.php:662
-#: modules/comparison-list/widgets/comparison-list.php:846
-#: modules/comparison-list/widgets/comparison-list.php:1029
+#: modules/comparison-list/widgets/comparison-list.php:196
+#: modules/comparison-list/widgets/comparison-list.php:435
+#: modules/comparison-list/widgets/comparison-list.php:774
+#: modules/comparison-list/widgets/comparison-list.php:1030
 #: modules/contact-form-7/widgets/contact-form-7.php:200
 #: modules/contact-form-7/widgets/contact-form-7.php:357
 #: modules/contact-form/widgets/contact-form.php:771
@@ -6149,7 +6131,7 @@ msgstr ""
 #: modules/sub-menu/widgets/sub-menu.php:926
 #: modules/sub-menu/widgets/sub-menu.php:1191
 #: modules/sub-menu/widgets/sub-menu.php:1332
-#: modules/svg-image/widgets/svg-image.php:759
+#: modules/svg-image/widgets/svg-image.php:767
 #: modules/svg-maps/widgets/svg-maps.php:1245
 #: modules/switcher/widgets/switcher.php:606
 #: modules/switcher/widgets/switcher.php:690
@@ -6352,10 +6334,9 @@ msgstr ""
 #: modules/circle-info/widgets/circle-info.php:819
 #: modules/circle-menu/widgets/circle-menu.php:612
 #: modules/circle-menu/widgets/circle-menu.php:790
-#: modules/comparison-list/widgets/comparison-list.php:352
-#: modules/comparison-list/widgets/comparison-list.php:492
-#: modules/comparison-list/widgets/comparison-list.php:610
-#: modules/comparison-list/widgets/comparison-list.php:794
+#: modules/comparison-list/widgets/comparison-list.php:350
+#: modules/comparison-list/widgets/comparison-list.php:537
+#: modules/comparison-list/widgets/comparison-list.php:674
 #: modules/contact-form-7/widgets/contact-form-7.php:295
 #: modules/contact-form/widgets/contact-form.php:695
 #: modules/contact-form/widgets/contact-form.php:848
@@ -6627,7 +6608,7 @@ msgstr ""
 #: modules/sub-menu/widgets/sub-menu.php:1135
 #: modules/sub-menu/widgets/sub-menu.php:1305
 #: modules/svg-blob/widgets/svg-blob.php:210
-#: modules/svg-image/widgets/svg-image.php:565
+#: modules/svg-image/widgets/svg-image.php:573
 #: modules/switcher/widgets/switcher.php:640
 #: modules/switcher/widgets/switcher.php:798
 #: modules/switcher/widgets/switcher.php:960
@@ -6936,18 +6917,11 @@ msgstr ""
 #: modules/circle-menu/widgets/circle-menu.php:729
 #: modules/circle-menu/widgets/circle-menu.php:797
 #: modules/circle-menu/widgets/circle-menu.php:889
-#: modules/comparison-list/widgets/comparison-list.php:171
-#: modules/comparison-list/widgets/comparison-list.php:210
-#: modules/comparison-list/widgets/comparison-list.php:249
-#: modules/comparison-list/widgets/comparison-list.php:499
-#: modules/comparison-list/widgets/comparison-list.php:567
-#: modules/comparison-list/widgets/comparison-list.php:617
-#: modules/comparison-list/widgets/comparison-list.php:690
-#: modules/comparison-list/widgets/comparison-list.php:733
-#: modules/comparison-list/widgets/comparison-list.php:801
-#: modules/comparison-list/widgets/comparison-list.php:874
-#: modules/comparison-list/widgets/comparison-list.php:917
-#: modules/comparison-list/widgets/comparison-list.php:974
+#: modules/comparison-list/widgets/comparison-list.php:228
+#: modules/comparison-list/widgets/comparison-list.php:267
+#: modules/comparison-list/widgets/comparison-list.php:544
+#: modules/comparison-list/widgets/comparison-list.php:631
+#: modules/comparison-list/widgets/comparison-list.php:977
 #: modules/contact-form-7/widgets/contact-form-7.php:97
 #: modules/contact-form/widgets/contact-form.php:989
 #: modules/content-switcher/widgets/content-switcher.php:441
@@ -7778,8 +7752,8 @@ msgstr ""
 #: modules/booked-calendar/widgets/booked-calendar.php:505
 #: modules/carousel/widgets/carousel.php:1684
 #: modules/carousel/widgets/carousel.php:1780
-#: modules/comparison-list/widgets/comparison-list.php:521
-#: modules/comparison-list/widgets/comparison-list.php:578
+#: modules/comparison-list/widgets/comparison-list.php:566
+#: modules/comparison-list/widgets/comparison-list.php:642
 #: modules/countdown/skins/skin-event-countdown.php:260
 #: modules/countdown/skins/skin-event-countdown.php:329
 #: modules/custom-carousel/widgets/custom-carousel.php:1009
@@ -7883,6 +7857,7 @@ msgstr ""
 #: modules/animated-card/widgets/animated-card.php:401
 #: modules/call-out/widgets/call-out.php:193
 #: modules/carousel/widgets/carousel.php:580
+#: modules/comparison-list/widgets/comparison-list.php:596
 #: modules/content-switcher/widgets/content-switcher.php:404
 #: modules/countdown/skins/skin-event-countdown.php:148
 #: modules/download-monitor/widgets/download-monitor.php:215
@@ -7998,8 +7973,7 @@ msgstr ""
 #: modules/circle-menu/widgets/circle-menu.php:504
 #: modules/circle-menu/widgets/circle-menu.php:722
 #: modules/circle-menu/widgets/circle-menu.php:882
-#: modules/comparison-list/widgets/comparison-list.php:683
-#: modules/comparison-list/widgets/comparison-list.php:867
+#: modules/comparison-list/widgets/comparison-list.php:795
 #: modules/contact-form-7/widgets/contact-form-7.php:383
 #: modules/contact-form/widgets/contact-form.php:921
 #: modules/cookie-consent/widgets/cookie-consent.php:368
@@ -8246,7 +8220,7 @@ msgstr ""
 #: modules/sub-menu/widgets/sub-menu.php:1100
 #: modules/sub-menu/widgets/sub-menu.php:1247
 #: modules/sub-menu/widgets/sub-menu.php:1383
-#: modules/svg-image/widgets/svg-image.php:600
+#: modules/svg-image/widgets/svg-image.php:608
 #: modules/svg-maps/widgets/svg-maps.php:246
 #: modules/table-of-content/widgets/table-of-content.php:478
 #: modules/table-of-content/widgets/table-of-content.php:925
@@ -8404,6 +8378,8 @@ msgstr ""
 #: modules/circle-info/widgets/circle-info.php:974
 #: modules/circle-menu/widgets/circle-menu.php:751
 #: modules/circle-menu/widgets/circle-menu.php:912
+#: modules/comparison-list/widgets/comparison-list.php:412
+#: modules/comparison-list/widgets/comparison-list.php:474
 #: modules/contact-form-7/widgets/contact-form-7.php:412
 #: modules/contact-form/widgets/contact-form.php:817
 #: modules/contact-form/widgets/contact-form.php:948
@@ -9393,6 +9369,7 @@ msgstr ""
 #: modules/charitable-donations/widgets/charitable-donations.php:174
 #: modules/circle-info/widgets/circle-info.php:894
 #: modules/circle-info/widgets/circle-info.php:946
+#: modules/comparison-list/widgets/comparison-list.php:395
 #: modules/content-switcher/widgets/content-switcher.php:261
 #: modules/cookie-consent/widgets/cookie-consent.php:276
 #: modules/countdown/widgets/countdown.php:590
@@ -9694,6 +9671,7 @@ msgstr ""
 #: modules/animated-heading/widgets/animated-heading.php:193
 #: modules/booked-calendar/widgets/booked-calendar.php:82
 #: modules/booked-calendar/widgets/booked-calendar.php:193
+#: modules/comparison-list/widgets/comparison-list.php:394
 #: modules/contact-form/widgets/contact-form.php:124
 #: modules/contact-form/widgets/contact-form.php:245
 #: modules/countdown/widgets/countdown.php:173
@@ -10008,7 +9986,7 @@ msgstr ""
 #: modules/sub-menu/widgets/sub-menu.php:164
 #: modules/sub-menu/widgets/sub-menu.php:1171
 #: modules/svg-image/widgets/svg-image.php:88
-#: modules/svg-image/widgets/svg-image.php:707
+#: modules/svg-image/widgets/svg-image.php:715
 #: modules/switcher/widgets/switcher.php:556
 #: modules/switcher/widgets/switcher.php:1063
 #: modules/table/widgets/table.php:164 modules/table/widgets/table.php:190
@@ -10918,7 +10896,7 @@ msgstr ""
 #: modules/slideshow/widgets/slideshow.php:1998
 #: modules/slideshow/widgets/slideshow.php:2103
 #: modules/sub-menu/widgets/sub-menu.php:380
-#: modules/svg-image/widgets/svg-image.php:748
+#: modules/svg-image/widgets/svg-image.php:756
 #: modules/svg-maps/widgets/svg-maps.php:383
 #: modules/table-of-content/widgets/table-of-content.php:688
 #: modules/table/widgets/table.php:446 modules/table/widgets/table.php:694
@@ -11576,89 +11554,89 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: loader.php:471
+#: loader.php:475
 #, php-format
 msgctxt "DataTable String"
 msgid "Show %1s Entries"
 msgstr ""
 
-#: loader.php:472
+#: loader.php:476
 #, php-format
 msgctxt "DataTable String"
 msgid "Showing %1s to %2s of %3s entries"
 msgstr ""
 
-#: loader.php:473
+#: loader.php:477
 msgctxt "DataTable String"
 msgid "Search :"
 msgstr ""
 
-#: loader.php:474
+#: loader.php:478
 msgctxt "DataTable String"
 msgid "No matching records found"
 msgstr ""
 
-#: loader.php:476
+#: loader.php:480
 msgctxt "DataTable String"
 msgid "Previous"
 msgstr ""
 
-#: loader.php:477
+#: loader.php:481
 msgctxt "DataTable String"
 msgid "Next"
 msgstr ""
 
-#: loader.php:482
+#: loader.php:486
 msgctxt "Contact Form String"
 msgid "Sending message please wait..."
 msgstr ""
 
-#: loader.php:483
+#: loader.php:487
 msgctxt "Contact Form String"
 msgid "Invisible captcha not defined!"
 msgstr ""
 
-#: loader.php:484
+#: loader.php:488
 msgctxt "Contact Form String"
 msgid "Could not get invisible captcha response!"
 msgstr ""
 
-#: loader.php:488
+#: loader.php:492
 msgctxt "Mailchimp String"
 msgid "Subscribing you please wait..."
 msgstr ""
 
-#: loader.php:491
+#: loader.php:495
 msgctxt "Search Widget String"
 msgid "More Results"
 msgstr ""
 
-#: loader.php:492
+#: loader.php:496
 msgctxt "Search Widget String"
 msgid "SEARCH RESULT"
 msgstr ""
 
-#: loader.php:493
+#: loader.php:497
 msgctxt "Search Widget String"
 msgid "not found"
 msgstr ""
 
-#: loader.php:512
+#: loader.php:516
 msgctxt "User Login and Register"
 msgid "Sending user info, please wait..."
 msgstr ""
 
-#: loader.php:513
+#: loader.php:517
 msgctxt "User Login and Register"
 msgid "Unknown error, make sure access is correct!"
 msgstr ""
 
-#: loader.php:671
+#: loader.php:675
 msgctxt "User Login and Register"
 msgid "Login successful, Redirecting..."
 msgstr ""
 
-#: loader.php:678
+#: loader.php:682
 msgctxt "User Login and Register"
 msgid "Oops! Wrong username or password!"
 msgstr ""
@@ -11924,7 +11902,7 @@ msgstr ""
 #: modules/reading-progress/widgets/reading-progress.php:237
 #: modules/scrollnav/widgets/scrollnav.php:176
 #: modules/step-flow/widgets/step-flow.php:2133
-#: modules/svg-image/widgets/svg-image.php:204
+#: modules/svg-image/widgets/svg-image.php:211
 #: modules/table-of-content/widgets/table-of-content.php:579
 #: modules/tabs/widgets/tabs.php:367
 #: modules/threesixty-product-viewer/widgets/threesixty-product-viewer.php:283
@@ -12184,7 +12162,7 @@ msgstr ""
 #: modules/step-flow/widgets/step-flow.php:1451
 #: modules/sub-menu/widgets/sub-menu.php:156
 #: modules/svg-image/widgets/svg-image.php:80
-#: modules/svg-image/widgets/svg-image.php:699
+#: modules/svg-image/widgets/svg-image.php:707
 #: modules/switcher/widgets/switcher.php:548
 #: modules/switcher/widgets/switcher.php:967
 #: modules/switcher/widgets/switcher.php:1054 modules/tabs/widgets/tabs.php:270
@@ -12478,7 +12456,7 @@ msgstr ""
 #: modules/step-flow/widgets/step-flow.php:1457
 #: modules/sub-menu/widgets/sub-menu.php:160
 #: modules/svg-image/widgets/svg-image.php:84
-#: modules/svg-image/widgets/svg-image.php:703
+#: modules/svg-image/widgets/svg-image.php:711
 #: modules/switcher/widgets/switcher.php:552
 #: modules/switcher/widgets/switcher.php:1059
 #: modules/table-of-content/widgets/table-of-content.php:87
@@ -12791,7 +12769,7 @@ msgstr ""
 #: modules/step-flow/widgets/step-flow.php:1465
 #: modules/sub-menu/widgets/sub-menu.php:168
 #: modules/svg-image/widgets/svg-image.php:92
-#: modules/svg-image/widgets/svg-image.php:711
+#: modules/svg-image/widgets/svg-image.php:719
 #: modules/switcher/widgets/switcher.php:560
 #: modules/switcher/widgets/switcher.php:1067
 #: modules/table-of-content/widgets/table-of-content.php:88
@@ -12876,10 +12854,9 @@ msgstr ""
 #: modules/buddypress-group/widgets/buddypress-group.php:54
 #: modules/buddypress-member/widgets/buddypress-member.php:55
 #: modules/carousel/widgets/carousel.php:999
-#: modules/comparison-list/widgets/comparison-list.php:414
-#: modules/comparison-list/widgets/comparison-list.php:560
-#: modules/comparison-list/widgets/comparison-list.php:726
-#: modules/comparison-list/widgets/comparison-list.php:910
+#: modules/comparison-list/widgets/comparison-list.php:456
+#: modules/comparison-list/widgets/comparison-list.php:624
+#: modules/comparison-list/widgets/comparison-list.php:879
 #: modules/content-switcher/widgets/content-switcher.php:160
 #: modules/content-switcher/widgets/content-switcher.php:537
 #: modules/content-switcher/widgets/content-switcher.php:764
@@ -13270,7 +13247,7 @@ msgstr ""
 #: modules/step-flow/widgets/step-flow.php:1219
 #: modules/step-flow/widgets/step-flow.php:1306
 #: modules/sub-menu/widgets/sub-menu.php:1236
-#: modules/svg-image/widgets/svg-image.php:788
+#: modules/svg-image/widgets/svg-image.php:796
 #: modules/switcher/widgets/switcher.php:447
 #: modules/switcher/widgets/switcher.php:998
 #: modules/switcher/widgets/switcher.php:1084 modules/tabs/widgets/tabs.php:947
@@ -13363,7 +13340,7 @@ msgstr ""
 #: modules/circle-info/widgets/circle-info.php:340
 #: modules/circle-menu/widgets/circle-menu.php:683
 #: modules/circle-menu/widgets/circle-menu.php:862
-#: modules/comparison-list/widgets/comparison-list.php:532
+#: modules/comparison-list/widgets/comparison-list.php:577
 #: modules/custom-carousel/widgets/custom-carousel.php:1023
 #: modules/dark-mode/widgets/dark-mode.php:307
 #: modules/dual-button/widgets/dual-button.php:1087
@@ -13475,16 +13452,10 @@ msgstr ""
 #: modules/circle-menu/widgets/circle-menu.php:642
 #: modules/circle-menu/widgets/circle-menu.php:821
 #: modules/circle-menu/widgets/circle-menu.php:1054
-#: modules/comparison-list/widgets/comparison-list.php:284
-#: modules/comparison-list/widgets/comparison-list.php:371
-#: modules/comparison-list/widgets/comparison-list.php:433
-#: modules/comparison-list/widgets/comparison-list.php:640
-#: modules/comparison-list/widgets/comparison-list.php:714
-#: modules/comparison-list/widgets/comparison-list.php:756
-#: modules/comparison-list/widgets/comparison-list.php:824
-#: modules/comparison-list/widgets/comparison-list.php:898
-#: modules/comparison-list/widgets/comparison-list.php:940
-#: modules/comparison-list/widgets/comparison-list.php:1007
+#: modules/comparison-list/widgets/comparison-list.php:174
+#: modules/comparison-list/widgets/comparison-list.php:302
+#: modules/comparison-list/widgets/comparison-list.php:391
+#: modules/comparison-list/widgets/comparison-list.php:750
 #: modules/contact-form-7/widgets/contact-form-7.php:246
 #: modules/contact-form-7/widgets/contact-form-7.php:326
 #: modules/contact-form/widgets/contact-form.php:739
@@ -14008,7 +13979,7 @@ msgstr ""
 #: modules/static-grid-tab/widgets/static-grid-tab.php:308
 #: modules/static-grid-tab/widgets/static-grid-tab.php:415
 #: modules/step-flow/widgets/step-flow.php:201
-#: modules/svg-image/widgets/svg-image.php:715
+#: modules/svg-image/widgets/svg-image.php:723
 #: modules/switcher/widgets/switcher.php:1071 modules/tabs/widgets/tabs.php:286
 #: modules/thumb-gallery/widgets/thumb-gallery.php:159
 #: modules/total-count/widgets/total-count.php:337
@@ -14658,7 +14629,7 @@ msgstr ""
 #: modules/static-grid-tab/widgets/static-grid-tab.php:527
 #: modules/static-grid-tab/widgets/static-grid-tab.php:613
 #: modules/step-flow/widgets/step-flow.php:2058
-#: modules/svg-image/widgets/svg-image.php:729
+#: modules/svg-image/widgets/svg-image.php:737
 #: modules/svg-maps/widgets/svg-maps.php:1224
 #: modules/switcher/widgets/switcher.php:1150
 #: modules/switcher/widgets/switcher.php:1240
@@ -16254,7 +16225,7 @@ msgstr ""
 #: modules/mega-menu/widgets/mega-menu.php:483
 #: modules/scroll-button/widgets/scroll-button.php:71
 #: modules/svg-blob/widgets/svg-blob.php:231
-#: modules/svg-image/widgets/svg-image.php:312
+#: modules/svg-image/widgets/svg-image.php:319
 #: modules/total-count/widgets/total-count.php:537
 #: modules/video-player/widgets/video-player.php:184
 msgid "Duration"
@@ -16373,7 +16344,7 @@ msgstr ""
 #: modules/step-flow/widgets/step-flow.php:1592
 #: modules/step-flow/widgets/step-flow.php:1933
 #: modules/svg-blob/widgets/svg-blob.php:295
-#: modules/svg-image/widgets/svg-image.php:493
+#: modules/svg-image/widgets/svg-image.php:501
 #: modules/svg-maps/widgets/svg-maps.php:318
 #: modules/the-newsletter/widgets/the-newsletter.php:374
 #: modules/threesixty-product-viewer/widgets/threesixty-product-viewer.php:184
@@ -16603,8 +16574,8 @@ msgstr ""
 #: modules/step-flow/widgets/step-flow.php:903
 #: modules/step-flow/widgets/step-flow.php:1099
 #: modules/svg-blob/widgets/svg-blob.php:339
-#: modules/svg-image/widgets/svg-image.php:572
-#: modules/svg-image/widgets/svg-image.php:607
+#: modules/svg-image/widgets/svg-image.php:580
+#: modules/svg-image/widgets/svg-image.php:615
 #: modules/testimonial-carousel/widgets/testimonial-carousel.php:477
 #: modules/testimonial-carousel/widgets/testimonial-carousel.php:559
 #: modules/testimonial-carousel/widgets/testimonial-carousel.php:619
@@ -16648,7 +16619,7 @@ msgstr ""
 #: modules/post-list/widgets/post-list.php:362
 #: modules/scroll-image/widgets/scroll-image.php:917
 #: modules/step-flow/widgets/step-flow.php:924
-#: modules/svg-image/widgets/svg-image.php:633
+#: modules/svg-image/widgets/svg-image.php:641
 #: modules/total-count/widgets/total-count.php:878
 msgid "Transition Duration"
 msgstr ""
@@ -17182,7 +17153,7 @@ msgstr ""
 #: modules/lottie-icon-box/widgets/lottie-icon-box.php:1884
 #: modules/lottie-icon-box/widgets/lottie-icon-box.php:2152
 #: modules/step-flow/widgets/step-flow.php:1564
-#: modules/svg-image/widgets/svg-image.php:471
+#: modules/svg-image/widgets/svg-image.php:479
 #: modules/total-count/widgets/total-count.php:1354
 msgid "Fill Color"
 msgstr ""
@@ -17198,7 +17169,7 @@ msgstr ""
 #: modules/lottie-icon-box/widgets/lottie-icon-box.php:2163
 #: modules/step-flow/widgets/step-flow.php:1578
 #: modules/svg-blob/widgets/svg-blob.php:393
-#: modules/svg-image/widgets/svg-image.php:482
+#: modules/svg-image/widgets/svg-image.php:490
 #: modules/total-count/widgets/total-count.php:1368
 msgid "Stroke Color"
 msgstr ""
@@ -17466,7 +17437,7 @@ msgstr ""
 #: modules/featured-box/widgets/featured-box.php:1325
 #: modules/grid-line/module.php:106
 #: modules/lottie-image/widgets/lottie-image.php:595
-#: modules/svg-image/widgets/svg-image.php:528 modules/tooltip/module.php:294
+#: modules/svg-image/widgets/svg-image.php:536 modules/tooltip/module.php:294
 msgid "Max Width"
 msgstr ""
 
@@ -19366,10 +19337,9 @@ msgstr ""
 #: modules/charitable-campaigns/widgets/charitable-campaigns.php:389
 #: modules/charitable-donations/widgets/charitable-donations.php:364
 #: modules/circle-menu/widgets/circle-menu.php:186
-#: modules/comparison-list/widgets/comparison-list.php:182
-#: modules/comparison-list/widgets/comparison-list.php:221
-#: modules/comparison-list/widgets/comparison-list.php:260
-#: modules/comparison-list/widgets/comparison-list.php:510
+#: modules/comparison-list/widgets/comparison-list.php:239
+#: modules/comparison-list/widgets/comparison-list.php:278
+#: modules/comparison-list/widgets/comparison-list.php:555
 #: modules/easy-digital-downloads/widgets/easy-digital-downloads.php:414
 #: modules/edd-category-carousel/widgets/edd-category-carousel.php:614
 #: modules/edd-category-grid/widgets/edd-category-grid.php:587
@@ -24111,7 +24081,7 @@ msgstr ""
 
 #: modules/comparison-list/widgets/comparison-list.php:69
 #: modules/comparison-list/widgets/comparison-list.php:71
-msgid "Feature list|Free|Ultimate"
+msgid "Feature list|Free|Pro"
 msgstr ""
 
 #: modules/comparison-list/widgets/comparison-list.php:70
@@ -24121,6 +24091,7 @@ msgid ""
 msgstr ""
 
 #: modules/comparison-list/widgets/comparison-list.php:108
+#: modules/comparison-list/widgets/comparison-list.php:662
 msgid "Feature Ability"
 msgstr ""
 
@@ -24132,69 +24103,120 @@ msgstr ""
 msgid "Separate with \"|\" pipe character. 0 for disable and 1 for enable."
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:124
+#: modules/comparison-list/widgets/comparison-list.php:125
 msgid "Feature Title #1"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:125
-msgid ""
-"#1 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-"tempor incididunt ut\n"
-"                                    labore et dolore magna aliqua."
-msgstr ""
-
-#: modules/comparison-list/widgets/comparison-list.php:130
+#: modules/comparison-list/widgets/comparison-list.php:131
 msgid "Feature Title #2"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:131
-msgid ""
-"#2 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-"tempor incididunt ut\n"
-"                                    labore et dolore magna aliqua."
-msgstr ""
-
-#: modules/comparison-list/widgets/comparison-list.php:136
+#: modules/comparison-list/widgets/comparison-list.php:137
 msgid "Feature Title #3"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:137
-msgid ""
-"#3 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-"tempor incididunt ut\n"
-"                                    labore et dolore magna aliqua."
-msgstr ""
-
-#: modules/comparison-list/widgets/comparison-list.php:152
+#: modules/comparison-list/widgets/comparison-list.php:153
 msgid "Header Feature"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:164
-msgid "Feature Title"
-msgstr ""
-
-#: modules/comparison-list/widgets/comparison-list.php:203
+#: modules/comparison-list/widgets/comparison-list.php:221
 msgid "Regular Title"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:242
+#: modules/comparison-list/widgets/comparison-list.php:260
 msgid "Active Title"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:340
+#: modules/comparison-list/widgets/comparison-list.php:338
 msgid "List item"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:480
+#: modules/comparison-list/widgets/comparison-list.php:368
+msgid "Stripe Background"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:396
+#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:304
+#: modules/scroll-box/module.php:121
+msgctxt "Border Control"
+msgid "Solid"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:397
+#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:305
+#: modules/scroll-box/module.php:122
+msgctxt "Border Control"
+msgid "Double"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:398
+#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:306
+#: modules/scroll-box/module.php:123
+msgctxt "Border Control"
+msgid "Dotted"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:399
+#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:307
+#: modules/scroll-box/module.php:124
+msgctxt "Border Control"
+msgid "Dashed"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:400
+#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:308
+#: modules/scroll-box/module.php:125
+msgctxt "Border Control"
+msgid "Groove"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:500
+msgid "Active BG Color"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:525
 msgid "List item Title"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:598
-msgid "Feature Ability (Check)"
+#: modules/comparison-list/widgets/comparison-list.php:681
+#: modules/comparison-list/widgets/comparison-list.php:802
+#: modules/comparison-list/widgets/comparison-list.php:886
+#: modules/everest-forms/widgets/everest-forms.php:903
+#: modules/everest-forms/widgets/everest-forms.php:1086
+msgid "Checked Color"
 msgstr ""
 
-#: modules/comparison-list/widgets/comparison-list.php:782
-msgid "Feature Ability (Close)"
+#: modules/comparison-list/widgets/comparison-list.php:692
+#: modules/comparison-list/widgets/comparison-list.php:813
+#: modules/comparison-list/widgets/comparison-list.php:897
+msgid "Checked Background"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:703
+#: modules/comparison-list/widgets/comparison-list.php:824
+#: modules/comparison-list/widgets/comparison-list.php:908
+msgid "Checked Border Color"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:715
+#: modules/comparison-list/widgets/comparison-list.php:840
+#: modules/comparison-list/widgets/comparison-list.php:923
+msgid "Close Color"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:726
+#: modules/comparison-list/widgets/comparison-list.php:852
+#: modules/comparison-list/widgets/comparison-list.php:934
+msgid "Close Background"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:737
+msgid "Close Border Background"
+msgstr ""
+
+#: modules/comparison-list/widgets/comparison-list.php:863
+#: modules/comparison-list/widgets/comparison-list.php:945
+msgid "Close Border Color"
 msgstr ""
 
 #: modules/confetti-effects/module.php:40
@@ -24944,7 +24966,7 @@ msgid "Coupon Text"
 msgstr ""
 
 #: modules/coupon-code/widgets/coupon-code.php:87
-#, php-format
+#, no-php-format
 msgid "Get 20% discount"
 msgstr ""
 
@@ -28023,11 +28045,6 @@ msgstr ""
 msgid "UnChecked Color"
 msgstr ""
 
-#: modules/everest-forms/widgets/everest-forms.php:903
-#: modules/everest-forms/widgets/everest-forms.php:1086
-msgid "Checked Color"
-msgstr ""
-
 #: modules/everest-forms/widgets/everest-forms.php:914
 #: modules/everest-forms/widgets/everest-forms.php:1097
 msgid "UnChecked Bg Color"
@@ -30154,36 +30171,6 @@ msgctxt "Border Control"
 msgid "Border Type"
 msgstr ""
 
-#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:304
-#: modules/scroll-box/module.php:121
-msgctxt "Border Control"
-msgid "Solid"
-msgstr ""
-
-#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:305
-#: modules/scroll-box/module.php:122
-msgctxt "Border Control"
-msgid "Double"
-msgstr ""
-
-#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:306
-#: modules/scroll-box/module.php:123
-msgctxt "Border Control"
-msgid "Dotted"
-msgstr ""
-
-#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:307
-#: modules/scroll-box/module.php:124
-msgctxt "Border Control"
-msgid "Dashed"
-msgstr ""
-
-#: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:308
-#: modules/scroll-box/module.php:125
-msgctxt "Border Control"
-msgid "Groove"
-msgstr ""
-
 #: modules/icon-mobile-menu/widgets/icon-mobile-menu.php:443
 msgid "Menu Icon"
 msgstr ""
@@ -30884,7 +30871,7 @@ msgstr ""
 
 #: modules/interactive-card/widgets/interactive-card.php:266
 #: modules/interactive-card/widgets/interactive-card.php:270
-#: modules/svg-image/widgets/svg-image.php:281
+#: modules/svg-image/widgets/svg-image.php:288
 #: traits/global-mask-controls.php:175 traits/global-mask-controls.php:179
 msgid "Repeat"
 msgstr ""
@@ -31343,7 +31330,7 @@ msgstr ""
 #: modules/lottie-image/widgets/lottie-image.php:528
 #: modules/svg-image/widgets/svg-image.php:28
 #: modules/svg-image/widgets/svg-image.php:59
-#: modules/svg-image/widgets/svg-image.php:455
+#: modules/svg-image/widgets/svg-image.php:463
 msgid "SVG"
 msgstr ""
 
@@ -31835,7 +31822,7 @@ msgid "Exit Popup"
 msgstr ""
 
 #: modules/modal/widgets/modal.php:70
-#: modules/svg-image/widgets/svg-image.php:215
+#: modules/svg-image/widgets/svg-image.php:222
 msgid "On Scroll"
 msgstr ""
 
@@ -31887,7 +31874,7 @@ msgid "UP"
 msgstr ""
 
 #: modules/modal/widgets/modal.php:171
-#: modules/svg-image/widgets/svg-image.php:264
+#: modules/svg-image/widgets/svg-image.php:271
 msgid "Offset (%)"
 msgstr ""
 
@@ -35418,103 +35405,103 @@ msgstr ""
 msgid "Attachment Caption"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:189
+#: modules/svg-image/widgets/svg-image.php:193
 msgid "Draw SVG"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:211
+#: modules/svg-image/widgets/svg-image.php:218
 msgid "Drawer Type"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:214
+#: modules/svg-image/widgets/svg-image.php:221
 msgid " On Hover"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:216
+#: modules/svg-image/widgets/svg-image.php:223
 msgid "Automatic"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:230
+#: modules/svg-image/widgets/svg-image.php:237
 msgid "When the draw should start?"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:233
+#: modules/svg-image/widgets/svg-image.php:240
 msgid "Top of Viewport Hits The Widget"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:234
+#: modules/svg-image/widgets/svg-image.php:241
 msgid "Center of Viewport Hits The Widget"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:235
+#: modules/svg-image/widgets/svg-image.php:242
 msgid "Custom Offset"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:250
+#: modules/svg-image/widgets/svg-image.php:257
 msgid "Reset Animation on Scroll Up"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:297
+#: modules/svg-image/widgets/svg-image.php:304
 msgid "Yoyo Effect"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:314
+#: modules/svg-image/widgets/svg-image.php:321
 msgid "Larger value means longer drawing duration."
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:336
+#: modules/svg-image/widgets/svg-image.php:343
 msgid "Start Point (%)"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:338
+#: modules/svg-image/widgets/svg-image.php:345
 msgid "Set the point that the SVG should start from."
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:353
+#: modules/svg-image/widgets/svg-image.php:360
 msgid "End Point (%)"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:355
+#: modules/svg-image/widgets/svg-image.php:362
 msgid "Set the point that the SVG should end at."
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:370
+#: modules/svg-image/widgets/svg-image.php:377
 msgid "On Hover Animation"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:371
+#: modules/svg-image/widgets/svg-image.php:378
 msgid ""
 "Make sure you select a stroke based svg image, otherwise hover animation "
 "will not work."
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:383
+#: modules/svg-image/widgets/svg-image.php:390
 msgid "Reverse Animation"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:394
+#: modules/svg-image/widgets/svg-image.php:401
 msgid "Stroke Parallax Animation"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:395
+#: modules/svg-image/widgets/svg-image.php:402
 msgid ""
 "Make sure you select a stroke based svg image, otherwise parallax stroke "
 "animation will not work."
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:407
+#: modules/svg-image/widgets/svg-image.php:414
 msgid "Stroke Start Point"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:408
+#: modules/svg-image/widgets/svg-image.php:415
 msgid "Set your stroke start value where from you start the stroke parallax."
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:430
+#: modules/svg-image/widgets/svg-image.php:437
 msgid "Viewport"
 msgstr ""
 
-#: modules/svg-image/widgets/svg-image.php:463
+#: modules/svg-image/widgets/svg-image.php:471
 msgid "Preserved Original Color"
 msgstr ""
 

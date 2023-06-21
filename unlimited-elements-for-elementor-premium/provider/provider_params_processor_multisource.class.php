@@ -1053,6 +1053,10 @@ class UniteCreatetorParamsProcessorMultisource{
 		$textBefore = null;
 		$textAfter = null;
 		$sap = "";
+		$isTruncate = false;
+		
+		$emptyItem = array();
+		
 		
 		if(is_array($source)){
 			
@@ -1073,6 +1077,15 @@ class UniteCreatetorParamsProcessorMultisource{
 												
 						unset($source[$index]);
 					break;
+					case "truncate":
+					
+						$emptyItem = $this->getFieldValue(array(), $paramName, $singleSource, $dataItem, $param);
+						
+						$truncateChars = UniteFunctionsUC::getVal($emptyItem, $paramName,100);
+						
+						$isTruncate = true;
+						
+					break;
 				}
 				
 			}
@@ -1088,6 +1101,7 @@ class UniteCreatetorParamsProcessorMultisource{
 			 $source = $source[0];
 		}
 		
+		//multiple sources
 		
 		if(is_array($source)){
 			
@@ -1103,7 +1117,7 @@ class UniteCreatetorParamsProcessorMultisource{
 				$item = $this->getFieldValue($item, $paramName, $singleSource, $dataItem, $param);
 				
 				$valueAfter = UniteFunctionsUC::getVal($item, $paramName);
-
+				
 				if($numItem == 1){
 					 $item[$paramName] = $valueAfter;
 					 continue;
@@ -1120,10 +1134,23 @@ class UniteCreatetorParamsProcessorMultisource{
 					  $item[$paramName] = $value.$sap.$valueAfter;
 			}
 			
+			
 			//add text before and after
 
 			if(!isset($item[$paramName]))
 				return($item);
+
+			//trim content
+			
+			if($isTruncate == true){
+
+				$text = $item[$paramName];
+				
+				$text = UniteFunctionsUC::truncateString($text, $truncateChars, true, "");
+				
+				$item[$paramName] = $text;
+			}
+			
 				
 			if(is_array($item[$paramName]))
 				return($item);
@@ -1145,6 +1172,7 @@ class UniteCreatetorParamsProcessorMultisource{
 			case "text_before":
 			case "text_after":
 			case "separator":
+			case "truncate":
 				
 				$textBeforeKey = $this->nameParam."_{$source}_{$paramName}";
 				

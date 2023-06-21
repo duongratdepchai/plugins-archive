@@ -57,7 +57,8 @@ class UniteCreatorSettingsMultisourcePro{
 			"date"=>__("Post Date","unlimited-elements-for-elementor"),
 			"link"=>__("Post Url","unlimited-elements-for-elementor"),
 			"meta_field"=>__("Post Meta Field","unlimited-elements-for-elementor"),
-			"term_field"=>__("Post Term","unlimited-elements-for-elementor")
+			"term_field"=>__("Post Term","unlimited-elements-for-elementor"),
+			"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor"),
 		);
 		
 		$this->arrPostFields = array_flip($this->arrPostFields);
@@ -95,7 +96,8 @@ class UniteCreatorSettingsMultisourcePro{
 			"date"=>__("Product Date","unlimited-elements-for-elementor"),
 			"link"=>__("Product Url","unlimited-elements-for-elementor"),
 			"meta_field"=>__("Product Meta Field","unlimited-elements-for-elementor"),
-			"term_field"=>__("Product Term","unlimited-elements-for-elementor")
+			"term_field"=>__("Product Term","unlimited-elements-for-elementor"),
+			"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor")
 		);
 		
 		$this->arrProductsFields = array_flip($this->arrProductsFields);
@@ -113,7 +115,8 @@ class UniteCreatorSettingsMultisourcePro{
 			"description"=>__("Term Description","unlimited-elements-for-elementor"),
 			"link"=>__("Term Link","unlimited-elements-for-elementor"),
 			"num_posts"=>__("Num Posts","unlimited-elements-for-elementor"),
-			"meta_field"=>__("Term Meta Field","unlimited-elements-for-elementor")
+			"meta_field"=>__("Term Meta Field","unlimited-elements-for-elementor"),
+			"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor")		
 		);
 		
 		$this->arrTermsFields = array_flip($this->arrTermsFields);
@@ -135,7 +138,8 @@ class UniteCreatorSettingsMultisourcePro{
 			"website"=>__("Website","unlimited-elements-for-elementor"),
 			"user_avatar_image"=>__("User Avatar Image","unlimited-elements-for-elementor"),
 			"user_num_posts"=>__("User Num Posts","unlimited-elements-for-elementor"),
-			"meta_field"=>__("User Meta Field","unlimited-elements-for-elementor")
+			"meta_field"=>__("User Meta Field","unlimited-elements-for-elementor"),
+			"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor")
 		);
 		
 		$this->arrUsersFields = array_flip($this->arrUsersFields);
@@ -156,7 +160,8 @@ class UniteCreatorSettingsMultisourcePro{
 			"description"=>__("Description","unlimited-elements-for-elementor"),
 			"classes"=>__("Classes","unlimited-elements-for-elementor"),
 			"html_link"=>__("HTML Link","unlimited-elements-for-elementor"),
-			"meta_field"=>__("Menu Meta Field","unlimited-elements-for-elementor")
+			"meta_field"=>__("Menu Meta Field","unlimited-elements-for-elementor"),
+			"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor")
 		);
 		
 		$this->arrMenuFields = array_flip($this->arrMenuFields);
@@ -174,7 +179,8 @@ class UniteCreatorSettingsMultisourcePro{
 			"thumb"=>__("Thumb","unlimited-elements-for-elementor"),
 			"link"=>__("Link","unlimited-elements-for-elementor"),
 			"type"=>__("Type (image,video)","unlimited-elements-for-elementor"),
-			"url_video"=>__("Video Url","unlimited-elements-for-elementor")
+			"url_video"=>__("Video Url","unlimited-elements-for-elementor"),
+			"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor")
 		);
 		
 		$this->arrInstaFields = array_flip($this->arrInstaFields);
@@ -192,7 +198,8 @@ class UniteCreatorSettingsMultisourcePro{
 			"image_title"=>__("Image Title","unlimited-elements-for-elementor"),
 			"image_alt"=>__("Image Alt","unlimited-elements-for-elementor"),
 			"image_caption"=>__("Image Caption","unlimited-elements-for-elementor"),
-			"image_description"=>__("Image Description","unlimited-elements-for-elementor")
+			"image_description"=>__("Image Description","unlimited-elements-for-elementor"),
+			"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor")
 		);
 		
 		$this->arrGalleryFields = array_flip($this->arrGalleryFields);
@@ -875,6 +882,19 @@ class UniteCreatorSettingsMultisourcePro{
 			
 			$this->settings->addTextBox($fieldName."_{$type}_separator_{$name}", "", $text, $params);
 			
+			//-------------- truncate ----------------
+			
+			$conditionTruncate = $condition;
+			$conditionTruncate[$selectName] = "truncate";
+			
+			$params = array();
+			$params["origtype"] = UniteCreatorDialogParam::PARAM_NUMBER;
+			$params["elementor_condition"] = $conditionTruncate;
+			
+			$text = $title. " ".__("Truncate Characters", "unlimited-elements-for-elementor");
+			
+			$this->settings->addTextBox($fieldName."_{$type}_truncate_{$name}", "100", $text, $params);
+			
 		}
 		
 		
@@ -943,7 +963,8 @@ class UniteCreatorSettingsMultisourcePro{
 				"text_before"=>__("-- Text Before --","unlimited-elements-for-elementor"),
 				"text_after"=>__("-- Text After --","unlimited-elements-for-elementor"),
 				"separator"=>__("-- Separator --","unlimited-elements-for-elementor"),
-				"field"=>$fieldTitle
+				"field"=>$fieldTitle,
+				"truncate"=>__("-- Truncate Text --","unlimited-elements-for-elementor")
 			);
 			
 			$arrOptions = array_flip($arrOptions);
@@ -1045,6 +1066,20 @@ class UniteCreatorSettingsMultisourcePro{
 		$text = $title. " ".__("Separator", "unlimited-elements-for-elementor");
 		
 		$this->settings->addTextBox($fieldName."_{$type}_separator_{$name}", "", $text, $params);
+
+		//-------------- truncate ----------------
+		
+		$conditionTruncate = $condition;
+		$conditionTruncate[$selectName] = "truncate";
+		
+		$params = array();
+		$params["origtype"] = UniteCreatorDialogParam::PARAM_NUMBER;
+		$params["elementor_condition"] = $conditionTruncate;
+		
+		$text = $title. " ".__("Truncate Characters", "unlimited-elements-for-elementor");
+		
+		$this->settings->addTextBox($fieldName."_{$type}_truncate_{$name}", "100", $text, $params);
+		
 		
 	}
 	

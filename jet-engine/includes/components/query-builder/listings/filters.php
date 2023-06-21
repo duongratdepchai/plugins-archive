@@ -149,7 +149,12 @@ class Filters {
 				}
 
 				$data['fragments'][ '.jet-engine-query-count.count-type-total.query-' . $query->id ] = $query->get_items_total_count();
-				$data['fragments'][ '.jet-engine-query-count.count-type-visible.query-' . $query->id ] = $query->get_items_page_count();
+				$data['fragments'][ '.jet-engine-query-count.count-type-visible.query-' . $query->id ] = $this->get_visible_items_count( $query );
+				$data['fragments'][ '.jet-engine-query-count.count-type-end-item.query-' . $query->id ] = $query->get_end_item_index_on_page();
+
+				if ( ! $this->is_filter_load_more() ) {
+					$data['fragments'][ '.jet-engine-query-count.count-type-start-item.query-' . $query->id ] = $query->get_start_item_index_on_page();
+				}
 
 				return $data;
 
@@ -254,6 +259,33 @@ class Filters {
 			return $data;
 		}, 999 );
 
+	}
+
+	public function is_filter_load_more() {
+		return ! empty( $_REQUEST['props'] ) && ! empty( $_REQUEST['props']['pages'] );
+	}
+
+	public function get_visible_items_count( $query ) {
+
+		if ( $this->is_filter_load_more() ) {
+			$pages         = $_REQUEST['props']['pages'];
+			$max_pages     = $query->get_items_pages_count();
+			$visible_items = 0;
+
+			foreach ( $pages as $page ) {
+
+				if ( $page == $max_pages ) {
+					$visible_items += $query->get_items_page_count();
+				} else {
+					$visible_items += $query->get_items_per_page();
+				}
+
+			}
+
+			return $visible_items;
+		}
+
+		return $query->get_items_page_count();
 	}
 
 }

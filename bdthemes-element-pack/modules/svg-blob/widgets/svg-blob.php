@@ -56,7 +56,6 @@ class Svg_Blob extends Module_Base {
 	protected function register_controls() {
 		$this->register_controls_blob_content();
 		$this->register_controls_style_blob();
-		$this->register_style_controls_colors();
 		$this->register_style_controls_gradient_blob();
 	}
 
@@ -150,69 +149,69 @@ class Svg_Blob extends Module_Base {
 				'separator'  => 'before',
 			]
 		);
-		$this->add_control(
-			'svg_blob_easing_type',
-			[
-				'label' => esc_html__('Animation Type', 'bdthemes-element-pack'),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'easeInSine',
-				'frontend_available' => true,
-				'options' => [
-					'linear' => esc_html__('Linear', 'bdthemes-element-pack'),
-					'easeInQuad' => esc_html__('EaseInQuad', 'bdthemes-element-pack'),
-					'easeOutQuad' => esc_html__('EaseOutQuad', 'bdthemes-element-pack'),
-					'easeInOutQuad' => esc_html__('EaseInOutQuad', 'bdthemes-element-pack'),
-					'easeOutInQuad' => esc_html__('EaseOutInQuad', 'bdthemes-element-pack'),
-					'easeInCubic' => esc_html__('EaseInCubic', 'bdthemes-element-pack'),
-					'easeOutCubic' => esc_html__('EaseOutCubic', 'bdthemes-element-pack'),
-					'easeInOutCubic' => esc_html__('EaseInOutCubic', 'bdthemes-element-pack'),
-					'easeOutInCubic' => esc_html__('EaseOutInCubic', 'bdthemes-element-pack'),
-					'easeInQuart' => esc_html__('EaseInQuart', 'bdthemes-element-pack'),
-					'easeOutQuart' => esc_html__('EaseOutQuart', 'bdthemes-element-pack'),
-					'easeInOutQuart' => esc_html__('EaseInOutQuart', 'bdthemes-element-pack'),
-					'easeOutInQuart' => esc_html__('EaseOutInQuart', 'bdthemes-element-pack'),
-					'easeInQuint' => esc_html__('EaseInQuint', 'bdthemes-element-pack'),
-					'easeOutQuint' => esc_html__('EaseOutQuint', 'bdthemes-element-pack'),
-					'easeInOutQuint' => esc_html__('EaseInOutQuint', 'bdthemes-element-pack'),
-					'easeOutInQuint' => esc_html__('EaseOutInQuint', 'bdthemes-element-pack'),
-					'easeInSine' => esc_html__('EaseInSine', 'bdthemes-element-pack'),
-					'easeOutSine' => esc_html__('EaseOutSine', 'bdthemes-element-pack'),
-					'easeInOutSine' => esc_html__('EaseInOutSine', 'bdthemes-element-pack'),
-					'easeOutInSine' => esc_html__('EaseOutInSine', 'bdthemes-element-pack'),
-					'easeInExpo' => esc_html__('EaseInExpo', 'bdthemes-element-pack'),
-					'easeOutExpo' => esc_html__('EaseOutExpo', 'bdthemes-element-pack'),
-					'easeInOutExpo' => esc_html__('EaseInOutExpo', 'bdthemes-element-pack'),
-					'easeOutInExpo' => esc_html__('EaseOutInExpo', 'bdthemes-element-pack'),
-					'easeInCirc' => esc_html__('EaseInCirc', 'bdthemes-element-pack'),
-					'easeOutCirc' => esc_html__('EaseOutCirc', 'bdthemes-element-pack'),
-					'easeInOutCirc' => esc_html__('EaseInOutCirc', 'bdthemes-element-pack'),
-					'easeOutInCirc' => esc_html__('EaseOutInCirc', 'bdthemes-element-pack'),
-					'easeInBack' => esc_html__('EaseInBack', 'bdthemes-element-pack'),
-					'easeOutBack' => esc_html__('EaseOutBack', 'bdthemes-element-pack'),
-					'easeInOutBack' => esc_html__('EaseInOutBack', 'bdthemes-element-pack'),
-					'easeOutInBack' => esc_html__('EaseOutInBack', 'bdthemes-element-pack'),
-					'easeInBounce' => esc_html__('EaseInBounce', 'bdthemes-element-pack'),
-					'easeOutBounce' => esc_html__('EaseOutBounce', 'bdthemes-element-pack'),
-					'easeInOutBounce' => esc_html__('EaseInOutBounce', 'bdthemes-element-pack'),
-					'easeOutInBounce' => esc_html__('EaseOutInBounce', 'bdthemes-element-pack'),
-				],
-			]
-		);
-
-		$this->add_control(
-			'svg_blob_direction',
-			[
-				'label' => esc_html__('Blob Direction', 'bdthemes-element-pack'),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'alternate',
-				'frontend_available' => true,
-				'options' => [
-					'normal' => esc_html__('Normal', 'bdthemes-element-pack'),
-					'reverse' => esc_html__('Reverse', 'bdthemes-element-pack'),
-					'alternate' => esc_html__('Alternate', 'bdthemes-element-pack'),
-				],
-			]
-		);
+//		$this->add_control(
+//			'svg_blob_easing_type',
+//			[
+//				'label' => esc_html__('Animation Type', 'bdthemes-element-pack'),
+//				'type' => Controls_Manager::SELECT,
+//				'default' => 'easeInSine',
+//				'frontend_available' => true,
+//				'options' => [
+//					'linear' => esc_html__('Linear', 'bdthemes-element-pack'),
+//					'easeInQuad' => esc_html__('EaseInQuad', 'bdthemes-element-pack'),
+//					'easeOutQuad' => esc_html__('EaseOutQuad', 'bdthemes-element-pack'),
+//					'easeInOutQuad' => esc_html__('EaseInOutQuad', 'bdthemes-element-pack'),
+//					'easeOutInQuad' => esc_html__('EaseOutInQuad', 'bdthemes-element-pack'),
+//					'easeInCubic' => esc_html__('EaseInCubic', 'bdthemes-element-pack'),
+//					'easeOutCubic' => esc_html__('EaseOutCubic', 'bdthemes-element-pack'),
+//					'easeInOutCubic' => esc_html__('EaseInOutCubic', 'bdthemes-element-pack'),
+//					'easeOutInCubic' => esc_html__('EaseOutInCubic', 'bdthemes-element-pack'),
+//					'easeInQuart' => esc_html__('EaseInQuart', 'bdthemes-element-pack'),
+//					'easeOutQuart' => esc_html__('EaseOutQuart', 'bdthemes-element-pack'),
+//					'easeInOutQuart' => esc_html__('EaseInOutQuart', 'bdthemes-element-pack'),
+//					'easeOutInQuart' => esc_html__('EaseOutInQuart', 'bdthemes-element-pack'),
+//					'easeInQuint' => esc_html__('EaseInQuint', 'bdthemes-element-pack'),
+//					'easeOutQuint' => esc_html__('EaseOutQuint', 'bdthemes-element-pack'),
+//					'easeInOutQuint' => esc_html__('EaseInOutQuint', 'bdthemes-element-pack'),
+//					'easeOutInQuint' => esc_html__('EaseOutInQuint', 'bdthemes-element-pack'),
+//					'easeInSine' => esc_html__('EaseInSine', 'bdthemes-element-pack'),
+//					'easeOutSine' => esc_html__('EaseOutSine', 'bdthemes-element-pack'),
+//					'easeInOutSine' => esc_html__('EaseInOutSine', 'bdthemes-element-pack'),
+//					'easeOutInSine' => esc_html__('EaseOutInSine', 'bdthemes-element-pack'),
+//					'easeInExpo' => esc_html__('EaseInExpo', 'bdthemes-element-pack'),
+//					'easeOutExpo' => esc_html__('EaseOutExpo', 'bdthemes-element-pack'),
+//					'easeInOutExpo' => esc_html__('EaseInOutExpo', 'bdthemes-element-pack'),
+//					'easeOutInExpo' => esc_html__('EaseOutInExpo', 'bdthemes-element-pack'),
+//					'easeInCirc' => esc_html__('EaseInCirc', 'bdthemes-element-pack'),
+//					'easeOutCirc' => esc_html__('EaseOutCirc', 'bdthemes-element-pack'),
+//					'easeInOutCirc' => esc_html__('EaseInOutCirc', 'bdthemes-element-pack'),
+//					'easeOutInCirc' => esc_html__('EaseOutInCirc', 'bdthemes-element-pack'),
+//					'easeInBack' => esc_html__('EaseInBack', 'bdthemes-element-pack'),
+//					'easeOutBack' => esc_html__('EaseOutBack', 'bdthemes-element-pack'),
+//					'easeInOutBack' => esc_html__('EaseInOutBack', 'bdthemes-element-pack'),
+//					'easeOutInBack' => esc_html__('EaseOutInBack', 'bdthemes-element-pack'),
+//					'easeInBounce' => esc_html__('EaseInBounce', 'bdthemes-element-pack'),
+//					'easeOutBounce' => esc_html__('EaseOutBounce', 'bdthemes-element-pack'),
+//					'easeInOutBounce' => esc_html__('EaseInOutBounce', 'bdthemes-element-pack'),
+//					'easeOutInBounce' => esc_html__('EaseOutInBounce', 'bdthemes-element-pack'),
+//				],
+//			]
+//		);
+//
+//		$this->add_control(
+//			'svg_blob_direction',
+//			[
+//				'label' => esc_html__('Blob Direction', 'bdthemes-element-pack'),
+//				'type' => Controls_Manager::SELECT,
+//				'default' => 'alternate',
+//				'frontend_available' => true,
+//				'options' => [
+//					'normal' => esc_html__('Normal', 'bdthemes-element-pack'),
+//					'reverse' => esc_html__('Reverse', 'bdthemes-element-pack'),
+//					'alternate' => esc_html__('Alternate', 'bdthemes-element-pack'),
+//				],
+//			]
+//		);
 
 		$this->add_control(
 			'svg_blob_loop',
@@ -289,6 +288,89 @@ class Svg_Blob extends Module_Base {
 			]
 		);
 
+        $this->add_control(
+            'svg_blob_fill_color',
+            [
+                'label' => esc_html__('SVG Color', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::COLOR,
+                'default' => '',
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-svg-blob svg path' => 'fill: {{VALUE}};',
+                ],
+                'condition' => [
+                    'svg_blob_select_type' => ['color'],
+                ]
+            ]
+        );
+        $this->add_control(
+            'svg_blob_stroke_color',
+            [
+                'label' => esc_html__('Stroke Color', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::COLOR,
+                'default' => '#BB004B',
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-svg-blob svg path' => 'stroke: {{VALUE}};',
+                ],
+                'condition' => [
+                    'svg_blob_color_show_stroke' => ['yes'],
+                    'svg_blob_select_type' => ['color'],
+                ]
+
+            ]
+        );
+
+        $this->add_control(
+            'svg_blob_stroke_weight',
+            [
+                'label' => esc_html__('Stroke Weight', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 50,
+                    ],
+                ],
+                'default' => [
+                    'unit' => 'px',
+                    'size' => 5,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .bdt-svg-blob svg path' => 'stroke-width: {{SIZE}}{{UNIT}};',
+                ],
+                'condition' => [
+                    'svg_blob_color_show_stroke' => ['yes'],
+                    'svg_blob_select_type' => ['color'],
+                ]
+            ]
+        );
+
+
+        // SVG Gradient Color style
+
+
+        $this->add_control(
+            'svg_blob_gradient_color_primary',
+            [
+                'label' => esc_html__('Color Primary', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::COLOR,
+                'condition'	=> [
+                    'svg_blob_select_type' => ['gradient'],
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'svg_blob_gradient_color_secondary',
+            [
+                'label' => esc_html__('Color Secondary', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::COLOR,
+                'condition'	=> [
+                    'svg_blob_select_type' => ['gradient'],
+                ],
+            ]
+        );
+
 		$this->add_responsive_control(
 			'svg_blob_width',
 			[
@@ -364,97 +446,16 @@ class Svg_Blob extends Module_Base {
 		$this->end_controls_section();
 	}
 
-	private function register_style_controls_colors() {
-		$this->start_controls_section(
-			'svg_blob_color_section_style',
-			[
-				'label' => esc_html__('Color Style', 'bdthemes-element-pack'),
-				'tab' => Controls_Manager::TAB_STYLE,
-				'condition'	=> [
-					'svg_blob_select_type' => ['color'],
-				],
-			]
-		);
 
-		$this->add_control(
-			'svg_blob_fill_color',
-			[
-				'label' => esc_html__('SVG Color', 'bdthemes-element-pack'),
-				'type' => Controls_Manager::COLOR,
-				'default' => '',
-				'selectors' => [
-					'{{WRAPPER}} .bdt-svg-blob svg path' => 'fill: {{VALUE}};',
-				],
-			]
-		);
-		$this->add_control(
-			'svg_blob_stroke_color',
-			[
-				'label' => esc_html__('Stroke Color', 'bdthemes-element-pack'),
-				'type' => Controls_Manager::COLOR,
-				'default' => '#BB004B',
-				'selectors' => [
-					'{{WRAPPER}} .bdt-svg-blob svg path' => 'stroke: {{VALUE}};',
-				],
-				'condition' => [
-					'svg_blob_color_show_stroke' => ['yes']
-				]
-
-			]
-		);
-
-		$this->add_control(
-			'svg_blob_stroke_weight',
-			[
-				'label' => esc_html__('Stroke Weight', 'bdthemes-element-pack'),
-				'type' => Controls_Manager::SLIDER,
-				'size_units' => ['px'],
-				'range' => [
-					'px' => [
-						'min' => 0,
-						'max' => 50,
-					],
-				],
-				'default' => [
-					'unit' => 'px',
-					'size' => 5,
-				],
-				'selectors' => [
-					'{{WRAPPER}} .bdt-svg-blob svg path' => 'stroke-width: {{SIZE}}{{UNIT}};',
-				],
-				'condition' => [
-					'svg_blob_color_show_stroke' => ['yes']
-				]
-			]
-		);
-
-		$this->end_controls_section();
-	}
 	private function register_style_controls_gradient_blob() {
 		$this->start_controls_section(
 			'svg_blob_gradient_section_style',
 			[
-				'label' => esc_html__('Gradient Blob Style', 'bdthemes-element-pack'),
+				'label' => esc_html__('Advanced Blob Style', 'bdthemes-element-pack'),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition'	=> [
 					'svg_blob_select_type' => ['gradient'],
 				],
-			]
-		);
-
-		$this->add_control(
-			'svg_blob_gradient_color_primary',
-			[
-				'label' => esc_html__('Color Primary', 'bdthemes-element-pack'),
-				'type' => Controls_Manager::COLOR,
-			]
-		);
-
-		$this->add_control(
-			'svg_blob_gradient_color_secondary',
-			[
-				'label' => esc_html__('Color Secondary', 'bdthemes-element-pack'),
-				'type' => Controls_Manager::COLOR,
 			]
 		);
 

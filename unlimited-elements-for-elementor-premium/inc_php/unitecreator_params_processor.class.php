@@ -137,6 +137,65 @@ class UniteCreatorParamsProcessorWork{
 		return($defaultValue);
 	}
 	
+	/**
+	 * check modify filter manually
+	 */
+	private function checkModifyParamOptions_manual($options, $phpFilter){
+		
+		switch($phpFilter){
+			case "ue_sort_filter":
+				
+				$optionsSortBy = UniteFunctionsWPUC::getArrSortBy(true, true);
+				
+				$options = array_flip($options);
+				
+				$options = array_merge($options,$optionsSortBy);
+			break;
+		}
+		
+		return($options);
+	}
+	
+	/**
+	 * check for modify options
+	 */
+	private function checkModifyParamOptions($param){
+		
+		if(isset($param["options"]) == false)
+			return($param);
+				
+		$phpFilter = UniteFunctionsUC::getVal($param, "php_filter_name");
+		
+		if(empty($phpFilter))
+			return($param);
+		
+		$options = $param["options"];
+		
+		//manual modify
+		
+		$options = $this->checkModifyParamOptions_manual($options, $phpFilter);
+		
+		//general modify
+			
+		$options = apply_filters("ue_modify_dropdown_".$phpFilter, $options);
+		
+		if(empty($options))
+			$options = array();
+					
+		$value = UniteFunctionsUC::getVal($param, "value");
+		
+		if(!empty($options))
+			$options = array_flip($options);
+		
+		if(is_string($value) && in_array($value, $options) == false)
+			$value = UniteFunctionsUC::getArrFirstValue($options);
+					
+		$param["options"] = $options;
+		$param["value"] = $value;
+		
+					
+		return($param);
+	}
 	
 	/**
 	 * construct the object
@@ -709,37 +768,6 @@ class UniteCreatorParamsProcessorWork{
 		return($data);
 	}
 	
-	private function z___________FORM__________(){}
-	
-	
-	/**
-	 * process image param value, add to data
-	 */
-	private function getProcessedParamsValue_form($data, $value, $param, $processType){
-		
-		//UniteFunctionsUC::showTrace();dmp($data);exit();
-		
-		self::validateProcessType($processType);
-				
-		$objForm = new UniteCreatorForm();
-		$objForm->setAddon($this->addon);
-		
-		switch($processType){
-			case self::PROCESS_TYPE_OUTPUT:
-			case self::PROCESS_TYPE_OUTPUT_BACK:
-				
-				$paramName = UniteFunctionsUC::getVal($param, "name");
-				$data = $objForm->getFormOutputData($data, $paramName, $value);
-				
-				//$data[$name] = $this->getPostData($postID);
-			break;
-		}
-				
-		return($data);
-	}
-		
-	
-	
 	
 	private function z_______IMAGE______(){}
 	
@@ -1264,6 +1292,10 @@ class UniteCreatorParamsProcessorWork{
 			if(isset($param["default_value"]))
 				$param["default_value"] = $this->convertValueByType($param["default_value"], $type, $param);
 	
+			//check modify options
+			$param = $this->checkModifyParamOptions($param);
+			
+			
 			//make sure that the value is part of the options
 			if(isset($param["value"]) && 
 			   isset($param["default_value"]) && 
@@ -1706,12 +1738,9 @@ class UniteCreatorParamsProcessorWork{
 				
 				$linkType = UniteFunctionsUC::getVal($arrValues, $name."_link_type");
 				
-				$className = "";
-				
 				$isEnabled = false;
 				
 				if($linkType == "popup"){	//is enabled
-					$className = "uc-dynamic-popup-grid";					
 					$isEnabled = true;
 					
 					$this->dynamicPopupEnabled = true;
@@ -1724,11 +1753,13 @@ class UniteCreatorParamsProcessorWork{
 				
 				//if many popups, every one should enable the class
 				
-				if(isset($data["uc_dynamic_popup_class"]) == false)
-					$data["uc_dynamic_popup_class"] = $className;
-				else
-					if($this->dynamicPopupEnabled == true)
-						$data["uc_dynamic_popup_class"] = $className;
+				if(isset($data["uc_dynamic_popup_class"]) == false){
+					$data["uc_dynamic_popup_class"] = "";
+				}
+				
+				if($this->dynamicPopupEnabled == true)
+					$data["uc_dynamic_popup_class"] = "uc-dynamic-popup-grid";
+				
 				
 				//use in post items
 				
@@ -1738,7 +1769,7 @@ class UniteCreatorParamsProcessorWork{
 				
 			break;
 		}
-		
+
 		
 		return($data);
 	}
@@ -1777,9 +1808,6 @@ class UniteCreatorParamsProcessorWork{
 			break;
 			case UniteCreatorDialogParam::PARAM_CONTENT:
 				$data = $this->getProcessedParamsValue_content($data, $value, $param, $processType);
-			break;
-			case UniteCreatorDialogParam::PARAM_FORM:
-				$data = $this->getProcessedParamsValue_form($data, $value, $param, $processType);
 			break;
 			case UniteCreatorDialogParam::PARAM_ICON_LIBRARY:
 				$data = $this->getProcessedParamsValue_icon($data, $value, $param, $processType);
@@ -2175,31 +2203,12 @@ class UniteCreatorParamsProcessorWork{
 	}
 	
 	
-	/**
-	 * return if param value is array
-	 */
-	protected function isParamValueIsArray($paramType){
-		
-		switch($paramType){
-			case UniteCreatorDialogParam::PARAM_FORM:
-				
-				return(true);
-			break;
-		}
-		
-		return(false);
-	}
-	
 	
 	/**
 	 * get param value, function for override, by type
 	 */
 	public function getSpecialParamValue($paramType, $paramName, $value, $arrValues){
 	    
-		$isArray = $this->isParamValueIsArray($paramType);
-	    
-		if($isArray == true)
-			$value = $this->getArrayParamValue($arrValues, $paramName, $value);
 		
 	    return($value);
 	}

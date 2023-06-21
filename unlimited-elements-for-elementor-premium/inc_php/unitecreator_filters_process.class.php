@@ -38,6 +38,7 @@ class UniteCreatorFiltersProcess{
 	
 	const TYPE_TABS = "tabs";
 	const TYPE_SELECT = "select";
+	const TYPE_CHECKBOX = "checkbox";
 	
 	const ROLE_CHILD = "child";
 	const ROLE_TERM_CHILD = "term_child";
@@ -311,7 +312,7 @@ class UniteCreatorFiltersProcess{
 			
 			return($arrValues);
 		}
-
+		
 		$arrValues = explode(".", $strValues);
 		
 		$isTermsAnd = false;
@@ -433,6 +434,7 @@ class UniteCreatorFiltersProcess{
 
 		//exclude
 		$exclude = UniteFunctionsUC::getVal($request, "ucexclude");
+		$exclude = UniteProviderFunctionsUC::sanitizeVar($exclude, UniteFunctionsUC::SANITIZE_TEXT_FIELD);
 		
 		if(!empty($exclude)){
 			
@@ -441,7 +443,49 @@ class UniteCreatorFiltersProcess{
 			if($isValid == true)
 				$arrOutput["exclude"] = $exclude;
 		}
+		
+		
+		//orderby
+		
+		$orderby = UniteFunctionsUC::getVal($request, "ucorderby");
+		$orderby = UniteProviderFunctionsUC::sanitizeVar($orderby, UniteFunctionsUC::SANITIZE_KEY);
+		
+		if(!empty($orderby)){
 			
+			//check if valid
+			$arrOrderby = UniteFunctionsWPUC::getArrSortBy(true);
+			
+			if(is_string($orderby) && isset($arrOrderby[$orderby]))
+				$arrOutput["orderby"] = $orderby;
+
+			if($orderby == "meta"){
+				
+				$orderbyMeta = UniteFunctionsUC::getVal($request, "ucorderby_meta");
+				$orderbyMeta = UniteProviderFunctionsUC::sanitizeVar($orderbyMeta, UniteFunctionsUC::SANITIZE_KEY);
+				
+				$orderbyMetaType = UniteFunctionsUC::getVal($request, "ucorderby_metatype");
+				$orderbyMetaType = UniteProviderFunctionsUC::sanitizeVar($orderbyMetaType, UniteFunctionsUC::SANITIZE_KEY);
+								
+				if(!empty($orderbyMeta)){
+					$arrOutput["orderby"] = $orderby;
+					$arrOutput["orderby_metaname"] = $orderbyMeta;
+				}
+				
+				if(!empty($orderbyMetaType))
+					$arrOutput["orderby_metatype"] = $orderbyMetaType;
+				
+			}
+			
+		}
+		
+		
+		//orderdir
+		
+		$orderDir = UniteFunctionsUC::getVal($request, "ucorderdir");
+		
+		if($orderDir == "asc" || $orderDir == "desc")
+			$arrOutput["orderdir"] = $orderDir;
+		
 		self::$arrInputFiltersCache = $arrOutput;
 		
 		
@@ -495,6 +539,7 @@ class UniteCreatorFiltersProcess{
 		
 		$arrInputFilters = $this->getArrInputFilters();
 		
+		
 		if(empty($arrInputFilters))
 			return(self::$filters);
 		
@@ -502,8 +547,7 @@ class UniteCreatorFiltersProcess{
 		
 		if(!empty($arrTerms))
 			self::$filters["terms"] = $arrTerms;
-		
-		
+					
 		//get the page
 		
 		$page = UniteFunctionsUC::getVal($arrInputFilters, "page");
@@ -537,7 +581,25 @@ class UniteCreatorFiltersProcess{
 		if(!empty($exclude))
 			self::$filters["exclude"] = $exclude;
 		
+		//get orderby
+		$orderby = UniteFunctionsUC::getVal($arrInputFilters, "orderby");
 		
+		if(!empty($orderby)){
+						
+			self::$filters["orderby"] = $orderby;
+			
+			if($orderby == "meta"){
+				self::$filters["orderby_metaname"] = UniteFunctionsUC::getVal($arrInputFilters, "orderby_metaname");
+				self::$filters["orderby_metatype"] = UniteFunctionsUC::getVal($arrInputFilters, "orderby_metatype");
+			}
+		}
+		
+		//get orderdir
+		$orderdir = UniteFunctionsUC::getVal($arrInputFilters, "orderdir");
+
+		if(!empty($orderdir))
+			self::$filters["orderdir"] = $orderdir;
+			
 		return(self::$filters);
 	}
 	
@@ -708,6 +770,8 @@ class UniteCreatorFiltersProcess{
 		$offset = UniteFunctionsUC::getVal($arrFilters, "offset");
 		$search = UniteFunctionsUC::getVal($arrFilters, "search");
 		$exclude = UniteFunctionsUC::getVal($arrFilters, "exclude");
+		$orderby = UniteFunctionsUC::getVal($arrFilters, "orderby");
+		$orderdir = UniteFunctionsUC::getVal($arrFilters, "orderdir");
 		
 		
 		if(!empty($page))
@@ -723,6 +787,35 @@ class UniteCreatorFiltersProcess{
 		//search
 		if(!empty($search) && $search != "_all_"){
 			$args["s"] = $search;
+		}
+		
+		//orderby
+		if(!empty($orderby) && $orderby != "default"){
+			
+			$args["orderby"] = $orderby;
+			
+			if($orderby == "meta"){
+				
+				$metaName = UniteFunctionsUC::getVal($arrFilters, "orderby_metaname");
+				$metaType = UniteFunctionsUC::getVal($arrFilters, "orderby_metatype");
+				
+				if(!empty($metaName)){
+					
+					if($metaType == "number")
+						$args["orderby"] = "meta_value_num";
+					else
+						$args["orderby"] = "meta_value";
+						
+					$args["meta_key"] = $metaName;
+					
+				}
+			}
+			
+		}
+		
+		//orderdir
+		if(!empty($orderdir) && $orderdir != "default"){
+			$args["order"] = strtoupper($orderdir);
 		}
 		
 		
@@ -920,8 +1013,19 @@ class UniteCreatorFiltersProcess{
 			ob_start();
 		
 		$objOutput = new UniteCreatorOutput();
-		$objOutput->initByAddon($addon);
 		
+	    $isDebugFromGet = HelperUC::hasPermissionsFromQuery("ucfieldsdebug");
+		
+	    if($isDebugFromGet == true)
+	        $objOutput->showDebugData(true);
+
+		$objOutput->initByAddon($addon);
+
+	    if($isDebugFromGet == true){
+	    	dmp("End Here");
+	    	exit();
+	    }
+	    
 		if(self::$showDebug == false){
 			$htmlDebug = ob_get_contents();
 			ob_end_clean();
@@ -972,7 +1076,6 @@ class UniteCreatorFiltersProcess{
 		$arrHTML = array();
 		
 		$this->contentWidgetsDebug = array();
-		
 		
 		foreach($arrIDs as $elementID){
 			
@@ -1151,7 +1254,6 @@ class UniteCreatorFiltersProcess{
 		
 		self::$numTotalPosts = GlobalsProviderUC::$lastPostQuery->found_posts;
 		
-				
 		//find the term id's for test (find or not in the current posts query)
 		if(!empty($testTermIDs)){
 			
@@ -1290,6 +1392,7 @@ class UniteCreatorFiltersProcess{
 		
 		define("UE_AJAX_SEARCH_ACTIVE", true);
 		
+		
 		$layoutID = UniteFunctionsUC::getPostGetVariable("layoutid","",UniteFunctionsUC::SANITIZE_KEY);
 		$elementID = UniteFunctionsUC::getPostGetVariable("elid","",UniteFunctionsUC::SANITIZE_KEY);
 		
@@ -1365,7 +1468,7 @@ class UniteCreatorFiltersProcess{
 		
 		$strData = UniteFunctionsUC::jsonEncodeForClientSide($arrData);
 		
-		$script = "//Unlimited Elements Filters \n";
+		$script = "/* Unlimited Elements Filters */ \n";
 		$script .= "window.g_strFiltersData = {$strData};";
 		
 		UniteProviderFunctionsUC::printCustomScript($script);
@@ -1760,7 +1863,7 @@ class UniteCreatorFiltersProcess{
 			$numSelectedTab = 1;
 					
 		$firstNotHiddenIndex = null;
-
+		
 		$hasSelected = false;
 		
 		foreach($arrTerms as $index => $term){
@@ -1849,6 +1952,11 @@ class UniteCreatorFiltersProcess{
 			
 			if($isHidden == true){
 				$htmlAttributes = "hidden='hidden' style='display:none'";
+				
+				$addClass = UniteFunctionsUC::getVal($term, "addclass");
+				$addClass .= " uc-item-hidden";
+				
+				$term["addclass"] = $addClass;
 			}
 			
 			$term["hidden"] = $isHidden;
@@ -1922,18 +2030,26 @@ class UniteCreatorFiltersProcess{
 			$term["addclass"] = $class;
 			
 			//set select attribute
-			if($filterType == self::TYPE_SELECT){
-				
-				$htmlAttributes = UniteFunctionsUC::getVal($term, "html_attributes");
-				
-				if(empty($htmlAttributes))
-					$htmlAttributes = "";
-				
-				$htmlAttributes .= " selected";
-				
-				$term["html_attributes"] = $htmlAttributes;
-				
+			switch($filterType){
+				case self::TYPE_SELECT:
+					
+					$htmlAttributes = UniteFunctionsUC::getVal($term, "html_attributes");
+					
+					if(empty($htmlAttributes))
+						$htmlAttributes = "";
+					
+					$htmlAttributes .= " selected";
+					
+					$term["html_attributes"] = $htmlAttributes;
+					
+				break;
+				case self::TYPE_CHECKBOX:
+					
+					$term["html_attributes_input"] = " checked";
+					
+				break;
 			}
+				
 						
 			$arrTerms[$index] = $term;
 			
@@ -2005,6 +2121,9 @@ class UniteCreatorFiltersProcess{
 			case "type_select":
 				$filterType = self::TYPE_SELECT;
 			break;
+			case "type_checkbox":
+				$filterType = self::TYPE_CHECKBOX;
+			break;
 		}
 		
 		
@@ -2019,7 +2138,7 @@ class UniteCreatorFiltersProcess{
 		
 		$limitGrayedItems = UniteFunctionsUC::getVal($data, "load_limit_grayed");
 		$limitGrayedItems = (int)$limitGrayedItems;
-		
+				
 		$filterRole = UniteFunctionsUC::getVal($data, "filter_role");
 		if($filterRole == "single")		
 			$filterRole = null;
@@ -2093,10 +2212,11 @@ class UniteCreatorFiltersProcess{
 		
 		switch($filterType){
 			case self::TYPE_TABS:
+			case self::TYPE_CHECKBOX:
 				
 				if($isInitAfter == true && !empty($limitGrayedItems) && $isUnderAjax == false)
 					$arrTerms = $this->modifyOutputTerms_tabs_modifyLimitGrayed($arrTerms, $limitGrayedItems);
-
+					
 				$isFilterHidden = $this->modifyOutputTerms_isFilterHidden($data, $arrTerms, $isUnderAjax);
 				
 			break;
@@ -2105,7 +2225,6 @@ class UniteCreatorFiltersProcess{
 				//modify if hidden
 				
 				$isFilterHidden = $this->modifyOutputTerms_isFilterHidden($data, $arrTerms, $isUnderAjax);
-							
 			break;
 		}
 		
@@ -2113,8 +2232,6 @@ class UniteCreatorFiltersProcess{
 		
 		if($isFilterHidden)
 			$addClass .= " uc-filter-hidden";
-					
-		//return data
 		
 		$data["filter_isajax"] = $isUnderAjax?"yes":"no";
 		$data["filter_attributes"] = $attributes;
@@ -2264,8 +2381,14 @@ class UniteCreatorFiltersProcess{
 				case "ajaxsearch":
 					$this->putAjaxSearchData();
 				break;
+				case "submitform":
+					
+					$form = new UniteCreatorForm();
+					$form->submitFormFront();
+					
+				break;
 				default:
-					UniteFunctionsUC::throwError("wrong ajax action: $frontAjaxAction");
+					UniteFunctionsUC::throwError("wrong front ajax action: $frontAjaxAction");
 				break;
 			}
 		

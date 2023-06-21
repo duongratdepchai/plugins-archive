@@ -109,9 +109,13 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 				'type'        => Controls_Manager::TEXT,
 				'default'     => '',
 				'label_block' => true,
-				'description' => __( 'If empty will redirect to home page', 'jet-engine' ),
+				'description' => __( 'If empty will redirect to home page. Use the %current_page_url% macro to redirect to the current page.', 'jet-engine' ),
 				'dynamic'     => array(
-					'active' => true,
+					'active'     => true,
+					'categories' => array(
+						\Jet_Engine_Dynamic_Tags_Module::TEXT_CATEGORY,
+						\Jet_Engine_Dynamic_Tags_Module::JET_MACROS_CATEGORY,
+					),
 				),
 				'condition'   => array(
 					'dynamic_link_source' => 'delete_post_link',

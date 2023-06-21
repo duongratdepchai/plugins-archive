@@ -323,17 +323,30 @@ function UERemoteGeneralAPI(){
 	 */
 	function initEvents_setActive(){
 		
+		if(g_vars.enableDebug == true)
+			trace("start initEvents_setActive")
+		
 		var objItems = getObjItems();
 		
-		if(objItems.length == 0)
+		if(objItems.length == 0){
+			
+			if(g_vars.enableDebug == true)
+				trace("no items, exit")
+			
 			return(false);
+		}
 		
 		//activate first item
 		
 		var objFirstItem = getItem(0);
 		
-		if(objFirstItem == null)
+		if(objFirstItem == null){
+			
+			if(g_vars.enableDebug == true)
+				trace("empty first item - exit")
+			
 			return(false);
+		}
 		
 		objFirstItem.addClass(g_vars.class_active);
 		
@@ -341,11 +354,15 @@ function UERemoteGeneralAPI(){
 			
 			var objItem = jQuery(this);
 			
+			//clicked element
 			var objElement = jQuery(event.target);
 			var isLink = objElement.is("a");
 			
-			if(isLink == true)
+			//quit on link inside
+			if(isLink == true && objElement.hasClass(g_vars.class_items) == false){
+								
 				return(true);
+			}
 			
 			objItems.not(objItem).removeClass(g_vars.class_active);
 			
@@ -451,6 +468,11 @@ function UERemoteGeneralAPI(){
 			g_isTypeEvents = true;
 		
 		g_options = options;
+		
+		var enableDebug = getVal(options, "trace_debug");
+		
+		if(enableDebug == true)
+			g_vars.enableDebug = true;
 		
 		if(g_vars.enableDebug == true){
 			trace("init general api");
@@ -756,7 +778,7 @@ function UERemoteCarouselAPI(){
                                                         
             break;
 			case 'change_item':
-				
+					
 				var total = getTotalItems()
 				var currentItem = g_owl.relative(g_owl.current());
 				
@@ -1592,6 +1614,7 @@ function UERemoteWidgets(){
 		
 		if(g_vars.trace_debug == true){
 			trace(g_vars.options_api);
+			g_vars.options_api.trace_debug = true;
 		}
 		
 		var isInited = g_api.init(g_objParent, g_vars.options_api, isEditor);
@@ -1689,6 +1712,11 @@ function UERemoteWidgets(){
 		objElement.data("uc-action", action);
 		
 		objElement.on("click",function(){
+			
+			var objElement = jQuery(this);
+			
+			if(objElement.hasClass("uc-disabled"))
+				return(true);
 			
 			t.doAction(action);
 			

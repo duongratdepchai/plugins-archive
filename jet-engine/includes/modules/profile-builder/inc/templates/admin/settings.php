@@ -313,17 +313,29 @@
 					<cx-vui-textarea
 						label="<?php _e( 'User Page Title', 'jet-engine' ); ?>"
 						description="<?php _e( 'Set seo title for user page', 'jet-engine' ); ?>"
-						:wrapper-css="[ 'equalwidth' ]"
+						:wrapper-css="[ 'equalwidth', 'has-macros' ]"
 						size="fullwidth"
 						v-model="settings.user_page_seo_title"
 					>
-						<div :style="{ marginTop: '10px', fontWeight: 700 }"><?php _e( 'Available macros list:', 'jet-engine' ); ?></div>
-						<ul :style="{ marginBottom: 0 }">
-							<li v-for="macroArgs in userPageTitleMacros" :style="{ display: 'inline-block' }">
-								<code :style="{ cursor: 'pointer' }" @click="addTitleMacro( macroArgs.macro )">{{ macroArgs.macro }}</code> - <span v-html="macroArgs.label"></span>.&nbsp
-							</li>
-						</ul>
+						<jet-profile-macros @add-macro="addMacroToField( $event, 'user_page_seo_title' )"></jet-profile-macros>
 					</cx-vui-textarea>
+					<cx-vui-textarea
+						label="<?php _e( 'User Page Description', 'jet-engine' ); ?>"
+						description="<?php _e( 'Set seo description for user page', 'jet-engine' ); ?>"
+						:wrapper-css="[ 'equalwidth', 'has-macros' ]"
+						size="fullwidth"
+						v-model="settings.user_page_seo_desc"
+					>
+						<jet-profile-macros @add-macro="addMacroToField( $event, 'user_page_seo_desc' )"></jet-profile-macros>
+					</cx-vui-textarea>
+					<cx-vui-select
+						label="<?php _e( 'User Page Image Field', 'jet-engine' ); ?>"
+						description="<?php _e( 'Set seo image for user page from user meta field', 'jet-engine' ); ?>"
+						:wrapper-css="[ 'equalwidth' ]"
+						size="fullwidth"
+						:options-list="userPageImageFields"
+						v-model="settings.user_page_seo_image"
+					></cx-vui-select>
 					<div class="cx-vui-inner-panel">
 						<cx-vui-repeater
 							button-label="<?php _e( '+ Add New Subpage', 'jet-engine' ); ?>"

@@ -16,7 +16,7 @@ if ( ! class_exists( 'Jet_Engine_Relevanssi_Package' ) ) {
 	class Jet_Engine_Relevanssi_Package {
 
 		public function __construct() {
-			add_filter( 'jet-engine/query-builder/posts-query/wp-query',    array( $this, 'modify_search_query' ) );
+			add_filter( 'jet-engine/query-builder/types/posts-query/wp-query', array( $this, 'modify_search_query' ) );
 			add_action( 'jet-engine/query-builder/query/after-query-setup', array( $this, 'remove_relevanssi_jetsmartfilters_filter' ) );
 
 		}
