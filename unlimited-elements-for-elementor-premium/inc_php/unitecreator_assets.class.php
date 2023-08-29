@@ -222,6 +222,41 @@ class UniteCreatorAssets{
 			UniteFunctionsUC::throwError("File $filename not allowed in assets");
 	}
 	
+	/**
+	 * delete some files in extracted
+	 */
+	public function deleteFilesInExtracted($path){
+		
+		$arrDirs = UniteFunctionsUC::getDirList($path);
+				
+		$arrDelete = array();
+		
+		foreach($arrDirs as $dirName){
+			
+			switch($dirName){
+				case "__MACOSX":
+					$arrDelete[] = $dirName;
+				break;
+			}
+			
+		}
+		
+		if(empty($arrDelete))
+			return(false);
+			
+			
+		foreach($arrDelete as $dir){
+			
+			$pathDir = $path.$dir;
+			
+			if(is_dir($pathDir) == false)
+				return(false);
+			
+			UniteFunctionsUC::deleteDir($pathDir);
+		}
+				
+	}
+	
 	
 	/**
 	 * validate extracted files for unwanted files like php, and if not, delete the directory
@@ -478,6 +513,7 @@ class UniteCreatorAssets{
 			case "flac":
 			case "ogg":
 			case "webm":
+			case "swf":
 				return(self::FILETYPE_AUDIO);
 			break;
 			case "zip":
@@ -485,6 +521,7 @@ class UniteCreatorAssets{
 			break;
 			case "json":		//add allowed filetypes
 			case "tpl":		
+			case "ds_store":
 				return(self::FILETYPE_ALLOWED);
 			break;
 			case "xml":

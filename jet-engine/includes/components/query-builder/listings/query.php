@@ -29,29 +29,9 @@ class Query {
 				return;
 			}
 
-			$query_id = $data->get_listing()->get_settings( '_query_id' );
+			$current_obj = $data->get_current_object();
 
-			if ( ! $query_id ) {
-				$listing_id = jet_engine()->listings->data->get_listing()->get_main_id();
-
-				if ( ! $listing_id ) {
-					return;
-				}
-
-				$query_id = get_post_meta( $listing_id, $this->source_meta, true );
-			}
-
-			if ( ! $query_id ) {
-				return;
-			}
-
-			$query = Query_Manager::instance()->get_query_by_id( $query_id );
-
-			if ( ! $query ) {
-				return;
-			}
-
-			if ( 'posts' === $query->query_type ) {
+			if ( $current_obj && 'WP_Post' === get_class( $current_obj ) ) {
 				wp_reset_postdata();
 			}
 
@@ -70,6 +50,7 @@ class Query {
 		}
 
 		$query_id = Query_Manager::instance()->listings->get_query_id( $listing_id, $settings );
+		$query_id = apply_filters( 'jet-engine/query-builder/listings/query-id', $query_id, $listing_id, $settings );
 
 		if ( ! $query_id ) {
 			return array();
@@ -96,6 +77,10 @@ class Query {
 		// Added for correctly setup and reset global $post in nested listings.
 		if ( 'posts' === $query->query_type ) {
 			$widget->posts_query = $query->get_current_wp_query();
+		}
+
+		if ( 'sql' === $query->query_type && ! empty( $query->query['cast_object_to'] ) && 'WP_Post' === $query->query['cast_object_to'] ) {
+			$widget->posts_query = new \WP_Query();
 		}
 
 		return $query->get_items();

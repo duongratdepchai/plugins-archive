@@ -13,17 +13,23 @@ $paramsManager = PrmMng::getInstance();
 $subsite_id    = $paramsManager->getValue(PrmMng::PARAM_SUBSITE_ID);
 $safe_mode     = $paramsManager->getValue(PrmMng::PARAM_SAFE_MODE);
 ?>
-<div class="flex-final-button-wrapper" >
-    <div class="button-wrapper" >
-        <a id="s4-final-btn" class="default-btn" href="<?php echo htmlspecialchars(DUPX_InstallerState::getAdminLogin()); ?>" target="_blank">
-            <i class="fab fa-wordpress"></i> Admin Login
-        </a>
+<?php if (!DUPX_InstallerState::dbDoNothing()) : ?>
+    <div class="flex-final-button-wrapper" >
+        <div class="button-wrapper" >
+            <a id="s4-final-btn" class="default-btn" href="<?php echo htmlspecialchars(DUPX_InstallerState::getAdminLogin()); ?>" target="_blank">
+                <i class="fab fa-wordpress"></i> Admin Login
+            </a>
+        </div>
+        <div class="content-wrapper" >
+            Click the Admin Login button to login and finalize this install.<br />
+            <?php $paramsManager->getHtmlFormParam(PrmMng::PARAM_AUTO_CLEAN_INSTALLER_FILES); ?>
+        </div>
     </div>
-    <div class="content-wrapper" >
-        Click the Admin Login button to login and finalize this install.<br />
-        <?php $paramsManager->getHtmlFormParam(PrmMng::PARAM_AUTO_CLEAN_INSTALLER_FILES); ?>
-    </div>
-</div>
+<?php else : ?>
+    <h3 class="green" >
+        File extraction was successfully completed.
+    </h3>
+<?php endif; ?>
 
 <!-- WARN: MU MESSAGES -->
 <div class="s4-warn final-step-warn-item" style="display:<?php echo ($subsite_id > 0 ? 'block' : 'none') ?>">
@@ -31,7 +37,9 @@ $safe_mode     = $paramsManager->getValue(PrmMng::PARAM_SAFE_MODE);
     Some plugins may exhibit quirks when switching from subsite to standalone mode, 
     so all plugins have been disabled. Re-activate each plugin one-by-one and test
     the site after each activation. If you experience issues please see the
-    <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-mu" target="_blank">Multisite Network FAQs</a> online.
+    <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-perform-step-by-step-instructions-for-multisite-migrations" target="_blank">
+        Multisite Network FAQs
+    </a> online.
 </div>
 
 <!-- WARN: SAFE MODE MESSAGES -->

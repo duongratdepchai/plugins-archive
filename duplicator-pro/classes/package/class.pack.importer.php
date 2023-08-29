@@ -624,6 +624,19 @@ class DUP_PRO_Package_Importer
     }
 
     /**
+     * Return installer components
+     *
+     * @return false|string[] false oltre package without components
+     */
+    public function getPackageComponents()
+    {
+        if (!isset($this->info->components)) {
+            return false;
+        }
+        return $this->info->components;
+    }
+
+    /**
      * Extract installer-backup.php file in import folder
      *
      * @return string // return installer import URL
@@ -909,7 +922,7 @@ class DUP_PRO_Package_Importer
                         '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
                         'duplicator-pro'
                     ),
-                    '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q" target="_blank">',
+                    '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-handle-import-install-upload-launch-issues" target="_blank">',
                     '</a>'
                 );
             }
@@ -936,7 +949,7 @@ class DUP_PRO_Package_Importer
                     '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
                     'duplicator-pro'
                 ),
-                '<a target="_blank" href="https://snapcreek.com/duplicator/docs/quick-start/#quick-040-q">',
+                '<a target="_blank" href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'classic-install">',
                 '</a>'
             );
             return false;

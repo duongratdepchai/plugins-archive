@@ -149,7 +149,7 @@ class PackagesPageController extends AbstractMenuPageController
         $package_id = isset($_REQUEST["id"]) ? sanitize_text_field($_REQUEST["id"]) : 0;
         $package    = \DUP_PRO_Package::get_by_id($package_id);
         if (!is_object($package)) {
-            return __('Package Details » Not Found');
+            return __('Package Details » Not Found', 'duplicator-pro');
         } else {
             return sprintf(__('Package Details » %1$s', 'duplicator-pro'), $package->Name);
         }

@@ -65,7 +65,7 @@ if (!class_exists('DuplicatorPhpVersionCheck')) {
                         echo '<br/>';
 
                         echo sprintf(
-                            "%s <a href='https://duplicator.com/my-account/support/' target='blank'>%s</a> %s %s.",
+                            "%s <a href='" . DUPLICATOR_PRO_BLOG_URL . "my-account/support/' target='blank'>%s</a> %s %s.",
                             __('If this is not possible, open a', 'duplicator-pro'),
                             __('help ticket', 'duplicator-pro'),
                             __('and request a previous version of Duplicator Pro compatible with PHP', 'duplicator-pro'),

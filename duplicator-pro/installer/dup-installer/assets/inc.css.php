@@ -1569,6 +1569,13 @@ STEP 1 VIEW
     text-align: center
 }
 
+.no-db-actions {
+    display: none;
+    color: maroon;
+    font-weight: bold;
+    font-size: 11px;
+}
+
 .overview-description {
     padding: 0 !important
 }
@@ -2319,6 +2326,16 @@ div.s2-notice20 table.collation-list td:first-child {
     white-space: normal;
     width: 550px
 }
+
+.s2-warning-db-donothing {
+    color: maroon;
+    margin: 2px 0 0 0;
+    font-size: 11px;
+    display: none;
+    white-space: normal;
+    width: 550px
+}
+
 
 #s2-tryagain {
     padding-top: 50px;

@@ -15,9 +15,9 @@
             return;
         }
 
-        var $sliderContainer = $slider.find('.swiper-container'),
+        var $sliderContainer = $slider.find('.swiper-carousel'),
             $settings = $slider.data('settings'),
-            $swiperId = $($settings.id).find('.swiper-container');
+            $swiperId = $($settings.id).find('.swiper-carousel');
 
             const Swiper = elementorFrontend.utils.swiper;
             initSwiper();

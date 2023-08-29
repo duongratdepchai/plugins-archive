@@ -13,12 +13,17 @@
 
 .dpro-admin-notice {
     background: #fff;
-    border-left: 4px solid #ED494D;
+    border-left-width: 4px;
+    border-left-style: solid;
     border-top: 4px;
     width: calc(100% - 22px);
-    padding: 1px;
+    padding: 10px;
     overflow: hidden;
     box-sizing: border-box;
+}
+
+.wrap .dpro-admin-notice {
+    width: 100%;
 }
 
 .dup-border-left-red-notice {
@@ -86,11 +91,25 @@
     font-size: 0.8rem;
 }
 
-span.dup-license-expired {
-    float:left;
+/** LICENSE NOTICES **/
+
+.dpro-admin-notice.dup-license-message {
+    padding: 10px;
+    display: flex;
+}
+
+.dup-license-message h3 {
+    margin: 0 0 10px 0;
+}
+
+.dup-license-message .dashicons {
     display:inline-block;
-    padding:0 15px 0 10px;
     font-size:60px;
     width:60px;
     height:60px;
+    margin-right: 10px; 
+}
+
+.dup-license-message .dup-pro-simple-style-disc {
+    margin: 10px 20px;
 }

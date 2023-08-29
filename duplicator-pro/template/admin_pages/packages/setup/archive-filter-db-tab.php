@@ -88,7 +88,7 @@ $dbbuild_mode = DUP_PRO_DB::getBuildMode();
         </div>
         <div class="dup-tabs-opts-help">
             <?php DUP_PRO_U::esc_html_e("Compatibility mode settings are not persistent.  They must be enabled with every new build."); ?>&nbsp;
-            <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q" target="_blank">
+            <a href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>how-to-fix-database-write-issues" target="_blank">
                 [<?php DUP_PRO_U::esc_html_e('full overview'); ?>]
             </a>
         </div>

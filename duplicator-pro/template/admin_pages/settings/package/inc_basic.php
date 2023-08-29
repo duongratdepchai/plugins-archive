@@ -91,7 +91,7 @@ $installerNameMode = $global->installer_name_mode;
                                     . 'until this issue is resolved by your hosting provider. ',
                                     'duplicator-pro'
                                 ),
-                                '<a href="https://snapcreek.com/wordpress-hosting/" target="_blank">',
+                                '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'what-host-providers-are-recommended-for-duplicator/" target="_blank">',
                                 '</a>'
                             );
                             ?>
@@ -123,7 +123,7 @@ $installerNameMode = $global->installer_name_mode;
                                     '%1$s and %2$s are the opening and closing tags of a link.',
                                     'duplicator-pro'
                                 ),
-                                '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-005-q" target="_blank">',
+                                '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-resolve-dependency-checks" target="_blank">',
                                 '</a>'
                             );
                             ?>
@@ -308,7 +308,8 @@ $installerNameMode = $global->installer_name_mode;
                     DUP_PRO_U::esc_html_e('This option is fully multi-threaded and recommended for large sites or throttled servers.');
                     echo '<br/>  ';
                     printf(
-                        '%s <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q" target="_blank">%s</a> ',
+                        '%s <a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL
+                        . 'how-to-work-with-daf-files-and-the-duparchive-extraction-tool" target="_blank">%s</a> ',
                         DUP_PRO_U::__('For details on how to use and manually extract the DAF format please see the '),
                         DUP_PRO_U::__('online documentation.')
                     );

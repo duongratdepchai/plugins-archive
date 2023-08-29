@@ -23,6 +23,7 @@ $noticesCount = DUPX_Ctrl_S4::getNoticesCount();
             <td class="count" >(<?php echo $noticesCount['files']; ?>)</td>
             <td class="badge" > <?php $nManager->getSectionErrLevelHtml('files'); ?></td>
         </tr>
+        <?php if (!DUPX_InstallerState::dbDoNothing()) : ?>
         <tr>
             <td class="desc" >Database migration status</td>
             <td class="count" >(<?php echo $noticesCount['database']; ?>)</td>
@@ -33,6 +34,7 @@ $noticesCount = DUPX_Ctrl_S4::getNoticesCount();
             <td class="count" >(<?php echo $noticesCount['search_replace']; ?>)</td>
             <td class="badge" > <?php $nManager->getSectionErrLevelHtml('search_replace'); ?></td>
         </tr>
+        <?php endif; ?>
         <tr>
             <td class="desc" >Plugins</td>
             <td class="count" >(<?php echo $noticesCount['plugins']; ?>)</td>

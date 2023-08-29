@@ -3,6 +3,7 @@
 use Duplicator\Libs\Snap\SnapUtil;
 use Duplicator\Utils\Crypt\CryptBlowfish;
 use Duplicator\Addons\ProBase\License\License;
+use Duplicator\Package\Create\BuildComponents;
 
 /**
  * Utility class managing when the plugin is updated
@@ -15,6 +16,7 @@ use Duplicator\Addons\ProBase\License\License;
  */
 class DUP_PRO_Upgrade_U
 {
+    const LAST_VERSION_PACKAGE_DBONLY_FLAG = '4.5.11.2';
     /**
      * This function is executed when the plugin is activated and
      * every time the version saved in the wp_options is different from the plugin version both in upgrade and downgrade.
@@ -29,6 +31,7 @@ class DUP_PRO_Upgrade_U
         self::storeDupSecureKey($currentVersion);
         self::updateEndpoints($currentVersion);
         self::updateTemplates($currentVersion);
+        self::updatePackageComponents($currentVersion);
         self::moveDataToSecureGlobal();
         self::initializeGift();
         self::updateArchiveEngine();
@@ -76,6 +79,50 @@ class DUP_PRO_Upgrade_U
                 }
             }
         }
+    }
+
+
+    /**
+     * Implement defaults for package components
+     *
+     * @param string $currentVersion current version of plugin
+     *
+     * @return void
+     */
+    protected static function updatePackageComponents($currentVersion)
+    {
+        if (version_compare($currentVersion, self::LAST_VERSION_PACKAGE_DBONLY_FLAG, '>')) {
+            return;
+        }
+
+        $templates = DUP_PRO_Package_Template_Entity::getAll();
+        if (is_array($templates)) {
+            foreach ($templates as $template) {
+                if (count($template->components) > 0) {
+                    return;
+                }
+                if ($template->archive_export_onlydb) {
+                    $template->components = [BuildComponents::COMP_DB];
+                } else {
+                    $template->components = BuildComponents::COMPONENTS_DEFAULT;
+                }
+                $template->save();
+            }
+        }
+
+        DUP_PRO_Package::by_status_callback(function (DUP_PRO_Package $package) {
+            if (count($package->components) > 0) {
+                return;
+            }
+            if ($package->Archive->ExportOnlyDB) {
+                $package->components = [
+                    BuildComponents::COMP_DB
+                ];
+            } else {
+                $package->components = BuildComponents::COMPONENTS_DEFAULT;
+            }
+            $package->save();
+        });
     }
 
     /**

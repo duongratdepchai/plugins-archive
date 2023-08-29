@@ -11,7 +11,7 @@ class UniteCreatorParamsProcessorWork{
 	
 	private $objShapes;
 	protected $addon;
-	private $processType;
+	protected $processType;
 	private static $counter = 0;
 	private $arrMainParamsValuesCache = array();
 	protected $dynamicPopupParams = array();
@@ -1768,8 +1768,15 @@ class UniteCreatorParamsProcessorWork{
 				$this->dynamicPopupParams[] = $param;
 				
 			break;
+			case "ucform_conditions":
+				
+				$objForm = new UniteCreatorForm();
+				
+				$data = $objForm->getVisibilityConditionsParamsData($data, $param);
+				
+			break;
 		}
-
+		
 		
 		return($data);
 	}

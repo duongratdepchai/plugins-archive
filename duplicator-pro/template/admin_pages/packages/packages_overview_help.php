@@ -238,7 +238,7 @@ $lang_wppathinfo = __('This site\'s root path is:', 'duplicator-pro') . '<br/><i
 
                      <div class="title">
                         <i class="fas fa-arrow-alt-circle-down fa-fw"></i>&nbsp;
-                        <a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-045-q" target="_blank">
+                        <a href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>import-install" target="_blank">
                             <b><?php _e('Import Install', 'duplicator-pro'); ?></b>
                         </a>
                      </div>
@@ -247,7 +247,7 @@ $lang_wppathinfo = __('This site\'s root path is:', 'duplicator-pro') . '<br/><i
 
                      <div class="title">
                          <i class="far fa-window-close fa-fw"></i>&nbsp;
-                         <a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-043-q" target="_blank">
+                         <a href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>overwrite-install" target="_blank">
                              <b><?php _e('Overwrite Install', 'duplicator-pro'); ?></b>
                          </a>
                      </div>
@@ -256,7 +256,7 @@ $lang_wppathinfo = __('This site\'s root path is:', 'duplicator-pro') . '<br/><i
 
                      <div class="title">
                          <i class="far fa-save fa-fw"></i>&nbsp;
-                         <a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-040-q" target="_blank">
+                         <a href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>classic-install" target="_blank">
                              <b><?php _e('Classic Install', 'duplicator-pro'); ?></b>
                          </a>
                      </div>
@@ -422,7 +422,7 @@ $lang_wppathinfo = __('This site\'s root path is:', 'duplicator-pro') . '<br/><i
 
                     <div class="title">
                         <i class="fa fa-undo fa-fw"></i>&nbsp;
-                        <a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-050-q" target="_blank">
+                        <a href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>recover-a-backup" target="_blank">
                             <b><?php _e('Recovery Point', 'duplicator-pro'); ?></b>
                         </a>
                         
@@ -432,7 +432,7 @@ $lang_wppathinfo = __('This site\'s root path is:', 'duplicator-pro') . '<br/><i
 
                     <div class="title">
                         <i class="fas fa-database fa-fw"></i>&nbsp;
-                        <a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-055-q" target="_blank">
+                        <a href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>database-install" target="_blank">
                             <b><?php _e('Database Install', 'duplicator-pro'); ?></b>
                         </a>
                        
@@ -442,7 +442,7 @@ $lang_wppathinfo = __('This site\'s root path is:', 'duplicator-pro') . '<br/><i
 
                     <div class="title">
                         <i class="fa fa-random fa-fw"></i>&nbsp;
-                        <a href="https://snapcreek.com/duplicator/docs/quick-start/#quick-060-q" target="_blank">
+                        <a href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>two-part-install" target="_blank">
                             <b><?php _e('Two-Part', 'duplicator-pro'); ?></b>
                         </a>
                     </div>
@@ -516,7 +516,8 @@ $lang_wppathinfo = __('This site\'s root path is:', 'duplicator-pro') . '<br/><i
                     <ul>
                          <li>
                             <i class="far fa-file-alt fa-fw"></i>
-                            <a href="https://snapcreek.com/duplicator/docs/quick-start/" class='dup-knowledge-base' target='_sc-home'>
+                            <?php $url = DUPLICATOR_PRO_BLOG_URL . 'knowledge-base-article-categories/quick-start';?>
+                            <a href="<?php echo esc_attr($url); ?>" class='dup-knowledge-base' target='_sc-home'>
                                 <?php DUP_PRO_U::esc_html_e('Quick Start'); ?>
                             </a>
                         </li>

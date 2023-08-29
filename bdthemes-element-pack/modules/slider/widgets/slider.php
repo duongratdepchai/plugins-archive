@@ -11,6 +11,7 @@ use Elementor\Group_Control_Box_Shadow;
 use Elementor\Icons_Manager;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Text_Stroke;
+use Elementor\Plugin;
 use ElementPack\Element_Pack_Loader;
 
 use ElementPack\Utils;
@@ -1895,7 +1896,7 @@ class Slider extends Module_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .bdt-slider .swiper-container-horizontal > .swiper-scrollbar' => 'height: {{SIZE}}px;',
+					'{{WRAPPER}} .bdt-slider .swiper-carousel-horizontal > .swiper-scrollbar' => 'height: {{SIZE}}px;',
 				],
 				'condition'   => [
 					'show_scrollbar' => 'yes'
@@ -2429,7 +2430,7 @@ class Slider extends Module_Base {
 				'label'   => __('Scrollbar Offset', 'bdthemes-element-pack'),
 				'type'    => Controls_Manager::SLIDER,
 				'selectors' => [
-					'{{WRAPPER}} .bdt-slider .swiper-container-horizontal > .swiper-scrollbar' => 'bottom: {{SIZE}}px;',
+					'{{WRAPPER}} .bdt-slider .swiper-carousel-horizontal > .swiper-scrollbar' => 'bottom: {{SIZE}}px;',
 				],
 				'condition'   => [
 					'show_scrollbar' => 'yes'
@@ -2702,9 +2703,12 @@ class Slider extends Module_Base {
 		$migrated  = isset($settings['__fa4_migrated']['slider_scroll_to_section_icon']);
 		$is_new    = empty($settings['scroll_to_section_icon']) && Icons_Manager::is_migration_allowed();
 
+		$swiper_class = Plugin::$instance->experiments->is_feature_active('e_swiper_latest') ? 'swiper' : 'swiper-container';
+		$this->add_render_attribute('swiper', 'class', 'swiper-carousel ' . $swiper_class);
+
 ?>
 		<div <?php echo $this->get_render_attribute_string('slider'); ?>>
-			<div class="swiper swiper-container">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<?php if ($settings['scroll_to_section'] && $settings['section_id']) : ?>
 					<div class="bdt-ep-scroll-to-section bdt-position-bottom-center">
 						<a href="<?php echo esc_url($settings['section_id']); ?>" bdt-scroll>
@@ -2870,7 +2874,7 @@ class Slider extends Module_Base {
 								'class' => [
 									'bdt-slide-item',
 									'swiper-slide',
-									'bdt-slide-effect-' . $settings['effect']
+									'bdt-slide-effect-' . $settings['effect'] ? $settings['effect'] : 'left',
 								],
 							]
 						],
@@ -2887,7 +2891,7 @@ class Slider extends Module_Base {
 									$settings['button_hover_animation'] ? 'elementor-animation-' . $settings['button_hover_animation'] : '',
 								],
 								'href'   => isset($item['tab_link']['url']) ? esc_url($item['tab_link']['url']) : '#',
-								'target' => $item['tab_link']['is_external'] ? '_blank' : '_self'
+								'target' => isset($item['tab_link']['is_external']) ? '_blank' : '_self'
 							]
 						],
 						'',

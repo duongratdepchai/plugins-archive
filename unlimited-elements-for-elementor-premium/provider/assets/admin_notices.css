@@ -7,7 +7,7 @@
 }
 
 .uc-admin-notice .uc-notice-dismiss {
-	font-size: 24px;
+	font-size: 13px;
 	line-height: 1em;
 	text-decoration: none;
 	padding: 12px 12px 12px 24px;
@@ -24,29 +24,17 @@
 
 .uc-admin-notice .uc-notice-dismiss::before {
 	content: "\f153";
-	width: 13px;
-	height: 13px;
-	font: normal 16px/16px dashicons;
-	font-size:13px;
+	width: 16px;
+	height: 16px;
+	font-family: dashicons;
+	font-size: 16px;
+	line-height: 16px;
 	text-align: center;
 	margin-top: -8px;
 	position: absolute;
-	top: 4px;
+	top: 50%;
 	left: 4px;
 	transition: color 0.05s ease;
-}
-
-.uc-admin-notice .uc-notice-dismiss:hover,
-.uc-admin-notice .uc-notice-dismiss:focus {
-	color: #cc0000;
-}
-
-
-.uc-admin-notice--banner .uc-notice-dismiss::before{
-	width: 24px;
-	height: 24px;
-	font-size:24px;
-	top: 20px;
 }
 
 .uc-admin-notice .uc-notice-wrapper {
@@ -100,6 +88,10 @@
 	padding: 0;
 }
 
+.uc-admin-notice--banner .uc-notice-dismiss {
+	text-indent: -9999em;
+}
+
 .uc-admin-notice--banner.uc-admin-notice--theme-dark .uc-notice-dismiss {
 	color: #ffffff;
 }
@@ -110,7 +102,18 @@
 
 .uc-admin-notice--banner .uc-notice-dismiss:hover,
 .uc-admin-notice--banner .uc-notice-dismiss:focus {
-	color: #3E3FF0;
+	color: #3e3ff0;
+}
+
+.uc-admin-notice--banner .uc-notice-dismiss::before {
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
+	line-height: 24px;
+	text-indent: 0;
+	margin-top: 0;
+	top: 8px;
+	left: 4px;
 }
 
 .uc-admin-notice--banner .uc-notice-link {

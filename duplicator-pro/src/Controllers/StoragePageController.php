@@ -233,7 +233,7 @@ class StoragePageController extends AbstractMenuPageController
         $sftp_password             = $storage->sftp_password;
         $sftp_private_key_password = $storage->sftp_private_key_password;
 
-        $storage->set_post_variables($_REQUEST);
+        $storage->set_post_variables($_REQUEST); // Does stripslashes
 
         // For hidden passwords/keys we should remember old values taken from the database,
         // to preserve them in case if new values are empty
@@ -256,7 +256,15 @@ class StoragePageController extends AbstractMenuPageController
         switch ($_REQUEST['storage_type']) {
             case DUP_PRO_Storage_Types::Local:
                 $storage->local_filter_protection = isset($_REQUEST['_local_filter_protection']);
-                $safe_path                        = untrailingslashit(trim(SnapIO::safePath(sanitize_text_field($_REQUEST['_local_storage_folder']))));
+                $safe_path                        = untrailingslashit(
+                    trim(
+                        SnapIO::safePath(
+                            sanitize_text_field(
+                                stripslashes($_REQUEST['_local_storage_folder'])
+                            )
+                        )
+                    )
+                );
                 if ($storage->local_storage_folder === $safe_path) {
                     // don't require check
                     break;
@@ -300,25 +308,28 @@ class StoragePageController extends AbstractMenuPageController
                 $storage->ftp_passive_mode   = isset($_REQUEST['_ftp_passive_mode']);
                 $storage->ftp_ssl            = isset($_REQUEST['_ftp_ssl']);
                 $storage->ftp_use_curl       = isset($_POST['_ftp_use_curl']);
-                $storage->ftp_storage_folder = SnapIO::safePath(sanitize_text_field($_REQUEST['_ftp_storage_folder']));
+                $storage->ftp_storage_folder = SnapIO::safePath(
+                    sanitize_text_field(stripslashes($_REQUEST['_ftp_storage_folder']))
+                );
                 break;
             case DUP_PRO_Storage_Types::SFTP:
-                $sftp_storage_folder                 = isset($_REQUEST['_sftp_storage_folder']) ? sanitize_text_field($_REQUEST['_sftp_storage_folder']) : '';
+                $sftp_storage_folder                 = isset($_REQUEST['_sftp_storage_folder']) ?
+                    sanitize_text_field(stripslashes($_REQUEST['_sftp_storage_folder'])) : '';
                 $storage->sftp_storage_folder        = SnapIO::safePath($sftp_storage_folder);
                 $storage->sftp_disable_chunking_mode = filter_input(INPUT_POST, 'sftp_disable_chunking_mode', FILTER_VALIDATE_BOOLEAN);
                 break;
             case DUP_PRO_Storage_Types::Dropbox:
-                $storage->dropbox_storage_folder = SnapIO::safePath(sanitize_text_field($_REQUEST['_dropbox_storage_folder']));
+                $storage->dropbox_storage_folder = SnapIO::safePath(sanitize_text_field(stripslashes($_REQUEST['_dropbox_storage_folder'])));
                 break;
             case DUP_PRO_Storage_Types::GDrive:
-                $storage->gdrive_storage_folder = SnapIO::safePath(sanitize_text_field($_REQUEST['_gdrive_storage_folder']));
+                $storage->gdrive_storage_folder = SnapIO::safePath(sanitize_text_field(stripslashes($_REQUEST['_gdrive_storage_folder'])));
                 break;
             case DUP_PRO_Storage_Types::S3:
-                $storage->s3_storage_folder   = SnapIO::safePath(sanitize_text_field($_REQUEST['_s3_storage_folder']));
+                $storage->s3_storage_folder   = SnapIO::safePath(sanitize_text_field(stripslashes($_REQUEST['_s3_storage_folder'])));
                 $storage->s3_ACL_full_control = filter_input(INPUT_POST, 's3_ACL_full_control', FILTER_VALIDATE_BOOLEAN);
                 break;
             case DUP_PRO_Storage_Types::OneDrive:
-                $onedrive_storage_folder = SnapIO::safePath(sanitize_text_field($_REQUEST['_onedrive_storage_folder']));
+                $onedrive_storage_folder = SnapIO::safePath(sanitize_text_field(stripslashes($_REQUEST['_onedrive_storage_folder'])));
                 if ($storage->onedrive_storage_folder != $onedrive_storage_folder) {
                     $storage->onedrive_storage_folder    = $onedrive_storage_folder;
                     $storage->onedrive_storage_folder_id = '';
@@ -326,7 +337,7 @@ class StoragePageController extends AbstractMenuPageController
                 $storage->onedrive_max_files = intval($_REQUEST['onedrive_max_files']);
                 break;
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                $onedrive_storage_folder = SnapIO::safePath(sanitize_text_field($_REQUEST['_onedrive_msgraph_storage_folder']));
+                $onedrive_storage_folder = SnapIO::safePath(sanitize_text_field(stripslashes($_REQUEST['_onedrive_msgraph_storage_folder'])));
                 if ($storage->onedrive_storage_folder != $onedrive_storage_folder) {
                     $storage->onedrive_storage_folder    = $onedrive_storage_folder;
                     $storage->onedrive_storage_folder_id = '';
@@ -529,7 +540,7 @@ class StoragePageController extends AbstractMenuPageController
         }
 
         try {
-            $dropbox_client_auth_code = sanitize_text_field($_REQUEST['dropbox-auth-code']);
+            $dropbox_client_auth_code = sanitize_text_field(stripslashes($_REQUEST['dropbox-auth-code']));
             $dropbox_client           = DUP_PRO_Storage_Entity::get_raw_dropbox_client(false);
             $v2_access_token          = $dropbox_client->authenticate($dropbox_client_auth_code);
 
@@ -574,7 +585,7 @@ class StoragePageController extends AbstractMenuPageController
         }
 
         try {
-            $google_client_auth_code  = sanitize_text_field($_REQUEST['gdrive-auth-code']);
+            $google_client_auth_code  = sanitize_text_field(stripslashes($_REQUEST['gdrive-auth-code']));
             $google_client            = DUP_PRO_GDrive_U::get_raw_google_client();
             $gdrive_token_pair_string = $google_client->authenticate($google_client_auth_code);
 
@@ -645,7 +656,9 @@ class StoragePageController extends AbstractMenuPageController
                 );
 
                 $access_token_args = array (
-                    'code' => sanitize_text_field($use_msgraph_api ? $_REQUEST['onedrive-msgraph-auth-code'] : $_REQUEST['onedrive-auth-code']),
+                    'code' => sanitize_text_field(
+                        $use_msgraph_api ? stripslashes($_REQUEST['onedrive-msgraph-auth-code']) : stripslashes($_REQUEST['onedrive-auth-code'])
+                    ),
                     'grant_type' => 'authorization_code'
                 );
                 if (isset($_REQUEST['onedrive-is-business']) && $_REQUEST['onedrive-is-business']) {
@@ -679,8 +692,8 @@ class StoragePageController extends AbstractMenuPageController
                 $storage->onedrive_resource_id  = $onedrive_info['resource_id'];
             } else {
                 $onedrive_auth_code   = !empty($_REQUEST['onedrive-auth-code'])
-                                        ? sanitize_text_field($_REQUEST['onedrive-auth-code'])
-                                        : sanitize_text_field($_REQUEST['onedrive-msgraph-auth-code']);
+                                        ? sanitize_text_field(stripslashes($_REQUEST['onedrive-auth-code']))
+                                        : sanitize_text_field(stripslashes($_REQUEST['onedrive-msgraph-auth-code']));
                 $onedrive_auth_client = DUP_PRO_Onedrive_U::get_onedrive_client_from_state(
                     (object) array(
                         'redirect_uri' => DUP_PRO_OneDrive_Config::ONEDRIVE_REDIRECT_URI,

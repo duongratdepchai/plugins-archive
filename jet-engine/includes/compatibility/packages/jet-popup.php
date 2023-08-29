@@ -203,13 +203,19 @@ if ( ! class_exists( 'Jet_Engine_Popup_Package' ) ) {
 
 								$query->setup_query();
 
-								$offset = ! empty( $query->final_query['offset'] ) ? absint( $query->final_query['offset'] ) : 0;
+								$advanced_query = $query->get_advanced_query();
 
-								$query->final_query['limit_per_page'] = 1;
-								$query->final_query['offset'] = $offset + $item_index;
+								if ( ! $advanced_query ) {
+									$offset = ! empty( $query->final_query['offset'] ) ? absint( $query->final_query['offset'] ) : 0;
+
+									$query->final_query['limit_per_page'] = 1;
+									$query->final_query['offset'] = $offset + $item_index;
+
+									$item_index = 0;
+								}
 
 								$items    = $query->get_items();
-								$post_obj = isset( $items[0] ) ? $items[0] : false;
+								$post_obj = isset( $items[ $item_index ] ) ? $items[ $item_index ] : false;
 							}
 
 							break;

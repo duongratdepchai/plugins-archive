@@ -28,7 +28,7 @@ $archiveConfig = DUPX_ArchiveConfig::getInstance();
             <td>Notes:</td>
             <td><?php echo strlen($archiveConfig->package_notes) ? DUPX_U::esc_html($archiveConfig->package_notes) : " - no notes - "; ?></td>
         </tr>
-        <?php if ($archiveConfig->exportOnlyDB) : ?>
+        <?php if ($archiveConfig->isDBOnly()) : ?>
             <tr>
                 <td>Mode:</td>
                 <td>Archive only database was enabled during package package creation.</td>

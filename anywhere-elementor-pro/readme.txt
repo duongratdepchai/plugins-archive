@@ -1,5 +1,5 @@
-=== AnyWhere Elementor Pro ===			     	     	      	  
-Contributors: webtechstreet 		       	       	   	  	      
+=== AnyWhere Elementor Pro ===
+Contributors: webtechstreet
 Tags: page-builder, elementor
 Requires at least: 5.0
 Tested up to: 6.2
@@ -21,6 +21,30 @@ Global layouts to use with shortcodes, global post layouts for single and archiv
 
 
 == Changelog ==
+
+= 2.25.10 =
+* Enhancement: Added Query Filter option to filter terms for Taxonomy Blocks Widget.
+* Updated Freemius SDK.
+* Some other bug fixes.
+
+= 2.25.9 =
+* Fix: Issue with ACF field in the Post Block Loop.
+* Fix: Compatibility with Swiper in latest Elementor release.
+
+= 2.25.8 =
+* Enhancement: Added support for ACF File Type field in Dynamic Rules.
+* Enhancement: Removed code for log entries in Dynamic Rules.
+* Enhancement: Added option for ‘Order By’ => ‘menu_order’ for WooCommerce Categories in Taxonomy Blocks.
+* Fix: Issue when Relationship field used in Post Blocks.
+* Fix: Issue with Ajax Add to Cart in Woo Add To Cart widget.
+* Fix: Issue with ACF Format for ACF WYSIWYG Field in ACF Fields.
+* Fix: Some bug fixes.
+
+= 2.25.7 =
+* Enhancement: Added compatibility for the new version of JS library Swiper 8.4.5
+* Fix: Issue related to Custom Field and ACF Date field for not getting proper Date.
+* Fix: Compatibility with WPML
+* Fix: Some bug fixes.
 
 = 2.25.6 =
 * New: ACF Fields V2.

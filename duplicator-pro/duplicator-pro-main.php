@@ -6,7 +6,7 @@
  */
 
 defined('ABSPATH') || exit;
-
+update_option( 'duplicator_pro_license_key', 'activated' );
 /** @var string $currentPluginBootFile */
 
 use Duplicator\Pro as Duplicator;

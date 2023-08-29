@@ -7,6 +7,7 @@ use Elementor\Controls_Manager;
 use Elementor\Group_Control_Image_Size;
 use Elementor\Group_Control_Typography;
 use Elementor\Repeater;
+use Elementor\Plugin;
 
 use ElementPack\Utils;
 use ElementPack\Traits\Global_Swiper_Controls;
@@ -297,7 +298,7 @@ class Custom_Carousel extends Module_Base {
 					'auto'    => esc_html__('Auto', 'bdthemes-element-pack'),
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container .bdt-ep-custom-carousel-thumbnail' => 'background-size: {{VALUE}}',
+					'{{WRAPPER}} .swiper-carousel .bdt-ep-custom-carousel-thumbnail' => 'background-size: {{VALUE}}',
 				],
 				'condition' => [
 					'_skin!' => 'bdt-custom-content',
@@ -702,7 +703,7 @@ class Custom_Carousel extends Module_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container .swiper-slide' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .swiper-carousel .swiper-slide' => 'height: {{SIZE}}{{UNIT}};',
 				],
 				'condition' => [
 					'_skin' => ''
@@ -729,7 +730,7 @@ class Custom_Carousel extends Module_Base {
 					'unit' => '%',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .swiper-carousel' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -773,7 +774,7 @@ class Custom_Carousel extends Module_Base {
 				'label'     => esc_html__('Background Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container .swiper-slide' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .swiper-carousel .swiper-slide' => 'background-color: {{VALUE}}',
 				],
 			]
 		);
@@ -784,7 +785,7 @@ class Custom_Carousel extends Module_Base {
 				'label'     => esc_html__('Border Size', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::DIMENSIONS,
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container .swiper-slide' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .swiper-carousel .swiper-slide' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				],
 			]
 		);
@@ -795,7 +796,7 @@ class Custom_Carousel extends Module_Base {
 				'label'     => esc_html__('Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container .swiper-slide' => 'border-color: {{VALUE}}',
+					'{{WRAPPER}} .swiper-carousel .swiper-slide' => 'border-color: {{VALUE}}',
 				],
 			]
 		);
@@ -806,7 +807,7 @@ class Custom_Carousel extends Module_Base {
 				'label'     => esc_html__('Padding', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::DIMENSIONS,
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container .swiper-slide' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .swiper-carousel .swiper-slide' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				],
 				'separator' => 'before',
 			]
@@ -824,7 +825,7 @@ class Custom_Carousel extends Module_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container .swiper-slide, {{WRAPPER}} .bdt-ep-custom-carousel .swiper-container' => 'border-radius: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .swiper-carousel .swiper-slide, {{WRAPPER}} .bdt-ep-custom-carousel .swiper-carousel' => 'border-radius: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -1347,9 +1348,12 @@ class Custom_Carousel extends Module_Base {
 			]
 		);
 
+		$swiper_class = Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+		$this->add_render_attribute('swiper', 'class', 'swiper-carousel ' . $swiper_class);
+
 	?>
 		<div <?php echo $this->get_render_attribute_string('custom-carousel'); ?>>
-			<div class="swiper-container">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div class="swiper-wrapper">
 				<?php
 			}

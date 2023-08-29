@@ -13,14 +13,14 @@ class GlobalsUnlimitedElements{
 
 	public static $showAdminNotices = true;
 	public static $debugAdminNotices = false;
-	
+
 	public static $enableInsideNotification = true;
-	
+
 	//public static $insideNotificationText = "BLACK FRIDAY SALE STARTS NOW! <br> Grab the PRO version for 50% off. <br> <a href='https://unlimited-elements.com/pricing/' target='_blank'>Get It Now</a> ";
-	public static $insideNotificationText = "Unlimited Elements Birthday Sale!!! <br> 50% OFF - all plans! &nbsp; <a href='https://unlimited-elements.com/pricing/' target='_blank'>Don't Miss It!</a> ";
+	public static $insideNotificationText = "Unlimited Elements Birthday Sale!!! <br> 50% OFF - all plans! <br> <a style='text-decoration:underline;' href='https://unlimited-elements.com/pricing/' target='_blank'>Get It Now!</a> ";
 	//public static $insideNotificationText = "Unlock Access To All PRO Widgets and Features.  <a href='https://unlimited-elements.com/pricing/' target='_blank'>Upgrade Now</a> ";
 	public static $insideNotificationUrl = "https://unlimited-elements.com/pricing/";
-	
+
 	const PLUGIN_NAME = "unlimitedelements";
 	const VIEW_ADDONS_ELEMENTOR = "addons_elementor";
 	const VIEW_LICENSE_ELEMENTOR = "licenseelementor";
@@ -61,8 +61,8 @@ class GlobalsUnlimitedElements{
 	public static $urlTemplatesList;
 	public static $renderingDynamicData;
 	public static $currentRenderingWidget;
-	
-	
+
+
 	/**
 	 * init globals
 	 */
@@ -84,7 +84,7 @@ class GlobalsUnlimitedElements{
 
 		if(GlobalsUnlimitedElements::$showAdminNotices === false)
 			return;
-
+				
 		UCAdminNotices::init(array(
 			new UCAdminNoticeBanner(),
 //			new UCAdminNoticeSimpleExample(),

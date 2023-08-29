@@ -745,7 +745,7 @@ class EDD_Product_Review_Carousel extends Module_Base {
 				$this->render_swiper_header_attribute('ep-edd-product-review-carousel');
 				$this->add_render_attribute('carousel', 'class', ['ep-edd-product-review-carousel']); ?>
 		<div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-			<div class="swiper-container">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div class="swiper-wrapper">
 			<?php
 			}

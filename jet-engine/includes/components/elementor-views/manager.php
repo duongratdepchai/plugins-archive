@@ -343,20 +343,19 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Views' ) ) {
 		 */
 		public function register_widgets( $widgets_manager ) {
 
-			$base      = jet_engine()->plugin_path( 'includes/components/elementor-views/' );
-			$post_type = get_post_type();
+			$base = jet_engine()->plugin_path( 'includes/components/elementor-views/' );
 
 			$this->include_base_widget();
 
 			foreach ( glob( $base . 'dynamic-widgets/*.php' ) as $file ) {
-				$slug = basename( $file, '.php' );
 				$this->register_widget( $file, $widgets_manager );
 			}
 
 			foreach ( glob( $base . 'static-widgets/*.php' ) as $file ) {
-				$slug = basename( $file, '.php' );
 				$this->register_widget( $file, $widgets_manager );
 			}
+
+			do_action( 'jet-engine/elementor-views/widgets/register', $widgets_manager, $this );
 
 		}
 

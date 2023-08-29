@@ -31,6 +31,7 @@ class WPML_Compatibility {
 		$widgets = $this->woo_tabs( $widgets );
 		$widgets = $this->portfolio( $widgets );
 		$widgets = $this->post_content( $widgets );
+		$widgets = $this->post_blocks_adv( $widgets );
 
 		return $widgets;
 	}
@@ -99,6 +100,40 @@ class WPML_Compatibility {
 					'type'        => __( 'Next', 'ae-pro' ),
 					'editor_type' => 'LINE',
 				],
+			],
+		];
+
+		return $widgets;
+	}
+
+	private function post_blocks_adv( $widgets ) {
+
+		$widgets['ae-post-blocks-adv'] = [
+			'conditions' => [ 'widgetType' => 'ae-post-blocks-adv' ],
+			'fields'     => [
+				[
+					'field'       => 'grid_prev_text',
+					'type'        => __( 'Previous', 'ae-pro' ),
+					'editor_type' => 'LINE',
+				],
+
+				[
+					'field'       => 'grid_next_text',
+					'type'        => __( 'Next', 'ae-pro' ),
+					'editor_type' => 'LINE',
+				],
+
+				[
+					'field'       => 'widget_title',
+					'type'        => __( '', 'ae-pro' ),
+					'editor_type' => 'LINE',
+				],
+
+				[
+					'field' 		=> 'no_posts_message',
+					'type' 			=> __( '', 'ae-pro' ),
+					'editor_type'	=> 'LINE'
+				]
 			],
 		];
 

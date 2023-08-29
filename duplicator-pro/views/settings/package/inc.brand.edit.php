@@ -67,9 +67,9 @@ switch ($brandAction) {
         if (($brand = DUP_PRO_Brand_Entity::getById($saveId)) === false) {
             $brand = new DUP_PRO_Brand_Entity();
         }
-        $brand->name = DUP_PRO_U::setVal($_POST['name'], DUP_PRO_U::__('New Brand'));
+        $brand->name = DUP_PRO_U::setVal(stripslashes($_POST['name']), DUP_PRO_U::__('New Brand'));
         $brand->setAttachments(DUP_PRO_U::isEmpty((isset($_POST['attachments']) ? $_POST['attachments'] : array()), array()));
-        $brand->notes = DUP_PRO_U::setVal($_POST['notes'], '');
+        $brand->notes = DUP_PRO_U::setVal(stripslashes($_POST['notes']), '');
         $brand->logo  = stripcslashes(DUP_PRO_U::setVal($_POST['logo'], ''));
         $brand->save();
         break;

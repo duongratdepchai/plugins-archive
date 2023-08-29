@@ -28,6 +28,7 @@ use Duplicator\Libs\Snap\SnapWP;
 use Duplicator\Libs\Snap\SnapOS;
 use Duplicator\Package\Create\BuildProgress;
 use Duplicator\Package\Create\DupArchive\PackageDupArchive;
+use Duplicator\Package\Create\BuildComponents;
 
 require_once(DUPLICATOR____PATH . '/classes/package/class.pack.archive.filters.php');
 require_once(DUPLICATOR____PATH . '/classes/package/class.pack.archive.zip.php');
@@ -83,11 +84,10 @@ class DUP_PRO_Archive
      */
     public function __construct(DUP_PRO_Package $package)
     {
-        $this->Package      = $package;
-        $this->FilterOn     = false;
-        $this->FilterInfo   = new DUP_PRO_Archive_Filter_Info();
-        $this->ExportOnlyDB = false;
-        $this->PackDir      = $this->getTargetRootPath();
+        $this->Package    = $package;
+        $this->FilterOn   = false;
+        $this->FilterInfo = new DUP_PRO_Archive_Filter_Info();
+        $this->PackDir    = $this->getTargetRootPath();
 
         $this->listDirObj  = new DUP_PRO_Archive_File_List(DUPLICATOR_PRO_SSDIR_PATH_TMP . '/' . $this->Package->get_dirs_list_filename());
         $this->listFileObj = new DUP_PRO_Archive_File_List(DUPLICATOR_PRO_SSDIR_PATH_TMP . '/' . $this->Package->get_files_list_filename());
@@ -259,7 +259,7 @@ class DUP_PRO_Archive
         }
 
         //If the root directory is a filter then skip it all
-        if (in_array($rootPath, $this->FilterDirsAll) || $this->Package->Archive->ExportOnlyDB) {
+        if (in_array($rootPath, $this->FilterDirsAll) || $this->Package->isDBOnly()) {
             DUP_PRO_Log::trace('SKIP ALL FILES');
             $this->initFileListHandles();
             $this->closeFileListHandles();
@@ -308,7 +308,7 @@ class DUP_PRO_Archive
     }
 
     /**
-     * Get the file path to the archive file
+     * Get the file path to the archive file within default storage directory
      *
      * @return string   Returns the full file path to the archive file
      */
@@ -343,7 +343,7 @@ class DUP_PRO_Archive
                 }
             } else {
                 $safePath = str_replace(array("\t", "\r"), '', $val);
-                $safePath = SnapIO::safePath(trim(rtrim($safePath, "/\\")));
+                $safePath = SnapIO::untrailingslashit(SnapIO::safePath(trim($safePath)));
                 if (strlen($safePath) >= 2) {
                     $result[] = $safePath;
                 }
@@ -362,13 +362,25 @@ class DUP_PRO_Archive
     /**
      * Parse the list of ";" separated paths to make paths/format safe
      *
-     * @param string $dirs A list of dirs to parse
+     * @param string $paths A list of paths to parse
      *
-     * @return string   Returns a cleanup up ";" separated string of dir paths
+     * @return string|string[]   Returns a cleanup up ";" separated string of dir paths
      */
-    public static function parseDirectoryFilter($dirs = '', $getPathList = false)
+    public static function parseDirectoryFilter($paths = '', $getPathList = false)
     {
-        return self::parsePathFilter($dirs, $getPathList);
+        $dirList = array();
+
+        foreach (self::parsePathFilter($paths, true) as $path) {
+            if (is_dir($path)) {
+                $dirList[] = $path;
+            }
+        }
+
+        if ($getPathList) {
+            return $dirList;
+        } else {
+            return implode(";", $dirList);
+        }
     }
 
     /**
@@ -392,13 +404,25 @@ class DUP_PRO_Archive
     /**
      * Parse the list of ";" separated paths to make paths/format safe
      *
-     * @param string $files A list of file paths to parse
+     * @param string $paths A list of paths to parse
      *
-     * @return string   Returns a cleanup up ";" separated string of file paths
+     * @return string|string[]   Returns a cleanup up ";" separated string of file paths
      */
-    public static function parseFileFilter($files = '', $getPathList = false)
+    public static function parseFileFilter($paths = '', $getPathList = false)
     {
-        return self::parsePathFilter($files, $getPathList);
+        $fileList = array();
+
+        foreach (self::parsePathFilter($paths, true) as $path) {
+            if (!is_dir($path)) {
+                $fileList[] = $path;
+            }
+        }
+
+        if ($getPathList) {
+            return $fileList;
+        } else {
+            return implode(";", $fileList);
+        }
     }
 
     /**
@@ -426,11 +450,11 @@ class DUP_PRO_Archive
     {
         DUP_PRO_Log::traceObject('Filter files', $this->FilterFiles);
         $this->FilterInfo->Dirs->Core = array();
-//FILTER: INSTANCE ITEMS
+        //FILTER: INSTANCE ITEMS
         if ($this->FilterOn) {
             $this->FilterInfo->Dirs->Instance = self::parsePathFilter($this->FilterDirs, true);
             $this->FilterInfo->Exts->Instance = explode(";", $this->FilterExts);
-// Remove blank entries
+        // Remove blank entries
             $this->FilterInfo->Exts->Instance  = array_filter(array_map('trim', $this->FilterInfo->Exts->Instance));
             $this->FilterInfo->Files->Instance = self::parsePathFilter($this->FilterFiles, true);
         }
@@ -454,7 +478,7 @@ class DUP_PRO_Archive
         $this->FilterInfo->Files->Global[] = $this->getArchiveListPaths('home') . '/web.config';
         $this->FilterInfo->Files->Global[] = SnapWP::getWPConfigPath();
         DUP_PRO_Log::traceObject('FILTER INFO GLOBAL FILES ', $this->FilterInfo->Files->Global);
-//FILTER: CORE ITMES
+        //FILTER: CORE ITMES
         //Filters Duplicator free packages & All pro local directories
         $storages = DUP_PRO_Storage_Entity::get_all();
         foreach ($storages as $storage) {
@@ -468,12 +492,26 @@ class DUP_PRO_Archive
             }
         }
 
-        $this->FilterDirsAll    = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Global, $this->FilterInfo->Dirs->Core, $this->Package->Multisite->getDirsToFilter());
-        $this->FilterExtsAll    = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Global, $this->FilterInfo->Exts->Core);
-        $this->FilterFilesAll   = array_merge($this->FilterInfo->Files->Instance, $this->FilterInfo->Files->Global, $this->FilterInfo->Files->Core);
+        $compMng = new BuildComponents($this->Package->components);
+
+        $this->FilterDirsAll  = array_merge(
+            $this->FilterInfo->Dirs->Instance,
+            $this->FilterInfo->Dirs->Global,
+            $this->FilterInfo->Dirs->Core,
+            $this->Package->Multisite->getDirsToFilter(),
+            $compMng->getFiltersDirs()
+        );
+        $this->FilterExtsAll  = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Global, $this->FilterInfo->Exts->Core);
+        $this->FilterFilesAll = array_merge(
+            $this->FilterInfo->Files->Instance,
+            $this->FilterInfo->Files->Global,
+            $this->FilterInfo->Files->Core,
+            $compMng->getFiltersFiles()
+        );
+
         $this->tmpFilterDirsAll = array_map('trailingslashit', $this->FilterDirsAll);
 
-//PHP 5 on windows decode patch
+        //PHP 5 on windows decode patch
         if (!SnapUtil::isPHP7Plus() && SnapOS::isWindows()) {
             foreach ($this->tmpFilterDirsAll as $key => $value) {
                 if (preg_match('/[^\x20-\x7f]/', $value)) {
@@ -604,7 +642,7 @@ class DUP_PRO_Archive
             //DUP_PRO_Log::trace(' ANALIZE PATH: '.$currentPath);
 
             if (is_dir($currentPath)) {
-                DUP_PRO_Log::trace(' Scan dir: ' . $currentPath);
+                //DUP_PRO_Log::trace(' Scan dir: ' . $currentPath);
                 $add = true;
                 if (is_link($currentPath)) {
                     //Get real path of link
@@ -867,7 +905,6 @@ class DUP_PRO_Archive
                 $node->data['is_filtered'] = 1;
             }
 
-            DUP_PRO_Log::trace('GET ENTRY FROM PATH: ' . SnapIO::getRelativePath($node->fullPath, self::getTargetRootPath()));
             $dirData             = $this->listDirObj->getEntryFromPath(SnapIO::getRelativePath($node->fullPath, self::getTargetRootPath()));
             $node->data['size']  = DUP_PRO_U::byteSize($dirData['s']);
             $node->data['nodes'] = $dirData['n'];

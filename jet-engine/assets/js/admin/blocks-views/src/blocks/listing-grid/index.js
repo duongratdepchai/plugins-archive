@@ -146,7 +146,66 @@ registerBlockType( 'jet-engine/listing-grid', {
 				} );
 			};
 
+			const isMasonry = function() {
+				if ( 'auto' === props.attributes.columns
+					|| 'auto' === props.attributes.columns_tablet
+					|| 'auto' === props.attributes.columns_mobile
+				) {
+					return false;
+				}
+
+				return props.attributes.is_masonry;
+
+			};
+
 			const userRoles = window.JetEngineListingData.userRoles;
+
+			const columnsOptions = [
+				{
+					value: 1,
+					label: 1
+				},
+				{
+					value: 2,
+					label: 2
+				},
+				{
+					value: 3,
+					label: 3
+				},
+				{
+					value: 4,
+					label: 4
+				},
+				{
+					value: 5,
+					label: 5
+				},
+				{
+					value: 6,
+					label: 6
+				},
+				{
+					value: 7,
+					label: 7
+				},
+				{
+					value: 8,
+					label: 8
+				},
+				{
+					value: 9,
+					label: 9
+				},
+				{
+					value: 10,
+					label: 10
+				},
+				{
+					value: 'auto',
+					label: 'Auto'
+				}
+			];
 
 			return [
 				props.isSelected && (
@@ -162,36 +221,60 @@ registerBlockType( 'jet-engine/listing-grid', {
 									props.setAttributes( { lisitng_id: newValue } );
 								}}
 							/>
-							<TextControl
-								type="number"
+							<SelectControl
 								label={ __( 'Columns Number' ) }
 								value={ attributes.columns }
-								min={ `0` }
-								max={ `6` }
+								options={ columnsOptions }
 								onChange={ newValue => {
-									props.setAttributes( { columns: Number(newValue) } );
+									props.setAttributes( { columns: newValue } );
 								} }
 							/>
-							<TextControl
+							{ 'auto' === attributes.columns && <TextControl
 								type="number"
+								label={ __( 'Column Min Width' ) }
+								value={ attributes.column_min_width }
+								min="0"
+								max="1200"
+								onChange={ newValue => {
+									props.setAttributes( { column_min_width: Number( newValue ) } );
+								} }
+							/> }
+							<SelectControl
 								label={ __( 'Columns Number(Tablet)' ) }
 								value={ attributes.columns_tablet }
-								min={ `0` }
-								max={ `6` }
+								options={ columnsOptions }
 								onChange={ newValue => {
-									props.setAttributes( { columns_tablet: Number(newValue) } );
+									props.setAttributes( { columns_tablet: newValue } );
 								} }
 							/>
-							<TextControl
+							{ 'auto' === attributes.columns_tablet && <TextControl
 								type="number"
+								label={ __( 'Column Min Width (Tablet)' ) }
+								value={ attributes.column_min_width_tablet }
+								min="0"
+								max="800"
+								onChange={ newValue => {
+									props.setAttributes( { column_min_width_tablet: Number( newValue ) } );
+								} }
+							/> }
+							<SelectControl
 								label={ __( 'Columns Number(Mobile)' ) }
 								value={ attributes.columns_mobile }
-								min={ `0` }
-								max={ `6` }
+								options={ columnsOptions }
 								onChange={ newValue => {
-									props.setAttributes( { columns_mobile: Number(newValue) } );
+									props.setAttributes( { columns_mobile: newValue } );
 								} }
 							/>
+							{ 'auto' === attributes.columns_mobile && <TextControl
+								type="number"
+								label={ __( 'Column Min Width (Mobile)' ) }
+								value={ attributes.column_min_width_mobile }
+								min="0"
+								max="480"
+								onChange={ newValue => {
+									props.setAttributes( { column_min_width_mobile: Number( newValue ) } );
+								} }
+							/> }
 							<ToggleControl
 								label={ __( 'Use as Archive Template' ) }
 								checked={ attributes.is_archive_template }
@@ -282,14 +365,14 @@ registerBlockType( 'jet-engine/listing-grid', {
 									} }
 								/>
 							}
-							<ToggleControl
+							{ 'auto' !== attributes.columns && 'auto' !== attributes.columns_mobile && 'auto' !== attributes.columns_tablet && <ToggleControl
 								label={ __( 'Is masonry grid' ) }
 								checked={ attributes.is_masonry }
 								onChange={ () => {
 									props.setAttributes({ is_masonry: ! attributes.is_masonry });
 								} }
-							/>
-							{ ! attributes.is_masonry && <ToggleControl
+							/> }
+							{ ! isMasonry() && <ToggleControl
 								label={ __( 'Equal columns height' ) }
 								checked={ attributes.equal_columns_height }
 								help={ __( 'Fits only top level sections of grid item' ) }
@@ -1795,14 +1878,14 @@ registerBlockType( 'jet-engine/listing-grid', {
 							title={ __( 'Slider Settings' ) }
 							initialOpen={ false }
 						>
-							{ ! attributes.is_masonry && ! attributes.scroll_slider_enabled && <ToggleControl
+							{ ! isMasonry() && ! attributes.scroll_slider_enabled && <ToggleControl
 								label={ __( 'Enable Slider' ) }
 								checked={ attributes.carousel_enabled }
 								onChange={ () => {
 									props.setAttributes( { carousel_enabled: ! attributes.carousel_enabled } );
 								} }
 							/> }
-							{ ! attributes.is_masonry && ! attributes.scroll_slider_enabled && attributes.carousel_enabled && <div>
+							{ ! isMasonry() && ! attributes.scroll_slider_enabled && attributes.carousel_enabled && <div>
 									<RangeControl
 										label={ __( 'Slides to Scroll' ) }
 										min="1"
@@ -1885,14 +1968,14 @@ registerBlockType( 'jet-engine/listing-grid', {
 									/>
 								</div>
 							}
-							{ ! attributes.is_masonry && ! attributes.carousel_enabled && <ToggleControl
+							{ ! isMasonry() && ! attributes.carousel_enabled && <ToggleControl
 								label={ __( 'Enable Scroll Slider' ) }
 								checked={ attributes.scroll_slider_enabled }
 								onChange={ () => {
 									props.setAttributes( { scroll_slider_enabled: ! attributes.scroll_slider_enabled } );
 								} }
 							/> }
-							{ ! attributes.is_masonry && ! attributes.carousel_enabled && attributes.scroll_slider_enabled && <div>
+							{ ! isMasonry() && ! attributes.carousel_enabled && attributes.scroll_slider_enabled && <div>
 									<SelectControl
 										label={ __( 'Scroll Slider On' ) }
 										multiple={ true }

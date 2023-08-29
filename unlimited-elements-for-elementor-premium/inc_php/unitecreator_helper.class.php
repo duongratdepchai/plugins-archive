@@ -1394,20 +1394,37 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 	 * @param $scriptFilename
 	 */
 	public static function addScriptAbsoluteUrl($urlScript, $handle, $inFooter = false){
-
+			
 		UniteProviderFunctionsUC::addScript($handle, $urlScript, $inFooter);
-
+		
 		if(GlobalsProviderUC::$isInsideEditor == true)
 			self::$arrWidgetScripts[$handle] = $urlScript;
+		
 	}
 
+	/**
+	 *
+	 * register script helper function
+	 *
+	 * @param $scriptFilename
+	 */
+	public static function addScriptAbsoluteUrl_widget($urlScript, $handle, $inFooter = false){
+					
+		if(GlobalsProviderUC::$isInsideEditor == true)
+			self::$arrWidgetScripts[$handle] = $urlScript;
+		else
+			UniteProviderFunctionsUC::addScript($handle, $urlScript, $inFooter);
+			
+	}
+	
+	
 	/**
 	 * add remote script
 	 */
 	public static function addRemoteControlsScript(){
 
 		UniteProviderFunctionsUC::addAdminJQueryInclude();
-
+		
 		$urlFiltersJS = GlobalsUC::$url_assets_libraries . "remote/ue-remote-controls.js";
 		HelperUC::addScriptAbsoluteUrl($urlFiltersJS, "ue_remote_controls");
 
@@ -1680,7 +1697,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 
 		$argPost = UniteFunctionsUC::getPostGetVariable("post", "", UniteFunctionsUC::SANITIZE_KEY);
 		$argAction = UniteFunctionsUC::getPostGetVariable("action", "", UniteFunctionsUC::SANITIZE_KEY);
-
+		
 		if($argAction == "elementor_render_widget" || $argAction == "elementor_ajax" || $argAction == "unlimitedelements_ajax_action")
 			return (true);
 
@@ -1689,7 +1706,9 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 
 		return (false);
 	}
-
+	
+	
+	
 	/**
 	 * start buffering widget output
 	 */

@@ -119,7 +119,7 @@ class UniteCreatorEntranceAnimations{
 		$params["units"] = "nothing";
 		
 		$objSettings->addRangeSlider($name."_duration", 0.6, __("Animation Duration (sec)","unlimited-elements-for-elementor"), $params);
-		
+
 		//------ animation step----------
 		
 		$params = array();

@@ -399,16 +399,20 @@ class Floating_Knowledgebase extends Module_Base
                 ],
             ]
         );
-        //background group control
-        $this->add_group_control(
-            Group_Control_Background::get_type(),
+
+      // arrow background color
+        $this->add_control(
+            'helper_text_arrow_background_color',
             [
-                'name' => 'helper_text_background',
-                'label' => esc_html__('Background', 'bdthemes-element-pack'),
-                'types' => ['classic', 'gradient'],
-                'selector' => '{{WRAPPER}} .floating-help-center__btn .helper-txt',
+                'label' => esc_html__('Background Color', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}}.floating-help-center--btn-position-right .helper-txt::before, {{WRAPPER}}.floating-help-center--btn-position-left .helper-txt::after, {{WRAPPER}} .floating-help-center__btn .helper-txt' => 'background-color: {{VALUE}};',
+                ],
+                'separator' => 'before',
             ]
         );
+        
         //border group control
         $this->add_group_control(
             Group_Control_Border::get_type(),
@@ -482,6 +486,29 @@ class Floating_Knowledgebase extends Module_Base
             [
                 'label' => esc_html__('Items Wrapper', 'bdthemes-element-pack'),
                 'tab' => Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        // heading
+        $this->add_control(
+            'head_wrapper_heading',
+            [
+                'label' => esc_html__('HEADER', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        // BACKGROUND COLOR
+        $this->add_control(
+            'head_wrapper_background_color',
+            [
+                'label' => esc_html__('Background Color', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .floating-help-center__popup::before' => 'background-color: {{VALUE}};',
+                ],
+                'separator' => 'before',
             ]
         );
 
@@ -947,6 +974,20 @@ class Floating_Knowledgebase extends Module_Base
                 ],
             ]
         );
+
+        // background color
+        $this->add_control(
+            'text_background_color',
+            [
+                'label' => esc_html__('Background Color', 'bdthemes-element-pack'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .floating-help-center__popup .html-content' => 'background-color: {{VALUE}};',
+                ],
+                'separator' => 'before',
+            ]
+        );
+
         //padding
         $this->add_responsive_control(
             'text_padding',
@@ -1005,7 +1046,7 @@ class Floating_Knowledgebase extends Module_Base
                 'name' => 'external_link_background',
                 'label' => esc_html__('Background', 'bdthemes-element-pack'),
                 'types' => ['classic', 'gradient'],
-                'selector' => '{{WRAPPER}} .floating-help-center__popup .external',
+                'selector' => '{{WRAPPER}} ..floating-help-center__popup .external .external__link',
             ]
         );
         //border group control
@@ -1014,7 +1055,7 @@ class Floating_Knowledgebase extends Module_Base
             [
                 'name' => 'external_link_border',
                 'label' => esc_html__('Border', 'bdthemes-element-pack'),
-                'selector' => '{{WRAPPER}} .floating-help-center__popup .external',
+                'selector' => '{{WRAPPER}} ..floating-help-center__popup .external .external__link',
             ]
         );
         //border radius
@@ -1024,7 +1065,7 @@ class Floating_Knowledgebase extends Module_Base
                 'label' => esc_html__('Border Radius', 'bdthemes-element-pack'),
                 'type' => Controls_Manager::DIMENSIONS,
                 'selectors' => [
-                    '{{WRAPPER}} .floating-help-center__popup .external' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} ..floating-help-center__popup .external .external__link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
 
             ]
@@ -1036,7 +1077,7 @@ class Floating_Knowledgebase extends Module_Base
                 'label' => esc_html__('Padding', 'bdthemes-element-pack'),
                 'type' => Controls_Manager::DIMENSIONS,
                 'selectors' => [
-                    '{{WRAPPER}} .floating-help-center__popup .external' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} ..floating-help-center__popup .external .external__link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
 
             ]
@@ -1090,7 +1131,7 @@ class Floating_Knowledgebase extends Module_Base
                 'name' => 'external_link_hover_background',
                 'label' => esc_html__('Background', 'bdthemes-element-pack'),
                 'types' => ['classic', 'gradient'],
-                'selector' => '{{WRAPPER}} .floating-help-center__popup .external:hover',
+                'selector' => '{{WRAPPER}} .floating-help-center__popup .external .external__link:hover',
             ]
         );
 
@@ -1101,7 +1142,7 @@ class Floating_Knowledgebase extends Module_Base
                 'label' => esc_html__('Border Color', 'bdthemes-element-pack'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .floating-help-center__popup .external:hover' => 'border-color: {{VALUE}};',
+                    '{{WRAPPER}} .floating-help-center__popup .external .external__link:hover' => 'border-color: {{VALUE}};',
                 ],
                 'condition' => [
                     'external_link_border_border!' => '',

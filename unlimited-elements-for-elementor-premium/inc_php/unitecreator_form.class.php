@@ -63,12 +63,15 @@ class UniteCreatorForm{
 		
 		return($settings);		
 	}
-
+	
+	
 	/**
 	 * add form includes
 	 */
 	public function addFormIncludes(){
 		
+		//don't include inside editor
+				
 		if(self::$isFormIncluded == true)
 			return(false);
 		
@@ -78,20 +81,92 @@ class UniteCreatorForm{
 			$urlFormJS = GlobalsUC::$url_assets_libraries."form/uc_form.js";
 			
 			UniteProviderFunctionsUC::addAdminJQueryInclude();
-			HelperUC::addScriptAbsoluteUrl($urlFormJS, "uc_form");
+			HelperUC::addScriptAbsoluteUrl_widget($urlFormJS, "uc_form");
 			
 		}
-				
-		//include addon scripts
-		$script  = "\n\n jQuery(document).ready(function(){\n";
-		$script .= "	var objUCForm = new UnlimitedElementsForm();\n";
-		$script .= "	objUCForm.init();\n";
-		$script .= "});\n";
 		
-		UniteProviderFunctionsUC::printCustomScript($script);
 		
 		self::$isFormIncluded = true;
 		
+		
+	}
+	
+	/**
+	 * get conditions data
+	 * modify the data, add class and attributes
+	 */
+	public function getVisibilityConditionsParamsData($data, $visibilityParam){
+		
+
+		$name = UniteFunctionsUC::getVal($visibilityParam, "name");
+		
+		$arrValue = UniteFunctionsUC::getVal($visibilityParam, "value");
+				
+		if(empty($arrValue))
+			return($data);
+		
+		$arrValue = UniteFunctionsUC::getVal($arrValue, "{$name}_conditions");
+		
+		if(empty($arrValue))
+			return($data);
+		
+		$data["ucform_class"] = " ucform-has-conditions";
+		
+		return($data);
+	}
+	
+	/**
+	 * get the form values
+	 */
+	private function getFieldsData($arrContent, $arrFields){
+		
+		$arrOutput = array();
+		
+		foreach($arrFields as $arrField){
+			
+			//get field input
+			
+			$fieldID = UniteFunctionsUC::getVal($arrField, "id");
+			$fieldValue = UniteFunctionsUC::getVal($arrField, "value");
+						
+			//get saved settings from layout
+			$arrFieldSettings = HelperProviderCoreUC_EL::getAddonValuesWithDataFromContent($arrContent, $fieldID);
+			
+			//get values that we'll use in the form
+			
+			// note - not all the fields will have a name
+			$name = UniteFunctionsUC::getVal($arrFieldSettings, "field_name");
+			
+			
+			$title = UniteFunctionsUC::getVal($arrFieldSettings, "label");
+			
+			// you can take more settings valus if needed
+			
+			$arrFieldOutput = array();
+			$arrFieldOutput["title"] = $title;
+			$arrFieldOutput["name"] = $name;	
+			$arrFieldOutput["value"] = $fieldValue;	
+			
+			$arrOutput[] = $arrFieldOutput;
+		}
+		
+		
+		return($arrOutput);
+	}
+	
+	/**
+	 * submit the form
+	 */
+	private function doSubmitActions($settings, $fields){
+		
+		
+		dmp("submit the form");
+		
+		dmp($settings);
+		
+		dmp($fields);
+		
+		exit();
 		
 	}
 	
@@ -101,11 +176,37 @@ class UniteCreatorForm{
 	 */
 	public function submitFormFront(){
 		
-		dmp("submit the form");
+		$formData = UniteFunctionsUC::getGetVar("formdata",null,UniteFunctionsUC::SANITIZE_TEXT_FIELD);
+		$formID = UniteFunctionsUC::getGetVar("formId",null,UniteFunctionsUC::SANITIZE_KEY);
+		$layoutID = UniteFunctionsUC::getGetVar("postId",null,UniteFunctionsUC::SANITIZE_ID);
 		
-		dmp($_REQUEST);
+		UniteFunctionsUC::validateNotEmpty($formID,"form id");
+		UniteFunctionsUC::validateNumeric($layoutID,"post id");
 		
-		exit();
+		if(empty($formData))
+			UniteFunctionsUC::throwError("no form data found");
+
+		$formData = stripcslashes($formData);
+			
+		$arrFields = UniteFunctionsUC::jsonDecode($formData);
+		
+		$arrContent = HelperProviderCoreUC_EL::getElementorContentByPostID($layoutID);
+		
+		if(empty($arrContent))
+			UniteFunctionsUC::throwError("Elementor content not found");
+					
+		$addonForm = HelperProviderCoreUC_EL::getAddonWithDataFromContent($arrContent, $formID);
+		
+		//here can done some validation next...
+				
+		$arrFormSettings = $addonForm->getProcessedMainParamsValues();
+		
+		$arrFieldsData = $this->getFieldsData($arrContent, $arrFields);
+		
+		
+		$this->doSubmitActions($arrFormSettings, $arrFieldsData);
+				
+		
 	}
 	
 	

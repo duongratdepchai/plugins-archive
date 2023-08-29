@@ -82,6 +82,7 @@ $checkAdvLabel     = empty($recoveryLink)
        Database Settings
     </div>
     <table class="margin-left-1 margin-bottom-1 dup-s1-confirm-dlg">
+        <?php if (!DUPX_InstallerState::dbDoNothing()) : ?>
         <tr>
             <td>Server:</td>
             <td><?php echo DUPX_U::esc_html($paramsManager->getValue(PrmMng::PARAM_DB_HOST)); ?></td>
@@ -106,6 +107,15 @@ $checkAdvLabel     = empty($recoveryLink)
                 </td>
             <?php endif; ?>
         </tr>
+        <?php else : ?> 
+            <td>Data:</td>
+            <td>
+                No actions will be performed on the database.
+                <?php if (DUPX_ArchiveConfig::getInstance()->isDBExcluded()) : ?>
+                The source site database is not included in the package.
+                <?php endif; ?>
+            </td>
+        <?php endif; ?> 
     </table>
 
     <?php if ($tableCount > 0) { ?>

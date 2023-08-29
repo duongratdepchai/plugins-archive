@@ -68,7 +68,7 @@ class UCAdminNoticeBannerBuilder extends UCAdminNoticeBuilderAbstract{
 		$html .= $this->getImageHtml();
 		$html .= '</a>';
 		$html .= $this->getDebugHtml();
-		$html .= $this->getDismissHtml(true);
+		$html .= $this->getDismissHtml();
 		$html .= '</div>';
 
 		return $html;

@@ -22,6 +22,7 @@ $paramsManager = PrmMng::getInstance();
 >
     <div class="main-form-content" >
         <!-- START TABS -->
+        <?php if (!DUPX_InstallerState::dbDoNothing()) { ?>
         <div class="hdr-sub1-area tabs-area">
             <div id="tabs" class="no-display">
                 <ul>
@@ -36,6 +37,9 @@ $paramsManager = PrmMng::getInstance();
                 </div>
             </div>
         </div>
+        <?php } else {
+            dupxTplRender('pages-parts/step2/options-disabled');
+        } ?>
     </div>
     <div class="footer-buttons margin-top-2">
         <div class="content-left">

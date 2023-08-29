@@ -85,6 +85,8 @@ class AeAcfRepeater extends Widget_Base {
 
 		$this->layout_controls();
 
+		//$this->pagination_controls();
+
 		$this->carousel_controls();
 
 		$this->get_widget_title_controls();
@@ -92,6 +94,8 @@ class AeAcfRepeater extends Widget_Base {
 		// Register Styles
 
 		$this->layout_styles();
+
+		//$this->pagination_style_controls();
 
 		$this->carousel_styles();
 
@@ -117,6 +121,8 @@ class AeAcfRepeater extends Widget_Base {
 
 	public function generate_output( $settings, $with_wrapper = true ) {
 		$masonry = $settings['masonry_grid'];
+		$number_of_items = 0;
+		$data_settings = [];
 		if ( $settings['layout_mode'] === 'carousel' ) {
 			$pagination_type       = $settings['ptype'];
 			$navigation_button     = $settings['navigation_button'];
@@ -125,6 +131,10 @@ class AeAcfRepeater extends Widget_Base {
 			$settings['direction'] = 'horizontal';
 			$swiper_data           = $this->get_swiper_data( $settings );
 			$this->add_render_attribute( 'outer-wrapper', 'class', 'ae-swiper-outer-wrapper' );
+			if ( $settings['layout_mode'] === 'carousel' ) {
+				$ae_slider_id = wp_rand( 0, 99999 );
+				$this->add_render_attribute( 'outer-wrapper', 'class', 'ae-slider-id-' . $ae_slider_id );
+			}
 			$this->add_render_attribute( 'outer-wrapper', 'data-swiper-settings', wp_json_encode( $swiper_data ) );
 			/*-- Carousel */
 		}
@@ -166,9 +176,13 @@ class AeAcfRepeater extends Widget_Base {
 			$this->get_widget_title_html();
 		}
 		if ( $settings['layout_mode'] === 'carousel' ) {
-			$ae_slider_id = wp_rand( 0, 99999 );
+			$swiper_class = 'swiper-container';
+			$swiper_latest = get_option('elementor_experiment-e_swiper_latest');
+			if ( $swiper_latest == 'active' ) {
+				$swiper_class = 'swiper';
+			}
 			$this->add_render_attribute( 'swiper-container', 'data-ae-slider-id', $ae_slider_id );
-			$this->add_render_attribute( 'swiper-container', 'class', [ 'ae-swiper-container', 'swiper-container' ] );
+			$this->add_render_attribute( 'swiper-container', 'class', [ 'ae-swiper-container', $swiper_class ] );
 			$this->add_render_attribute( 'acf-repeater-wrapper', 'class', [ 'ae-swiper-wrapper', 'swiper-wrapper' ] );
 			$this->add_render_attribute( 'acf-repeater-item', 'class', [ 'ae-swiper-slide', 'swiper-slide' ] );
 			$this->add_render_attribute( 'acf-repeater-inner', 'class', [ 'ae-swiper-slide-wrapper', 'swiper-slide-wrapper' ] );
@@ -185,10 +199,40 @@ class AeAcfRepeater extends Widget_Base {
 				<div <?php echo $this->get_render_attribute_string( 'outer-wrapper' ); ?> >
 					<div <?php echo $this->get_render_attribute_string( 'swiper-container' ); ?> >
 			<?php } ?>
+			<?php
+				/* if( $settings['layout_mode'] == 'grid' && $settings['grid_pagination'] == 'yes' ){
+					$repeater_items = count(get_field($repeater_data['repeater_name'], $repeater_data['repeater_type']));
+					$items_per_page = (trim($settings['items_per_page']) != '' ) ? $settings['items_per_page'] : 0 ;
+					$number_of_pages = ceil($repeater_items / $items_per_page);
+
+					$item_index = 0;
+					$item_page = 1;
+					$item_page_class = 'page-' . $item_page;
+					$pagination_offset = $items_per_page;
+
+					if( $settings['disable_scroll_to_top'] != 'yes' ){
+						$data_settings['pagination_scroll_top_offset'] = $settings['pagination_scroll_top_offset'];
+					}
+
+					$this->add_render_attribute( 'acf-repeater-wrapper', 'data-settings', wp_json_encode( $data_settings ));
+				} */
+					?>
 				<div <?php echo $this->get_render_attribute_string( 'acf-repeater-wrapper' ); ?>>
 					<?php
 					while ( have_rows( $repeater_data['repeater_name'], $repeater_data['repeater_type'] ) ) {
 						the_row();
+						//Pagination
+						/* $this->remove_render_attribute( 'acf-repeater-item', 'class', 'ae-hide' );
+						if( $items_per_page && $item_index >= $items_per_page ){
+							$this->add_render_attribute( 'acf-repeater-item', 'class', 'ae-hide');
+						}
+						$this->remove_render_attribute( 'acf-repeater-item', 'class', $item_page_class);
+						if($item_index == $pagination_offset){
+							$pagination_offset = $pagination_offset + $pagination_offset;
+							$item_page = $item_page + 1;
+							$item_page_class = 'page-' . $item_page;
+						} 
+						$this->add_render_attribute( 'acf-repeater-item', 'class', $item_page_class);*/
 						?>
 						<div <?php echo $this->get_render_attribute_string( 'acf-repeater-item' ); ?>>
 							<div <?php echo $this->get_render_attribute_string( 'acf-repeater-inner' ); ?>>
@@ -201,8 +245,16 @@ class AeAcfRepeater extends Widget_Base {
 								<?php } ?>
 							</div>
 						</div>
-					<?php } ?>
+					<?php
+					// 	$item_index = $item_index + 1;
+						} ?>
 				</div>
+				<?php 
+				/* if( $settings['layout_mode'] == 'grid' && $settings['grid_pagination'] == 'yes' ){
+					$number_of_pages = ceil($repeater_items / $settings['items_per_page']);
+					$this->get_pagination_html($settings, $number_of_pages);
+				} */
+				?>
 			<?php
 			Frontend::$_in_repeater_block = false;
 			?>
@@ -782,6 +834,20 @@ class AeAcfRepeater extends Widget_Base {
 			]
 		);
 
+		/* $this->add_control(
+			'grid_pagination',
+			[
+				'label'        => __( 'Pagination', 'ae-pro' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'ae-pro' ),
+				'label_off'    => __( 'No', 'ae-pro' ),
+				'return_value' => 'yes',
+				'condition'    => [
+					'layout_mode' => 'grid',
+				],
+			]
+		); */
+
 		$this->add_control(
 			'no_posts_message',
 			[
@@ -1128,6 +1194,136 @@ class AeAcfRepeater extends Widget_Base {
 				],
 				'condition'        => [
 					'navigation_button' => 'yes',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	public function pagination_controls() {
+
+		$this->start_controls_section(
+			'pagination_controls',
+			[
+				'label'     => __( 'Pagination', 'ae-pro' ),
+				'condition' => [
+					'grid_pagination' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'items_per_page',
+			[
+				'label'     => __( 'Items Count', 'ae-pro' ),
+				'type'      => Controls_Manager::NUMBER,
+				'default'   => 6,
+				'description' => __( 'Leave blank to show all items', 'ae-pro' ),
+			]
+		);
+
+		$this->add_control(
+			'show_prev_next',
+			[
+				'label'        => __( 'Show Prev/Next', 'ae-pro' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => 'yes',
+				'label_on'     => __( 'Show', 'ae-pro' ),
+				'label_off'    => __( 'Hide', 'ae-pro' ),
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'prev_text',
+			[
+				'label'     => __( 'Previous Text', 'ae-pro' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( '&laquo; Previous', 'ae-pro' ),
+				'condition' => [
+					'show_prev_next' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'next_text',
+			[
+				'label'     => __( 'Next Text', 'ae-pro' ),
+				'type'      => Controls_Manager::TEXT,
+				'default'   => __( 'Next &raquo;', 'ae-pro' ),
+				'condition' => [
+					'show_prev_next' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pagination_page_limit',
+			[
+				'label'       => __( 'Page Limit', 'ae-pro' ),
+				'default'     => '',
+				'description' => __( 'Leave blank to show all pages', 'ae-pro' ),
+			]
+		);
+
+		$this->add_control(
+			'disable_scroll_to_top',
+			[
+				'label'        => __( 'Disable Scroll To Top Offset', 'ae-pro' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => '',
+				'label_on'     => __( 'Yes', 'ae-pro' ),
+				'label_off'    => __( 'No', 'ae-pro' ),
+				'return_value' => 'yes',
+			]
+		);
+		
+		$this->add_responsive_control(
+			'pagination_scroll_top_offset',
+			[
+				'label'              => __( 'Scroll To Top Offset', 'ae-pro' ),
+				'type'               => Controls_Manager::SLIDER,
+				'default'            => [
+					'size' => 0,
+				],
+				'range'              => [
+					'px' => [
+						'min'  => 0,
+						'max'  => 1000,
+						'step' => 1,
+					],
+				],
+				'frontend_available' => true,
+				'condition' => [
+					'disable_scroll_to_top' => '',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'pagination_align',
+			[
+				'label'     => __( 'Alignment', 'ae-pro' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => [
+					'left' => [
+						'title' => __( 'Left', 'ae-pro' ),
+						'icon'  => 'fa fa-align-left',
+					],
+					'center' => [
+						'title' => __( 'Center', 'ae-pro' ),
+						'icon'  => 'fa fa-align-center',
+					],
+					'right' => [
+						'title' => __( 'Right', 'ae-pro' ),
+						'icon'  => 'fa fa-align-right',
+					],
+				],
+				'default'   => '',
+				'selectors' => [
+					'{{WRAPPER}} .ae-pagination-wrapper' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -1807,6 +2003,187 @@ class AeAcfRepeater extends Widget_Base {
 		$this->end_controls_section();
 	}
 
+	public function pagination_style_controls() {
+
+		$this->start_controls_section(
+			'pagination_style',
+			[
+				'label'     => __( 'Pagination', 'ae-pro' ),
+				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'grid_pagination' => 'yes',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'pagination_typography',
+				'label'    => __( 'Typography', 'ae-pro' ),
+				'selector' => '{{WRAPPER}} .ae-pagination-wrapper *',
+			]
+		);
+
+		$this->add_responsive_control(
+			'item_gap',
+			[
+				'label'     => __( 'Item Gap', 'ae-pro' ),
+				'type'      => Controls_Manager::SLIDER,
+				'range'     => [
+					'px' => [
+						'min' => 0,
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .ae-pagination-wrapper *' => 'margin-left:{{SIZE}}{{UNIT}}; margin-right:{{SIZE}}{{UNIT}};',
+				],
+
+			]
+		);
+
+		$this->add_responsive_control(
+			'pi_padding',
+			[
+				'label'      => __( 'Padding', 'ae-pro' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .ae-pagination-wrapper *' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_pagination_styles' );
+
+		$this->start_controls_tab(
+			'tab_pagination_style_normal',
+			[
+				'label' => __( 'Normal', 'ae-pro' ),
+			]
+		);
+
+		$this->add_control(
+			'pi_color',
+			[
+				'label'     => __( 'Color', 'ae-pro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ae-pagination-wrapper *' => 'color:{{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pi_bg',
+			[
+				'label'     => __( 'Background', 'ae-pro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ae-pagination-wrapper *' => 'background-color:{{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_pagination_style_hover',
+			[
+				'label' => __( 'hover', 'ae-pro' ),
+			]
+		);
+
+		$this->add_control(
+			'pi_hover_color',
+			[
+				'label'     => __( 'Hover/Active Color', 'ae-pro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ae-pagination-wrapper .current' => 'color:{{VALUE}}',
+					'{{WRAPPER}} .ae-pagination-wrapper span:hover' => 'color:{{VALUE}}',
+					'{{WRAPPER}} .ae-pagination-wrapper a:hover' => 'color:{{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pi_hover_bg',
+			[
+				'label'     => __( 'Hover/Active Background', 'ae-pro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ae-pagination-wrapper .current' => 'background-color:{{VALUE}}',
+					'{{WRAPPER}} .ae-pagination-wrapper span:hover' => 'background-color:{{VALUE}}',
+					'{{WRAPPER}} .ae-pagination-wrapper a:hover' => 'background-color:{{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'     => 'pi_border',
+				'label'    => __( 'Border', 'ae-pro' ),
+				'selector' => '{{WRAPPER}} .ae-pagination-wrapper *',
+			]
+		);
+
+		$this->add_control(
+			'pi_border_hover_color',
+			[
+				'label'     => __( 'Border Hover Color', 'ae-pro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .ae-pagination-wrapper *:hover' => 'border-color: {{VALUE}}',
+				],
+				'condition' => [
+					'pi_border_border!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'pi_border_radius',
+			[
+				'label'      => __( 'Border Radius', 'ae-pro' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .ae-pagination-wrapper *' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'pagination_box_shadow',
+				'label'    => __( 'Box Shadow', 'ae-pro' ),
+				'selector' => '{{WRAPPER}} .ae-pagination-wrapper *',
+			]
+		);
+
+		$this->add_control(
+			'pagination_margin',
+			[
+				'label'      => __( 'Margin', 'ae-pro' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .ae-pagination-wrapper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
 	public function get_swiper_data( $settings ) {
 
 		if ( $settings['speed']['size'] ) {
@@ -1932,5 +2309,26 @@ class AeAcfRepeater extends Widget_Base {
 		$swiper_data['scrollbar']         = $settings['scrollbar'];
 
 		return $swiper_data;
+	}
+
+	public function get_pagination_html( $settings, $number_of_pages ) {
+		$pagination = '<div class="ae-pagination-wrapper" data-page-count="' . $number_of_pages . '" data-current-page="1">';
+		if( $settings['show_prev_next'] == 'yes' ){
+			$pagination = $pagination . '<a href="#" class="prev page-numbers current" disabled="disabled">' . $settings['prev_text'] . '</a>';
+		}
+		for($page = 1; $page<= $number_of_pages; $page++) {
+			$page_class = 'page-numbers page';
+			$disable_attr = '';
+			if($page == 1 ){
+				$page_class = $page_class . ' current';
+				$disable_attr = 'disabled="disabled"';
+			}
+			$pagination = $pagination . '<a href="#" class="' . $page_class . '" data-page="' . $page . '" '. $disable_attr .'>' . $page . '</a>';  
+		}
+		if( $settings['show_prev_next'] == 'yes' ){
+			$pagination = $pagination . '<a href="#" class="next page-numbers">' . $settings['next_text'] . '</a>';
+		}
+		$pagination = $pagination . '</div>'; 
+		echo $pagination;
 	}
 }

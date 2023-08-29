@@ -901,6 +901,7 @@ class UniteCreatorDialogParamElementor extends UniteCreatorDialogParam{
 		$arrTypes["dynamic_popup"] = __("Dynamic Popup","unlimited-elements-for-elementor");
 		$arrTypes["contact_form7"] = __("Contact Form 7","unlimited-elements-for-elementor");
 		$arrTypes["ucform_conditions"] = __("Unite Form Conditions","unlimited-elements-for-elementor");
+		$arrTypes["sort_filter_fields"] = __("Sort Filter Fields","unlimited-elements-for-elementor");
 		
 		
 		$optionsClass = "uc-special-attribute-options";

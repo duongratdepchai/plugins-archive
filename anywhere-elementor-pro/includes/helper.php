@@ -1688,8 +1688,12 @@ class Helper {
 		if ( ! empty( $settings['term_orderby'] ) ) {
 			$args['orderby'] = $settings['term_orderby'];
 		}
+
+		//Query Filter
+		$query_args = apply_filters( "aepro/taxonomy_blocks/term_query/{$settings['term_query_filter']}", $args );
+
 		$terms_data = new WP_Term_Query(
-			$args
+			$query_args
 		);
 
 		$terms = $terms_data->terms;

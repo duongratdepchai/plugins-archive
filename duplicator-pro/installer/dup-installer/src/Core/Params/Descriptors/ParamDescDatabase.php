@@ -73,7 +73,7 @@ final class ParamDescDatabase implements DescriptorInterface
                     new ParamOption('basic', 'Default'),
                     new ParamOption('cpnl', 'CPanel')
                 ),
-                'wrapperClasses'        => array('revalidate-on-change', 'align-right'),
+                'wrapperClasses'        => array('revalidate-on-change', 'align-right', 'requires-db-hide'),
                 'inputContainerClasses' => array('small')
             )
         );
@@ -91,7 +91,7 @@ final class ParamDescDatabase implements DescriptorInterface
             ),
             array(
                 'label'          => 'Host:',
-                'wrapperClasses' => array('revalidate-on-change'),
+                'wrapperClasses' => array('revalidate-on-change', 'requires-db-hide'),
                 'attr'           => array(
                     'required'    => 'required',
                     'placeholder' => 'localhost'
@@ -112,7 +112,7 @@ final class ParamDescDatabase implements DescriptorInterface
             ),
             array(
                 'label'          => 'Database:',
-                'wrapperClasses' => array('revalidate-on-change'),
+                'wrapperClasses' => array('revalidate-on-change', 'requires-db-hide'),
                 'attr'           => array(
                     'required'    => 'required',
                     'placeholder' => 'new or existing database name'
@@ -134,7 +134,7 @@ final class ParamDescDatabase implements DescriptorInterface
             ),
             array(
                 'label'          => 'User:',
-                'wrapperClasses' => array('revalidate-on-change'),
+                'wrapperClasses' => array('revalidate-on-change', 'requires-db-hide'),
                 'attr'           => array(
                     'placeholder'  => 'valid database username',
                     // Can be written field wise
@@ -155,7 +155,7 @@ final class ParamDescDatabase implements DescriptorInterface
             ),
             array(
                 'label'          => 'Password:',
-                'wrapperClasses' => array('revalidate-on-change'),
+                'wrapperClasses' => array('revalidate-on-change', 'requires-db-hide'),
                 'attr'           => array(
                     'placeholder'  => 'valid database user password',
                     // Can be written field wise
@@ -493,6 +493,10 @@ final class ParamDescDatabase implements DescriptorInterface
      */
     public static function updateCharsetAndCollateByDatabaseSettings()
     {
+        if (DUPX_InstallerState::dbDoNothing()) {
+            return;
+        }
+
         $paramsManager = PrmMng::getInstance();
         $data          = \DUPX_DB_Functions::getInstance()->getCharsetAndCollationData();
         $charsetDef    = \DUPX_DB_Functions::getInstance()->getDefaultCharset();

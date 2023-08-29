@@ -43,7 +43,7 @@ class Sub_Menu extends Module_Base {
         if ($this->ep_is_edit_mode()) {
             return ['ep-styles'];
         } else {
-            return ['ep-sub-menu'];
+            return [ 'ep-font', 'ep-sub-menu'];
         }
     }
 
@@ -1559,7 +1559,7 @@ class Sub_Menu extends Module_Base {
                 </span>
                 <?php
                 if ($settings['show_sub_menu_arrows'] === 'yes') : ?>
-                    <span class="ep-hover-icon eicon-arrow-right"></span>
+                    <span class="ep-hover-icon ep-icon-arrow-right"></span>
                 <?php
                 endif; ?>
             </a>

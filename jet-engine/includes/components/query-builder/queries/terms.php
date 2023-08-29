@@ -16,6 +16,11 @@ class Terms_Query extends Base_Query {
 	public function _get_items() {
 		$current_query = $this->build_current_query();
 		$terms = get_terms( $current_query );
+
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return array();
+		}
+
 		return $terms;
 	}
 

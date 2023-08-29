@@ -38,7 +38,7 @@ final class ParamDescEngines implements DescriptorInterface
     {
         $archiveConfig = \DUPX_ArchiveConfig::getInstance();
 
-        $statusRemoveActions                  = ($archiveConfig->exportOnlyDB ? ParamOption::OPT_DISABLED : ParamOption::OPT_ENABLED);
+        $statusRemoveActions                  = ($archiveConfig->isDBOnly() ? ParamOption::OPT_DISABLED : ParamOption::OPT_ENABLED);
         $params[PrmMng::PARAM_ARCHIVE_ACTION] = new ParamForm(
             PrmMng::PARAM_ARCHIVE_ACTION,
             ParamForm::TYPE_STRING,
@@ -57,7 +57,7 @@ final class ParamDescEngines implements DescriptorInterface
             'status' => function ($paramObj) {
                 if (DUPX_InstallerState::isAddSiteOnMultisite()) {
                     return ParamForm::STATUS_SKIP;
-                } elseif (DUPX_InstallerState::isRestoreBackup()) {
+                } elseif (DUPX_InstallerState::isRecoveryMode()) {
                     return ParamForm::STATUS_INFO_ONLY;
                 } else {
                     return ParamForm::STATUS_ENABLED;
@@ -175,14 +175,15 @@ final class ParamDescEngines implements DescriptorInterface
             ParamForm::TYPE_STRING,
             ParamForm::FORM_TYPE_SELECT,
             array(
-            'default'      => 'empty',
+            'default'      => \DUPX_DBInstall::DBACTION_EMPTY,
                 'acceptValues' => array(
                     \DUPX_DBInstall::DBACTION_CREATE,
                     \DUPX_DBInstall::DBACTION_EMPTY,
                     \DUPX_DBInstall::DBACTION_REMOVE_ONLY_TABLES,
                     \DUPX_DBInstall::DBACTION_RENAME,
                     \DUPX_DBInstall::DBACTION_MANUAL,
-                    \DUPX_DBInstall::DBACTION_ONLY_CONNECT
+                    \DUPX_DBInstall::DBACTION_ONLY_CONNECT,
+                    \DUPX_DBInstall::DBACTION_DO_NOTHING
                 )
             ),
             array(
@@ -212,10 +213,12 @@ final class ParamDescEngines implements DescriptorInterface
                 ),
                 new ParamOption(\DUPX_DBInstall::DBACTION_EMPTY, 'Empty Database'),
                 new ParamOption(\DUPX_DBInstall::DBACTION_REMOVE_ONLY_TABLES, 'Overwrite Existing Tables'),
+                new ParamOption(\DUPX_DBInstall::DBACTION_MANUAL, 'Skip Database Extraction'),
                 new ParamOption(\DUPX_DBInstall::DBACTION_RENAME, 'Backup and Rename Existing Tables'),
+                new ParamOption(\DUPX_DBInstall::DBACTION_DO_NOTHING, 'Only Extract Files'),
                 new ParamOption(\DUPX_DBInstall::DBACTION_ONLY_CONNECT, 'Do Nothing (Advanced)', ParamOption::OPT_HIDDEN),
-                new ParamOption(\DUPX_DBInstall::DBACTION_MANUAL, 'Skip Database Extraction')
-            )
+            ),
+            'subNote' => dupxTplRender('parts/params/db-action-notes', array(), false)
             )
         );
 
@@ -254,7 +257,7 @@ final class ParamDescEngines implements DescriptorInterface
             'acceptValues' => array(
                 \DUPX_S3_Funcs::MODE_NORMAL,
                 \DUPX_S3_Funcs::MODE_CHUNK,
-                \DUPX_S3_Funcs::MODE_SKIP,
+                \DUPX_S3_Funcs::MODE_SKIP
             ))
         );
 
@@ -292,12 +295,12 @@ final class ParamDescEngines implements DescriptorInterface
     {
         if (
             $params[PrmMng::PARAM_ARCHIVE_ACTION]->getStatus() !== ParamItem::STATUS_OVERWRITE &&
-            DUPX_InstallerState::isRestoreBackup($params[PrmMng::PARAM_INST_TYPE]->getValue())
+            DUPX_InstallerState::isRecoveryMode($params[PrmMng::PARAM_INST_TYPE]->getValue())
         ) {
             $params[PrmMng::PARAM_ARCHIVE_ACTION]->setValue(DUP_PRO_Extraction::ACTION_REMOVE_WP_FILES);
         }
 
-        if (DUPX_InstallerState::isRestoreBackup($params[PrmMng::PARAM_INST_TYPE]->getValue())) {
+        if (DUPX_InstallerState::dbDoNothing() || DUPX_InstallerState::isRestoreBackup($params[PrmMng::PARAM_INST_TYPE]->getValue())) {
             $default = \DUPX_S3_Funcs::MODE_SKIP;
         } elseif ($params[PrmMng::PARAM_DB_ENGINE]->getValue() === \DUPX_DBInstall::ENGINE_CHUNK) {
             $default = \DUPX_S3_Funcs::MODE_CHUNK;
@@ -333,7 +336,7 @@ final class ParamDescEngines implements DescriptorInterface
     public static function getReplaceEngineModeFromParams()
     {
         $paramsManager = PrmMng::getInstance();
-        if (DUPX_InstallerState::isRestoreBackup()) {
+        if (DUPX_InstallerState::dbDoNothing() || DUPX_InstallerState::isRestoreBackup()) {
             return \DUPX_S3_Funcs::MODE_SKIP;
         } elseif ($paramsManager->getValue(PrmMng::PARAM_DB_ENGINE) === \DUPX_DBInstall::ENGINE_CHUNK) {
             return \DUPX_S3_Funcs::MODE_CHUNK;
@@ -359,7 +362,7 @@ final class ParamDescEngines implements DescriptorInterface
         } else {
             $subNote = <<<SUBNOTEHTML
 * Option enabled when archive has been pre-extracted
-<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">[more info]</a>               
+<a href="https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios" target="_blank">[more info]</a>               
 SUBNOTEHTML;
         }
         if (($zipEnable = ($archiveConfig->isZipArchive() && \DUPX_Conf_Utils::archiveExists() && \DUPX_Conf_Utils::isPhpZipAvaiable())) === true) {

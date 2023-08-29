@@ -16,10 +16,11 @@ defined("ABSPATH") or die("");
  * @var array<string, mixed> $tplData
  */
 
-esc_attr__(
+esc_attr_e(
     'When enabled the archive file will be encrypted with a password that is required to open.  The installer will also prompt for the password at ' .
     'install time.  Encryption is a general deterrent and should not be substituted for properly keeping your files secure. Be sure to remove all ' .
-    'installer files when the install process is completed.'
+    'installer files when the install process is completed.',
+    'duplicator-pro'
 );
 
 ?>

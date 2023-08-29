@@ -138,6 +138,7 @@ class SFTPAdapter
                 $this->messages->addMessage(__('Successfully connected to server using private key', 'duplicator-pro'));
                 DUP_PRO_Log::infoTrace('Successfully connected to server using private key');
             } else {
+                DUP_PRO_Log::trace("Error opening SFTP connection using private key");
                 $this->messages->addMessage(__('Error opening SFTP connection using private key', 'duplicator-pro'));
                 return false;
             }
@@ -147,6 +148,7 @@ class SFTPAdapter
                 $this->messages->addMessage(__('Successfully connected to server using password', 'duplicator-pro'));
                 DUP_PRO_Log::infoTrace('Successfully connected to server using password');
             } else {
+                DUP_PRO_Log::trace("Error opening SFTP connection using password");
                 $this->messages->addMessage(__('Error opening SFTP connection using password', 'duplicator-pro'));
                 return false;
             }
@@ -176,6 +178,7 @@ class SFTPAdapter
     protected function getPrivateKey()
     {
         if (strlen($this->privateKey) == 0) {
+            DUP_PRO_Log::trace("Private key is null");
             throw new Exception('Private key is null');
         }
 
@@ -183,8 +186,9 @@ class SFTPAdapter
         if (!empty($this->privateKeyPassword)) {
             DUP_PRO_Log::trace("Get Private Key Object with Password");
             $key->setPassword($this->privateKeyPassword);
+        } else {
+            DUP_PRO_Log::trace("Get Private Key Object");
         }
-        DUP_PRO_Log::trace("Get Private Object Key");
         $key->loadKey($this->privateKey);
         DUP_PRO_Log::trace("Private Key Loaded");
         return $key;
@@ -275,7 +279,7 @@ class SFTPAdapter
         }
 
         if (!$this->sftp->isConnected()) {
-            throw new Exception('You must connect to SFTP before making directory.');
+            throw new Exception('You must connect to SFTP before making a directory.');
         }
 
         $storageFolders = explode("/", $storagePath);
@@ -289,6 +293,7 @@ class SFTPAdapter
                 }
             }
         }
+        DUP_PRO_Log::trace("Directory $storagePath is created via SFTP");
         return $storagePath;
     }
 
@@ -331,7 +336,7 @@ class SFTPAdapter
     }
 
     /**
-     * St incremental messags manager
+     * Set incremental messages manager
      *
      * @param IncrementalStatusMessage $messages messages
      *

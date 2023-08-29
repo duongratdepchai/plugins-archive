@@ -330,7 +330,7 @@ class BootstrapRunner
 
         if (!file_exists($this->targetDupInst)) {
             $this->errorMessage = 'Can\'t extract installer directory. ' .
-                'See <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-022-q">this FAQ item</a>' .
+                'See <a target="_blank" href="https://duplicator.com/knowledge-base/how-to-fix-installer-archive-extraction-issues/">this FAQ item</a>' .
                 ' for details on how to resolve.</a>';
                 return BootstrapView::VIEW_ERROR;
         }
@@ -454,7 +454,7 @@ class BootstrapRunner
                 } else {
                     $isEncrypted = null;
                     throw new Exception("ERROR: Can't check if zip archive is encrypted. " .
-                        "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q'>ZipArchive</a> " .
+                        "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-installer-archive-extraction-issues'>ZipArchive</a> " .
                         "and <a target='_blank' href='http://php.net/manual/en/function.shell-exec.php'>ShellExec unzip</a>" .
                         "are not enabled on this server. Please " .
                         "talk to your host or server admin about enabling at least one of them.<br>" .
@@ -550,7 +550,7 @@ class BootstrapRunner
                 . "<li>If the archive is not finished downloading please wait for it to complete.</li>"
                 . "<li>Rename the file to it original hash name.  See WordPress-Admin ❯ Packages ❯  Details. </li>"
                 . "<li>When downloading, both files both should be from the same package line. </li>"
-                . "<li>Also see: <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-050-q' target='_blank'>"
+                . "<li>Also see: <a href='https://duplicator.com/knowledge-base/how-to-fix-general-installer-ui-bootstrap-archive-issues' target='_blank'>"
                 . "How to fix various errors that show up before step-1 of the installer?</a></li>"
                 . "</ul><br/>"
                 . "<b>Extraction Path:</b> <span class='file-info'>{$this->targetRoot}/</span><br/>";
@@ -565,7 +565,7 @@ class BootstrapRunner
             $this->log('[ERROR] ' . $this->errorMessage);
             $this->errorMessage .= 'Possibibles solutions:<br>';
             $this->errorMessage .= '- Use the file filters to get your package lower to support this server or try the package on a Linux server.' . '<br>';
-            $this->errorMessage .= '- Perform a <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q">' .
+            $this->errorMessage .= '- Perform a <a target="_blank" href="https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios">' .
                 'Manual Extract Install</a>' . '<br>';
 
             switch ($noOfBits == 32) {
@@ -578,8 +578,8 @@ class BootstrapRunner
             }
 
             if (self::isWindows()) {
-                $this->errorMessage .= '- <a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q">' .
-                    'Windows DupArchive extractor</a> to extract all files from the archive.' . '<br>';
+                $this->errorMessage .= '- <a target="_blank" href="https://duplicator.com/knowledge-base/how-to-work-with-daf-files-and-the-duparchive-'
+                . 'extraction-tool">Windows DupArchive extractor</a> to extract all files from the archive.' . '<br>';
             }
 
             return false;
@@ -620,7 +620,7 @@ class BootstrapRunner
                 if (!BootstrapUtils::isZipAvailable()) {
                     $msg = "ZipArchive and Shell Exec are not enabled on this server. Please " .
                     "talk to your host or server admin about enabling " .
-                    "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q'>ZipArchive</a> " .
+                    "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-installer-archive-extraction-issues'>ZipArchive</a> " .
                     "or <a target='_blank' href='http://php.net/manual/en/function.shell-exec.php'>Shell Exec</a> " .
                     "on this server or manually extract archive then choose Advanced > Manual Extract in installer.";
                     throw new Exception($msg);
@@ -687,7 +687,7 @@ class BootstrapRunner
         if (!is_writable($destination)) {
             $this->log("WARNING: The {$destination} directory is not writable.");
             $this->errorMessage  = "NOTICE: The {$destination} directory is not writable on this server please talk to your host or server admin about making ";
-            $this->errorMessage .= "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-055-q'>" .
+            $this->errorMessage .= "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-file-permissions-issues'>" .
             "writable {$destination} directory</a> on this server. <br/>";
             throw new Exception('Destination folter isn\'t writeable');
         }
@@ -856,7 +856,7 @@ class BootstrapRunner
                     $this->log("WARNING: ZipArchive and Shell Exec are not enabled on this server.");
                     $this->errorMessage = "NOTICE: ZipArchive and Shell Exec are not enabled on this server. Please " .
                     "talk to your host or server admin about enabling " .
-                    "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q'>ZipArchive</a> " .
+                    "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-installer-archive-extraction-issues'>ZipArchive</a> " .
                     "or <a target='_blank' href='http://php.net/manual/en/function.shell-exec.php'>Shell Exec</a> " .
                     "on this server or manually extract archive then choose Advanced > Manual Extract in installer.";
                 }

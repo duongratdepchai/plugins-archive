@@ -28,10 +28,10 @@ class Acf_Text extends RuleBase {
 	}
 
 	public function get_multiple_name_control() {
-		$acf_fields      = Aepro::$_helper->ae_get_acf_fields( [ 'text', 'url', 'textarea', 'wysiwyg', 'email', 'number', 'password' ] );
+		$acf_fields      = Aepro::$_helper->ae_get_acf_fields( [ 'text', 'url', 'textarea', 'wysiwyg', 'email', 'number', 'password', 'file' ] );
 		$repeater_fields = Aepro::$_helper->get_acf_repeater_field();
 		$group_field     = Aepro::$_helper->get_group_fields();
-		$supported_field = [ 'text', 'url', 'textarea', 'wysiwyg', 'email', 'number', 'password' ];
+		$supported_field = [ 'text', 'url', 'textarea', 'wysiwyg', 'email', 'number', 'password', 'file' ];
 		$controls        = [
 			[
 				'label'       => 'Parent',

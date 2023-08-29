@@ -17,10 +17,8 @@ defined("ABSPATH") or die("");
  * @var array<string, mixed> $tplData
  */
 
-$tplMng->render('licensing/license_message');
 $tplMng->render('licensing/activation');
 $tplMng->render('licensing/visibility');
-
 ?>
 
 <script>
@@ -42,7 +40,7 @@ $tplMng->render('licensing/visibility');
                 let licenseKey = $('.dup-license-key-input').val();
                 window.location.href = 
                     <?php echo json_encode($tplData['actions'][LicensingController::ACTION_ACTIVATE_LICENSE]->getUrl()); ?> + 
-                    '&_license_key=' + licenseKey;
+                    '&_license_key=' + encodeURIComponent(licenseKey);
             } else {
                 window.location.href = <?php echo json_encode($tplData['actions'][LicensingController::ACTION_DEACTIVATE_LICENSE]->getUrl()); ?>;
             }

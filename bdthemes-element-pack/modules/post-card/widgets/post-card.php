@@ -357,7 +357,7 @@ class Post_Card extends Module_Base {
 		$this->add_control(
 			'shadow_color',
 			[
-				'label'     => esc_html__('Highlightrd Border Color', 'bdthemes-element-pack'),
+				'label'     => esc_html__('Highlighted Border Color', 'bdthemes-element-pack'),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}}' => '--ep-post-card-shadow-color: {{VALUE}};'
@@ -368,7 +368,7 @@ class Post_Card extends Module_Base {
 		$this->add_responsive_control(
 			'shadow_width',
 			[
-				'label'      => esc_html__('Highlightrd Border Width', 'bdthemes-element-pack') . BDTEP_NC,
+				'label'      => esc_html__('Highlighted Border Width', 'bdthemes-element-pack') . BDTEP_NC,
 				'type'       => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [

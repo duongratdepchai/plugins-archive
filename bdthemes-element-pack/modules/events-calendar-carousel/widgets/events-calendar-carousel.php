@@ -598,7 +598,7 @@ class Events_Calendar_Carousel extends Module_Base
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors' => [
-                    '{{WRAPPER}} .skin-default .bdt-event-item, {{WRAPPER}} .bdt-event-calendar .bdt-event-item-inner, {{WRAPPER}} .bdt-event-calendar .swiper-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .skin-default .bdt-event-item, {{WRAPPER}} .bdt-event-calendar .bdt-event-item-inner, {{WRAPPER}} .bdt-event-calendar .swiper-carousel' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -680,7 +680,7 @@ class Events_Calendar_Carousel extends Module_Base
                     'size' => 10,
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -1602,7 +1602,6 @@ class Events_Calendar_Carousel extends Module_Base
         $this->render_swiper_header_attribute('event-carousel');
 
         $this->add_render_attribute('carousel', 'class', ['bdt-event-carousel', 'bdt-event-calendar', 'skin-' . $skin_name]);
-        $this->add_render_attribute('event-carousel', 'class', 'swiper-container');
 
         $this->add_render_attribute('event-carousel-wrapper', 'class', 'swiper-wrapper');
 
@@ -1616,7 +1615,7 @@ class Events_Calendar_Carousel extends Module_Base
 
         ?>
 		<div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-			<div <?php echo $this->get_render_attribute_string('event-carousel'); ?>>
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div <?php echo $this->get_render_attribute_string('event-carousel-wrapper'); ?>>
 				<?php
 }

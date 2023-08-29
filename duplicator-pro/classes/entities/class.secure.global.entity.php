@@ -87,6 +87,7 @@ class DUP_PRO_Secure_Global_Entity extends AbstractEntitySingleton implements Up
         $input = SnapUtil::getInputFromType($type);
 
         $this->basic_auth_password = isset($input['basic_auth_password']) ? SnapUtil::sanitizeNSCharsNewlineTrim($input['basic_auth_password']) : '';
+        $this->basic_auth_password = stripslashes($this->basic_auth_password);
         return true;
     }
 

@@ -106,7 +106,7 @@ $import_tab_url = ControllersManager::getMenuLink(
     <p>        
         <b><?php DUP_PRO_U::esc_html_e("Recent Changes"); ?></b>
         <br/>
-        See <a class="dup-changelog-link" href="https://snapcreek.com/duplicator/docs/changelog/" target="_blank" >
+        See <a class="dup-changelog-link" href="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>changelog/" target="_blank" >
             changelog
         </a> for complete list of new features and fixes in this release.  
     </p>
@@ -137,7 +137,7 @@ $import_tab_url = ControllersManager::getMenuLink(
     FEATURE SURVEY -->
     <b><?php DUP_PRO_U::esc_html_e("Want a New Feature?") ?></b><br/>
     <?php
-    echo '<a class="dup-prosurvey-link" target="blank" href="https://snapcreek.com/prosurvey" >' .
+    echo '<a class="dup-prosurvey-link" target="blank" href="' . DUPLICATOR_PRO_BLOG_URL . 'contact/?form=1" >' .
     DUP_PRO_U::__('Just answer this single question') . '</a>' . DUP_PRO_U::__(' to tell us what feature you want added!');
 
     if ($displayExperimental) { ?>

@@ -62,7 +62,12 @@ class Skin_Carousel extends Skin_Base {
 
 		// Collection Attributes
 		$this->parent->add_render_attribute( 'collection', 'class', 'ae-post-collection' );
-		$this->parent->add_render_attribute( 'collection', 'class', 'ae-swiper-container swiper-container' );
+		$swiper_class = 'swiper-container';
+		$swiper_latest = get_option('elementor_experiment-e_swiper_latest');
+		if ( $swiper_latest == 'active' ) {
+			$swiper_class = 'swiper';
+		}
+		$this->parent->add_render_attribute( 'collection', 'class', ['ae-swiper-container', $swiper_class] );
 
 		//Swiper List Wrapper Attributes
 		$this->parent->add_render_attribute( 'post-list-wrapper', 'class', 'ae-post-widget-wrapper ae-swiper-wrapper swiper-wrapper' );

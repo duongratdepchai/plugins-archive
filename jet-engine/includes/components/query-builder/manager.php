@@ -171,6 +171,7 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 		require $this->component_path( 'query-editor.php' );
 		require $this->component_path( 'listings/manager.php' );
 		require $this->component_path( 'query-gateway/manager.php' );
+		require $this->component_path( 'helpers/posts-per-page-manager.php' );
 		require $this->component_path( 'traits/query-count.php' );
 
 		$this->editor   = new Query_Editor();
@@ -582,7 +583,7 @@ class Manager extends \Jet_Engine_Base_WP_Intance {
 			'query_types'         => $this->editor->get_types_for_js(),
 			'types_components'    => $this->editor->get_editor_components_map(),
 			'post_types'          => \Jet_Engine_Tools::get_post_types_for_js(),
-			'taxonomies'          => \Jet_Engine_Tools::get_taxonomies_for_js(),
+			'taxonomies'          => \Jet_Engine_Tools::get_taxonomies_for_js( false, true ),
 			'redirect'            => '', // Set individually for apropriate page,
 			'general_settings'    => array( 'query_type' => 'post' ),
 			'notices'             => array(

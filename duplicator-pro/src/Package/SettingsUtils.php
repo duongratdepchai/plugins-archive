@@ -34,7 +34,7 @@ class SettingsUtils
                     '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
                     'duplicator-pro'
                 ),
-                '<a href="https://snapcreek.com/duplicator/docs/guide/#guide-packs-010-q" target="_blank">',
+                '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'packages-new-step-1-setup" target="_blank">',
                 '</a>'
             );
 

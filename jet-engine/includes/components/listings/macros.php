@@ -353,7 +353,7 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 			$macros = $this->get_all();
 
 			return preg_replace_callback(
-				'/%([a-z_-]+)(\|[a-zA-Z0-9_\-\,\.\+\:\/\s\(\)|\[\]\'\"=]+)?%(\{.+\})?/',
+				'/%([a-z_-]+)(\|\[.*?\]|[a-zA-Z0-9_\-\,\.\+\:\/\s\(\)|\[\]\'\"=\{\}&]+)?%(\{.*?\})?/',
 				function( $matches ) use ( $macros, $field_value ) {
 
 					$found = $matches[1];
@@ -376,24 +376,36 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 						return $matches[0];
 					}
 
-					$args   = isset( $matches[2] ) ? ltrim( $matches[2], '|' ) : false;					
+					$args   = isset( $matches[2] ) ? ltrim( $matches[2], '|' ) : false;
 					$config = isset( $matches[3] ) ? json_decode( $matches[3], true ) : false;
 
+					// Store the initial configs
+					$initial_fallback = $this->get_fallback();
+					$initial_context  = $this->get_macros_context();
+					$initial_before   = $this->get_before();
+					$initial_after    = $this->get_after();
+
+					// Reset the configs except macros context.
+					$this->set_fallback( null );
+					$this->set_before( null );
+					$this->set_after( null );
+
+					// Set the config of current macro
 					if ( $config ) {
 						
 						if ( ! empty( $config['context'] ) ) {
 							$this->set_macros_context( $config['context'] );
 						}
 
-						if ( ! empty( $config['fallback'] ) ) {
+						if ( ! Jet_Engine_Tools::is_empty( $config, 'fallback' ) ) {
 							$this->set_fallback( $config['fallback'] );
 						}
 
-						if ( ! empty( $config['before'] ) ) {
+						if ( ! Jet_Engine_Tools::is_empty( $config, 'before' ) ) {
 							$this->set_before( $config['before'] );
 						}
 
-						if ( ! empty( $config['after'] ) ) {
+						if ( ! Jet_Engine_Tools::is_empty( $config, 'after' ) ) {
 							$this->set_after( $config['after'] );
 						}
 
@@ -418,14 +430,15 @@ if ( ! class_exists( 'Jet_Engine_Listings_Macros' ) ) {
 							$result .= $after;
 						}
 
-					} elseif ( $fallback ) {
+					} elseif ( ! Jet_Engine_Tools::is_empty( $fallback ) ) {
 						$result = $fallback;
 					}
 
-					$this->set_fallback( null );
-					$this->set_macros_context( null );
-					$this->set_before( null );
-					$this->set_after( null );
+					// Set the initial configs
+					$this->set_fallback( $initial_fallback );
+					$this->set_macros_context( $initial_context );
+					$this->set_before( $initial_before );
+					$this->set_after( $initial_after );
 
 					return $result;
 

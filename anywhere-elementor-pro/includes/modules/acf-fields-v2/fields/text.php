@@ -62,7 +62,15 @@ class ACF_Text {
 					$title_raw = Aepro::$_helper->ae_trim_letters( $title_raw, 0, $strip_size, $strip_append );
 				}
 			}
-			$title = '<span class="ae-prefix">' . $before_text . '</span>' . $title_raw . '<span class="ae-suffix">' . $after_text . '</span>';
+			if($before_text != ''){
+				$title_raw = '<span class="ae-prefix">' . $before_text . '</span>' . $title_raw;
+			}
+			if($after_text != ''){
+				$title_raw = $title_raw . '<span class="ae-suffix">' . $after_text . '</span>';
+			}
+
+			$title = $title_raw;
+			//$title = '<span class="ae-prefix">' . $before_text . '</span>' . $title_raw . '<span class="ae-suffix">' . $after_text . '</span>';
 		}
 
 		// Process Content

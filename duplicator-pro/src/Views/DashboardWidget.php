@@ -48,7 +48,7 @@ class DashboardWidget
 
         wp_add_dashboard_widget(
             'duplicator_dashboard_widget',
-            __('Duplicator', 'duplicator'),
+            __('Duplicator', 'duplicator-pro'),
             array(__CLASS__, 'renderContent')
         );
     }
@@ -238,7 +238,7 @@ class DashboardWidget
     {
         $plugins = [
             'google-analytics-for-wordpress/googleanalytics.php' => [
-                'name' => __('MonsterInsights', 'wpforms-lite'),
+                'name' => __('MonsterInsights', 'duplicator-pro'),
                 'slug' => 'google-analytics-for-wordpress',
                 'more' => 'https://www.monsterinsights.com/',
                 'pro'  => [
@@ -246,7 +246,7 @@ class DashboardWidget
                 ],
             ],
             'all-in-one-seo-pack/all_in_one_seo_pack.php' => [
-                'name' => __('AIOSEO', 'wpforms-lite'),
+                'name' => __('AIOSEO', 'duplicator-pro'),
                 'slug' => 'all-in-one-seo-pack',
                 'more' => 'https://aioseo.com/',
                 'pro'  => [
@@ -254,7 +254,7 @@ class DashboardWidget
                 ],
             ],
             'coming-soon/coming-soon.php'                 => [
-                'name' => __('SeedProd', 'wpforms-lite'),
+                'name' => __('SeedProd', 'duplicator-pro'),
                 'slug' => 'coming-soon',
                 'more' => 'https://www.seedprod.com/',
                 'pro'  => [
@@ -262,7 +262,7 @@ class DashboardWidget
                 ],
             ],
             'wp-mail-smtp/wp_mail_smtp.php'               => [
-                'name' => __('WP Mail SMTP', 'wpforms-lite'),
+                'name' => __('WP Mail SMTP', 'duplicator-pro'),
                 'slug' => 'wp-mail-smtp',
                 'more' => 'https://wpmailsmtp.com/',
                 'pro'  => [

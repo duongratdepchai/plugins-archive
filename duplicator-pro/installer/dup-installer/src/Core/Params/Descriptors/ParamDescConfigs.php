@@ -66,6 +66,7 @@ final class ParamDescConfigs implements DescriptorInterface
             ),
             array(
                 'label'          => 'WordPress:',
+                'classes'        => array('requires-db-disable'),
                 'wrapperClasses' => 'medium',
                 'status'         => function (ParamItem $paramObj) {
                     if (
@@ -106,6 +107,7 @@ final class ParamDescConfigs implements DescriptorInterface
             ),
             array(
                 'label'          => 'Apache:',
+                'classes'        => array('requires-db-disable'),
                 'wrapperClasses' => 'medium',
                 'status'         => function (ParamItem $paramObj) {
                     if (
@@ -140,6 +142,7 @@ final class ParamDescConfigs implements DescriptorInterface
             ),
             array(
                 'label'          => 'General:',
+                'classes'        => array('requires-db-disable'),
                 'wrapperClasses' => 'medium',
                 'status'         => function (ParamItem $paramObj) {
                     if (
@@ -405,17 +408,29 @@ final class ParamDescConfigs implements DescriptorInterface
                 }
                 break;
             case DUPX_InstallerState::INSTALL_RBACKUP_SINGLE_SITE:
-                if ($archiveConfig->mu_mode != 0 || !DUPX_InstallerState::isInstallerCreatedInThisLocation()) {
+                if (
+                    !$archiveConfig->hasRequiredRestoreComponents() ||
+                    $archiveConfig->mu_mode != 0 ||
+                    !DUPX_InstallerState::isInstallerCreatedInThisLocation()
+                ) {
                     return ParamOption::OPT_HIDDEN;
                 }
                 break;
             case DUPX_InstallerState::INSTALL_RBACKUP_MULTISITE_SUBDOMAIN:
-                if ($archiveConfig->mu_mode != 1 || !DUPX_InstallerState::isInstallerCreatedInThisLocation()) {
+                if (
+                    !$archiveConfig->hasRequiredRestoreComponents() ||
+                    $archiveConfig->mu_mode != 1 ||
+                    !DUPX_InstallerState::isInstallerCreatedInThisLocation()
+                ) {
                     return ParamOption::OPT_HIDDEN;
                 }
                 break;
             case DUPX_InstallerState::INSTALL_RBACKUP_MULTISITE_SUBFOLDER:
-                if ($archiveConfig->mu_mode != 2 || !DUPX_InstallerState::isInstallerCreatedInThisLocation()) {
+                if (
+                    !$archiveConfig->hasRequiredRestoreComponents() ||
+                    $archiveConfig->mu_mode != 2 ||
+                    !DUPX_InstallerState::isInstallerCreatedInThisLocation()
+                ) {
                     return ParamOption::OPT_HIDDEN;
                 }
                 break;
@@ -463,14 +478,14 @@ final class ParamDescConfigs implements DescriptorInterface
         switch ($archiveConfig->mu_mode) {
             case 0:
                 $acceptValues[] = DUPX_InstallerState::INSTALL_SINGLE_SITE;
-                if ($isSameLocation) {
+                if ($archiveConfig->hasRequiredRestoreComponents() && $isSameLocation) {
                     $acceptValues[] = DUPX_InstallerState::INSTALL_RBACKUP_SINGLE_SITE;
                 }
                 break;
             case 1:
                 if (!$isManaged && !$archiveConfig->isPartialNetwork()) {
                     $acceptValues[] = DUPX_InstallerState::INSTALL_MULTISITE_SUBDOMAIN;
-                    if ($isSameLocation) {
+                    if ($archiveConfig->hasRequiredRestoreComponents() && $isSameLocation) {
                         $acceptValues[] = DUPX_InstallerState::INSTALL_RBACKUP_MULTISITE_SUBDOMAIN;
                     }
                 }
@@ -478,7 +493,7 @@ final class ParamDescConfigs implements DescriptorInterface
             case 2:
                 if (!$isManaged && !$archiveConfig->isPartialNetwork()) {
                     $acceptValues[] = DUPX_InstallerState::INSTALL_MULTISITE_SUBFOLDER;
-                    if ($isSameLocation) {
+                    if ($archiveConfig->hasRequiredRestoreComponents() && $isSameLocation) {
                         $acceptValues[] = DUPX_InstallerState::INSTALL_RBACKUP_MULTISITE_SUBFOLDER;
                     }
                 }

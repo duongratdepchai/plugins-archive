@@ -2215,6 +2215,7 @@ if (!function_exists('ep_crypto_data')) {
 
 if (!function_exists('element_pack_render_mini_cart_item')) {
     function element_pack_render_mini_cart_item($cart_item_key, $cart_item) {
+
         $_product           = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
         $is_product_visible = ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_widget_cart_item_visible', true, $cart_item, $cart_item_key));
 

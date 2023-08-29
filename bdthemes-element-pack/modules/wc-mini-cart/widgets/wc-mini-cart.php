@@ -1483,7 +1483,7 @@ class WC_Mini_Cart extends Module_Base {
 			$this->add_render_attribute('offcanvas', 'data-bdt-offcanvas', 'esc-close: false;');
 		}
 
-		?>
+	?>
 
 		<?php $this->render_button(); ?>
 
@@ -1514,7 +1514,7 @@ class WC_Mini_Cart extends Module_Base {
 			</div>
 		</div>
 
-		<?php
+<?php
 	}
 
 	public function render_plain_content() {

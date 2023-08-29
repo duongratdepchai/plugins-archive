@@ -41,11 +41,11 @@ $message        = '';
                     <?php DUP_PRO_U::esc_html_e('Complete Online Documentation'); ?><br/>
                     <select id="dup-support-kb-lnks" style="margin-top:18px; font-size:16px; min-width: 170px">
                         <option value="NULL"> <?php DUP_PRO_U::esc_html_e('Choose A Section') ?> </option>
-                        <option value="https://snapcreek.com/duplicator/docs/quick-start/"><?php DUP_PRO_U::esc_html_e('Quick Start') ?></option>
-                        <option value="https://snapcreek.com/duplicator/docs/guide/"><?php DUP_PRO_U::esc_html_e('User Guide') ?></option>
-                        <option value="https://snapcreek.com/duplicator/docs/faqs-tech/"><?php DUP_PRO_U::esc_html_e('FAQs') ?></option>
-                        <option value="https://snapcreek.com/duplicator/docs/changelog/"><?php DUP_PRO_U::esc_html_e('Change Log') ?></option>
-                        <option value="https://snapcreek.com/dashboard"><?php DUP_PRO_U::esc_html_e('Dashboard') ?></option>
+                        <option value="<?php echo DUPLICATOR_PRO_BLOG_URL; ?>knowledge-base-article-categories/quick-start/"><?php DUP_PRO_U::esc_html_e('Quick Start') ?></option>
+                        <option value="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>"><?php DUP_PRO_U::esc_html_e('User Guide') ?></option>
+                        <option value="<?php echo DUPLICATOR_PRO_TECH_FAQ_URL; ?>"><?php DUP_PRO_U::esc_html_e('FAQs') ?></option>
+                        <option value="<?php echo DUPLICATOR_PRO_DUPLICATOR_DOCS_URL; ?>changelog/"><?php DUP_PRO_U::esc_html_e('Change Log') ?></option>
+                        <option value="<?php echo DUPLICATOR_PRO_BLOG_URL; ?>dashboard"><?php DUP_PRO_U::esc_html_e('Dashboard') ?></option>
                     </select>
                 </div>
             </div>
@@ -86,11 +86,11 @@ $message        = '';
     </div>
     <div style="margin-top:112px; text-align:center; display:<?php echo $thanks_display; ?>">
         <p style="margin-bottom:0px; font-size:32px"><?php DUP_PRO_U::esc_html_e('Thanks, we\'ll get back to you shortly.'); ?></p>
-        <p style="font-size:12px"><?php DUP_PRO_U::esc_html_e('*Contact support@snapcreek.com if you don\'t get a confirmation email within an hour.'); ?></p>
+        <p style="font-size:12px"><?php DUP_PRO_U::esc_html_e('*Contact support@duplicator.com if you don\'t get a confirmation email within an hour.'); ?></p>
     </div>
     <div style="margin-top:112px; text-align:center; display:<?php echo $error_display; ?>">
         <p style="margin-bottom:0px; font-size:32px"><?php DUP_PRO_U::esc_html_e('There was a problem sending the email.'); ?></p>
-        <p><?php DUP_PRO_U::esc_html_e("We had a problem sending the support email. Instead, send your problem or question to") ?> <a href='mailto:support@snapcreek.com' target='_blank'>support@snapcreek.com.</a></p>
+        <p><?php DUP_PRO_U::esc_html_e("We had a problem sending the support email. Instead, send your problem or question to") ?> <a href='mailto:support@duplicator.com' target='_blank'>support@duplicator.com.</a></p>
 
         <p style='font-weight:bold'><?php echo $message; ?></p>
     </div>

@@ -320,6 +320,7 @@ class Skin_Text_Area extends Skin_Text {
 			} else {
 				$text = Aepro::$_helper->ae_trim_letters( $text, 0, $strip_size, $strip_append, false );
 			}
+			$text = wp_strip_all_tags($text);
 		}
 
 		// Process Content

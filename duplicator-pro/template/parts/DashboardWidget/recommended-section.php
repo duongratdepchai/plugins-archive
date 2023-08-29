@@ -41,7 +41,7 @@ $moreUrl    = $plugin['more'] . '?' . http_build_query([
             -
             <span class="action-links">
                 <?php if (CapMng::can('install_plugins', false) && CapMng::can('activate_plugins', false)) { ?>
-                    <a href="<?php echo esc_url($installUrl); ?>"><?php esc_html_e('Install', 'wpforms-lite'); ?></a>
+                    <a href="<?php echo esc_url($installUrl); ?>"><?php esc_html_e('Install', 'duplicator-pro'); ?></a>
                 <?php } ?>
                 <a href="<?php echo esc_url($moreUrl); ?>" target="_blank" ><?php
                     esc_html_e('Learn More', 'duplicator-pro');

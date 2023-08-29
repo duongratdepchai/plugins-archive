@@ -81,7 +81,7 @@ class DUPX_Validation_test_php_functionalities extends DUPX_Validation_abstract_
                 true,
                 'https://www.php.net/manual/en/class.ziparchive.php',
                 '<i style="font-size:12px">'
-                    . '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q" target="_blank">'
+                    . '<a href="' . DUPX_Constants::FAQ_URL . 'how-to-work-with-the-different-zip-engines" target="_blank">'
                     . 'Overview on how to enable ZipArchive</i></a>'
             );
         }

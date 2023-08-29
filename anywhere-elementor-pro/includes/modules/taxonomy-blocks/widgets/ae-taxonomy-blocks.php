@@ -7,6 +7,7 @@ use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Box_Shadow;
 use Aepro\Base\Widget_Base;
+use Aepro\Helper;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Typography;
@@ -202,20 +203,24 @@ class AeTaxonomyBlocks extends Widget_Base {
 
 		$this->end_controls_tabs();
 
-		$this->add_control(
-			'term_orderby',
-			[
-				'label'   => __( 'Order By', 'ae-pro' ),
-				'type'    => Controls_Manager::SELECT,
-				'options' => [
+		$term_order = [
 					'id'          => __( 'ID', 'ae-pro' ),
 					'slug'        => __( 'Slug', 'ae-pro' ),
 					'name'        => __( 'Name', 'ae-pro' ),
 					'description' => __( 'Description', 'ae-pro' ),
 					'term_group'  => __( 'Term Group', 'ae-pro' ),
+					'menu_order'  => __( 'Menu Order', 'ae-pro' ),
 					'count'       => __( 'Count', 'ae-pro' ),
 					'none'        => __( 'None', 'ae-pro' ),
-				],
+		];
+
+		$this->add_control(
+			'term_orderby',
+			[
+				'label'   => __( 'Order By', 'ae-pro' ),
+				'type'    => Controls_Manager::SELECT,
+				'options' => $term_order,
+				'description' => '"Menu Order" is only for Woocommerce Product Categories',
 				'default' => 'name',
 			]
 		);
@@ -257,6 +262,17 @@ class AeTaxonomyBlocks extends Widget_Base {
 				'condition'    => [
 					'ae_taxonomy!' => 'child_of_current',
 				],
+			]
+		);
+
+		$this->add_control(
+			'term_query_filter',
+			[
+				'label'       => __( 'Query Filter', 'ae-pro' ),
+				'type'        => Controls_Manager::TEXT,
+				'separator' => 'before',
+				//phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+				'description' => __( Aepro::$_helper->get_widget_admin_note_html( '<span style="color:red">Danger Ahead!!</span> It is a developer oriented feature. Only use if you know how exaclty WordPress queries and filters works.', 'https://wpvibes.link/go/feature-post-blocks-query-filter', 'Read Instructions' ), 'ae-pro' ),
 			]
 		);
 

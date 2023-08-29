@@ -253,7 +253,7 @@ class DUP_PRO_Extraction extends AbstractJsonSerializable
 
         Log::info('BEFORE EXTRACION ACTIONS');
 
-        if (DUPX_ArchiveConfig::getInstance()->exportOnlyDB) {
+        if (DUPX_ArchiveConfig::getInstance()->isDBOnly()) {
             Log::info('EXPORT DB ONLY CHECKS');
             $this->exportOnlyDB();
         }
@@ -481,6 +481,7 @@ class DUP_PRO_Extraction extends AbstractJsonSerializable
             -1),
             'includedFiles'            => array(),
             'dir_mode_override'        => 'u+rwx',
+            'keep_file_time'          => ($paramsManager->getValue(PrmMng::PARAM_FILE_TIME) == 'original') ? true : false
         );
 
         $params['filtered_files'][] = DupArchive::INDEX_FILE_NAME;
@@ -541,8 +542,8 @@ class DUP_PRO_Extraction extends AbstractJsonSerializable
                 'Please be sure the archive is completely downloaded before running the installer. ' .
                 'Try to extract the archive manually to make sure the file is not corrupted.';
             $zip_err_msg .= "<br/><br/><b>To resolve error see <a href='" .
-                DUPX_Constants::FAQ_URL . "/#faq-installer-130-q' target='_blank'>" .
-                DUPX_Constants::FAQ_URL . "/#faq-installer-130-q</a></b>";
+                DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues/' target='_blank'>" .
+                DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues/</a></b>";
             Log::info($zip_err_msg);
             throw new Exception("Couldn't open zip archive.");
         }
@@ -596,7 +597,8 @@ class DUP_PRO_Extraction extends AbstractJsonSerializable
                 ) {
                     Log::info("SKIPPING NOT IN ZIPATH:\"" . Log::v2str($extract_filename) . "\"", Log::LV_DETAILED);
                 } else {
-                    $this->extractFile($zip, $extract_filename, $archiveConfig->destFileFromArchiveName($extract_filename));
+                    $destFilePath = $archiveConfig->destFileFromArchiveName($extract_filename);
+                    $this->extractFile($zip, $extract_filename, $destFilePath);
                 }
             }
 
@@ -787,6 +789,9 @@ class DUP_PRO_Extraction extends AbstractJsonSerializable
                 }
                 // SET ONLY FILES
                 self::setPermsFromParams($newFilePath, false);
+                if (PrmMng::getInstance()->getValue(PrmMng::PARAM_FILE_TIME) == 'current') {
+                    touch($newFilePath, time());
+                }
             }
         } catch (ErrorException $ex) {
             // This is the fatal exception that we just want to pass further,
@@ -1112,8 +1117,8 @@ class DUP_PRO_Extraction extends AbstractJsonSerializable
         if ($shellOutput !== false && !$shellOutput->isEmpty()) {
             $stderr       = $shellOutput->getOutputAsString();
             $zip_err_msg  = 'Failed to extract the archive using shell execution unzip: ' . $stderr;
-            $zip_err_msg .= "<br/><br/><b>To resolve error see <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q' " .
-            "target='_blank'>https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q</a></b>";
+            $zip_err_msg .= "<br/><br/><b>To resolve error see <a href='" . DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues' " .
+            "target='_blank'>" . DUPX_Constants::FAQ_URL . "how-to-fix-installer-archive-extraction-issues</a></b>";
             Log::error($zip_err_msg);
         }
     }

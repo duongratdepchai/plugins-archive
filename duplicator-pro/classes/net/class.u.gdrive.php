@@ -324,8 +324,8 @@ class DUP_PRO_GDrive_U
             if (DUP_PRO_STR::contains($message, 'storage quota has been exceeded')) {
                 $system_global = DUP_PRO_System_Global_Entity::getInstance();
                 $system_global->addTextFix(
-                    DUP_PRO_U::esc_html__('Google Drive out of storage space'),
-                    DUP_PRO_U::esc_html__('Free up space on Google Drive or increase storage quota.')
+                    esc_html__('Google Drive out of storage space', "duplicator-pro"),
+                    esc_html__('Free up space on Google Drive or increase storage quota.', "duplicator-pro")
                 );
             }
         }

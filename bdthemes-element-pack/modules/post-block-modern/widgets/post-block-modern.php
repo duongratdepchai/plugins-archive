@@ -1133,6 +1133,18 @@ class Post_Block_Modern extends Module_Base {
 		);
 
 		$this->add_responsive_control(
+			'wrap_padding',
+			[
+				'label'      => __('Right Part Wrap Padding', 'bdthemes-element-pack') . BDTEP_NC,
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', '%', 'em'],
+				'selectors' => [
+					'{{WRAPPER}} .bdt-post-block-modern .right-part-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
 			'item_padding',
 			[
 				'label'      => __('Right Part Padding', 'bdthemes-element-pack') . BDTEP_NC,

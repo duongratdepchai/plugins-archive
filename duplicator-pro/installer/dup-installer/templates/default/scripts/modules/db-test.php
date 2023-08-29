@@ -26,6 +26,22 @@ if (DUPX_InstallerState::getInstance()->getMode() === DUPX_InstallerState::MODE_
 }
 ?>
 <script>
+    const fileExtractMode = <?php echo SnapJson::jsonEncode(DUPX_InstallerState::dbDoNothing()); ?>;
+
+    DUPX.toggleFileExtractMode = function(enable = false)   
+    {
+        if (enable) {
+            $('.requires-db-hide').hide();
+            $('.requires-db-disable').prop('disabled', true);
+            $('.requires-no-db').show();
+            $('#label-for-advanced').trigger('click');
+        } else {
+            $('.requires-db-hide').show();
+            $('.requires-db-disable').prop('disabled', false);
+            $('.requires-no-db').hide();
+        }
+    }
+
     const dbViewModeInputId = <?php echo SnapJson::jsonEncode($paramsManager->getFormItemId(PrmMng::PARAM_DB_VIEW_MODE)); ?>;
     const dbHostInputId = <?php echo SnapJson::jsonEncode($paramsManager->getFormItemId(PrmMng::PARAM_DB_HOST)); ?>;
     const dbNameInputId = <?php echo SnapJson::jsonEncode($paramsManager->getFormItemId(PrmMng::PARAM_DB_NAME)); ?>;
@@ -39,6 +55,8 @@ if (DUPX_InstallerState::getInstance()->getMode() === DUPX_InstallerState::MODE_
         $('.s2-basic-pane .s2-warning-manualdb').hide();
         $('.s2-basic-pane .s2-warning-emptydb').hide();
         $('.s2-basic-pane .s2-warning-renamedb').hide();
+
+        DUPX.toggleFileExtractMode(fileExtractMode);
         switch (action)
         {
             case 'create'  :
@@ -52,8 +70,12 @@ if (DUPX_InstallerState::getInstance()->getMode() === DUPX_InstallerState::MODE_
             case 'manual'  :
                 $('.s2-basic-pane .s2-warning-manualdb').show(300);
                 break;
+            case 'dbdonothing':
+                DUPX.toggleFileExtractMode(true);
+                break;
         }
     };
+
 
     //DOCUMENT INIT
     $(document).ready(function ()

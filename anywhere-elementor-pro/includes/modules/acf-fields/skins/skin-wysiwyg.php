@@ -96,7 +96,8 @@ class Skin_Wysiwyg extends Skin_Text_Area {
 		$this->parent->add_render_attribute( 'title-class', 'class', 'ae-acf-content-wrapper' );
 
 		$this->parent->add_render_attribute( 'wrapper-class', 'class', 'ae-acf-wrapper' );
-		$this->parent->add_render_attribute( 'wrapper-class', 'class', 'ae-acf-unfold-' . $settings[ $this->get_control_id( 'enable_unfold' ) ] );
+
+		$this->parent->add_render_attribute( 'wrapper-class', 'class', 'ae-acf-unfold-' . $unfold );
 
 		if ( $text === '' ) {
 			$this->parent->add_render_attribute( 'wrapper-class', 'class', 'ae-hide' );
@@ -114,6 +115,7 @@ class Skin_Wysiwyg extends Skin_Text_Area {
 			} else {
 				$text = Aepro::$_helper->ae_trim_letters( $text, 0, $strip_size, $strip_append );
 			}
+			$text = wp_strip_all_tags($text);
 		}
 
 		?>

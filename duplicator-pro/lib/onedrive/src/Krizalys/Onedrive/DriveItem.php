@@ -154,8 +154,16 @@ abstract class DriveItem
 
         $this->_size = (int) $result->size;
 
-        /** @todo Handle volatile existence (eg. present only for files). */
-        $this->_source = (string) $result->{"@content.downloadUrl"};
+        /** Handle volatile existence (eg. present only for files). */
+        if (property_exists($result, '@microsoft.graph.downloadUrl')) {
+            $this->_source = (string) $result->{"@microsoft.graph.downloadUrl"};
+        } else if (property_exists($result, '@content.downloadUrl')) {
+            $this->_source = (string) $result->{"@content.downloadUrl"};
+        } else if (property_exists($result, 'source')) {
+            $this->_source = (string) $result->source;
+        } else {
+            $this->_source = "";
+        }
 
         $this->_createdTime = strtotime($result->createdDateTime);
         $this->_updatedTime = strtotime($result->fileSystemInfo->lastModifiedDateTime);

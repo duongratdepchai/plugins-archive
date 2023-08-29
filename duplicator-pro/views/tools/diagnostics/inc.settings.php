@@ -69,11 +69,11 @@ SERVER SETTINGS -->
                 <td><?php echo esc_html(PHP_OS); ?></td>
             </tr>
             <tr>
-                <td><?php _e("Timezone"); ?></td>
+                <td><?php _e('Timezone', 'duplicator-pro'); ?></td>
                 <td><?php echo esc_html($timezone_string); ?> &nbsp; <small><i>This is a <a href='options-general.php'>WordPress setting</a></i></small></td>
             </tr>
             <tr>
-                <td><?php _e("Server Time"); ?></td>
+                <td><?php _e('Server Time', 'duplicator-pro'); ?></td>
                 <td><?php echo esc_html(current_time("Y-m-d H:i:s")); ?></td>
             </tr>
             <tr>
@@ -152,7 +152,7 @@ SERVER SETTINGS -->
                 <td><?php DUP_PRO_U::esc_html_e("Managed hosting "); ?></td>
                 <td><?php
                     echo (DUP_PRO_Custom_Host_Manager::getInstance()->isManaged() === false) ?
-                        __('No managed hosting detected') :
+                        __('No managed hosting detected', 'duplicator-pro') :
                         implode(', ', DUP_PRO_Custom_Host_Manager::getInstance()->getActiveHostings());
                 ?>
                 </td>

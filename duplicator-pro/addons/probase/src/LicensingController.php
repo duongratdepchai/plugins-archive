@@ -14,7 +14,9 @@
 
 namespace Duplicator\Addons\ProBase;
 
+use DUP_PRO_Log;
 use DUP_PRO_U;
+use DUP_PRO_UI_Notice;
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Addons\ProBase\License\License;
 use Duplicator\Addons\ProBase\License\Notices;
@@ -180,7 +182,6 @@ class LicensingController
                         $result['license_message'] = __("Passwords don't match.", 'duplicator-pro');
                         return $result;
                     }
-                    $updateGlobal = true;
                 } else {
                     if ($sglobal->lkp !== $newPassword) {
                         $result['license_message'] = __("Wrong password entered. Please enter the correct password.", 'duplicator-pro');
@@ -312,7 +313,7 @@ class LicensingController
         );
 
         try {
-            if (($licenseKey = SnapUtil::sanitizeStrictInput(SnapUtil::INPUT_REQUEST, '_license_key')) === false) {
+            if (($licenseKey = SnapUtil::filterInputDefaultSanitizeString(SnapUtil::INPUT_REQUEST, '_license_key')) === false) {
                 throw new Exception(__('Please enter a valid key. Key should be 32 characters long.', 'duplicator-pro'));
             }
 
@@ -335,6 +336,7 @@ class LicensingController
                     throw new Exception(__('Invalid license key.', 'duplicator-pro'));
                 case License::ACTIVATION_REQUEST_ERROR:
                     $result['license_request_error'] = License::getLastRequestError();
+                    DUP_PRO_Log::traceObject('License request error', $result['license_request_error']);
                     throw new Exception(self::getRequestErrorMessage());
                 default:
                     throw new Exception(__('Error activating license.', 'duplicator-pro'));
@@ -358,9 +360,33 @@ class LicensingController
     {
         switch ($currentLevelSlugs[1]) {
             case self::L2_SLUG_LICENSING:
+                self::renderLicenseMessage();
                 TplMng::getInstance()->render('licensing/main');
                 break;
         }
+    }
+
+    /**
+     * Render activation/deactivation license message
+     *
+     * @return void
+     */
+    protected static function renderLicenseMessage()
+    {
+        $tplData = TplMng::getInstance()->getGlobalData();
+        if (empty($tplData['license_message'])) {
+            return;
+        }
+
+        $success = (isset($tplData['license_success']) && $tplData['license_success'] === true);
+        DUP_PRO_UI_Notice::displayGeneralAdminNotice(
+            TplMng::getInstance()->render('licensing/notices/activation_message', [], false),
+            ($success ? DUP_PRO_UI_Notice::GEN_SUCCESS_NOTICE : DUP_PRO_UI_Notice::GEN_ERROR_NOTICE),
+            false,
+            [],
+            [],
+            true
+        );
     }
 
     /**
@@ -441,7 +467,7 @@ class LicensingController
                 '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
                 'duplicator-pro'
             ),
-            '<a href="https://duplicator.com/knowledge-base/how-to-resolve-license-activation-issues/" target="_blank">',
+            '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-resolve-license-activation-issues/" target="_blank">',
             '</a>'
         );
         return $result;

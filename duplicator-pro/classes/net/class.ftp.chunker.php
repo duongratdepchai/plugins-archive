@@ -62,13 +62,14 @@ class DUP_PRO_FTP_Chunker
         if ($this->ftp_connection_id !== false) {
             $message = sprintf(__('Successfully FTP connected to %1$s:%2$d', 'duplicator-pro'), $this->server, $this->port);
             $statusMsgsObj->addMessage($message);
-            DUP_PRO_Log::trace($message);
+            DUP_PRO_Log::trace("Successfully FTP connected to $this->server:$this->port");
             $statusMsgsObj->addMessage(__('Attempting to log in with username and password', 'duplicator-pro'));
+            DUP_PRO_Log::trace("Attempting to log in with username and password.");
             $this->ftp_login_result = ftp_login($this->ftp_connection_id, $this->username, $this->password);
             if ($this->ftp_login_result) {
                 $message = sprintf(__('Logged user %1$s into %2$s', 'duplicator-pro'), $this->username, $this->server);
                 $statusMsgsObj->addMessage($message);
-                DUP_PRO_Log::trace($message);
+                DUP_PRO_Log::trace("Logged user $this->username into $this->server");
                 if ($this->passive_mode) {
                     if (ftp_pasv($this->ftp_connection_id, true)) {
                             $statusMsgsObj->addMessage(__('Set connection to passive', 'duplicator-pro'));
@@ -76,7 +77,7 @@ class DUP_PRO_FTP_Chunker
                             $opened = true;
                     } else {
                         $statusMsgsObj->addMessage(__('Couldn\'t set the connection into passive mode', 'duplicator-pro'));
-                        DUP_PRO_Log::traceError("Couldn't set the connection into passive mode" . $this->get_info());
+                        DUP_PRO_Log::traceError("Couldn't set the connection into passive mode: " . $this->get_info());
                     }
                 } else {
                     $opened = true;
@@ -86,12 +87,12 @@ class DUP_PRO_FTP_Chunker
             if ($this->ftp_login_result == false) {
                 $message = sprintf(__('Error logging in user %1$s, double check your username and password', 'duplicator-pro'), $this->username);
                 $statusMsgsObj->addMessage($message);
-                DUP_PRO_Log::trace($message);
+                DUP_PRO_Log::trace("Error logging in user $this->username, double check your username and password");
             }
         } else {
             $message = sprintf(__('Error connecting to FTP server %1$s:%2$d', 'duplicator-pro'), $this->server, $this->port);
             $statusMsgsObj->addMessage($message);
-            DUP_PRO_Log::trace($message);
+            DUP_PRO_Log::trace("Error connecting to FTP server $this->server:$this->port");
         }
 
         return $opened;
@@ -132,7 +133,7 @@ class DUP_PRO_FTP_Chunker
     {
         $closed = false;
         if ($this->ftp_connection_id !== false) {
-            DUP_PRO_Log::traceObject("closing ftp connection", $this->ftp_connection_id);
+            DUP_PRO_Log::traceObject("Closing ftp connection", $this->ftp_connection_id);
             $closed = ftp_close($this->ftp_connection_id);
         } else {
             $closed = true;
@@ -154,22 +155,19 @@ class DUP_PRO_FTP_Chunker
             $timeout    = 15;
             $start_time = time();
             while (!$uploaded) {
-                DUP_PRO_Log::trace("file calling upload chunk offset=$offset");
-
+                DUP_PRO_Log::trace("Attempting to call upload_chunk with offset=$offset");
                 $ftp_upload_info = $this->upload_chunk($source_filepath, $storage_folder, $timeout, $offset, 0, $dest_filename);
-                DUP_PRO_Log::trace("after upload chunk file");
+                DUP_PRO_Log::trace("Call to upload_chunk completed");
                 $offset = $ftp_upload_info->next_offset;
                 if ($ftp_upload_info->success) {
-                    DUP_PRO_Log::trace("1");
+                    DUP_PRO_Log::trace("SUCCESS: File is uploaded successfully.");
                     $uploaded = true;
                 } elseif ($ftp_upload_info->error_details != null) {
                     DUP_PRO_Log::traceError("Error uploading $source_filepath to $storage_folder: $ftp_upload_info->error_details");
                     break;
                 } elseif (time() - $start_time >= $timeout) {
-                    DUP_PRO_Log::traceError("File transfer timed out");
-                } else {
-                    DUP_PRO_Log::trace("2");
-                //   $offset = $ftp_upload_info->next_offset;
+                    DUP_PRO_Log::traceError("File transfer timed out.");
+                    break;
                 }
             }
         } else {
@@ -197,18 +195,16 @@ class DUP_PRO_FTP_Chunker
 
         $ftp_upload_info = new FTPUploadInfo();
         if ($this->is_opened()) {
-            $start_time = time();
-            DUP_PRO_Log::trace("call upload chunk");
+            $start_time        = time();
             $local_file_handle = fopen($source_filepath, 'rb');
             if ($local_file_handle !== false) {
                 if (fseek($local_file_handle, $offset) != 0) {
-                    $error_message = sprintf(DUP_PRO_U::__('Couldnt seek to $offset in %1$s'), $source_filepath);
-                    DUP_PRO_Log::trace($error_message);
-                    $ftp_upload_info->error_details = $error_message;
+                    DUP_PRO_Log::trace("Couldnt seek to offset:$offset in $source_filepath");
+                    $ftp_upload_info->error_details = sprintf(__('Couldnt seek to offset in %1$s', "duplicator-pro"), $source_filepath);
                     $ftp_upload_info->next_offset   = $offset;
-                    DUP_PRO_Log::trace("closing local file handle");
+                    DUP_PRO_Log::trace("Closing local file handle");
                     fclose($local_file_handle);
-                    DUP_PRO_Log::trace("local file handle closed");
+                    DUP_PRO_Log::trace("Local file handle closed");
                     return $ftp_upload_info;
                 }
 
@@ -216,13 +212,13 @@ class DUP_PRO_FTP_Chunker
                 $dest_filepath = "$storage_folder/$filename";
 
                 if ($offset == 0) {
-                    DUP_PRO_Log::trace("Deleting $dest_filepath before attempting to upload it");
-    // Delete any file that may be there already
+                    DUP_PRO_Log::trace("Deleting $dest_filepath before attempting to upload it, if it exists.");
+                    // Delete any file that may be there already
                     $this->delete($dest_filepath);
                 }
 
                 $time_passed = time() - $start_time;
-        // $ret = ftp_nb_fput($this->ftp_connection_id, $dest_filepath, $local_file_handle, FTP_BINARY, $offset);
+                // $ret = ftp_nb_fput($this->ftp_connection_id, $dest_filepath, $local_file_handle, FTP_BINARY, $offset);
                 if ($offset == 0) {
                     $ret = ftp_nb_fput($this->ftp_connection_id, $dest_filepath, $local_file_handle, FTP_BINARY);
                 } else {
@@ -239,7 +235,6 @@ class DUP_PRO_FTP_Chunker
                     }
                     $next_offset = ftell($local_file_handle);
 
-
                     $time_passed = time() - $start_time;
                     if ($time_passed < $max_upload_time_in_sec) {
                         $ret = ftp_nb_continue($this->ftp_connection_id);
@@ -247,19 +242,17 @@ class DUP_PRO_FTP_Chunker
                 }
 
                 if ($ret == FTP_FAILED) {
-                    $error_message = sprintf(DUP_PRO_U::__('FTP failed during transfer of %1$s'), $source_filepath);
-                    DUP_PRO_Log::trace($error_message);
-                    $ftp_upload_info->error_details = $error_message;
-                    $ftp_upload_info->next_offset   = $offset;
+                    $ftp_upload_info->error_details = sprintf(__('FTP failed during transfer of %1$s', "duplicator-pro"), $source_filepath);
+                    DUP_PRO_Log::trace("FTP failed during transfer of $source_filepath");
+                    $ftp_upload_info->next_offset = $offset;
                 } elseif ($ret == FTP_FINISHED) {
-                    DUP_PRO_Log::trace("ftp finished with offset $next_offset");
-
                     $next_offset = $this->finish_file_chunk($local_file_handle, $next_offset);
-
+                    DUP_PRO_Log::trace("FTP finished with offset $next_offset");
 
                     if ($next_offset == -1) {
-                        $ftp_upload_info->error_details = DUP_PRO_U::__('Problem finishing file chunk transfer');
-                        $ftp_upload_info->fatal_error   = true;
+                        $ftp_upload_info->error_details = __('Problem finishing file chunk transfer', "duplicator-pro");
+                        DUP_PRO_Log::trace("Problem finishing file chunk transfer");
+                        $ftp_upload_info->fatal_error = true;
 
                         $this->delete($dest_filepath);
                     } else {
@@ -268,50 +261,45 @@ class DUP_PRO_FTP_Chunker
 
                     $ftp_size   = ftp_size($this->ftp_connection_id, $dest_filepath);
                     $local_size = filesize($source_filepath);
-                /*
+                    /*
                     error_log('$ftp_size -> '.$ftp_size);
                     error_log('$local_size -> '.$local_size);
                     */
 
                     // rsr temp
-            //       $ftp_size = 1;
+                    // $ftp_size = 1;
 
                     if (($ftp_size != -1) && ($ftp_size != $local_size)) {
-                        $error_message = sprintf(DUP_PRO_U::__('FTP size mismatch for %1$s. Local file=%2$d bytes while server\'s file is %3$d bytes.'), $source_filepath, $local_size, $ftp_size);
-                        DUP_PRO_Log::trace($error_message);
-                        $ftp_upload_info->error_details = $error_message;
-                        $ftp_upload_info->fatal_error   = true;
+                        $ftp_upload_info->error_details = sprintf(__('FTP size mismatch for %1$s. Local file=%2$d bytes while server\'s file is %3$d bytes.', "duplicator-pro"), $source_filepath, $local_size, $ftp_size);
+                        DUP_PRO_Log::trace("FTP size mismatch for $source_filepath. Local file has $local_size bytes while server's file has $ftp_size bytes.");
+                        $ftp_upload_info->fatal_error = true;
                         $this->delete($dest_filepath);
                     } else {
-                        DUP_PRO_Log::trace("ftp size={$ftp_size}");
-                        DUP_PRO_Log::trace(sprintf(DUP_PRO_U::__('FTP sizes match for %1$s. Local file=%2$d bytes while server\'s file is %3$d bytes.'), $source_filepath, $local_size, $ftp_size));
+                        DUP_PRO_Log::trace("FTP size={$ftp_size}");
+                        DUP_PRO_Log::trace("FTP sizes match for $source_filepath. Local file has $local_size bytes while server's file has $ftp_size bytes.");
                         $ftp_upload_info->success = true;
                     }
                 } else {
-                    DUP_PRO_Log::trace("timed out so saving off offset $next_offset");
-
-
                     $next_offset = $this->finish_file_chunk($local_file_handle, $next_offset);
+                    DUP_PRO_Log::trace("Probably timed out, so saving offset $next_offset");
 
                     if ($next_offset == -1) {
-                        $ftp_upload_info->error_details = DUP_PRO_U::__('Problem finishing file chunk transfer');
-                        $ftp_upload_info->fatal_error   = true;
+                        $ftp_upload_info->error_details = __('Problem finishing file chunk transfer', "duplicator-pro");
+                        DUP_PRO_Log::trace("Problem finishing file chunk transfer");
+                        $ftp_upload_info->fatal_error = true;
                     } else {
                         DUP_PRO_Log::trace("FTP CHUNK OFFSET OUT=$next_offset");
                         $ftp_upload_info->next_offset = $next_offset;
                     }
-
-
-                     //$ret = FTP_MOREDATA
+                    //$ret = FTP_MOREDATA
                 }
 
-                DUP_PRO_Log::trace("closing local file handle");
+                DUP_PRO_Log::trace("Closing local file handle");
                 fclose($local_file_handle);
-                DUP_PRO_Log::trace("local file handle closed");
+                DUP_PRO_Log::trace("Local file handle closed");
             } else {
-                $message = sprintf(DUP_PRO_U::__('Error opening %1$ for FTP'), $source_filepath);
-                DUP_PRO_Log::trace($message);
-                $ftp_upload_info->error_details = $message;
+                $ftp_upload_info->error_details = sprintf(__('Error opening %1$ for FTP', "duplicator-pro"), $source_filepath);
+                DUP_PRO_Log::trace("Error opening $source_filepath for FTP");
             }
         } else {
             $message                        = "Tried to upload file when connection wasn't opened. Info:" . $this->get_info();
@@ -332,10 +320,10 @@ class DUP_PRO_FTP_Chunker
             $next_offset = ftell($local_file_handle);
             $matches     = ($next_offset == $prev_offset);
 
-            DUP_PRO_Log::trace("Finish file chunk next_offset=$next_offset prev_offset=$prev_offset");
+            DUP_PRO_Log::trace("Finishing file chunk next_offset=$next_offset prev_offset=$prev_offset");
 
             $tries++;
-        // Want to give it a couple seconds after it matches to settle down
+            // Want to give it a couple seconds after it matches to settle down
             usleep(2000000);
         }
 
@@ -351,7 +339,7 @@ class DUP_PRO_FTP_Chunker
     {
         $ssl_string     = DUP_PRO_STR::boolToString($this->ssl);
         $passive_string = DUP_PRO_STR::boolToString($this->passive_mode);
-        return sprintf(DUP_PRO_U::__('Server:%1$s Port:%2$d User:%3$s SSL:%4$s Passive:%5$s'), $this->server, $this->port, $this->username, $ssl_string, $passive_string);
+        return sprintf(__('Server:%1$s Port:%2$d User:%3$s SSL:%4$s Passive:%5$s', "duplicator-pro"), $this->server, $this->port, $this->username, $ssl_string, $passive_string);
     }
 
     public function get_filelist($directory = '.')
@@ -366,7 +354,7 @@ class DUP_PRO_FTP_Chunker
             }
         } else {
             $items   = false;
-            $message = "Tried to upload file when connection wasn't opened. Info:" . $this->get_info();
+            $message = "Tried to upload file when connection wasn't opened. Info: " . $this->get_info();
             DUP_PRO_Log::trace($message);
         }
 
@@ -377,9 +365,13 @@ class DUP_PRO_FTP_Chunker
     {
         $ret_val = false;
         if ($this->is_opened()) {
-            $ret_val = @ftp_delete($this->ftp_connection_id, $file_path);
-            if ($ret_val) {
-                DUP_PRO_Log::trace("Successfully deleted $file_path from " . $this->server);
+            if (@ftp_size($this->ftp_connection_id, $file_path) != -1) { // Check if file exists
+                $ret_val = @ftp_delete($this->ftp_connection_id, $file_path);
+                if ($ret_val) {
+                    DUP_PRO_Log::trace("Successfully deleted $file_path from " . $this->server);
+                }
+            } else {
+                DUP_PRO_Log::trace("File $file_path does not exist so no need to delete it.");
             }
         } else {
             DUP_PRO_Log::trace("Tried to upload file when connection wasn't opened. Info:" . $this->get_info());

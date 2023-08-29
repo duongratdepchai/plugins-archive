@@ -98,9 +98,9 @@ class SnapUtil
     public static function versionCompare($version1, $version2, $operator = null, $vLevel = 0)
     {
         if ($vLevel > 0) {
-            $tV1      = array_slice(explode('.', $version1), 0, $vLevel);
+            $tV1      = array_slice(preg_split("/[.-]/", $version1), 0, $vLevel);
             $version1 = implode('.', $tV1);
-            $tV2      = array_slice(explode('.', $version2), 0, $vLevel);
+            $tV2      = array_slice(preg_split("/[.-]/", $version2), 0, $vLevel);
             $version2 = implode('.', $tV2);
         }
         return version_compare($version1, $version2, $operator);
@@ -507,7 +507,7 @@ class SnapUtil
         } elseif (is_bool($input)) {
             return $input;
         } else {
-            return filter_var($input, FILTER_VALIDATE_BOOL);
+            return filter_var($input, FILTER_VALIDATE_BOOLEAN);
         }
     }
 
@@ -912,5 +912,29 @@ class SnapUtil
             return false;
         }
         return phpinfo($flags);
+    }
+
+    /**
+     * Checks if CURL is enabled
+     *
+     * @param bool $sslCheck Optional. Whether to check that the installed curl version supports SSL.
+     *
+     * @return bool True if CURL is enabled, false otherwise
+     */
+    public static function isCurlEnabled($sslCheck = true)
+    {
+        if (!function_exists('curl_init') || !function_exists('curl_exec')) {
+            return false;
+        }
+
+        // If needed, check that our installed curl version supports SSL
+        if ($sslCheck) {
+            $curl_version = curl_version();
+            if (!(CURL_VERSION_SSL & $curl_version['features'])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

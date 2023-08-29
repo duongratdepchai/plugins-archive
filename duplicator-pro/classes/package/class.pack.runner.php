@@ -214,7 +214,7 @@ class DUP_PRO_Package_Runner
                         DUP_PRO_U::__(
                             'Click button to switch to the DupArchive engine. Please see this %1$sFAQ%2$s for other possible solutions.'
                         ),
-                        '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-203-q" target="_blank">',
+                        '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-resolve-schedule-build-failures" target="_blank">',
                         '</a>'
                     ),
                     array(
@@ -230,7 +230,7 @@ class DUP_PRO_Package_Runner
                         DUP_PRO_U::__(
                             'Click button to increase Max Build Time. Please see this %1$sFAQ%2$s for other possible solutions.'
                         ),
-                        '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-203-q" target="_blank">',
+                        '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-resolve-schedule-build-failures" target="_blank">',
                         '</a>'
                     ),
                     array(
@@ -298,7 +298,7 @@ class DUP_PRO_Package_Runner
                     $system_global->addTextFix(
                         DUP_PRO_U::__('Communication to AJAX is blocked.'),
                         sprintf(
-                            "%s <a href='http://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-100-q' target='_blank'>%s</a>",
+                            "%s <a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-resolve-builds-getting-stuck-at-a-certain-point/' target='_blank'>%s</a>",
                             DUP_PRO_U::__('See FAQ:'),
                             DUP_PRO_U::__('Why is the package build stuck at 5%?')
                         )
@@ -406,123 +406,127 @@ class DUP_PRO_Package_Runner
             $locking_file = true;
         }
 
-        if ($locking_file != false) {
-            if ($global->lock_mode == DUP_PRO_Thread_Lock_Mode::Flock) {
-                $acquired_lock = (flock($locking_file, LOCK_EX | LOCK_NB) != false);
-                if ($acquired_lock) {
-                    DUP_PRO_Log::trace("File lock acquired " . $locking_file);
-                } else {
-                    DUP_PRO_Log::trace("File lock denied " . $locking_file);
-                }
-            } else {
-                $acquired_lock = DUP_PRO_U::getSqlLock();
-            }
-
-            if ($acquired_lock) {
-                self::process_schedules();
-                $package = DUP_PRO_Package::get_next_active_package();
-
-                if ($package != null) {
-                    DUP_PRO_U::initStorageDirectory(true);
-                    $dup_tests = self::get_requirements_tests();
-                    if ($dup_tests['Success'] == true) {
-                        $start_time = time();
-                        DUP_PRO_Log::trace("PACKAGE $package->ID:PROCESSING");
-                        ignore_user_abort(true);
-                        if ($package->Status < DUP_PRO_PackageStatus::AFTER_SCAN) {
-                            // Scan step built into package build - used by schedules - NOT manual build where scan is done in web service.
-                            DUP_PRO_Log::trace("PACKAGE $package->ID:SCANNING");
-                            //After scanner runs.  Save FilterInfo (unreadable, warnings, globals etc)
-                            $package->create_scan_report();
-                            $package->update();
-                            //del  if($package->Archive->ScanStatus == DUP_PRO_Archive::ScanStatusComplete){
-                            $dupe_package = DUP_PRO_Package::get_by_id($package->ID);
-                            $dupe_package->set_status(DUP_PRO_PackageStatus::AFTER_SCAN);
-                            //del  }
-
-                            $end_time  = time();
-                            $scan_time = $end_time - $start_time;
-                            //del                                $end_time = DUP_PRO_U::getMicrotime();
-                            //
-                            //                                $scan_time = $end_time - $package->Archive->ScanTimeStart;
-
-                            DUP_PRO_Log::trace("SCAN TIME=$scan_time seconds");
-                        } elseif ($package->Status < DUP_PRO_PackageStatus::COPIEDPACKAGE) {
-                            DUP_PRO_Log::trace("PACKAGE $package->ID:BUILDING");
-                            $package->run_build();
-                            $end_time   = time();
-                            $build_time = $end_time - $start_time;
-                            DUP_PRO_Log::trace("BUILD TIME=$build_time seconds");
-                        } elseif ($package->Status < DUP_PRO_PackageStatus::COMPLETE) {
-                            DUP_PRO_Log::trace("PACKAGE $package->ID:STORAGE PROCESSING");
-                            $package->set_status(DUP_PRO_PackageStatus::STORAGE_PROCESSING);
-                            $package->process_storages();
-                            $end_time   = time();
-                            $build_time = $end_time - $start_time;
-                            DUP_PRO_Log::trace("STORAGE CHUNK PROCESSING TIME=$build_time seconds");
-                            if ($package->Status == DUP_PRO_PackageStatus::COMPLETE) {
-                                DUP_PRO_Log::trace("PACKAGE $package->ID COMPLETE");
-                            } elseif ($package->Status == DUP_PRO_PackageStatus::ERROR) {
-                                DUP_PRO_Log::trace("PACKAGE $package->ID IN ERROR STATE");
-                            }
-
-                            $packageCompleteStatuses = array(DUP_PRO_PackageStatus::COMPLETE, DUP_PRO_PackageStatus::ERROR);
-                            if (in_array($package->Status, $packageCompleteStatuses)) {
-                                $info  = "\n";
-                                $info .= "********************************************************************************\n";
-                                $info .= "********************************************************************************\n";
-                                $info .= "DUPLICATOR PRO PACKAGE CREATION OR MANUAL STORAGE TRANSFER END: " . @date("Y-m-d H:i:s") . "\n";
-                                $info .= "NOTICE: Do NOT post to public sites or forums \n";
-                                $info .= "********************************************************************************\n";
-                                $info .= "********************************************************************************\n";
-                                DUP_PRO_Log::infoTrace($info);
-                            }
-                        }
-
-                        ignore_user_abort(false);
-                    } else {
-                        DUP_PRO_Log::open($package->NameHash);
-
-                        if ($dup_tests['RES']['INSTALL'] == 'Fail') {
-                            DUP_PRO_Log::info('Installer files still present on site. Remove using Tools > Stored Data > "Remove Installer Files".');
-                        }
-
-                        DUP_PRO_Log::error(DUP_PRO_U::__('Requirements Failed'), print_r($dup_tests, true), false);
-                        DUP_PRO_Log::traceError('Requirements didn\'t pass so can\'t perform backup!');
-                        do_action('duplicator_pro_package_before_set_status', $package, DUP_PRO_PackageStatus::REQUIREMENTS_FAILED);
-                        $package->Status = DUP_PRO_PackageStatus::REQUIREMENTS_FAILED;
-                        $package->update();
-                        $package->post_scheduled_build_failure($dup_tests);
-                        do_action('duplicator_pro_package_after_set_status', $package, DUP_PRO_PackageStatus::REQUIREMENTS_FAILED);
-                    }
-                }
-
-                //$kick_off_worker = (DUP_PRO_Package::get_next_active_package() != null);
-                $kick_off_worker = DUP_PRO_Package::isPackageRunning();
-                if ($global->lock_mode == DUP_PRO_Thread_Lock_Mode::Flock) {
-                    DUP_PRO_Log::trace("File lock released");
-                    if (!flock($locking_file, LOCK_UN)) {
-                        DUP_PRO_Log::trace("File lock cant release " . $locking_file);
-                    } else {
-                        DUP_PRO_Log::trace("File lock released " . $locking_file);
-                    }
-                    fclose($locking_file);
-                } else {
-                    DUP_PRO_U::releaseSqlLock();
-                }
-
-                if ($kick_off_worker) {
-                    self::kick_off_worker();
-                }
-            } else {
-                // File locked so another cron already running so just skip
-                DUP_PRO_Log::trace("File locked so skipping");
-            }
-        } else {
+        if ($locking_file == false) {
             DUP_PRO_Log::trace("Problem opening locking file so auto switching to SQL lock mode");
             $global->lock_mode = DUP_PRO_Thread_Lock_Mode::SQL_Lock;
             $global->save();
             exit();
+        }
+
+        // Here we know that $locking_file != false
+        if ($global->lock_mode == DUP_PRO_Thread_Lock_Mode::Flock) {
+            $acquired_lock = (flock($locking_file, LOCK_EX | LOCK_NB) != false);
+            if ($acquired_lock) {
+                DUP_PRO_Log::trace("File lock acquired " . $locking_file);
+            } else {
+                DUP_PRO_Log::trace("File lock denied " . $locking_file);
+            }
+        } else {
+            // DUP_PRO_U::getSqlLock will write details into trace log, logging is not needed here
+            $acquired_lock = DUP_PRO_U::getSqlLock();
+        }
+
+        if (!$acquired_lock) {
+            // File locked so another cron already running so just skip
+            DUP_PRO_Log::trace("File locked so skipping");
+            return;
+        }
+
+        // Here we know that $acquired_lock == true
+        self::process_schedules();
+        $package = DUP_PRO_Package::get_next_active_package();
+
+        if ($package != null) {
+            DUP_PRO_U::initStorageDirectory(true);
+            $dup_tests = self::get_requirements_tests();
+            if ($dup_tests['Success'] == true) {
+                $start_time = time();
+                DUP_PRO_Log::trace("PACKAGE $package->ID:PROCESSING");
+                ignore_user_abort(true);
+                if ($package->Status < DUP_PRO_PackageStatus::AFTER_SCAN) {
+                    // Scan step built into package build - used by schedules - NOT manual build where scan is done in web service.
+                    DUP_PRO_Log::trace("PACKAGE $package->ID:SCANNING");
+                    //After scanner runs.  Save FilterInfo (unreadable, warnings, globals etc)
+                    $package->create_scan_report();
+                    $package->update();
+                    //del  if($package->Archive->ScanStatus == DUP_PRO_Archive::ScanStatusComplete){
+                    $dupe_package = DUP_PRO_Package::get_by_id($package->ID);
+                    $dupe_package->set_status(DUP_PRO_PackageStatus::AFTER_SCAN);
+                    //del  }
+
+                    $end_time  = time();
+                    $scan_time = $end_time - $start_time;
+                    //del                                $end_time = DUP_PRO_U::getMicrotime();
+                    //
+                    //                                $scan_time = $end_time - $package->Archive->ScanTimeStart;
+
+                    DUP_PRO_Log::trace("SCAN TIME=$scan_time seconds");
+                } elseif ($package->Status < DUP_PRO_PackageStatus::COPIEDPACKAGE) {
+                    DUP_PRO_Log::trace("PACKAGE $package->ID:BUILDING");
+                    $package->run_build();
+                    $end_time   = time();
+                    $build_time = $end_time - $start_time;
+                    DUP_PRO_Log::trace("BUILD TIME=$build_time seconds");
+                } elseif ($package->Status < DUP_PRO_PackageStatus::COMPLETE) {
+                    DUP_PRO_Log::trace("PACKAGE $package->ID:STORAGE PROCESSING");
+                    $package->set_status(DUP_PRO_PackageStatus::STORAGE_PROCESSING);
+                    $package->process_storages();
+                    $end_time   = time();
+                    $build_time = $end_time - $start_time;
+                    DUP_PRO_Log::trace("STORAGE CHUNK PROCESSING TIME=$build_time seconds");
+                    if ($package->Status == DUP_PRO_PackageStatus::COMPLETE) {
+                        DUP_PRO_Log::trace("PACKAGE $package->ID COMPLETE");
+                    } elseif ($package->Status == DUP_PRO_PackageStatus::ERROR) {
+                        DUP_PRO_Log::trace("PACKAGE $package->ID IN ERROR STATE");
+                    }
+
+                    $packageCompleteStatuses = array(DUP_PRO_PackageStatus::COMPLETE, DUP_PRO_PackageStatus::ERROR);
+                    if (in_array($package->Status, $packageCompleteStatuses)) {
+                        $info  = "\n";
+                        $info .= "********************************************************************************\n";
+                        $info .= "********************************************************************************\n";
+                        $info .= "DUPLICATOR PRO PACKAGE CREATION OR MANUAL STORAGE TRANSFER END: " . @date("Y-m-d H:i:s") . "\n";
+                        $info .= "NOTICE: Do NOT post to public sites or forums \n";
+                        $info .= "********************************************************************************\n";
+                        $info .= "********************************************************************************\n";
+                        DUP_PRO_Log::infoTrace($info);
+                    }
+                }
+
+                ignore_user_abort(false);
+            } else {
+                DUP_PRO_Log::open($package->NameHash);
+
+                if ($dup_tests['RES']['INSTALL'] == 'Fail') {
+                    DUP_PRO_Log::info('Installer files still present on site. Remove using Tools > Stored Data > "Remove Installer Files".');
+                }
+
+                DUP_PRO_Log::error(DUP_PRO_U::__('Requirements Failed'), print_r($dup_tests, true), false);
+                DUP_PRO_Log::traceError('Requirements didn\'t pass so can\'t perform backup!');
+                do_action('duplicator_pro_package_before_set_status', $package, DUP_PRO_PackageStatus::REQUIREMENTS_FAILED);
+                $package->Status = DUP_PRO_PackageStatus::REQUIREMENTS_FAILED;
+                $package->update();
+                $package->post_scheduled_build_failure($dup_tests);
+                do_action('duplicator_pro_package_after_set_status', $package, DUP_PRO_PackageStatus::REQUIREMENTS_FAILED);
+            }
+        }
+
+        //$kick_off_worker = (DUP_PRO_Package::get_next_active_package() != null);
+        $kick_off_worker = DUP_PRO_Package::isPackageRunning();
+        if ($global->lock_mode == DUP_PRO_Thread_Lock_Mode::Flock) {
+            DUP_PRO_Log::trace("File lock released");
+            if (!flock($locking_file, LOCK_UN)) {
+                DUP_PRO_Log::trace("File lock cant release " . $locking_file);
+            } else {
+                DUP_PRO_Log::trace("File lock released " . $locking_file);
+            }
+            fclose($locking_file);
+        } else {
+            DUP_PRO_U::releaseSqlLock();
+        }
+
+        if ($kick_off_worker) {
+            self::kick_off_worker();
         }
     }
 

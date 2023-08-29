@@ -333,6 +333,10 @@ class Posts_Query extends Base_Query {
 
 				break;
 
+			case 'post_type':
+				$this->final_query['post_type'] = $value;
+				break;
+
 			default:
 				$this->merge_default_props( $prop, $value );
 				break;

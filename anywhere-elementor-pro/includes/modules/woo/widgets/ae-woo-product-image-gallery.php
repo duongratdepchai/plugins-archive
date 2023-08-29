@@ -418,9 +418,14 @@ class AeWooProductImageGallery extends Widget_Base {
 					$attachment_ids = [ $attachment ];
 				}
 							$attachment_ids = array_merge( $attachment_ids, $product->get_gallery_image_ids() );
+							$swiper_class = 'swiper-container';
+							$swiper_latest = get_option('elementor_experiment-e_swiper_latest');
+							if ( $swiper_latest == 'active' ) {
+								$swiper_class = 'swiper';
+							}
 				?>
 							<div <?php echo $this->get_render_attribute_string( 'outer-wrapper' ); ?> >
-								<div class="ae-swiper-container swiper-container" data-ae-slider-id="<?php echo $ae_slider_id; ?>">
+								<div class="ae-swiper-container <?php echo $swiper_class; ?>" data-ae-slider-id="<?php echo $ae_slider_id; ?>">
 									<div class="ae-swiper-wrapper swiper-wrapper">
 										<?php
 										foreach ( $attachment_ids as $attachment_id ) {

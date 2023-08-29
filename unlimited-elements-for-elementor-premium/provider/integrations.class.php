@@ -18,7 +18,7 @@ class UniteCreatorPluginIntegrations{
 	 * check if the jet engin exists
 	 */
 	public static function isJetEngineExists(){
-				
+							
 		$isExists = class_exists( 'Jet_Engine' );
 		
 		return($isExists);

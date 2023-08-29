@@ -43,6 +43,70 @@ class UniteCreatorFiltersProcess{
 	const ROLE_CHILD = "child";
 	const ROLE_TERM_CHILD = "term_child";
 	
+	private function _______SORT_FILTER_WIDGET_DATA__________(){}
+	
+	/**
+	 * get sort filter data
+	 * type - regular / woo
+	 * data - widget data
+	 */
+	public static function getSortFilterData($filterType, $params){
+		
+		//get fields
+		
+		$arrFields = UniteFunctionsUC::getVal($params, "fields");
+		
+		$arrFields = UniteFunctionsUC::getVal($arrFields, "fields_fields");
+		
+		
+		if(empty($arrFields))
+			$arrFields = array(
+				array("title"=>"Default","type"=>"default"),
+			);
+		
+		$isForWooProducts = false;
+		if($filterType == "woo")
+			$isForWooProducts = true;
+		
+		$arrWooTypes = array("sale_price","sales","rating");
+					
+		$output = array();
+		
+		$isEnableMeta = UniteFunctionsUC::getVal($params, "enable_meta");
+		$isEnableMeta = UniteFunctionsUC::strToBool($isEnableMeta);
+		
+		//find if the meta enabled
+		
+		if($isEnableMeta == true){
+			$metaName = UniteFunctionsUC::getVal($params, "meta_name");
+			
+			$metaName = trim($metaName);
+			
+			if(empty($metaName))
+				$isEnableMeta = false;
+		}
+		
+		
+		foreach($arrFields as $field){
+			
+			$title = UniteFunctionsUC::getVal($field, "title");
+			$type = UniteFunctionsUC::getVal($field, "type");
+			
+			//disable meta if not selected
+			if($type == "meta" && $isEnableMeta == false)
+				continue;
+			
+			//filter woo types
+			if($isForWooProducts == false&& in_array($type, $arrWooTypes) == true)
+				continue;
+			
+			$output[$type] = $title;
+		}
+		
+		
+		return($output);
+	}
+	
 	
 	/**
 	 * check if under ajax request
@@ -455,6 +519,9 @@ class UniteCreatorFiltersProcess{
 			//check if valid
 			$arrOrderby = UniteFunctionsWPUC::getArrSortBy(true);
 			
+			if($orderby == "id")
+				$orderby = "ID";
+						
 			if(is_string($orderby) && isset($arrOrderby[$orderby]))
 				$arrOutput["orderby"] = $orderby;
 
@@ -1002,7 +1069,7 @@ class UniteCreatorFiltersProcess{
 			
 			$arrSettingsValues = $this->modifySettingsValues($arrSettingsValues, $postListName);
 		}
-
+		
 		$addon->setParamsValues($arrSettingsValues);
 		
 		
@@ -1441,15 +1508,14 @@ class UniteCreatorFiltersProcess{
 	 * include the filters js files
 	 */
 	private function includeJSFiles(){
-		
+				
 		if(self::$isFilesAdded == true)
 			return(false);
 		
 		UniteProviderFunctionsUC::addAdminJQueryInclude();
 		
 		$urlFiltersJS = GlobalsUC::$url_assets_libraries."filters/ue_filters.js";
-		HelperUC::addScriptAbsoluteUrl($urlFiltersJS, "ue_filters");		
-		
+		HelperUC::addScriptAbsoluteUrl_widget($urlFiltersJS, "ue_filters");		
 		
 		self::$isFilesAdded = true;
 	}

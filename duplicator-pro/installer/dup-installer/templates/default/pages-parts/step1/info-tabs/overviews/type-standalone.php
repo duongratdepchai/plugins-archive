@@ -27,16 +27,15 @@ $display       = DUPX_InstallerState::getInstance()->isInstType(DUPX_InstallerSt
                         This installation converts the selected subsite into a standalone website.
                     </div>
 
-                    <?php if ($overwriteMode) { ?>
-                        <div class="overview-subtxt-2">
-                            This will clear all site data and the current package will be installed.  This process cannot be undone!
-                        </div>
-                    <?php } ?>
+                    <?php dupxTplRender('pages-parts/step1/info-tabs/overviews/overwrite-message'); ?>
                 </td>
             </tr>
             <tr>
                 <td>Mode:</td>
-                <td><?php echo DUPX_InstallerState::getInstance()->getHtmlModeHeader(); ?></td>
+                <td>
+                    <?php echo DUPX_InstallerState::getInstance()->getHtmlModeHeader(); ?>
+                    <?php dupxTplRender('pages-parts/step1/info-tabs/overviews/no-db-actions-message'); ?>
+                </td>
             </tr>
         </table>
     </div>    

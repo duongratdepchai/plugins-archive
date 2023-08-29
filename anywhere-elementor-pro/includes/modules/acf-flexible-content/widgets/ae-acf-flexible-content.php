@@ -86,7 +86,7 @@ class AeAcfFlexibleContent extends Widget_Base {
 				'label' => __( 'Content', 'ae-pro' ),
 			]
 		);
-		$groups                  = [];
+		$groups                  = ['Select Field'];
 		$blank_element           = [
 			'' => __( 'Select', 'ae-pro' ),
 		];

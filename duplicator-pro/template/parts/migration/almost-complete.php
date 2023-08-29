@@ -24,7 +24,7 @@ $url     = $ctrlMng->getMenuLink(ControllersManager::TOOLS_SUBMENU_SLUG, ToolsPa
 ;
 
 ?>
-<div class="dup-notice-success notice notice-success duplicator-pro-admin-notice dup-migration-pass-wrapper" >
+<div class="notice notice-success dpro-admin-notice dup-migration-pass-wrapper" >
     <p>
         <b><?php
         if (MigrationMng::getMigrationData('restoreBackupMode')) {

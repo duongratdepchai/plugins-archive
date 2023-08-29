@@ -312,7 +312,7 @@ class WC_Carousel extends Module_Base {
 				'type'       => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', '%'],
 				'selectors'  => [
-					'{{WRAPPER}} .bdt-wc-carousel .bdt-wc-carousel-item, {{WRAPPER}} .bdt-wc-carousel .swiper-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
+					'{{WRAPPER}} .bdt-wc-carousel .bdt-wc-carousel-item, {{WRAPPER}} .bdt-wc-carousel .swiper-carousel' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
 				],
 			]
 		);
@@ -411,7 +411,7 @@ class WC_Carousel extends Module_Base {
 					'size' => 10
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
+					'{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
 				]
 			]
 		);
@@ -1097,8 +1097,6 @@ class WC_Carousel extends Module_Base {
 		//Global Function
 		$this->render_swiper_header_attribute('wc-carousel');
 
-		$this->add_render_attribute('wc-carousel', 'class', 'swiper-container');
-
 		$this->add_render_attribute('wc-carousel-wrapper', 'class', 'swiper-wrapper');
 
 		$this->add_render_attribute('carousel', 'class', 'bdt-wc-carousel');
@@ -1110,7 +1108,7 @@ class WC_Carousel extends Module_Base {
 
 		?>
 		<div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-			<div <?php echo $this->get_render_attribute_string('wc-carousel'); ?>>
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div <?php echo $this->get_render_attribute_string('wc-carousel-wrapper'); ?>>
 					<?php
 				}

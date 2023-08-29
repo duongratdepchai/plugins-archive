@@ -14,7 +14,7 @@
             return;
         }
 
-		var $tCarouselContainer = $tCarousel.find('.swiper-container'),
+		var $tCarouselContainer = $tCarousel.find('.swiper-carousel'),
 			$settings 		 = $tCarousel.data('settings');
 
 		// Access swiper class

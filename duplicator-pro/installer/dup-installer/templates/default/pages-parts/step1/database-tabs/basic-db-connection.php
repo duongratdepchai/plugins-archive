@@ -12,7 +12,10 @@ use Duplicator\Installer\Core\Params\PrmMng;
 $state         = DUPX_InstallerState::getInstance();
 $paramsManager = PrmMng::getInstance();
 
-if ($state->getMode() === DUPX_InstallerState::MODE_OVR_INSTALL && $paramsManager->getValue(PrmMng::PARAM_DB_DISPLAY_OVERWIRE_WARNING)) {
+if (
+    $state->getMode() === DUPX_InstallerState::MODE_OVR_INSTALL &&
+    $paramsManager->getValue(PrmMng::PARAM_DB_DISPLAY_OVERWIRE_WARNING)
+) {
     $displayOverwrite = true;
 } else {
     $displayOverwrite = false;
@@ -23,7 +26,7 @@ if ($state->getMode() === DUPX_InstallerState::MODE_OVR_INSTALL && $paramsManage
         <i class="fas fa-database"></i> Database Connection
     </div>
     <?php if ($displayOverwrite) : ?>
-        <div id="s2-db-basic-overwrite">
+        <div id="s2-db-basic-overwrite" class="requires-db-hide">
             <b style='color:maroon'>Ready to connect to existing sites database? </b><br/>
             <div class="warn-text">
                 The existing sites database settings are ready to be applied below. 

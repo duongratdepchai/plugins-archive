@@ -104,8 +104,22 @@ class DuplicatorProUninstall // phpcs:ignore
         self::deleteOptions();
         self::deleteExpire();
         self::deleteTransients();
+        self::deleteUserMetaKeys();
         self::removeAllCapabilities();
         self::cleanWpConfig();
+    }
+
+    /**
+     * Delete all users meta key
+     *
+     * @return void
+     */
+    private static function deleteUserMetaKeys()
+    {
+        /** @var wpdb */
+        global $wpdb;
+
+        $wpdb->query("DELETE FROM " . $wpdb->usermeta . " WHERE meta_key REGEXP '^duplicator_pro_'");
     }
 
     /**

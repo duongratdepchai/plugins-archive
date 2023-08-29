@@ -14,7 +14,7 @@
 			return;
 		}
 
-		var $brandCarouselContainer = $brandCarousel.find('.swiper-container'),
+		var $brandCarouselContainer = $brandCarousel.find('.swiper-carousel'),
 			$settings = $brandCarousel.data('settings');
 
 		const Swiper = elementorFrontend.utils.swiper;

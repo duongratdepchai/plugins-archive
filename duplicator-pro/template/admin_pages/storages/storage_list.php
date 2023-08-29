@@ -66,9 +66,9 @@ TOOL-BAR -->
     <tr>
         <td>
             <select id="bulk_action">
-                <option value="-1" ><?php _e("Bulk Actions"); ?></option>
+                <option value="-1" ><?php _e('Bulk Actions', 'duplicator-pro'); ?></option>
                 <option value="<?php echo ServicesStorage::STORAGE_BULK_DELETE; ?>" title="Delete selected storage endpoint(s)">
-                    <?php _e("Delete"); ?>
+                    <?php _e('Delete', 'duplicator-pro'); ?>
                 </option>
             </select>
             <input type="button" class="button action" value="<?php DUP_PRO_U::esc_attr_e("Apply") ?>" onclick="DupPro.Storage.BulkAction()">

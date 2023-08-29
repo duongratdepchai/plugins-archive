@@ -24,6 +24,7 @@ $finalReportData = $paramsManager->getValue(PrmMng::PARAM_FINAL_REPORT_DATA);
         ?>
     </div>
 
+    <?php if (!DUPX_InstallerState::dbDoNothing()) : ?>
     <table class="s4-report-results" >
         <tr>
             <th colspan="4">Database Report</th>
@@ -53,4 +54,5 @@ $finalReportData = $paramsManager->getValue(PrmMng::PARAM_FINAL_REPORT_DATA);
             <td><span><?php echo $finalReportData['replace']['updt_cells']; ?></span></td>
         </tr>
     </table>
+    <?php endif; ?>
 </div>

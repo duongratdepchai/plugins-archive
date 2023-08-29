@@ -14,7 +14,7 @@ $global = DUP_PRO_Global_Entity::getInstance();
 if (!empty($_POST['action']) && $_POST['action'] == 'save') {
     DUP_PRO_U::verifyNonce($_POST['_wpnonce'], $nonce_action);
     $global->send_email_on_build_mode   = (int)$_REQUEST['send_email_on_build_mode'];
-    $global->notification_email_address = $_REQUEST['notification_email_address'];
+    $global->notification_email_address = stripslashes($_REQUEST['notification_email_address']);
     $action_updated                     = $global->save();
 }
 ?>

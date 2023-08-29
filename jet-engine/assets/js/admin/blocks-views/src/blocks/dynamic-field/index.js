@@ -238,7 +238,7 @@ registerBlockType( 'jet-engine/dynamic-field', {
 
 						</PanelBody>
 						<PanelBody title={ __( 'Layout' ) }>
-							<RadioControl
+							{ ! window.JetEngineListingData.preventWrap && <RadioControl
 								label={ __( 'Expected Display (inline/multiline)' ) }
 								selected={ attributes.field_display }
 								options={ [
@@ -248,7 +248,7 @@ registerBlockType( 'jet-engine/dynamic-field', {
 								onChange={ newValue => {
 									props.setAttributes( { field_display: newValue } );
 								} }
-							/>
+							/> }
 							<div className="jet-media-control components-base-control">
 								<div className="components-base-control__label">Field Icon/Image</div>
 								{ attributes.selected_field_icon_url &&

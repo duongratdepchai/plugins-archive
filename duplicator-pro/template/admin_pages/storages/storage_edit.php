@@ -126,7 +126,7 @@ if (DUP_PRO_StorageSupported::isGDriveSupported()) {
                 sprintf(
                     __('<strong>RECOMMENDATION:</strong> Cancel authorization and then connect and authorize Google Drive again. '
                     . 'If this repeatedly occurs, see FAQ: <a target="_blank" href="%s">%s</a>', 'duplicator-pro'),
-                    'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-store-130-q',
+                    DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-do-i-fix-issues-with-google-drive-storage-types',
                     __('How do I fix issues with Google Drive storage types?', 'duplicator-pro')
                 );
         }
@@ -159,7 +159,7 @@ $txt_auth_note = __(
             <td>
                 <?php if ($storage_count > 0) : ?>
                     <select id="dup-copy-source-id-select" name="duppro-source-storage-id">
-                        <option value="-1" selected="selected" disabled="true"><?php _e("Copy From"); ?></option>
+                        <option value="-1" selected="selected" disabled="true"><?php _e('Copy From', 'duplicator-pro'); ?></option>
                     <?php
                     foreach ($storages as $copy_storage) {
                         echo ($copy_storage->id != $storage->id) ?
@@ -170,7 +170,9 @@ $txt_auth_note = __(
                     </select>
                     <input type="button" class="button action" value="<?php esc_attr_e("Apply", 'duplicator-pro') ?>" onclick="DupPro.Storage.Copy()">
                 <?php else : ?>
-                    <select disabled="disabled"><option value="-1" selected="selected" disabled="true"><?php _e("Copy From"); ?></option></select>
+                    <select disabled="disabled">
+                        <option value="-1" selected="selected" disabled="true"><?php _e('Copy From', 'duplicator-pro'); ?></option>
+                    </select>
                     <input type="button" class="button action" value="<?php esc_attr_e("Apply", 'duplicator-pro') ?>" disabled="disabled">
                 <?php endif; ?>
             </td>
@@ -376,9 +378,9 @@ if (!is_null($error_message)) {
                             __(
                                 "Amazon S3 Setup Guide: " .
                                 "<a target='_blank' " .
-                                "href='https://snapcreek.com/duplicator/docs/https://snapcreek.com/duplicator/docs/amazon-s3-step-by-step/'>" .
+                                "href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "amazon-s3-step-by-step'>" .
                                 "Step-by-Step</a> " .
-                                "and <a href='https://snapcreek.com/duplicator/docs/amazon-s3-policy-setup/' target='_blank'>User Bucket Policy</a>.",
+                                "and <a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "amazon-s3-policy-setup' target='_blank'>User Bucket Policy</a>.",
                                 'duplicator-pro'
                             ),
                             array(
@@ -563,10 +565,10 @@ if (!is_null($error_message)) {
                             __(
                                 "Amazon S3 Setup Guide: " .
                                 "<a target='_blank' href='" .
-                                "https://snapcreek.com/duplicator/docs/https://snapcreek.com/duplicator/docs/amazon-s3-step-by-step/'>" .
+                                DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "amazon-s3-step-by-step'>" .
                                 "Step-by-Step" .
                                 "</a> " .
-                                "and <a href='https://snapcreek.com/duplicator/docs/amazon-s3-policy-setup/' target='_blank'>User Bucket Policy</a>.",
+                                "and <a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "amazon-s3-policy-setup' target='_blank'>User Bucket Policy</a>.",
                                 'duplicator-pro'
                             ),
                             array(
@@ -742,8 +744,8 @@ if (!is_null($error_message)) {
                     <i><?php
                         echo wp_kses(
                             __("Amazon S3 Setup Guide: <a target='_blank' " .
-                                "href='https://snapcreek.com/duplicator/docs/https://snapcreek.com/duplicator/docs/amazon-s3-step-by-step/'>Step-by-Step</a> " .
-                                "and <a href='https://snapcreek.com/duplicator/docs/amazon-s3-policy-setup/' target='_blank'>User Bucket Policy</a>. " .
+                                "href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "amazon-s3-step-by-step'>Step-by-Step</a> " .
+                                "and <a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "amazon-s3-policy-setup' target='_blank'>User Bucket Policy</a>. " .
                                 "Documentation for Backblaze B2: " .
                                 "<a target='_blank' href='https://www.backblaze.com/b2/docs/'>Overview</a>, " .
                                 "<a target='_blank' href='https://www.backblaze.com/b2/docs/s3_compatible_api.html'>S3 Compatible API</a>.", 'duplicator-pro'),

@@ -834,7 +834,7 @@ class EDD_Category_Carousel extends Module_Base {
 				$this->render_swiper_header_attribute('edd-category-carousel');
 				$this->add_render_attribute('carousel', 'class', ['bdt-edd-category-carousel', $settings['skin_layout']]); ?>
 		<div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-			<div class="swiper-container">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div class="swiper-wrapper">
 			<?php
 			}

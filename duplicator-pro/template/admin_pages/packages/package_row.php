@@ -29,7 +29,7 @@ $isRecoverPoint    = (DUP_PRO_Package_Recover::getRecoverPackageId() === $packag
 $pack_name         = $package->Name;
 $pack_archive_size = $package->Archive->Size;
 $pack_namehash     = $package->NameHash;
-$pack_dbonly       = $package->Archive->ExportOnlyDB;
+$pack_dbonly       = $package->isDBOnly();
 $brand             = $package->Brand;
 
 //Links
@@ -232,7 +232,7 @@ if ($package->Status >= DUP_PRO_PackageStatus::COMPLETE) :?>
         <td class="dup-cell-incomplete <?php echo $cellErrCSS; ?> no-select" colspan="3">
             <?php if ($status >= DUP_PRO_PackageStatus::STORAGE_PROCESSING) : ?>
                 <?php if (CapMng::can(CapMng::CAP_EXPORT, false)) { ?>
-                <button 
+                <button
                     id="<?php echo "{$uniqueid}_{$global->installer_base_name}" ?>" 
                     <?php DUP_PRO_UI::echoDisabled(!$installer_exists); ?> 
                     class="button button-link no-select dup-dnload-btn-single"

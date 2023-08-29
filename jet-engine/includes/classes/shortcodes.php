@@ -40,6 +40,8 @@ class Jet_Engine_Shortcodes {
 			}
 		}
 
+		$add_wrap = false;
+
 		// Convert filter callbacks string into array
 		if ( ! empty( $atts['filter_callbacks'] ) ) {
 			$filter_callbacks = str_replace( '&amp;', '&', $atts['filter_callbacks'] );
@@ -51,6 +53,17 @@ class Jet_Engine_Shortcodes {
 				return $parsed_row;
 			}, $filter_callbacks );
 
+			foreach ( $atts['filter_callbacks'] as $cb_args ) {
+
+				if ( empty( $cb_args['filter_callback'] ) ) {
+					continue;
+				}
+
+				if ( 'jet_engine_img_gallery_slider' === $cb_args['filter_callback'] ) {
+					$add_wrap = true;
+				}
+			}
+
 		}
 		
 		$renderer = jet_engine()->listings->get_render_instance( 'dynamic-field', $atts );
@@ -58,6 +71,10 @@ class Jet_Engine_Shortcodes {
 		ob_start();
 		$renderer->render_field_content( $renderer->get_settings() );
 		$content = ob_get_clean();
+
+		if ( $add_wrap ) {
+			$content = sprintf( '<div data-is-block="jet-engine/dynamic-field">%s</div>', $content );
+		}
 
 		return $content;
 

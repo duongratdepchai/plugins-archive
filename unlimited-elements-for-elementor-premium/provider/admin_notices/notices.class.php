@@ -24,7 +24,7 @@ abstract class UCAdminNotices{
 
 		if($shouldInitialize === false)
 			return;
-		
+
 		self::initializeOptions();
 
 		self::registerNotices($notices);
@@ -92,11 +92,7 @@ abstract class UCAdminNotices{
 
 		if(current_user_can('administrator') === false)
 			return false;
-		
-		if(GlobalsUC::$isProVersion == true)
-			return(false);
-		
-		
+
 		return true;
 	}
 

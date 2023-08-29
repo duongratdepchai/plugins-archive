@@ -40,7 +40,7 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] === 'template-create') {
 
 $Package               = DUP_PRO_Package::get_temporary_package();
 $package_list_url      = ControllersManager::getMenuLink(ControllersManager::PACKAGES_SUBMENU_SLUG);
-$archive_export_onlydb = isset($_POST['export-onlydb']) ? 1 : 0;
+$archive_export_onlydb = $Package->isDBOnly();
 $messageText           = DUP_PRO_Web_Services::getScanErrorMessage();
 
 /** @var bool */
@@ -519,7 +519,10 @@ TOOL-BAR -->
                 var html = "";
                 var DB_TableRowMax = <?php echo DUPLICATOR_PRO_SCAN_DB_TBL_ROWS; ?>;
                 var DB_TableSizeMax = <?php echo DUPLICATOR_PRO_SCAN_DB_TBL_SIZE; ?>;
-                if (data.DB.Status.Success) {
+                if (data.DB.DBExcluded && data.DB.Status.Success) {
+                    $('#data-db-status-size1').html(DupPro.Pack.setScanStatus(data.DB.Status.Excluded));
+                    $('#data-db-size1').text(data.DB.Size || errMsg);
+                } else if (data.DB.Status.Success) {
                     $('#data-db-status-size1').html(DupPro.Pack.setScanStatus(data.DB.Status.Size));
                     $('#data-db-size1').text(data.DB.Size || errMsg);
                     $('#data-db-size2').text(data.DB.Size || errMsg);

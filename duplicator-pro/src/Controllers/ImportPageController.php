@@ -206,7 +206,7 @@ class ImportPageController extends AbstractMenuPageController
         TplMng::getInstance()->render(
             'admin_pages/import/import',
             [
-                'blur' => !License::can(License::CAPABILITY_PRO_BASE)
+                'blur' => !License::can(License::CAPABILITY_IMPORT)
             ]
         );
     }

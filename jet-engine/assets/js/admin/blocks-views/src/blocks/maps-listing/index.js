@@ -597,6 +597,23 @@ if ( -1 !== window.JetEngineListingData.activeModules.indexOf( 'maps-listings' )
 									} }
 								/>
 								{ this.getCustomControlsSection( 'section_popup_settings' ) }
+								<SelectControl
+									label={ __( 'Open On') }
+									value={ attributes.popup_open_on }
+									options={ [
+										{
+											label: __( 'Click' ),
+											value: 'click',
+										},
+										{
+											label: __( 'Hover' ),
+											value: 'hover',
+										}
+									] }
+									onChange={ newValue => {
+										props.setAttributes( { popup_open_on: newValue } );
+									}}
+								></SelectControl>
 							</PanelBody>
 							{ ! window.JetEngineListingData.legacy.is_disabled && <PanelBody
 								title={ __( 'Custom Query' ) }

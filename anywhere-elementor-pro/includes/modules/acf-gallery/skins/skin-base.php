@@ -2206,8 +2206,8 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		}
 
 		if ( ! empty( $images ) ) {
-
-			$this->parent->add_render_attribute( 'outer-wrapper', 'class', 'ae-swiper-outer-wrapper' );
+			$ae_slider_id = wp_rand( 0, 99999 );
+			$this->parent->add_render_attribute( 'outer-wrapper', 'class', 'ae-swiper-outer-wrapper ae-slider-id-' . $ae_slider_id );
 			$this->parent->add_render_attribute( 'outer-wrapper', 'data-swiper-settings', wp_json_encode( $swiper_data ) );
 			$this->parent->add_render_attribute( 'acf-gallery-widget-wrapper', 'class', 'ae-acf-gallery-widget-wrapper' );
 			$this->parent->add_render_attribute( 'acf-gallery-widget-wrapper', 'class', 'ae-carousel-yes' );
@@ -2241,11 +2241,15 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 					);
 				}
 			}
-			$ae_slider_id = wp_rand( 0, 99999 );
+			$swiper_class = 'swiper-container';
+			$swiper_latest = get_option('elementor_experiment-e_swiper_latest');
+			if ( $swiper_latest == 'active' ) {
+				$swiper_class = 'swiper';
+			}
 			$this->parent->add_render_attribute(
 				'swiper-container',
 				[
-					'class'             => 'ae-swiper-container swiper-container ae-slider-id-' . $ae_slider_id,
+					'class'             => 'ae-swiper-container ' . $swiper_class,
 					'data-ae-slider-id' => $ae_slider_id,
 				]
 			);

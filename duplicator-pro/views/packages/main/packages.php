@@ -10,6 +10,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Core\CapMng;
 use Duplicator\Core\Views\TplMng;
+use Duplicator\Core\Views\Notifications;
 
 require_once(DUPLICATOR____PATH . '/classes/class.package.pagination.php');
 require_once(DUPLICATOR____PATH . '/classes/ui/class.ui.dialog.php');
@@ -97,6 +98,8 @@ if ($orphan_display_msg) {
         </p>
     </div>
 <?php } ?>
+
+<?php do_action(Notifications::DUPLICATOR_PRO_BEFORE_PACKAGES_HOOK); ?>
 
 <form id="form-duplicator" method="post">
     <?php wp_nonce_field('dpro_package_form_nonce'); ?>

@@ -57,7 +57,7 @@ class Filters {
 			$jsf_data = explode( ':', $request['jsf'] );
 			$provider = $jsf_data[0];
 			$query_id = isset( $jsf_data[1] ) ? $jsf_data[1] : null;
-			
+
 			return $this->is_current_provider_query( $query, $query_id, $provider );
 			
 		}

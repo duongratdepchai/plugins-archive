@@ -220,7 +220,7 @@ class DUP_PRO_S3_U
                     return $s3_client_uploadinfo;
                 } catch (Exception $ex) {
                     $message = sprintf(
-                        DUP_PRO_U::__('Problem starting multipart upload from %1$s to %2$s in bucket %3$s (chunk_size_in_k %5$s) %4$s'),
+                        __('Problem starting multipart upload from %1$s to %2$s in bucket %3$s (chunk_size_in_k %5$s) %4$s', "duplicator-pro"),
                         $s3_client_uploadinfo->src_filepath,
                         $s3_client_uploadinfo->dest_directory,
                         $s3_client_uploadinfo->bucket,
@@ -326,13 +326,13 @@ class DUP_PRO_S3_U
                         $key              = $s3_client_uploadinfo->get_key();
                         $is_object_exists = $s3_client->doesObjectExist($bucket, $key);
                         if (!$is_object_exists) {
-                            throw new Exception("Archive is not exist on the bucket at the completion of multi part upload");
+                            throw new Exception("Archive does not exist on the bucket at the completion of multi part upload");
                         }
 
                         DUP_PRO_Log::traceObject('Completed multipart upload', $result);
                     } catch (Exception $ex) {
                         $message = sprintf(
-                            DUP_PRO_U::__('Problem uploading multipart upload from %1$s to %2$s in bucket %3$s %4$s'),
+                            __('Problem uploading multipart upload from %1$s to %2$s in bucket %3$s %4$s', "duplicator-pro"),
                             $s3_client_uploadinfo->src_filepath,
                             $s3_client_uploadinfo->dest_directory,
                             $s3_client_uploadinfo->bucket,
@@ -360,9 +360,7 @@ class DUP_PRO_S3_U
         /* @var $s3_client S3Client */
         $success = false;
 
-        DUP_PRO_Log::trace("1");
         if ($overwrite_local || (file_exists($local_filepath) === false)) {
-            DUP_PRO_Log::trace("2");
             $trimmed_dir = trim($remote_directory, '/');
             $key         = "$trimmed_dir/$remote_filename";
 
@@ -378,16 +376,13 @@ class DUP_PRO_S3_U
 
                 $success = true;
             } catch (Exception $ex) {
-                $message = DUP_PRO_U::__("Problem downloading $key in bucket $bucket and saving to $local_filepath") . $ex->getMessage();
-
+                $message = __("Problem downloading $key in bucket $bucket and saving to $local_filepath", "duplicator-pro") . " " . $ex->getMessage();
                 DUP_PRO_Log::trace($message);
             }
         } else {
-            DUP_PRO_Log::trace("3");
             DUP_PRO_Log::trace("Attempted to download a file to $local_filepath but that file already exists!");
         }
 
-        DUP_PRO_Log::trace("4");
         return $success;
     }
 

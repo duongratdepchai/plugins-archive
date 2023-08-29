@@ -215,7 +215,7 @@ class BootstrapUtils
         if ($zipMode == BootstrapRunner::ZIP_MODE_NONE) {
             throw new Exception("NOTICE: ZipArchive and Shell Exec are not enabled on this server. Please " .
                 "talk to your host or server admin about enabling " .
-                "<a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q'>ZipArchive</a> " .
+                "<a target='_blank' href='https://duplicator.com/knowledge-base/how-to-fix-installer-archive-extraction-issues'>ZipArchive</a> " .
                 "or <a target='_blank' href='http://php.net/manual/en/function.shell-exec.php'>Shell Exec</a> " .
                 "on this server or manually extract archive then choose Advanced > Manual Extract in installer.");
         }

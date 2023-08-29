@@ -15,7 +15,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
                 '%1$s and %2$s represents the opening and closing HTML tags for an anchor or link',
                 'duplicator-pro'
             ),
-            '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-026-q" target="_blank">',
+            '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-handle-recovery-install-setup-launch-issues" target="_blank">',
             '</a>'
         );
         ?>

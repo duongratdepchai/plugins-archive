@@ -1681,7 +1681,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			foreach($arrParamsItems as $itemParam)
     				$this->addElementorParamUC($itemParam, $repeater);
     			
-    			$arrItemValues = UniteFunctionsUC::getVal($param, "item_value");
+    			$arrItemValues = UniteFunctionsUC::getVal($param, "items_values");
     			
     			if(empty($arrItemValues))
     				$arrItemValues = array();
@@ -1755,7 +1755,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	if(!empty($placeholder))
     		$arrControl["placeholder"] = $placeholder;
     	    	
-    	
+    		
     	//add dynamic
     	$isAddDynamic = UniteFunctionsUC::getVal($param, "add_dynamic");
     	$isAddDynamic = UniteFunctionsUC::strToBool($isAddDynamic);
@@ -2389,6 +2389,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
      */
     protected function addFreeVersionCTAControl(){
     	
+    	
     	if(GlobalsUC::$isProVersion == true)
     		return(false);
     	    		
@@ -2401,9 +2402,14 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	
     	$text = str_replace("[url_buy]", $urlBuy ,$text);
     	
+    	$isDarkMode = UniteCreatorElementorIntegrate::isElementorPanelDarkMode();
     	
-    	$html = "<div class='uc-notification-control'>$text</div>";
-		
+    	$addClass = "";
+    	if($isDarkMode == true)
+    		$addClass = " uc-dark-mode";
+    	 
+    	$html = "<div class='uc-notification-control {$addClass}'>$text</div>";
+    	
 		$this->objControls->add_control(
 			'uc_pro_notification',
 			array(
@@ -2590,8 +2596,8 @@ class UniteCreatorElementorWidget extends Widget_Base {
           		 $this->end_controls_tabs();
           		 $activeTab = null;
 	          }
+
 	          
-	       	
 	        //add free version notification
 	       	if($isGeneralSection && GlobalsUC::$isProVersion == false)
 	       		$this->addFreeVersionCTAControl();
@@ -2810,9 +2816,10 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	        
 	        $menuParam["type"] = UniteCreatorDialogParam::PARAM_MENU;
 	        $menuParam["name"] = $name."_menu";
+	        $menuParam["usefor"] = "multisource";
 	        
 	        $this->addElementorParamUC($menuParam);
-        
+        	
 	        $this->end_controls_section();
 	        
 	        
@@ -3729,7 +3736,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     	
 	    	$postListName = UniteFunctionsUC::getVal($arrPostListParam, "name");
 	    	$postsSource = UniteFunctionsUC::getVal($arrValues, $postListName."_source");
-	    	    	
+	    	
 	    	if($postsSource != "current")
 	    		return("");
     	}

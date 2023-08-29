@@ -278,7 +278,7 @@ registerBlockType( 'jet-engine/dynamic-link', {
 										</Button>
 									}
 								</div>
-								<SelectControl
+								{ ! window.JetEngineListingData.preventWrap && <SelectControl
 									label={ __( 'HTML wrapper' ) }
 									value={ attributes.link_wrapper_tag }
 									options={ [
@@ -322,7 +322,7 @@ registerBlockType( 'jet-engine/dynamic-link', {
 									onChange={ newValue => {
 										props.setAttributes({ link_wrapper_tag: newValue });
 									}}
-								/>
+								/> }
 								<ToggleControl
 									label={ __( 'Open in new window' ) }
 									checked={ attributes.open_in_new }

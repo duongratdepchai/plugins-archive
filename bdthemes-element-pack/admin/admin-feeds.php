@@ -70,6 +70,7 @@ class Element_Pack_Admin_Feeds {
 	 * Element Pack dashboard overview fetch posts data
 	 */
 	public function bdthemes_element_pack_get_feeds_posts_data() {
+
 		// Get RSS Feed(s)
 		include_once(ABSPATH . WPINC . '/feed.php');
 		$rss = fetch_feed('https://bdthemes.com/feed');

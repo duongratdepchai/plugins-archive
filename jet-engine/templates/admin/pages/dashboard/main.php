@@ -221,6 +221,7 @@
 						</div>
 					</cx-vui-component-wrapper>
 				</cx-vui-tabs-panel>
+				<?php do_action( 'jet-engine/dashboard/tabs/after-modules' ); ?>
 				<cx-vui-tabs-panel
 					name="skins"
 					label="<?php _e( 'Skins Manager', 'jet-engine' ); ?>"
@@ -237,6 +238,7 @@
 						<jet-engine-skins-presets></jet-engine-skins-presets>
 					</div>
 				</cx-vui-tabs-panel>
+				<?php do_action( 'jet-engine/dashboard/tabs/after-skins' ); ?>
 				<cx-vui-tabs-panel
 					name="shortcode_generator"
 					label="<?php _e( 'Shortcode Generator', 'jet-engine' ); ?>"

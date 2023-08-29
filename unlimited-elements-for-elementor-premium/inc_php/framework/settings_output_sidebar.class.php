@@ -172,12 +172,12 @@ class UniteSettingsOutputSidebarUC extends UniteCreatorSettingsOutput{
 		        }
 		       		       
 		        $rowClass = $this->drawSettingRow_getRowClass($setting, $baseClass);
-		        		        
-		        	
+		        
 		        ?>
 				<li id="<?php echo esc_attr($settingID)?>_row" <?php echo $addAttr?>  <?php echo UniteProviderFunctionsUC::escAddParam($rowClass)?>>
 					
 					<?php if($toDrawText == true):?>
+										
 						<div class="unite-setting-text-wrapper">
 							<div id="<?php echo esc_attr($settingID)?>_text" class='unite-setting-text<?php echo esc_attr($textClassAdd)?>' title="<?php echo esc_attr($description)?>" <?php echo UniteProviderFunctionsUC::escAddParam($attribsText)?>><?php echo esc_html($text) ?></div>
 							<?php if($isResponsive)
@@ -208,7 +208,7 @@ class UniteSettingsOutputSidebarUC extends UniteCreatorSettingsOutput{
 		 * @param unknown_type $setting
 		 */
 		protected function drawTextRow($setting){
-		    
+		    		    
 		    //set cell style
 		    $cellStyle = "";
 		    if(isset($setting["padding"]))
@@ -220,13 +220,10 @@ class UniteSettingsOutputSidebarUC extends UniteCreatorSettingsOutput{
             //set style
             $label = UniteFunctionsUC::getVal($setting, "label");
             
-            $rowClass = "";
-            
-            if(!empty($label))
              $rowClass = $this->drawSettingRow_getRowClass($setting);
                              
              $classAdd = UniteFunctionsUC::getVal($setting, UniteSettingsUC::PARAM_CLASSADD);
-				
+			
              if(!empty($classHidden))
 				$classAdd .= $classHidden;
 			

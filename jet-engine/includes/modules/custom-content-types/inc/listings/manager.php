@@ -14,6 +14,8 @@ class Manager {
 	public $repeater_source = 'custom_content_type_repeater';
 	public $current_item = false;
 
+	public $query = null;
+
 	/**
 	 * Class constructor
 	 */
@@ -25,7 +27,7 @@ class Manager {
 		require_once Module::instance()->module_path( 'listings/context.php' );
 		require_once Module::instance()->module_path( 'listings/maps.php' );
 
-		new Query( $this->source );
+		$this->query = new Query( $this->source );
 		new Blocks( $this );
 		new Popups();
 		new Context();
@@ -343,6 +345,11 @@ class Manager {
 
 		if ( ! $current_object ) {
 			$current_object = jet_engine()->listings->data->get_current_object();
+		}
+
+		// Added additional conditions to prepare the current object on Single Post.
+		if ( ! isset( $current_object->cct_slug ) && isset( $current_object->ID ) && isset( $current_object->post_type ) ) {
+			$current_object = $this->query->maybe_add_item_to_post( $current_object );
 		}
 
 		if ( ! isset( $current_object->cct_slug ) ) {

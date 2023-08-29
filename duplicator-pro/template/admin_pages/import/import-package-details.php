@@ -5,6 +5,9 @@
  * @copyright (c) 2022, Snap Creek LLC
  */
 
+use Duplicator\Installer\Package\PComponents;
+use Duplicator\Package\Create\BuildComponents;
+
 defined("ABSPATH") or die("");
 
 /**
@@ -35,7 +38,7 @@ if (!$importObj instanceof DUP_PRO_Package_Importer) {
     } elseif (!$importObj->passwordCheck()) {
         ?>
         <p class="maroon">
-            <b><i class="fas fa-exclamation-triangle"></i> <?php  esc_html_e('Valid password required'); ?></b>
+            <b><i class="fas fa-exclamation-triangle"></i> <?php  esc_html_e('Valid password required', 'duplicator-pro'); ?></b>
         </p>
         <div class="dup-import-archive-password-request" >
             <input type="password" class="dup-import-archive-password" name="password" value="" >
@@ -94,6 +97,26 @@ if (!$importObj instanceof DUP_PRO_Package_Importer) {
                 <span class="label"><?php DUP_PRO_U::_e('PHP'); ?>:</span>
                 <span class="value"><?php echo esc_html($importObj->getPhpVersion()); ?></span>
             </li>
+            <?php if ($importObj->getPackageComponents() !== false) { ?>
+                <li>
+                    <span class="label title"><?php DUP_PRO_U::_e('Package components:'); ?></span>
+                </li>
+                <?php
+                $packComponents = $importObj->getPackageComponents();
+                foreach (BuildComponents::COMPONENTS_DEFAULT as $component) {
+                    ?>
+                    <li>
+                        <span class="label"><?php echo esc_html(BuildComponents::getLabel($component)); ?>:</span>
+                        <span class="value">
+                            <?php if (in_array($component, $packComponents)) { ?>
+                                <i class="fas fa-check-circle green"></i> <?php  _e('included', 'duplicator-pro'); ?>
+                            <?php } else { ?>
+                                <i class="fas fa-times-circle maroon"></i> <?php  _e('excluded', 'duplicator-pro'); ?>
+                            <?php } ?>
+                        </span>
+                    </li>
+                <?php } ?>
+            <?php } ?>
             <li>
                 <span class="label title"><?php DUP_PRO_U::_e('Archive:'); ?></span>
             </li>
@@ -118,18 +141,30 @@ if (!$importObj instanceof DUP_PRO_Package_Importer) {
             <li>
                 <span class="label title"><?php DUP_PRO_U::_e('Database:'); ?></span>
             </li>
-            <li>
-                <span class="label"><?php DUP_PRO_U::_e('Size'); ?>:</span>
-                <span class="value"><?php echo esc_html($importObj->getDbSize()); ?></span>
-            </li>
-            <li>
-                <span class="label"><?php DUP_PRO_U::_e('Tables'); ?>:</span>
-                <span class="value"><?php echo $importObj->getNumTables(); ?></span>
-            </li>
-            <li>
-                <span class="label"><?php DUP_PRO_U::_e('Rows'); ?>:</span>
-                <span class="value"><?php echo esc_html(number_format($importObj->getNumRows())); ?></span>
-            </li>
+            <?php
+            if (
+                $importObj->getPackageComponents() === false ||
+                in_array(PComponents::COMP_DB, $importObj->getPackageComponents())
+            ) {
+                ?>
+                <li>
+                    <span class="label"><?php DUP_PRO_U::_e('Size'); ?>:</span>
+                    <span class="value"><?php echo esc_html($importObj->getDbSize()); ?></span>
+                </li>
+                <li>
+                    <span class="label"><?php DUP_PRO_U::_e('Tables'); ?>:</span>
+                    <span class="value"><?php echo $importObj->getNumTables(); ?></span>
+                </li>
+                <li>
+                    <span class="label"><?php DUP_PRO_U::_e('Rows'); ?>:</span>
+                    <span class="value"><?php echo esc_html(number_format($importObj->getNumRows())); ?></span>
+                </li>
+            <?php } else { ?>
+                <li>
+                    <span class="label"><?php DUP_PRO_U::_e('Database'); ?>:</span>
+                    <span class="value"><?php DUP_PRO_U::_e('Not Included'); ?></span>
+                </li>
+            <?php } ?>
         </ul>
     <?php } ?>
 </div>

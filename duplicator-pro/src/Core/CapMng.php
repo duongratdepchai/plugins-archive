@@ -5,6 +5,7 @@ namespace Duplicator\Core;
 use DUP_PRO_Log;
 use Duplicator\Addons\ProBase\License\License;
 use Duplicator\Libs\Snap\SnapLog;
+use Duplicator\Libs\Snap\SnapWP;
 use Exception;
 
 /**
@@ -66,7 +67,7 @@ class CapMng
      */
     private function save()
     {
-        $roles         = wp_roles();
+        $roles         = SnapWP::wpRoles();
         $origUseDb     = $roles->use_db;
         $roles->use_db = false;
 

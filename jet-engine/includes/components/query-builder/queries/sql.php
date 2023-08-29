@@ -19,9 +19,17 @@ class SQL_Query extends Base_Query {
 
 		$cast_to_class = ! empty( $this->query['cast_object_to'] ) ? $this->query['cast_object_to'] : false;
 
-		if ( $cast_to_class && class_exists( $cast_to_class ) ) {
+		if ( $cast_to_class && ( class_exists( $cast_to_class ) || function_exists( $cast_to_class ) ) ) {
 			$result = array_map( function( $item ) use ( $cast_to_class ) {
-				return new $cast_to_class( $item );
+				
+				if ( class_exists( $cast_to_class ) ) {
+					return new $cast_to_class( $item );
+				} elseif ( function_exists( $cast_to_class ) ) {
+					return call_user_func( $cast_to_class, $item );
+				} else {
+					return $item;
+				}
+				
 			}, $result );
 		} else {
 			$start_index = $this->get_start_item_index_on_page() - 1;
@@ -475,7 +483,13 @@ class SQL_Query extends Base_Query {
 					$where[] = $row;
 				}
 
-				$current_query .= $this->add_where_args( $where );
+				$where_relation = 'AND';
+
+				if ( ! empty( $this->final_query['where_relation'] ) && count( $where ) > 1 ) {
+					$where_relation = strtoupper( $this->final_query['where_relation'] );
+				}
+
+				$current_query .= $this->add_where_args( $where, $where_relation );
 			}
 
 			if ( ! empty( $this->final_query['group_results'] ) && ! empty( $this->final_query['group_by'] ) ) {

@@ -220,7 +220,6 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 					),
 					'condition' => array(
 						'jet_engine_listing_link' => 'yes',
-						'jet_engine_listing_link_source!' => array( 'open_map_listing_popup', 'open_map_listing_popup_hover' ),
 					),
 				),
 				'jet_engine_listing_link_rel_attr' => array(
@@ -229,7 +228,6 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 					'options'   => \Jet_Engine_Tools::get_rel_attr_options(),
 					'condition' => array(
 						'jet_engine_listing_link' => 'yes',
-						'jet_engine_listing_link_source!' => array( 'open_map_listing_popup', 'open_map_listing_popup_hover' ),
 					),
 				),
 				'jet_engine_listing_link_aria_label' => array(
@@ -408,7 +406,12 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 
 							echo '</select>';
 						} else {
-							echo '<input type="text" id="' . $control_name . '" name="' . $control_name . '" class="components-text-control__input" value="' . esc_attr( $control_args['value'] ) . '">';
+							$input_type = ! empty( $control_args['input_type'] ) ? $control_args['input_type'] : 'text';
+							printf( '<input type="%1$s" id="%2$s" name="%2$s" class="components-text-control__input" value="%3$s">',
+								esc_attr( $input_type ),
+								$control_name,
+								esc_attr( $control_args['value'] )
+							);
 						}
 
 						if ( ! empty( $control_args['description'] ) ) {
@@ -1003,6 +1006,7 @@ if ( ! class_exists( 'Jet_Engine_Blocks_Views_Editor' ) ) {
 				'hideOptions'      => jet_engine()->listings->get_widget_hide_options( 'blocks' ),
 				'activeModules'    => jet_engine()->modules->get_active_modules(),
 				'blocksWithIdAttr' => jet_engine()->blocks_views->block_types->get_blocks_with_id_attr(),
+				'preventWrap'      => \Jet_Engine\Modules\Performance\Module::instance()->is_tweak_active( 'optimized_dom' ),
 			) );
 
 			wp_localize_script(

@@ -9,7 +9,7 @@ require_once $path . 'builders/builder.class.php';
 require_once $path . 'builders/banner_builder.class.php';
 
 require_once $path . 'notices/notice_abstract.class.php';
-require_once $path . 'notices/banner_example.class.php';
+require_once $path . 'notices/banner.class.php';
 require_once $path . 'notices/simple_example.class.php';
 require_once $path . 'notices/doubly.class.php';
 require_once $path . 'notices/rating.class.php';

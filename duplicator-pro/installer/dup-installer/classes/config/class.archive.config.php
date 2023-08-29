@@ -13,6 +13,9 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Addons\ProBase\License;
+use Duplicator\Installer\Package\PComponents;
+use Duplicator\Installer\Core\Deploy\ServerConfigs;
+use Duplicator\Installer\Core\Params\Items\ParamForm;
 use Duplicator\Installer\Core\Params\Models\SiteOwrMap;
 use Duplicator\Installer\Utils\Log\Log;
 use Duplicator\Installer\Core\Params\PrmMng;
@@ -53,6 +56,7 @@ class DUPX_ArchiveConfig
     public $blogname;
     public $blogNameSafe;
     public $exportOnlyDB;
+    public $components = array();
     //ADV OPTS
     public $opts_delete;
     //MULTISITE
@@ -128,6 +132,43 @@ class DUPX_ArchiveConfig
 
         //Instance Updates:
         $this->blogNameSafe = preg_replace("/[^A-Za-z0-9?!]/", '', $this->blogname);
+    }
+
+    /**
+     * Returns true if it's a DB only insallation
+     *
+     * @return bool
+     */
+    public function isDBOnly()
+    {
+        return PComponents::isDBOnly($this->components);
+    }
+
+    /**
+     * Returns if have all restore components
+     *
+     * @return bool
+     */
+    public function hasRequiredRestoreComponents()
+    {
+        $reqComponents = [
+            PComponents::COMP_DB,
+            PComponents::COMP_CORE,
+            PComponents::COMP_PLUGINS,
+            PComponents::COMP_THEMES,
+            PComponents::COMP_UPLOADS,
+        ];
+        return array_intersect($reqComponents, $this->components) === $reqComponents;
+    }
+
+    /**
+     * Returns true if DB excluded from the Package
+     *
+     * @return bool
+     */
+    public function isDBExcluded()
+    {
+        return PComponents::isDBExcluded($this->components);
     }
 
     /**
@@ -336,6 +377,36 @@ class DUPX_ArchiveConfig
                 return count($subsite->filteredTables) > 0;
         });
         return ($this->mu_mode != 0 && count($this->subsites) > 0 && $this->mu_is_filtered) || ($hasNotImportableSubsite && DUPX_InstallerState::isImportFromBackendMode());
+    }
+
+    /**
+     * Set the Engines and Params in case the DB excluded
+     *
+     * @return void
+     */
+    public function setEnginesDBExcluded()
+    {
+        if (!DUPX_ArchiveConfig::getInstance()->isDBExcluded()) {
+            return;
+        }
+
+        $prmMng = PrmMng::getInstance();
+        $prmMng->setValue(PrmMng::PARAM_DB_ACTION, \DUPX_DBInstall::DBACTION_DO_NOTHING);
+        $prmMng->setValue(PrmMng::PARAM_REPLACE_ENGINE, DUPX_S3_Funcs::MODE_SKIP);
+        $prmMng->setValue(PrmMng::PARAM_CPNL_CAN_SELECTED, false);
+        $prmMng->setValue(PrmMng::PARAM_WP_CONFIG, ServerConfigs::ACTION_WPCONF_NOTHING);
+        $prmMng->setValue(PrmMng::PARAM_HTACCESS_CONFIG, 'nothing');
+        $prmMng->setValue(PrmMng::PARAM_OTHER_CONFIG, 'nothing');
+        $prmMng->setFormStatus(PrmMng::PARAM_WP_CONFIG, ParamForm::STATUS_INFO_ONLY);
+        $prmMng->setFormStatus(PrmMng::PARAM_HTACCESS_CONFIG, ParamForm::STATUS_INFO_ONLY);
+        $prmMng->setFormStatus(PrmMng::PARAM_OTHER_CONFIG, ParamForm::STATUS_INFO_ONLY);
+        $prmMng->setFormStatus(PrmMng::PARAM_DB_ACTION, ParamForm::STATUS_INFO_ONLY);
+        $prmMng->setFormStatus(PrmMng::PARAM_DB_HOST, ParamForm::STATUS_SKIP);
+        $prmMng->setFormStatus(PrmMng::PARAM_DB_USER, ParamForm::STATUS_SKIP);
+        $prmMng->setFormStatus(PrmMng::PARAM_DB_NAME, ParamForm::STATUS_SKIP);
+        $prmMng->setFormStatus(PrmMng::PARAM_DB_PASS, ParamForm::STATUS_SKIP);
+
+        $prmMng->save();
     }
 
     public function setNewPathsAndUrlParamsByMainNew()

@@ -22,7 +22,7 @@
             $settings['remoteId'] = $parentSection;
         }
 
-        if ($($settings.remoteId).find('.swiper-container').length <= 0) {
+        if ($($settings.remoteId).find('.swiper-container, .swiper').length <= 0) {
             if (editMode == true) {
                 $($settings.id + '-notice').removeClass('bdt-hidden');
             }
@@ -33,7 +33,7 @@
 
         $(document).ready(function () {
             setTimeout(() => {
-                const swiperInstance = $($settings.remoteId).find('.swiper-container')[0].swiper;
+                const swiperInstance = $($settings.remoteId).find('.swiper-container, .swiper')[0].swiper;
 
                 var $slideActive = $($settings.remoteId).find('.swiper-slide-active');
                 var realIndex = $slideActive.data('swiper-slide-index')

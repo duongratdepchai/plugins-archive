@@ -30,8 +30,7 @@
 				.on( 'click.JetEngine', '.jet-engine-listing-overlay-wrap:not([data-url*="event=hover"])', JetEngine.handleListingItemClick )
 				.on( 'jet-filter-content-rendered', JetEngine.filtersCompatibility )
 				.on( 'click.JetEngine', '.jet-container[data-url]', JetEngine.handleContainerURL )
-				.on( 'change.JetEngine', '.jet-listing-dynamic-link .qty', JetEngine.handleProductQuantityChange )
-				.on( 'click.JetEngine', '.jet-engine-gallery-grid__item-wrap', JetEngine.initPhotoswipe );
+				.on( 'change.JetEngine', '.jet-listing-dynamic-link .qty', JetEngine.handleProductQuantityChange );
 
 			$( window ).on( 'jet-popup/render-content/ajax/success', JetEngine.initStores );
 
@@ -54,72 +53,6 @@
 
 			JetEngine.initStores();
 			JetEngine.customUrlActions.init();
-
-		},
-
-		initPhotoswipe: function( event ) {
-			event.preventDefault();
-
-			// Define my lightbox / PhotoSwipe element from DOM
-			const lightbox = document.querySelector(".pswp");
-
-			// Do some checking if PhotoSwipe loaded and lightbox element exists
-			if( 'function' !== typeof PhotoSwipe || 'function' !== typeof PhotoSwipeUI_Default || ! lightbox ) {
-				return;
-			}
-
-			const options = {
-				"bgOpacity" : .9,
-				"showHideOpacity" : true,
-				"index" : 0,
-				"closeOnScroll" : false,
-				"closeOnVerticalDrag" : false
-			};
-
-			const wpImg = event.target;
-
-			// Get all images from the gallery
-			const otherImages = wpImg.closest( '.jet-engine-gallery-grid' ).querySelectorAll( '.jet-engine-gallery-grid__item-wrap' );
-
-			let items = [];
-			if( otherImages ) {
-				otherImages.forEach( otherImg => {
-					let imgSrc = otherImg.getAttribute( 'href' );
-					let imgW = otherImg.getAttribute( 'data-full-img-width' );
-					let imgH = otherImg.getAttribute( 'data-full-img-height' );
-					let id = otherImg.getAttribute( 'data-id' );
-
-					items.push( {
-						"src": imgSrc,
-						"w": imgW,
-						"h": imgH,
-						"id": id,
-						"node": otherImg,
-					} );
-				} );
-			}
-
-			// Get the index of the clicked image
-			let index = 0;
-			for( let i = 0; i < items.length; i++ ) {
-				if( items[i].node === wpImg ) {
-					index = i;
-					break;
-				}
-			}
-
-			// Rearrange the images to match the order of the gallery
-			let arrangedImgs = [];
-			if( index > 0 ) {
-				arrangedImgs = items.splice( index, items.length - index )
-				items.forEach( item => {
-					arrangedImgs.push(item);
-				} )
-			} else {
-				arrangedImgs = items;
-			}
-
-			(new PhotoSwipe(lightbox, PhotoSwipeUI_Default, arrangedImgs, options)).init();
 
 		},
 
@@ -189,6 +122,23 @@
 				JetEngine.prepareJetPopup
 			);
 
+			window.JetPlugins.hooks.addFilter(
+				'jet-popup.show-popup.data',
+				'JetEngine.popupData',
+				( popupData, $popup, $triggeredBy ) => {
+
+					if ( ! $triggeredBy ) {
+						return popupData;
+					}
+
+					if ( $triggeredBy.data( 'popupIsJetEngine' ) ) {
+						popupData = JetEngine.prepareJetPopup( popupData, { 'is-jet-engine': true }, $triggeredBy );
+					}
+
+					return popupData;
+				}
+			);
+
 			JetEngine.updateAddedStyles();
 		},
 
@@ -206,7 +156,7 @@
 		initBlocks: function( $scope ) {
 
 			$scope = $scope || $( 'body' );
-			
+
 			window.JetPlugins.init( $scope, [
 				{
 					block: 'jet-engine/listing-grid',
@@ -915,18 +865,27 @@
 			if ( widgetData['is-jet-engine'] ) {
 				popupData['isJetEngine'] = true;
 
-				var $gridItems    = $scope.closest( '.jet-listing-grid__items' ),
-					$queryItems   = $scope.closest( '[data-query-id]' ),
-					$gridItem     = $scope.closest( '.jet-listing-grid__item' ),
-					$calendarItem = $scope.closest( '.jet-calendar-week__day-event' ),
-					$itemObject   = $scope.closest( '[data-item-object]' );
+				var $gridItems     = $scope.closest( '.jet-listing-grid__items' ),
+					$gridItem      = $scope.closest( '.jet-listing-grid__item' ),
+					$calendarItem  = $scope.closest( '.jet-calendar-week__day-event' ),
+					$itemObject    = $scope.closest( '[data-item-object]' )
 
 				if ( $gridItems.length ) {
 					popupData['listingSource'] = $gridItems.data( 'listing-source' );
 					popupData['listingId']     = $gridItems.data( 'listing-id' );
 					popupData['queryId']       = $gridItems.data( 'query-id' );
-				} else if ( $queryItems.length ) {
-					popupData['queryId'] = $queryItems.data( 'query-id' );
+				} else {
+
+					var $queryItems    = $scope.closest( '[data-query-id]' ),
+						$listingSource = $scope.closest( '[data-listing-source]' );
+
+					if ( $queryItems.length ) {
+						popupData['queryId'] = $queryItems.data( 'query-id' );
+					}
+
+					if ( $listingSource.length ) {
+						popupData['listingSource'] = $listingSource.data( 'listing-source' );
+					}
 				}
 
 				if ( $gridItem.length ) {
@@ -1054,54 +1013,13 @@
 
 			if ( navSettings && navSettings.enabled ) {
 
-				var loadMoreType = navSettings.type || 'click';
+				JetEngine.loadMoreListing( {
+					container: $listing,
+					settings:  navSettings,
+					masonry:   $masonry,
+					slider:    $slider,
+				} );
 
-				switch ( loadMoreType ) {
-					case 'click':
-
-						if ( navSettings.more_el ) {
-
-							var $button = $( navSettings.more_el ),
-								page    = parseInt( $listing.data( 'page' ), 10 ) || 0,
-								pages   = parseInt( $listing.data( 'pages' ), 10 ) || 0;
-
-							if ( $button.length ) {
-
-								if ( page === pages && ! window.elementor ) {
-									$button.css( 'display', 'none' );
-								} else {
-									$button.removeAttr( 'style' );
-								}
-
-								$( document ).off( 'click', navSettings.more_el ).on( 'click', navSettings.more_el, JetEngine.handleMore.bind( {
-									container: $listing,
-									button: $button,
-									settings: navSettings,
-									pages: pages,
-									masonry: $masonry,
-									slider: $slider,
-								} ) );
-
-							}
-						}
-
-						break;
-
-					case 'scroll':
-
-						if ( ( ! window.elementorFrontend || ! window.elementorFrontend.isEditMode() ) && ! $slider.length ) {
-
-							JetEngine.handleInfiniteScroll( {
-								container: $listing,
-								settings:  navSettings,
-								masonry:   $masonry,
-								slider:    $slider,
-							} );
-
-						}
-
-						break;
-				}
 			}
 
 			// Init elements handlers in editor.
@@ -1340,139 +1258,198 @@
 
 		},
 
-		handleMore: function( event ) {
+		loadMoreListing: function( args ) {
 
-			event.preventDefault();
+			var instance = {
 
-			var self     = this,
-				$wrapper = self.container.closest( '.jet-listing-grid' ),
-				page     = parseInt( self.container.data( 'page' ), 10 );
+				setup: function() {
+					this.container = args.container;
+					this.masonry   = args.masonry;
+					this.slider    = args.slider;
+					this.settings  = args.settings;
 
-			page++;
+					this.wrapper = this.container.closest( '.jet-listing-grid' );
 
-			self.button.css({
-				pointerEvents: 'none',
-				opacity: '0.5',
-				cursor: 'default',
-			});
+					this.type  = this.settings.type || 'click';
+					this.page  = parseInt( this.container.data( 'page' ), 10 ) || 0;
+					this.pages = parseInt( this.container.data( 'pages' ), 10 ) || 0;
+				},
 
-			$wrapper.addClass( 'jet-listing-grid-loading' );
+				init: function() {
 
-			JetEngine.ajaxGetListing( {
-				handler: 'listing_load_more',
-				container: self.container,
-				masonry: self.masonry,
-				slider: self.slider,
-				append: true,
-				query: self.settings.query,
-				widgetSettings: self.settings.widget_settings,
-				page: page,
-			}, function( response ) {
+					this.setup();
 
-				$wrapper.removeClass( 'jet-listing-grid-loading' );
-				self.button.removeAttr( 'style' );
+					switch ( this.type ) {
+						case 'click':
 
-				if ( response.success && page === self.pages ) {
-					self.button.css( 'display', 'none' );
-				}
-				$( document ).trigger( 'jet-engine/listing-grid/after-load-more', [ self, response ] );
-			}, function() {
-				$wrapper.removeClass( 'jet-listing-grid-loading' );
-				self.button.removeAttr( 'style' );
-			} );
+							this.handleMore();
 
-		},
+							break;
 
-		handleInfiniteScroll: function( args ) {
-			var $wrapper = args.container.closest( '.jet-listing-grid' ),
-				page     = parseInt( args.container.data( 'page' ), 10 ),
-				pages    = parseInt( args.container.data( 'pages' ), 10 );
+						case 'scroll':
 
-			if ( args.container.hasClass( 'jet-listing-not-found' ) ) {
-				return;
-			}
+							if ( ( ! window.elementorFrontend || ! window.elementorFrontend.isEditMode() ) && ! this.slider.length ) {
+								this.handleInfiniteScroll();
+							}
 
-			if ( page === pages ) {
-				return;
-			}
+							break;
+					}
+				},
 
-			var $trigger   = $wrapper.find( '.jet-listing-grid__loader' ),
-				preventCSS = !! $trigger.length, // Prevent CSS if listing has the loader.
-				offset     = '0%';
+				handleMore: function() {
 
-			if ( ! $trigger.length ) {
-				$trigger = $( '<div>', {
-					class: 'jet-listing-grid__loading-trigger'
-				} );
+					if ( ! this.settings.more_el ) {
+						return;
+					}
 
-				$wrapper.append( $trigger );
-			}
+					var self    = this,
+						$button = $( this.settings.more_el );
 
-			// Prepare ofsset value.
-			if ( args.settings.widget_settings && args.settings.widget_settings.load_more_offset ) {
-				var offsetValue = args.settings.widget_settings.load_more_offset;
+					if ( ! $button.length ) {
+						return;
+					}
 
-				switch ( typeof offsetValue ) {
-					case 'object':
-						var size = offsetValue.size ? offsetValue.size : '0',
-							unit = offsetValue.unit ? offsetValue.unit : 'px';
+					if ( this.page === this.pages && ! window.elementor ) {
+						$button.css( 'display', 'none' );
+					} else {
+						$button.removeAttr( 'style' );
+					}
 
-						offset = size + unit;
-						break;
+					$( document )
+						.off( 'click', this.settings.more_el )
+						.on( 'click', this.settings.more_el, function( event ) {
+							event.preventDefault();
 
-					case 'number':
-					case 'string':
-						offset = offsetValue + 'px';
-						break;
-				}
-			}
-
-			var observer = new IntersectionObserver(
-					function( entries, observer ) {
-
-						if ( entries[0].isIntersecting ) {
-
-							page++;
-							JetEngine.lazyLoading = true;
-							$wrapper.addClass( 'jet-listing-grid-loading' );
-
-							JetEngine.ajaxGetListing( {
-								handler:        'listing_load_more',
-								container:      args.container,
-								masonry:        args.masonry,
-								slider:         args.slider,
-								append:         true,
-								query:          args.settings.query,
-								widgetSettings: args.settings.widget_settings,
-								page:           page,
-								preventCSS:     preventCSS,
-							}, function( response ) {
-								JetEngine.lazyLoading = false;
-								$wrapper.removeClass( 'jet-listing-grid-loading' );
-								$( document ).trigger( 'jet-engine/listing-grid/after-load-more', [args, response] );
-
-								// Reinit observer if the last page is not loaded
-								if ( page !== pages ) {
-									setTimeout( function() {
-										observer.observe( entries[0].target );
-									}, 250 );
-								}
-
-							}, function() {
-								JetEngine.lazyLoading = false;
-								$wrapper.removeClass( 'jet-listing-grid-loading' );
+							$button.css( {
+								pointerEvents: 'none',
+								opacity: '0.5',
+								cursor: 'default',
 							} );
 
-							// Detach observer
-							observer.unobserve( entries[0].target );
-						}
-					},
-					{
-						rootMargin: '0% 0% ' + offset + ' 0%',
-					}
-				);
+							self.ajaxGetItems( function( response ) {
+									$button.removeAttr( 'style' );
 
-			observer.observe( $trigger[0] );
+									if ( response.success && self.page === self.pages ) {
+										$button.css( 'display', 'none' );
+									}
+								}, function() {
+									$button.button.removeAttr( 'style' );
+								}
+							);
+						} );
+				},
+
+				handleInfiniteScroll: function() {
+
+					if ( this.container.hasClass( 'jet-listing-not-found' ) ) {
+						return;
+					}
+
+					if ( this.page === this.pages ) {
+						return;
+					}
+
+					var self     = this,
+						$trigger = this.wrapper.find( '.jet-listing-grid__loader' ),
+						offset   = '0%';
+
+					if ( ! $trigger.length ) {
+						$trigger = $( '<div>', {
+							class: 'jet-listing-grid__loading-trigger'
+						} );
+
+						this.wrapper.append( $trigger );
+					}
+
+					// Prepare offset value.
+					if ( this.settings.widget_settings && this.settings.widget_settings.load_more_offset ) {
+						var offsetValue = this.settings.widget_settings.load_more_offset;
+
+						switch ( typeof offsetValue ) {
+							case 'object':
+								var size = offsetValue.size ? offsetValue.size : '0',
+									unit = offsetValue.unit ? offsetValue.unit : 'px';
+
+								offset = size + unit;
+								break;
+
+							case 'number':
+							case 'string':
+								offset = offsetValue + 'px';
+								break;
+						}
+					}
+
+					var observer = new IntersectionObserver(
+						function( entries, observer ) {
+
+							if ( entries[0].isIntersecting ) {
+
+								self.ajaxGetItems( function() {
+
+									// Re-init observer if the last page is not loaded
+									if ( self.page !== self.pages ) {
+										setTimeout( function() {
+											observer.observe( entries[0].target );
+										}, 250 );
+									}
+
+								} );
+
+								// Detach observer
+								observer.unobserve( entries[0].target );
+							}
+						},
+						{
+							rootMargin: '0% 0% ' + offset + ' 0%',
+						}
+					);
+
+					observer.observe( $trigger[0] );
+				},
+
+				ajaxGetItems: function( doneCallback, failCallback ) {
+					var self = this;
+
+					this.page++;
+
+					this.wrapper.addClass( 'jet-listing-grid-loading' );
+
+					JetEngine.ajaxGetListing( {
+							handler:        'listing_load_more',
+							container:      this.container,
+							masonry:        this.masonry,
+							slider:         this.slider,
+							append:         true,
+							query:          this.settings.query,
+							widgetSettings: this.settings.widget_settings,
+							page:           this.page,
+							preventCSS:     !! this.wrapper.find( '.jet-listing-grid__loader' ).length, // Prevent CSS if listing has the loader.
+						}, function( response ) {
+
+							JetEngine.lazyLoading = false;
+							self.wrapper.removeClass( 'jet-listing-grid-loading' );
+
+							if ( doneCallback ) {
+								doneCallback( response );
+							}
+
+							$( document ).trigger( 'jet-engine/listing-grid/after-load-more', [args, response] );
+
+						}, function() {
+
+							JetEngine.lazyLoading = false;
+							self.wrapper.removeClass( 'jet-listing-grid-loading' );
+
+							if ( failCallback ) {
+								failCallback();
+							}
+
+					} );
+				},
+			};
+
+			instance.init();
 		},
 
 		lazyLoadListing: function( args ) {
@@ -1617,7 +1594,7 @@
 			options = $.extend( {}, options, customOptions );
 
 			if ( $eWidget.length ) {
-				
+
 				var settings     = JetEngine.getElementorElementSettings( $eWidget ),
 					responsive   = [],
 					deviceMode   = elementorFrontend.getCurrentDeviceMode(),
@@ -1746,6 +1723,12 @@
 				return;
 			}
 
+			if ( slickOptions.variableWidth ) {
+				slickOptions.slidesToShow = 1;
+				slickOptions.slidesToScroll = 1;
+				slickOptions.responsive = null;
+			}
+
 			$sliderItems.slick( slickOptions );
 		},
 
@@ -1821,6 +1804,50 @@
 				}
 			}
 
+			$slider.on('init', function (event, slick) {
+
+				const slider = event.target;
+
+				if (!slider.classList.contains('jet-engine-gallery-lightbox')) {
+					return;
+				}
+
+				let lightbox = new PhotoSwipeLightbox({
+					mainClass: 'brx',
+					gallery: slider,
+					children: 'a',
+					showHideAnimationType: 'none',
+					zoomAnimationDuration: false,
+					pswpModule: PhotoSwipe5,
+				});
+
+				lightbox.addFilter('numItems', numItems => slick.slideCount);
+
+				lightbox.addFilter('clickedIndex', function (clickedIndex, e) {
+					const slide = e.target.closest('.slick-slide');
+
+					if (!slide) {
+						return clickedIndex;
+					}
+
+					if (clickedIndex >= slick.slideCount) {
+						return clickedIndex % slick.slideCount;
+					}
+
+					return clickedIndex;
+				});
+
+				lightbox.addFilter('thumbEl', (thumbnail, itemData, index) => {
+					return thumbnail;
+				});
+
+				lightbox.addFilter('thumbBounds', (thumbBounds, itemData, index) => {
+					return thumbBounds;
+				});
+
+				lightbox.init();
+			});
+
 		},
 
 		switchCalendarMonth: function( $event ) {
@@ -1873,10 +1900,10 @@
 
 			// Actual init
 			window.JetPlugins.init( $selector );
-			
+
 			// Legacy Elementor-only init
 			$selector.find( '[data-element_type]' ).each( function() {
-				
+
 				var $this       = $( this ),
 					elementType = $this.data( 'element_type' );
 

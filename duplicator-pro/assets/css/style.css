@@ -5,6 +5,9 @@
  * ================================================ */
 
 /*Global Elements*/
+.duplicator-page #wpcontent {
+    position: relative;
+}
 
 .clearfix:before,
 .clearfix:after {
@@ -181,23 +184,6 @@ hr.separator.dotted {
     border-bottom: 1px dotted #dfdfdf;
 }
 
-ul.dup-pro-simple-style-list {
-    margin: 0;
-}
-
-ul.dup-pro-simple-style-list li {
-    margin-bottom: 2px;
-}
-
-ul.dup-pro-simple-style-list li:last-child {
-    margin: 0;
-}
-
-ul.dup-pro-simple-style-list li::before {
-    content: "-";
-    margin: 0 5px;
-}
-
 .button-cancel {
     color: orangered !important;
 }
@@ -363,6 +349,38 @@ h3.dup-title {
     margin-bottom: 20px;
 }
 
+.dup-radio-button-group-wrapper {
+    width: 100%;
+    display: flex
+}
+
+.dup-radio-button-group-wrapper input[type="radio"] {
+    position: absolute;
+    left: -9999em;
+}
+
+.dup-radio-button-group-wrapper input[type="radio"] + label {
+    flex: 1 1 25%;
+    padding: .5em 1em;
+    cursor: pointer;
+    text-align: center;
+    color: #2271b1;
+    background: #f6f7f7;
+    border-right: 1px solid #2271b1;
+    box-sizing: border-box;
+}
+
+.dup-radio-button-group-wrapper input[type="radio"] + label:last-child {
+    border-right: none;
+}
+
+.dup-radio-button-group-wrapper input[type="radio"] + label:hover,
+.dup-radio-button-group-wrapper input[type="radio"]:focus + label, 
+.dup-radio-button-group-wrapper input[type="radio"]:checked + label {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+}
 
 /*TABS*/
 
@@ -1418,18 +1436,6 @@ textarea {
     width: 100%
 }
 
-div#dup-template-archive-panel div.tabs-panel {
-    min-height: 675px;
-    padding: 20px 15px 15px 15px;
-}
-
-#dup-template-archive-panel .dup-template-mu-area {
-    text-align: center;
-    padding: 50px 20px 0 20px;
-    font-style: italic;
-}
-
-
 .dup-archive-filters-icons {
     font-size: 13px;
 }
@@ -1439,6 +1445,90 @@ div#dup-template-archive-panel div.tabs-panel {
 }
 
 /* TEMPLATE ARCHIVE*/
+
+/*ARCHIVE: Area*/
+.dup-archive-filters-wrapper div.tabs-panel {
+    max-height: 800px;
+    padding: 20px 15px 15px 15px;
+    min-height: 300px
+}
+
+.dup-archive-filters-wrapper ul li.tabs {
+    font-weight: bold
+}
+
+.dup-archive-filters-wrapper #archive-format {
+    min-width: 100px;
+    margin: 1px 0px 4px 0px
+}
+
+.dup-archive-filters-wrapper #dup-archive-filter-file {
+    color: #A62426;
+    display: none;
+}
+
+.dup-archive-filters-wrapper #dup-archive-filter-db {
+    color: #A62426;
+    display: none;
+}
+
+.dup-archive-filters-wrapper #dup-archive-db-only {
+    color: #A62426;
+    display: none;
+}
+
+.dup-archive-filters-wrapper #dup-archive-media-only {
+    color: #a62426;
+    display: none;
+}
+
+.dup-archive-filters-wrapper #dpro-install-secure-lock {
+    color: #A62426;
+    display: none;
+}
+
+
+/* Tab: Multisite */
+.dup-archive-filters-wrapper .mu-mode td {
+    padding: 10px
+}
+
+.dup-archive-filters-wrapper .mu-opts td {
+    padding: 10px
+}
+
+.dup-archive-filters-wrapper .mu-selector {
+    height: 175px !important;
+    width: 450px;
+    max-width: 450px
+}
+
+.dup-archive-filters-wrapper .mu-selector option {
+    padding: 2px 0;
+}
+
+.dup-archive-filters-wrapper .mu-push-btn {
+    padding: 5px;
+    width: 40px;
+    font-size: 14px
+}
+
+.dup-archive-filters-wrapper .filter-files-tab-content.tabs-panel {
+    padding: 0;
+}
+
+.dup-archive-filters-wrapper .filter-links {
+    font-weight: normal;
+}
+
+.dup-archive-filters-wrapper .filter-links a {
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.dup-archive-filters-wrapper #filter-exts {
+    resize: none;
+}
 
 div.dpro-template-general label.lbl-larger {
     padding-bottom: 5px;
@@ -1567,7 +1657,7 @@ table.dpro-install-setup tr {
 
 ul.add-menu-item-tabs li,
 ul.category-tabs li {
-    padding: 3px 30px 5px
+    padding: 5px 30px;
 }
 
 div#dup-template-install-panel div.tabs-panel {
@@ -2429,6 +2519,157 @@ div#dup-db-filter-items-no-filters>div {
     color: #555555 !important;
 }
 
+/** Package Components **/
+
+.dup-package-components {
+    display: flex;
+    min-height: 330px;
+    flex-direction: row;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.dup-package-components .section-title {
+    margin: 0;
+    height: 20px;
+    padding: 10px;
+    background: #F0F0F1;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dup-package-components .dup-radio-button-group-wrapper {
+    border-top: 1px solid #dcdcde;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.dup-package-components .dup-radio-button-group-wrapper input[type="radio"] + label {
+    border-color: #dcdcde;
+}
+
+.dup-package-components .db-only-message {
+    display: none;
+    padding: 40px 20px 20px;
+}
+
+.dup-package-components .component-section {
+    flex: 1 1 33.33%;
+    max-width: 500px;
+}
+
+.dup-package-components .component-section > label {
+    margin-left: 15px;
+}
+
+.dup-package-components .component-section label.secondary {
+    margin-left: 40px;
+}
+
+.dup-package-components .component-section .components-select {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0px 0px 10px 15px;
+    border-bottom: 1px solid #dcdcde;
+    gap: 10px;
+}
+
+.dup-package-components .component-section label.disabled,
+.dup-package-components .component-section label.disabled input {
+    pointer-events: none;
+    color: gray;
+    opacity: 0.7;
+}
+
+.dup-package-components .component-section label.disabled i {
+    pointer-events: all;
+    color: #4e4e4e;
+}
+
+.dup-archive-filters-wrapper #dup-upgrade-license-info {
+    color: maroon;
+    font-style: italic;
+}
+
+.dup-package-components .custom-components-select {
+    margin-left: 10px;
+}
+
+.dup-package-components .filter-section {
+    flex: 1 3 66.66%;
+    border-left: 1px solid #dcdcde;
+}
+
+.dup-package-components .filter-section .filters {
+    display: flex;
+    flex-direction: column;
+}
+
+.dup-package-components .component-section {
+    padding-bottom: 20px;
+}
+
+.dup-package-components .filter-section .filters {
+    height: 100%;
+}
+
+.dup-package-components .filter-section textarea {
+    border: none;
+    border-radius: 0;
+}
+
+.dup-package-components .filter-section textarea[readonly] {
+    background-image: linear-gradient(45deg, #f0f0f0 41.67%, #e0e0e0 41.67%, #e0e0e0 50%, #f0f0f0 50%, #f0f0f0 91.67%, #e0e0e0 91.67%, #e0e0e0 100%);
+    background-size: 12px 12px;
+    opacity: 0.7;
+}
+
+.dup-package-components .filter-section textarea#filter-paths {
+    flex: 4 1 auto;
+}
+
+.dup-package-components .filter-section .section-title .filter-links {
+    font-size: 12px;
+}
+
+.filter-files-tab-content .dup-tabs-opts-help {
+    font-style: italic;
+    font-size: 12px;
+    margin: 0;
+    color: #666;
+    padding: 10px;
+
+}
+
+.dup-recovery-package-components-required .label {
+    min-width: 80px;
+    display: inline-block;
+}
+
+@media only screen and (max-width: 1150px) {
+    .dup-package-components {
+        flex-direction: column;
+    }
+
+    .dup-package-components .section-title {
+        font-size: 14px;
+    }
+
+    .dup-package-components .filter-section {
+        border-left: 0 none !important;
+    }
+
+    .dup-package-components .component-section {
+        max-width: 100%
+    }
+
+    .dup-package-components .section-title {
+        height: auto !important;
+    }
+}
+
 .dup-mock-blur {
     filter: blur(4px);
     pointer-events: none;
@@ -2889,4 +3130,56 @@ OneDrive */
 
 #dup-storage-form .slider.round:before {
     border-radius: 50%;
+}
+
+.dup-header {
+    width: calc(100% - 25px);
+    border-top: 3px solid #fe4716;
+    padding: 20px;
+    padding-left: 25px;
+    padding-bottom: 0px;
+    position: relative;
+    left: -20px;
+}
+
+#dup-notice-bar+#dup-meta-screen {
+    top: 34px
+}
+
+.duplicator-page #screen-meta {
+    margin: 0 20px -1px 20px;
+}
+
+#dup-meta-screen {
+    margin: 0;
+    position: absolute;
+    top: -1px;
+    left: 20px;
+    right: 20px;
+    z-index: 99;
+}
+
+.duplicator-page #screen-meta-links {
+    position: absolute;
+    display: none;
+    right: 20px;
+    top: auto;
+    margin: 0;
+    float: none;
+}
+
+@media screen and (max-width: 782px) {
+    .dup-header {
+        padding: 20px 10px !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .dup-header {
+        top: 45px;
+    }
+}
+
+.admin_page_duplicator-pro-import-installer .dup-header {
+    display: none;
 }

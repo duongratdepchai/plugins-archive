@@ -355,6 +355,9 @@ class Skin_Accordion extends Skin_Base {
 		$query = new Query( $settings );
 		$posts = $query->get_posts();
 
+		//Multi Lingual templates
+		$settings['layout'] = apply_filters( 'wpml_object_id', $settings['layout'], 'ae_global_templates', true );
+
 		// Checked for No Post Message.
 
 		$layout = $settings['layout'];

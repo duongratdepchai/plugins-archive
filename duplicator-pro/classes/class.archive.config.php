@@ -38,6 +38,7 @@ class DUP_PRO_Archive_Config
     public $opts_delete              = array();
     public $brand                    = array();
     public $overwriteInstallerParams = array();
+    public $components               = array();
     public $installer_base_name      = '';
     public $installer_backup_name    = '';
     public $package_name             = '';

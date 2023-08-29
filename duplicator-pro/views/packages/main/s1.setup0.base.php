@@ -53,9 +53,6 @@ $blur = TplMng::getInstance()->getGlobalValue('blurCreate');
 
     div#dpro-da-notice {padding:10px; line-height:20px; font-size: 14px}
     div#dpro-da-notice-info {display:none; padding: 5px}
-
-    /*TABS*/
-    ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
 </style>
 
 <!-- ====================
@@ -139,7 +136,7 @@ $form_action_url = ControllersManager::getMenuLink(
                 <option value="<?php echo intval($manual_template->getId()); ?>"><?php echo '[' . DUP_PRO_U::esc_html__('Unassigned') . ']' ?></option>
                 <?php
                 if (count($templates) == 0) {
-                    $no_templates = __('No Templates');
+                    $no_templates = __('No Templates', 'duplicator-pro');
                     echo "<option value='-1'>$no_templates</option>";
                 } else {
                     foreach ($templates as $template) {
@@ -164,8 +161,7 @@ $form_action_url = ControllersManager::getMenuLink(
         <input type="button" value="<?php DUP_PRO_U::esc_attr_e("Reset") ?>" class="button button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> onClick="DupPro.Pack.ResetSettings()" />
         <input 
             id="button-next" 
-            type="submit" 
-            onClick="DupPro.Pack.BeforeSubmit()" 
+            type="submit"
             value="<?php DUP_PRO_U::esc_attr_e("Next") ?> &#9654;" 
             class="button button-primary button-large" <?php echo ($dup_tests['Success']) ? '' : 'disabled="disabled"'; ?> 
         >
@@ -190,13 +186,19 @@ jQuery(function($)
 {
     var packageTemplates = <?php echo DUP_PRO_Package_Template_Entity::getTemplatesFrontendListData(); ?>
 
-    DupPro.Pack.BeforeSubmit = function(){
+    DupPro.Pack.BeforeSubmit = function(e){
         $('#mu-exclude option').each(function(){
             $(this).prop('selected', true);
         });
 
         DupPro.Pack.FillExcludeTablesList();
+
+        return true;
     };
+
+    $('#dup-form-opts').submit(function () {
+        return DupPro.Pack.BeforeSubmit();
+    })
 
     // Template-specific Functions
     DupPro.Pack.GetTemplateById = function (templateId)
@@ -237,17 +239,30 @@ jQuery(function($)
             $("#package-name").val(name);
             $("#package-notes").val(selectedTemplate.notes);
 
-            $("#export-onlydb").prop("checked", selectedTemplate.archive_export_onlydb);
             $("#filter-on").prop("checked", selectedTemplate.archive_filter_on);
             $("#filter-names").prop("checked", selectedTemplate.archive_filter_names);
 
-            $("#filter-dirs").val(selectedTemplate.archive_filter_dirs.split(";").join(";\n"));
+            //Add trailing slash to directories to differentiate between files and directories
+            let filterDirs = selectedTemplate.archive_filter_dirs.split(';').join(";\n");
+            let filterFiles = selectedTemplate.archive_filter_files.split(';').join(";\n")
+            let separator  = filterDirs.length > 0 && filterFiles.length > 0 ? ";\n" : '';
+
+            $("#filter-paths").val(filterDirs + separator + filterFiles);
             $("#filter-exts").val(selectedTemplate.archive_filter_exts);
-            $("#filter-files").val(selectedTemplate.archive_filter_files.split(";").join(";\n"));
             $("#dbfilter-on").prop("checked", selectedTemplate.database_filter_on);
             $("#db-prefix-filter").prop("checked", selectedTemplate.databasePrefixFilter);
             $("#db-prefix-sub-filter").prop("checked", selectedTemplate.databasePrefixSubFilter);
-            DupPro.Pack.ExportOnlyDB();
+
+            $(".dup-components-checkbox").each(function (i, component) {
+                $(component).prop("checked", false);
+            });
+
+            selectedTemplate.components.forEach(function (component) {
+                $("#"+component).prop("checked", true);
+            });
+
+            DupPro.Pack.ToggleDBOnly()
+            DupPro.Pack.SetComponentsSelect();
 
             if (typeof selectedTemplate.filter_sites != 'undefined' && selectedTemplate.filter_sites.length > 0) {
                 for(var i=0; i < selectedTemplate.filter_sites.length;i++){
@@ -385,6 +400,9 @@ jQuery(document).ready(function ($) {
         DupPro.EnableInstallerPassword();
         DupPro.Pack.ToggleFileFilters();
         DupPro.Pack.ToggleDBFilters();
+        DupPro.Pack.ToggleActiveThemes();
+        DupPro.Pack.ToggleActivePlugins();
+        DupPro.Pack.ToggleDBExcluded();
         DupPro.Pack.ToggleNoPrefixTables(false);
         DupPro.Pack.ToggleNoSubsiteExistsTables(false);
     }
@@ -402,9 +420,7 @@ jQuery(document).ready(function ($) {
 
     DupPro.Pack.checkPageCache();
     DupPro.Pack.EnableTemplate();
-    DupPro.Pack.ExportOnlyDB();
     DPRO_NAME_LAST  = $('#package-name').val();
-    DupPro.Pack.CountFilters();
     $('input#package-name').focus().select();
 
 });

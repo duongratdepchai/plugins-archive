@@ -97,6 +97,9 @@ class DUP_PRO_Schedule_Entity extends AbstractEntityList implements UpdateFromIn
         $this->setFromArrayKey(
             $input,
             function ($key, $val) {
+                if (is_string($val)) {
+                    $val = stripslashes($val);
+                }
                 return (is_scalar($val) ? SnapUtil::sanitizeNSChars($val) : $val);
             }
         );
@@ -341,12 +344,11 @@ class DUP_PRO_Schedule_Entity extends AbstractEntityList implements UpdateFromIn
         } else {
             $package->Archive->Format = 'ZIP';
         }
-
-        $package->Archive->ExportOnlyDB = $template->archive_export_onlydb;
-        $package->Archive->FilterOn     = $template->archive_filter_on;
-        $package->Archive->FilterDirs   = $template->archive_filter_dirs;
-        $package->Archive->FilterExts   = $template->archive_filter_exts;
-        $package->Archive->FilterFiles  = $template->archive_filter_files;
+        $package->components           = $template->components;
+        $package->Archive->FilterOn    = $template->archive_filter_on;
+        $package->Archive->FilterDirs  = $template->archive_filter_dirs;
+        $package->Archive->FilterExts  = $template->archive_filter_exts;
+        $package->Archive->FilterFiles = $template->archive_filter_files;
 
         //INSTALLER
         $package->Installer->OptsDBHost   = $template->installer_opts_db_host;

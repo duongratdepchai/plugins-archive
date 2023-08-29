@@ -186,7 +186,8 @@ class Type_Pages {
 	 * @return boolean [description]
 	 */
 	public function is_type_page() {
-		return ( ! empty( $_GET['page'] ) && $this->get_page_slug() === $_GET['page'] ) || ( wp_doing_ajax() && $_REQUEST['action'] === $this->get_page_slug() );
+		return ( ! empty( $_GET['page'] ) && $this->get_page_slug() === $_GET['page'] )
+				|| ( wp_doing_ajax() && ! empty( $_REQUEST['action'] ) && $_REQUEST['action'] === $this->get_page_slug() );
 	}
 
 	/**
@@ -281,6 +282,7 @@ class Type_Pages {
 				}
 				.jet-cct-actions {
 					display: flex;
+					flex-wrap: wrap;
 				}
 			</style>
 			<div class="cct-heading" style="">

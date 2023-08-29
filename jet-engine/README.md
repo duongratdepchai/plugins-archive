@@ -1,5 +1,69 @@
 # ChangeLog
 
+## 3.2.4
+ADD: Zoom option for Map Listing popup;
+FIX: Prevent PHP warnings on Option Page;
+FIX: Clear a repeater query cache if a repeater listing is inside another listing;
+FIX: https://github.com/Crocoblock/suggestions/issues/6960;
+FIX: Dynamic visibility. Days of week condition for Blocks editor;
+FIX: Reset `is_last_static_hooked` injected prop after listing;
+FIX: Meta Boxes for Products Data. Tab priority option;
+FIX: Bricks. {post_content} issue when dynamic elements was used.
+
+## 3.2.3.2
+* FIX: Change listing grid items render method for Elementor to avoid errors in the editor.
+
+## 3.2.3.1
+* FIX: error loading the Listing Grid block.
+
+## 3.2.3
+* ADD: Query description in queries list screen;
+* ADD: An ability to set 0 as fallback in macro;
+* FIX: `replace_tax_query_row` method;
+* FIX: Listing Grid. Block attributes validation;
+* FIX: Setup macros context for label in Dynamic Link;
+* FIX: prevent fatal error in filters in some cases;
+* FIX: Dynamic popups and advanced SQL queries;
+* FIX: Dynamic object field in Repeater Query;
+* FIX: GenerateBlocks. Missing styles when lazy loading is enabled.
+
+## 3.2.2
+* FIX: Better sanitize user callbacks before execute;
+* FIX: Query results fallback doesn't work with dymanic tag;
+* FIX: CPT Fields UI Bug;
+* FIX: Make listing item clickable option for map listing;
+* FIX: Current user instead of queried in listing popup of map listing;
+* FIX: Dynamic Image block and Site Editor compatibility.
+
+## 3.2.1
+* FIX: Icon position for Dynamic Link;
+
+## 3.2.0
+* ADD: Allow to generate SQL queries with AI;
+* ADD: Perfomance section in JetEngine dashboard with optimization tweaks;
+* ADD: New query type for Query Builder - `Current WP Query`;
+* ADD: Listing Grid. Columns Number: `Auto` option;
+* ADD: Allow to output JetEngine meta fields in WooCommerce native tabs and variations;
+* ADD: JetEngine meta fields now supports Posts Revisions;
+* ADD: Alpha setting for Colorpicker meta fields;
+* ADD: Relational operator AND/OR to SQL query;
+* ADD: Fallback for CCT image dynamic tag;
+* UPD: Map Listing: allow to open map popup on marker hover;
+* UPD: Meta fields conditional rules;
+* UPD: Partial frontend JS refactoring;
+* UPD: Elementor widgets registration refactoring;
+* FIX: Calendar Listing Widget Caption style options;
+* FIX: Map Listings: custom styles for MapBox provider;
+* FIX: Images gallery slider callback doen't work in shortcode
+* FIX: PHP 8.2.6 compatibility;
+* FIX: Prevent PHP notice in customizer in some cases;
+* FIX: Data store button doesn't work properly with cast result in SQL query;
+* FIX: Dynamic background from CCT field;
+* FIX: Skin Import fails if skin contains Unicode characters;
+* FIX: Fatal error in Bricks builder 1.8+;
+* FIX: CCT REST API Unable to update multiple Select field;
+* FIX: Prevent errors when using Format number callback.
+
 ## 3.1.6.1
 * FIX: Prevent PHP warnings on PHP < 8.0.
 

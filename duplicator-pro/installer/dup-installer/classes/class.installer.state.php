@@ -588,9 +588,12 @@ class DUPX_InstallerState
      */
     public function getHtmlModeHeader()
     {
-        $php_enforced_txt = ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? '<i style="color:red"><br/>*PHP ini enforced*</i>' : '';
-        $db_only_txt      = (DUPX_ArchiveConfig::getInstance()->exportOnlyDB) ? ' - Database Only' : '';
-        $db_only_txt      = $db_only_txt . $php_enforced_txt;
+        $additional_info  = '<span class="requires-no-db"> - No database actions';
+        $additional_info .= DUPX_ArchiveConfig::getInstance()->isDBExcluded() ? ' (Database Excluded)' : '';
+        $additional_info .= '</span>';
+
+        $additional_info .= (DUPX_ArchiveConfig::getInstance()->isDBOnly()) ? ' - Database Only' : '';
+        $additional_info .= ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? '<i style="color:red"><br/>*PHP ini enforced*</i>' : '';
 
         switch ($this->getMode()) {
             case self::MODE_OVR_INSTALL:
@@ -608,8 +611,8 @@ class DUPX_InstallerState
                 break;
         }
 
-        if (strlen($db_only_txt)) {
-            return '<span class="' . $class . '">' . $label . ' ' . $db_only_txt . '</span>';
+        if (strlen($additional_info)) {
+            return '<span class="' . $class . '">' . $label . ' ' . $additional_info . '</span>';
         } else {
             return "<span class=\"{$class}\">{$label}</span>";
         }
@@ -651,6 +654,16 @@ class DUPX_InstallerState
     public static function isOverwrite()
     {
         return (PrmMng::getInstance()->getValue(PrmMng::PARAM_INSTALLER_MODE) === self::MODE_OVR_INSTALL);
+    }
+
+    /**
+     * Returns true if the DB action is set to do nothing
+     *
+     * @return bool
+     */
+    public static function dbDoNothing()
+    {
+        return PrmMng::getInstance()->getValue(PrmMng::PARAM_DB_ACTION) === DUPX_DBInstall::DBACTION_DO_NOTHING;
     }
 
     /**

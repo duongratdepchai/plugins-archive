@@ -131,15 +131,17 @@ final class DUPX_S3_Funcs
                 break;
             case DUPX_S3_Funcs::MODE_SKIP:
                 $this->initLog();
-                DbCleanup::cleanupOptions();
-                DbCleanup::cleanupExtra();
-                DbCleanup::cleanupPackages();
                 $this->removeMaintenanceMode();
-                $this->configFilesUpdate();
-                $this->forceLogoutOfAllUsers();
-                $this->duplicatorMigrationInfoSet();
                 $this->checkForIndexHtml();
-                $this->noticeTest();
+                if (!DUPX_InstallerState::dbDoNothing()) {
+                    DbCleanup::cleanupOptions();
+                    DbCleanup::cleanupExtra();
+                    DbCleanup::cleanupPackages();
+                    $this->configFilesUpdate();
+                    $this->forceLogoutOfAllUsers();
+                    $this->duplicatorMigrationInfoSet();
+                    $this->noticeTest();
+                }
                 $this->cleanupTmpFiles();
                 $this->setFilePermsission();
                 $this->finalReportNotices();
@@ -388,11 +390,13 @@ final class DUPX_S3_Funcs
         $paramsManager = PrmMng::getInstance();
         $labelPadSize  = 22;
 
-        // make sure dbConnection is initialized
-        $this->dbConnection();
-
-        $charsetServer = @mysqli_character_set_name($this->dbh);
-        $charsetClient = @mysqli_character_set_name($this->dbh);
+        $charsetServer = "Not Available";
+        $charsetClient = "Not Available";
+        if (!DUPX_InstallerState::dbDoNothing()) {
+            $this->dbConnection();
+            $charsetServer = @mysqli_character_set_name($this->dbh);
+            $charsetClient = @mysqli_character_set_name($this->dbh);
+        }
 
         //LOGGING
         $date = @date('h:i:s');
@@ -922,7 +926,7 @@ final class DUPX_S3_Funcs
             } else {
                 // FORCE OLD VALUES
                 foreach ($auth_keys as $const_key) {
-                    $confTransformer->update('constant', $const_key, $archiveConfig->getDefineValue($const_key));
+                    $confTransformer->update('constant', $const_key, $archiveConfig->getDefineValue($const_key, ''));
                 }
             }
 

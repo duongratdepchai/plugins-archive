@@ -40,12 +40,16 @@ class Manager {
 		new Blocks();
 
 		if ( function_exists( 'jet_smart_filters' ) ) {
+			
 			require_once Query_Manager::instance()->component_path( 'listings/filters.php' );
 			require_once Query_Manager::instance()->component_path( 'listings/filters-options-source.php' );
+			require_once Query_Manager::instance()->component_path( 'listings/filters-switch-query.php' );
 
 			$this->filters = new Filters();
 			
 			new Filters_Options_Source();
+			new Filters_Switch_Query();
+
 		}
 
 		add_action( 'jet-engine/listings/document/get-preview/' . $this->source, array( $this, 'setup_preview' ) );

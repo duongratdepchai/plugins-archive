@@ -1336,7 +1336,17 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 			$arr = array();
 			$arr["default"] = __("Default", "unlimited-elements-for-elementor");
-			$arr[self::SORTBY_ID] = __("Post ID", "unlimited-elements-for-elementor");
+			
+			if($forFilter == true){
+				$arr["meta"] = __("Meta Field", "unlimited-elements-for-elementor");
+			}
+			
+			$postid = self::SORTBY_ID;
+			if($forFilter == true)
+				$postid = "id";
+			
+			$arr[$postid] = __("Post ID", "unlimited-elements-for-elementor");
+						
 			$arr[self::SORTBY_DATE] = __("Date", "unlimited-elements-for-elementor");
 			$arr[self::SORTBY_TITLE] = __("Title", "unlimited-elements-for-elementor");
 			
@@ -1362,7 +1372,6 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 				
 				$arr[self::SORTBY_META_VALUE] = __("Meta Field Value", "unlimited-elements-for-elementor");
 				$arr[self::SORTBY_META_VALUE_NUM] = __("Meta Field Value (numeric)", "unlimited-elements-for-elementor");
-				
 			}
 			
 			return($arr);
@@ -1463,22 +1472,17 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			$isAcfActive = UniteCreatorAcfIntegrate::isAcfActive();
 			
 			$value = "";
-			
+			 
 			if($isAcfActive == true){
 				
 				$objAcf = self::getObjAcfIntegrate();
 				$value = $objAcf->getAcfFieldValue($name, $postID);
-				
+								
 				if(empty($value))
 					$value = get_post_meta($postID, $name, true);
+			}else
+				$value = get_post_meta($postID, $name, true);
 			
-				$value = trim($value);
-					
-				return($value);
-			}
-			
-			$value = get_post_meta($postID, $name, true);
-						
 			if(is_array($value))
 				$value = json_encode($value);
 				
@@ -3346,7 +3350,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 	/**
 	 * get menu items
 	 */
-	public static function getMenuItems($menuID){
+	public static function getMenuItems($menuID, $isOnlyParents = false){
 
 		$objMenu = wp_get_nav_menu_object($menuID);
 
@@ -3354,7 +3358,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			return (array());
 
 		$arrItems = wp_get_nav_menu_items($objMenu);
-
+		
 		if(empty($arrItems))
 			return (array());
 
@@ -3362,7 +3366,13 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 
 		foreach($arrItems as $objItem){
 			$item = array();
-
+			
+			$parentID = $objItem->menu_item_parent;
+			
+			if($isOnlyParents == true && !empty($parentID)){
+				continue;
+			}
+			
 			$url = $objItem->url;
 			$title = $objItem->title;
 			$titleAttribute = $objItem->attr_title;
@@ -3412,7 +3422,22 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 
 	public static function a___________OTHER_FUNCTIONS__________(){
 	}
-
+	
+	
+	/**
+	 * set global author data variable
+	 */
+	public static function setGlobalAuthorData($post = null) {
+		
+		global $authordata;
+		
+		if(empty($post))
+			$post = get_post();
+		
+		$authordata = get_userdata( $post->post_author ); 
+		
+	}
+	
 	/**
 	 * get wordpress language
 	 */

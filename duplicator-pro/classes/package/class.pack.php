@@ -15,6 +15,7 @@ use Duplicator\Libs\Snap\SnapOrigFileManager;
 use Duplicator\Libs\Snap\SnapString;
 use Duplicator\Libs\Snap\SnapUtil;
 use Duplicator\Libs\WpConfig\WPConfigTransformer;
+use Duplicator\Package\Create\BuildComponents;
 use Duplicator\Package\Create\BuildProgress;
 use Duplicator\Package\Create\DatabaseInfo;
 use Duplicator\Package\Create\DbBuildProgress;
@@ -128,6 +129,8 @@ class DUP_PRO_Package
     public $Installer = null;
     /** @var DUP_PRO_Database */
     public $Database = null;
+    /** @var string[] */
+    public $components = array();
 
     /** @var float */
     public $Status = DUP_PRO_PackageStatus::PRE_PROCESS;
@@ -166,6 +169,7 @@ class DUP_PRO_Package
         $this->Installer                 = new DUP_PRO_Installer($this);
         $this->build_progress            = new BuildProgress();
         $this->db_build_progress         = new DbBuildProgress();
+        $this->components                = BuildComponents::COMPONENTS_DEFAULT;
         $default_upload_info             = new DUP_PRO_Package_Upload_Info();
         $default_upload_info->storage_id = DUP_PRO_Virtual_Storage_IDs::Default_Local;
         array_push($this->upload_infos, $default_upload_info);
@@ -198,6 +202,26 @@ class DUP_PRO_Package
             $cloneInfo[$key] = clone $obj;
         }
         $this->upload_infos = $cloneInfo;
+    }
+
+    /**
+     * Returns true if this is a DB only package
+     *
+     * @return bool
+     */
+    public function isDBOnly()
+    {
+        return BuildComponents::isDBOnly($this->components) || $this->Archive->ExportOnlyDB;
+    }
+
+    /**
+     * Returns true if this is a File only package
+     *
+     * @return bool
+     */
+    public function isDBExcluded()
+    {
+        return BuildComponents::isDBExcluded($this->components);
     }
 
     public function cancel_all_uploads()
@@ -550,7 +574,7 @@ class DUP_PRO_Package
         DUP_PRO_Log::info("-----------------------------------------");
         DUP_PRO_Log::info("STORAGE PROCESSING THREAD INITIATED");
         $complete = (count($this->upload_infos) == 0);
-// Indicates if all storages have finished (succeeded or failed all-together)
+        // Indicates if all storages have finished (succeeded or failed all-together)
 
         $error_present         = false;
         $local_default_present = false;
@@ -558,35 +582,43 @@ class DUP_PRO_Package
             $complete            = true;
             $latest_upload_infos = $this->get_latest_upload_infos();
             foreach ($latest_upload_infos as $upload_info) {
-                DUP_PRO_Log::trace("Upload Info start");
-                DUP_PRO_Log::traceObject('upload_info var:', $upload_info);
                 if ($upload_info->storage_id == DUP_PRO_Virtual_Storage_IDs::Default_Local) {
                     $local_default_present = true;
                 }
 
                 if ($upload_info->failed) {
-                    DUP_PRO_Log::trace("Upload Info failed");
+                    DUP_PRO_Log::trace("The following Upload Info is marked as failed");
                     DUP_PRO_Log::traceObject('upload_info var:', $upload_info);
                     $error_present = true;
                 } elseif ($upload_info->has_completed() == false) {
-                    DUP_PRO_Log::trace("Upload Info hasn't completed");
+                    DUP_PRO_Log::trace("The following Upload Info hasn't completed yet");
+                    DUP_PRO_Log::traceObject('upload_info var:', $upload_info);
                     $complete = false;
                     DUP_PRO_Log::trace("Telling storage id $upload_info->storage_id to process");
                     $storage = DUP_PRO_Storage_Entity::get_by_id($upload_info->storage_id);
                     // Protection against deleted storage
                     if (!is_null($storage)) {
                         if ($upload_info->has_started() === false) {
-                            DUP_PRO_Log::trace("Upload Info hasn't started yet, Starting it");
+                            DUP_PRO_Log::trace("Upload Info hasn't started yet, starting it");
                             $upload_info->start();
                         }
 
                         // Process a bit of work then let the next cron take care of if it's completed or not.
                         $storage->process_package($this, $upload_info);
                     } else {
-                        DUP_PRO_Log::trace('Storage Object is null. May be storage is deleted.');
+                        DUP_PRO_Log::trace('Storage Object is null. Maybe storage is deleted.');
                     }
 
                     break;
+                } else {
+                    $storage = DUP_PRO_Storage_Entity::get_by_id($upload_info->storage_id);
+                    if (!is_null($storage)) {
+                        $storage_type_string = strtoupper($storage->get_storage_type_string());
+                        DUP_PRO_Log::trace(
+                            "Upload Info already completed for storage id: " . $upload_info->storage_id .
+                            ", type: " . $storage_type_string . ", name: " . $storage->name
+                        );
+                    }
                 }
             }
         } else {
@@ -601,16 +633,17 @@ class DUP_PRO_Package
                 $this->set_status(DUP_PRO_PackageStatus::COMPLETE);
                 $this->post_scheduled_build_processing(1, false);
                 if ($local_default_present == false) {
-                    DUP_PRO_Log::trace("deleting local files");
+                    DUP_PRO_Log::trace("Deleting package files from default location.");
                     self::delete_default_local_files($this->NameHash, true, false);
                 }
             } else {
                 if ($local_default_present == false) {
-                    DUP_PRO_Log::trace("deleting local files");
+                    DUP_PRO_Log::trace("Deleting package files from default location.");
                     self::delete_default_local_files($this->NameHash, true, false);
                 } else {
                     /* @var $default_local_storage DUP_PRO_Storage_Entity */
                     $default_local_storage = DUP_PRO_Storage_Entity::get_default_local_storage();
+                    DUP_PRO_Log::trace('Purge old default local storage packages');
                     $default_local_storage->purge_old_local_packages();
                 }
 
@@ -1113,10 +1146,15 @@ class DUP_PRO_Package
         $globFiles = glob(SnapIO::safePath(SnapIO::untrailingslashit($dir) . "/" . $nameHash . "_*"));
         foreach ($globFiles as $globFile) {
             if (!$deleteLogFiles && SnapString::endsWith($globFile, '_log.txt')) {
+                DUP_PRO_Log::trace("Skipping purge of $globFile because deleteLogFiles is false.");
                 continue;
             }
 
-            SnapIO::unlink($globFile);
+            if (SnapIO::unlink($globFile)) {
+                DUP_PRO_Log::trace("Successful purge of $globFile.");
+            } else {
+                DUP_PRO_Log::trace("Failed purge of $globFile.");
+            }
         }
     }
 
@@ -1458,6 +1496,7 @@ class DUP_PRO_Package
             $report['DB']['TableCount']     = $db['TableCount'] or "unknown";
             $report['DB']['TableList']      = $db['TableList'] or "unknown";
             $report['DB']['FilteredTables'] = ($this->Database->FilterOn ? explode(',', $this->Database->FilterTables) : array());
+            $report['DB']['DBExcluded']     = BuildComponents::isDBExcluded($this->components);
             $report['RPT']['ScanCreated']   = @date("Y-m-d H:i:s");
             $report['RPT']['ScanTime']      = DUP_PRO_U::elapsedTime(DUP_PRO_U::getMicrotime(), $timerStart);
             $report['RPT']['ScanPath']      = $scanPath;
@@ -1478,7 +1517,7 @@ class DUP_PRO_Package
             ;
             $report['ARC']['Status']['HasFilteredSites']       = !empty($report['ARC']['FilteredSites']);
             $report['ARC']['Status']['Network']                = $report['ARC']['Status']['HasNotImportableSites'] || $report['ARC']['Status']['HasFilteredSites'] ? 'Warn' : 'Good';
-            $report['ARC']['Status']['IsDBOnly']               = $this->Archive->ExportOnlyDB;
+            $report['ARC']['Status']['IsDBOnly']               = $this->isDBOnly();
             $report['ARC']['Status']['PackageIsNotImportable'] = !(
                 (
                     !$report['ARC']['Status']['HasFilteredSiteTables'] ||
@@ -1835,9 +1874,10 @@ class DUP_PRO_Package
 
         // Note: Had to add extra size check of 800 since observed bad sql when filter was on
         if (
-            !strstr($sql_done_txt, DUPLICATOR_PRO_DB_EOF_MARKER) ||
+            in_array(BuildComponents::COMP_DB, $this->components) &&
+            (!strstr($sql_done_txt, DUPLICATOR_PRO_DB_EOF_MARKER) ||
             (!$this->Database->FilterOn && $sql_temp_size < DUPLICATOR_PRO_MIN_SIZE_DBFILE_WITHOUT_FILTERS) ||
-            ($this->Database->FilterOn && $this->Database->info->tablesFinalCount > 0 && $sql_temp_size < DUPLICATOR_PRO_MIN_SIZE_DBFILE_WITH_FILTERS)
+            ($this->Database->FilterOn && $this->Database->info->tablesFinalCount > 0 && $sql_temp_size < DUPLICATOR_PRO_MIN_SIZE_DBFILE_WITH_FILTERS))
         ) {
             $this->build_progress->failed = true;
             $this->update();
@@ -1982,10 +2022,12 @@ class DUP_PRO_Package
     private function post_scheduled_build_processing($stage, $success, $tests = null)
     {
         try {
-            if (($schedule = DUP_PRO_Schedule_Entity::getById($this->schedule_id)) === false) {
-                throw new Exception("Couldn't get schedule by ID {$this->schedule_id} to start post processing.");
+            if ($this->schedule_id == -1) {
+                throw new Exception("This is not a schedule, so no post scheduled build processing.");
             }
-
+            if (($schedule = DUP_PRO_Schedule_Entity::getById($this->schedule_id)) === false) {
+                throw new Exception("Couldn't get schedule by ID {$this->schedule_id} to start post scheduled build processing.");
+            }
 
             $system_global                  = DUP_PRO_System_Global_Entity::getInstance();
             $system_global->schedule_failed = !$success;
@@ -2176,13 +2218,17 @@ class DUP_PRO_Package
     public static function set_manual_template_from_post($post = null)
     {
         if (isset($post)) {
-            $post      = stripslashes_deep($post);
-            $mtemplate = DUP_PRO_Package_Template_Entity::get_manual_template();
-            if (isset($post['filter-dirs'])) {
-                $post_filter_dirs               = SnapUtil::sanitizeNSChars($post['filter-dirs']);
-                $mtemplate->archive_filter_dirs = DUP_PRO_Archive::parseDirectoryFilter($post_filter_dirs);
+            $post                  = stripslashes_deep($post);
+            $mtemplate             = DUP_PRO_Package_Template_Entity::get_manual_template();
+            $mtemplate->components = BuildComponents::getFromInput($post);
+
+            if (isset($post['filter-paths'])) {
+                $post_filter_paths               = SnapUtil::sanitizeNSChars($post['filter-paths']);
+                $mtemplate->archive_filter_dirs  = DUP_PRO_Archive::parseDirectoryFilter($post_filter_paths);
+                $mtemplate->archive_filter_files = DUP_PRO_Archive::parseFileFilter($post_filter_paths);
             } else {
-                $mtemplate->archive_filter_dirs = '';
+                $mtemplate->archive_filter_dirs  = '';
+                $mtemplate->archive_filter_files = '';
             }
 
             $filter_sites = !empty($post['mu-exclude']) ? $post['mu-exclude'] : '';
@@ -2191,13 +2237,6 @@ class DUP_PRO_Package
                 $mtemplate->archive_filter_exts = DUP_PRO_Archive::parseExtensionFilter($post_filter_exts);
             } else {
                 $mtemplate->archive_filter_exts = '';
-            }
-
-            if (isset($post['filter-files'])) {
-                $post_filter_files               = SnapUtil::sanitizeNSChars($post['filter-files']);
-                $mtemplate->archive_filter_files = DUP_PRO_Archive::parseFileFilter($post_filter_files);
-            } else {
-                $mtemplate->archive_filter_files = '';
             }
 
             $tablelist  = isset($post['dbtables-list']) ? SnapUtil::sanitizeNSCharsNewlineTrim($post['dbtables-list']) : '';
@@ -2213,9 +2252,8 @@ class DUP_PRO_Package
             //MULTISITE
             $mtemplate->filter_sites = $filter_sites;
             //ARCHIVE
-            $mtemplate->archive_export_onlydb = isset($post['export-onlydb']) ? 1 : 0;
-            $mtemplate->archive_filter_on     = isset($post['filter-on']) ? 1 : 0;
-            $mtemplate->archive_filter_names  = isset($post['filter-names']) ? true : false;
+            $mtemplate->archive_filter_on    = isset($post['filter-on']) ? 1 : 0;
+            $mtemplate->archive_filter_names = isset($post['filter-names']) ? true : false;
             //INSTALLER
             $secureOn = (isset($post['secure-on']) ? (int) $post['secure-on'] : ArchiveConfig::SECURE_MODE_NONE);
             switch ($secureOn) {
@@ -2225,7 +2263,7 @@ class DUP_PRO_Package
                     $mtemplate->installer_opts_secure_on = $secureOn;
                     break;
                 default:
-                    throw new Exception(__('Select valid secure mode'));
+                    throw new Exception(__('Select valid secure mode', 'duplicator-pro'));
             }
 
             $mtemplate->installerPassowrd = isset($post['secure-pass']) ? SnapUtil::sanitizeNSCharsNewlineTrim($post['secure-pass']) : '';
@@ -2300,12 +2338,12 @@ class DUP_PRO_Package
                 $package->Archive->Format = 'ZIP';
             }
 
-            $package->Archive->ExportOnlyDB = $manual_template->archive_export_onlydb;
-            $package->Archive->FilterOn     = $manual_template->archive_filter_on;
-            $package->Archive->FilterDirs   = $manual_template->archive_filter_dirs;
-            $package->Archive->FilterExts   = $manual_template->archive_filter_exts;
-            $package->Archive->FilterFiles  = $manual_template->archive_filter_files;
-            $package->Archive->FilterNames  = $manual_template->archive_filter_names;
+            $package->components           = $manual_template->components;
+            $package->Archive->FilterOn    = $manual_template->archive_filter_on;
+            $package->Archive->FilterDirs  = $manual_template->archive_filter_dirs;
+            $package->Archive->FilterExts  = $manual_template->archive_filter_exts;
+            $package->Archive->FilterFiles = $manual_template->archive_filter_files;
+            $package->Archive->FilterNames = $manual_template->archive_filter_names;
             //INSTALLER
             $package->Installer->OptsDBHost   = $manual_template->installer_opts_db_host;
             $package->Installer->OptsDBName   = $manual_template->installer_opts_db_name;

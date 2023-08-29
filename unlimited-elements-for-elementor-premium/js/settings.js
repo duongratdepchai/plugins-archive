@@ -4129,12 +4129,13 @@ function UniteSettingsUC(){
 	 */
 	function onControlSettingChange(event, input){
 		
+		var debugControls = false;
+		
 		if(!input)
 			input = this;
 		
 		var controlValue = input.value.toLowerCase();
 		var controlID = input.name;
-		
 		
 		if(!g_arrControls[controlID]) 
 			return(false);
@@ -4142,6 +4143,11 @@ function UniteSettingsUC(){
 		g_temp.cacheValues = null;
 		
 		var arrChildControls = g_arrControls[controlID];
+		
+		if(debugControls == true){
+			trace("controls change");
+			trace("parent value: " + controlValue)
+		}
 		
 		var objParent = {
 				id: controlID,
@@ -4160,7 +4166,7 @@ function UniteSettingsUC(){
 				return(true);
 			
 			var value = objControl.value;
-			
+						
 			objControl.idChild = childName;
 			
 			//check multiple parents
@@ -4169,6 +4175,13 @@ function UniteSettingsUC(){
 				var action = getControlActionMultiple(objParent, objControl, arrParents);
 			else
 				var action = getControlAction(objParent, objControl);
+
+			if(debugControls == true){
+				if(debugControls == true){
+					trace("setting: "+childName +" | value: "+value+" | action: " + action);
+				}
+				
+			}
 			
 			
 			var inputTagName = "";

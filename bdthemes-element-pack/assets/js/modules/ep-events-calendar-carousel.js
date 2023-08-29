@@ -13,7 +13,7 @@
             return;
         }
 
-        var $eventCarouselContainer = $eventCarousel.find('.swiper-container'),
+        var $eventCarouselContainer = $eventCarousel.find('.swiper-carousel'),
             $settings = $eventCarousel.data('settings');
         const Swiper = elementorFrontend.utils.swiper;
         initSwiper();

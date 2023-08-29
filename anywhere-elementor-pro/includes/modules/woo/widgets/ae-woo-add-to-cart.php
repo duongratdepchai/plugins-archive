@@ -339,8 +339,9 @@ class AeWooAddToCart extends Widget_Base {
 		$this->add_render_attribute( 'woo-add-to-cart-class', 'method', 'post' );
 		$this->add_render_attribute( 'woo-add-to-cart-class', 'enctype', 'multipart/form-data' );
 		$this->add_render_attribute( 'woo-add-to-cart-btn-class', 'class', 'ae-element-woo-add-to-cart-btn' );
-		$this->add_render_attribute( 'woo-add-to-cart-btn-class', 'class', 'single_add_to_cart_button' );
+		$this->add_render_attribute( 'woo-add-to-cart-btn-class', 'class', 'single_add_to_cart_button add_to_cart_button' );
 		$this->add_render_attribute( 'woo-add-to-cart-btn-class', 'class', 'button alt ajax_add_to_cart' );
+		$this->add_render_attribute( 'woo-add-to-cart-btn-class', 'data-quantity', 1);
 
 		if ( $product->is_in_stock() ) {
 			?>
@@ -364,8 +365,7 @@ class AeWooAddToCart extends Widget_Base {
 				?>
 				<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" />
 
-				<button type="submit"<?php echo $this->get_render_attribute_string( 'woo-add-to-cart-btn-class' ); ?> name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
-
+				<button type="submit"<?php echo $this->get_render_attribute_string( 'woo-add-to-cart-btn-class' ); ?> name="add-to-cart" data-product_id = "<?php echo esc_attr( $product->get_id() ); ?>" value="<?php echo esc_attr( $product->get_id() ); ?>"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
 					<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 			</form>
 

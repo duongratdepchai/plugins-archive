@@ -1,5 +1,6 @@
 @CHARSET "ISO-8859-1";
 
+
 .elementor-panel .uc-button-edit-html{
 	margin-top:5px;
 }
@@ -137,6 +138,21 @@
 	border-left:2px solid #f0b848;
 	padding:10px;
 	line-height:1.4em;
+}
+
+.uc-notification-control.uc-dark-mode{
+	color:#ffffff;
+	background-color:#393e44;
+	border-left:2px solid #d5c5a6;
+	
+}
+
+.uc-notification-control.uc-dark-mode a{
+	color:#ffffff;
+}
+
+.uc-notification-control.uc-dark-mode a:hover{
+	color:blue;
 }
 
 .uc-edit-template-button{

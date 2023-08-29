@@ -168,13 +168,14 @@ final class DUPX_Ctrl_ajax
                 break;
             case self::ACTION_PROCEED_CONFIRM_DIALOG:
                 $vData = DUPX_Validation_database_service::getInstance();
-                if (!$vData->getDbConnection()) {
+                if (!DUPX_InstallerState::dbDoNothing() && !$vData->getDbConnection()) {
                     throw new Exception('Connection DB data isn\'t valid');
                 }
+
                 $actionData = dupxTplRender(
                     'pages-parts/step1/proceed-confirm-dialog',
                     array(
-                        'tableCount' => $vData->getDBActionAffectedTablesCount()
+                        'tableCount' => DUPX_InstallerState::dbDoNothing() ? 0 : $vData->getDBActionAffectedTablesCount()
                     ),
                     false
                 );
@@ -231,13 +232,13 @@ final class DUPX_Ctrl_ajax
                 $actionData = DUPX_S3_Funcs::getInstance()->updateWebsite();
                 break;
             case self::ACTION_FINAL_TESTS_PREPARE:
-                $actionData = TestsExecuter::preTestPrepare();
+                $actionData = DUPX_InstallerState::dbDoNothing() || TestsExecuter::preTestPrepare();
                 break;
             case self::ACTION_FINAL_TESTS_AFTER:
-                $actionData = TestsExecuter::afterTestClean();
+                $actionData = DUPX_InstallerState::dbDoNothing() || TestsExecuter::afterTestClean();
                 break;
             case self::ACTION_SET_AUTO_CLEAN_FILES:
-                if (DUPX_Ctrl_Params::setParamAutoClean()) {
+                if (!DUPX_InstallerState::dbDoNothing() && DUPX_Ctrl_Params::setParamAutoClean()) {
                     $valid = DUPX_S3_Funcs::getInstance()->duplicatorMigrationInfoSet();
                 } else {
                     $valid = false;

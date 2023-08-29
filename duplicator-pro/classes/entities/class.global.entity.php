@@ -833,13 +833,13 @@ class DUP_PRO_Global_Entity extends AbstractEntitySingleton
             case self::CLEANUP_MODE_MAIL:
                 $schedules[self::CLEANUP_INTERVAL_NAME] = array(
                     'interval' => self::CLEANUP_EMAIL_NOTICE_INTERVAL * 3600, // In seconds, every N hours
-                    'display'  => sprintf(esc_html__('Every %1$d hours'), self::CLEANUP_EMAIL_NOTICE_INTERVAL)
+                    'display'  => sprintf(esc_html__('Every %1$d hours', 'duplicator-pro'), self::CLEANUP_EMAIL_NOTICE_INTERVAL)
                 );
                 break;
             case self::CLEANUP_MODE_AUTO:
                 $schedules[self::CLEANUP_INTERVAL_NAME] = array(
                     'interval' => $global->auto_cleanup_hours * 3600, // In seconds, every N hours
-                    'display'  => sprintf(esc_html__('Every %1$d hours'), $global->auto_cleanup_hours)
+                    'display'  => sprintf(esc_html__('Every %1$d hours', 'duplicator-pro'), $global->auto_cleanup_hours)
                 );
                 break;
             default:
@@ -940,7 +940,7 @@ class DUP_PRO_Global_Entity extends AbstractEntitySingleton
                     $message .= __('Those files probably could not be removed due to permission issues. ', 'duplicator-pro');
                     $message .= sprintf(
                         __('You can find more info in FAQ %1$son this link%2$s.', 'duplicator-pro'),
-                        "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-perms-100-q' target='_blank'>",
+                        "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-fix-file-permissions-issues' target='_blank'>",
                         "</a>"
                     ) . "<br/>";
                     $message .= "<br/>";

@@ -2,7 +2,8 @@
  * Start custom calculator widget script
  */
 
-;(function ($, elementor) {
+;
+(function ($, elementor) {
     'use strict';
     var widgetCCalculator = function ($scope, $) {
         var $customCalculator = $scope.find('.bdt-ep-advanced-calculator'),
@@ -105,6 +106,14 @@
                                 value: getIsRealValue,
                             });
                         }
+
+                        if (Number.isInteger(getIsRealValue) === false) {
+                            onlyValueArray.push({
+                                variable: "f" + variableIndex,
+                                value: getIsRealValue,
+                            });
+                        }
+
                         data.push({
                             type: $(item).prop("type"),
                             index: index,
@@ -129,11 +138,13 @@
         function getValueIfInteger(value) {
             if (value === undefined) return null;
             // first convert this value to integer
-            let valueConvert = parseInt(value);
+            // let valueConvert = parseInt(value);
+            let valueConvert = Number(value);
             // and then check if this item is integer or not. if integer then return that value otherwise return false
-            return Number.isInteger(valueConvert) === true ? valueConvert : value;
+            return Number.isInteger(valueConvert) === true ? valueConvert : parseFloat(value);
             //return Number.isInteger(valueConvert) === true ? valueConvert : null;
         }
+
         /**
          * get the data settings from targetted element
          */
@@ -190,9 +201,6 @@
                 procesingFormDataWithFormulaJs();
             });
         }
-
-
-        // end main js
 
     };
 

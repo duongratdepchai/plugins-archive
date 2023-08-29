@@ -14,7 +14,7 @@
             return;
         }
 
-		var $twitterSliderContainer = $twitterSlider.find('.swiper-container'),
+		var $twitterSliderContainer = $twitterSlider.find('.swiper-carousel'),
 			$settings 		 = $twitterSlider.data('settings');
 
 		// Access swiper class

@@ -11,6 +11,7 @@ use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Text_Stroke;
 use Elementor\Repeater;
+use Elementor\Plugin;
 use ElementPack\Utils;
 
 use ElementPack\Traits\Global_Swiper_Controls;
@@ -924,9 +925,12 @@ class Fancy_Slider extends Module_Base {
 			]
 		);
 
-?>
+		$swiper_class = Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+		$this->add_render_attribute('swiper', 'class', 'swiper-carousel ' . $swiper_class);
+
+		?>
 		<div <?php echo $this->get_render_attribute_string('fancy-slider'); ?>>
-			<div class="swiper-container">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div class="swiper-wrapper">
 				<?php
 			}

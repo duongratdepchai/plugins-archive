@@ -2,14 +2,14 @@
 Contributors: bdthemes, selimmw
 Donate link: http://bdthemes.com/
 Tags: elementor addons, elementor widget, elementor extensions, elementor addon, addons, elementor, addons for elementor, addons pack, live copy, template library, bdthemes
-Stable tag: 7.1.0
+Stable tag: 7.3.0
 Requires PHP: 7.4.0
 Requires at least: 5.0.0
 Tested up to: 6.2.2
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Elementor requires at least: 3.0.0
-Elementor tested up to: 3.13.4
+Elementor tested up to: 3.14.1
 
 The all-new Element Pack Pro brings incredibly advanced, and super-flexible widgets, and A to Z essential addons to the Elementor page builder for WordPress. Explore expertly-coded widgets with first-class support, risk-free! Get a full-refund if you’re not 100% satisfied.*
 
@@ -34,6 +34,53 @@ e.g.
 3. Start use it by go to elementor editor.
 
 == Changelog ==
+
+= 7.3.0 [30th July 2023] =
+
+= Added =
+
+* MP3 audio fallback added in Sound Effects Extensions
+* Row Gap option added in tabs widget
+
+= Updated =
+
+* Cache Time feature updated in Facebook Feed & Facebook Carousel widgets
+
+= Fixed =
+
+* Arrow icon issue fixed in sub menu widget
+* Lightbox conflict issue fixed in advanced image gallery widget
+* PHP warning issue fixed in Slider (Thanks to Dimon)
+
+= 7.2.0 [9th July 2023] =
+
+= Added =
+
+* Item wrapper link option added in product carousel widget
+* Link to button, title, image, item option added in static carousel widget
+* One column added in Logo Grid widget (Thanks to David Gilfillan)
+
+= Fixed =
+
+* Z-Index fixed in Cursor Effect extension (Thanks to Kelley Wilson)
+* Swiper Library v8.45 compatiblity added in Remote Arrows, Fraction, Pagination and Thumbs widgets
+
+= 7.1.2 [21st June 2023] =
+
+= Fixed =
+
+* Elementor pro (swiper) Compatibility issue fixed
+
+= 7.1.1 [20th June 2023] =
+
+= Added =
+
+* Decimal Value will work in the Advanced Calculator widget
+
+= Fixed =
+
+* WooCommerce 7.8 Compatibility issue fixed for Mini Cart (Thanks to Guy Whettam)
+* Image Mask issue fixed in Interactive card widget (Thanks to Sergio Sánchez López)
 
 = 7.1.0 [8th June 2023] =
 

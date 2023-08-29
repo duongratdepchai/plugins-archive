@@ -89,7 +89,7 @@ switch ($testResult) {
     <li>
         Contact your hosting provider and ask them to enable required functions and classes.
         You can also read specifics related to each function in the
-        <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-120-q"
+        <a href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-fix-call-to-undefined-function-errors"
            target="_blank">FAQ section</a>.
     </li>
 </ul>

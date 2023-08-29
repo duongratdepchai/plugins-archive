@@ -4,11 +4,11 @@
  * Description: Global layouts to use with shortcodes, global post layouts for single and archive pages. Supports CPT and ACF
  * Plugin URI: https://www.elementoraddons.com/anywhere-elementor-pro/
  * Author: WP Vibes
- * Version: 2.25.7
+ * Version: 2.25.10
  * Update URI: https://api.freemius.com
  * Author URI: https://wpvibes.com/
- * Elementor tested up to: 3.12.1
- * Elementor Pro tested up to: 3.12.1
+ * Elementor tested up to: 3.14
+ * Elementor Pro tested up to: 3.14
  * License:      GNU General Public License v2 or later
  * License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: ae-pro
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 
-define( 'AE_PRO_VERSION', '2.25.7' );
+define( 'AE_PRO_VERSION', '2.25.10' );
 define( 'AE_PRO_URL', plugins_url( '/', __FILE__ ) );
 define( 'AE_PRO_PATH', plugin_dir_path( __FILE__ ) );
 define( 'AE_PRO_BASE', plugin_basename( __FILE__ ) );

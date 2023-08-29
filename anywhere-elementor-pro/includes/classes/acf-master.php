@@ -85,11 +85,11 @@ class AcfMaster {
 			case 'term':
 				$term = Aepro::$_helper->get_preview_term_data();
 				//phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-				if ( isset( $field_args['acf_format'] ) && $field_args['acf_format'] == '1' ) {
-					$field_value = get_field( $field_args['field_name'], $term['taxonomy'] . '_' . $term['prev_term_id'], true );
-				} else {
-					$field_value = get_field( $field_args['field_name'], $term['taxonomy'] . '_' . $term['prev_term_id'], false );
-				}
+				//if ( isset( $field_args['acf_format'] ) && $field_args['acf_format'] == '1' ) {
+				//	$field_value = get_field( $field_args['field_name'], $term['taxonomy'] . '_' . $term['prev_term_id'], true );
+				//} else {
+					$field_value = get_field( $field_args['field_name'], $term['taxonomy'] . '_' . $term['prev_term_id'], $format );
+				//}
 
 				break;
 

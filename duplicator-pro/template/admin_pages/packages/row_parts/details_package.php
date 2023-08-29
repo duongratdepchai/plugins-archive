@@ -20,7 +20,7 @@ defined("ABSPATH") or die("");
 
 $package = $tplData['package'];
 
-$pack_dbonly       = $package->Archive->ExportOnlyDB;
+$pack_dbonly       = $package->isDBOnly();
 $pack_format       = strtolower($package->Archive->Format);
 $packageDetailsURL = PackagesPageController::getInstance()->getPackageDetailsURL($package->ID);
 $txt_DBOnly        = __('DB Only', 'duplicator-pro');

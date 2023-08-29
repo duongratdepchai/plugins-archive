@@ -1048,7 +1048,7 @@ class ModuleService {
                     'type'         => 'checkbox',
                     'default'      => 'off',
                     'widget_type'  => 'free',
-                    'content_type' => 'custom',
+                    'content_type' => 'carousel',
                     'demo_url'     => 'https://www.elementpack.pro/demo/element/product-carousel',
                     'video_url'    => 'https://youtu.be/ZFpkJIctXic',
                 ],

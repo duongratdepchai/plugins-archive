@@ -29,7 +29,7 @@ defined("ABSPATH") or die("");
             <span class="dup-open-details link-style" onclick="DupPro.Pack.openLinkDetails()">
                 <?php DUP_PRO_U::esc_html_e("Learn Duplicator in a few minutes!"); ?>
             </span><br/>
-            <a class="dup-quick-start-link" href="https://duplicator.com/knowledge-base-article-categories/quick-start/" target="_blank">
+            <a class="dup-quick-start-link" href="<?php echo DUPLICATOR_PRO_BLOG_URL; ?>knowledge-base-article-categories/quick-start/" target="_blank">
                 <?php DUP_PRO_U::esc_html_e("Visit the 'Quick Start' guide!"); ?>
             </a>
         </div>

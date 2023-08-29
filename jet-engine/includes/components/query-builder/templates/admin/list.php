@@ -24,6 +24,12 @@
 					:href="getEditLink( item.id )"
 					class="jet-engine-title-link"
 				>{{ item.labels.name }}</a>
+				<i
+					v-if="item.args.description"
+					class="jet-engine-description"
+				>
+					{{ item.args.description }}
+				</i>
 			</span>
 			<i slot="type">{{ getQueryType( item.args.query_type ) }}</i>
 			<div slot="actions" style="display: flex;">

@@ -339,6 +339,7 @@
 						'button' => __( 'Button', 'bdthemes-element-pack' ),
 						'title' => __( 'Title', 'bdthemes-element-pack' ),
 						'image' => __( 'Image', 'bdthemes-element-pack' ),
+						'item' => __( 'Item Wrapper', 'bdthemes-element-pack' ),
 					],
 				]
 			);
@@ -764,7 +765,7 @@
 						]
 					],
 					'selectors'   => [
-						'{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
+						'{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
 					],
 				]
 			);
@@ -1772,7 +1773,21 @@
 
 			?>
 
-			<?php foreach ( $settings['product_items'] as $index => $item ) : ?>
+			<?php foreach ( $settings['product_items'] as $index => $item ) : 
+				
+				$this->add_render_attribute(
+					[
+						'readmore-item-link' => [
+							'class' => [
+								'bdt-ep-product-carousel-item-link',
+							],
+							'href'   => isset($item['readmore_link']['url']) ? esc_url($item['readmore_link']['url']) : '#',
+							'target' => $item['readmore_link']['is_external'] ? '_blank' : '_self'
+						]
+					], '', '', true
+				);
+				
+				?>
 				<div <?php echo $this->get_render_attribute_string('item-wrap'); ?>>
 					<?php $this->render_image($item); ?>
 					<div class="bdt-ep-product-carousel-content">
@@ -1788,6 +1803,11 @@
 						</div>
 					</div>
 					<?php $this->render_badge($item); ?>
+
+					<?php if($settings['readmore_link_to'] == 'item') : ?>
+					<a <?php echo $this->get_render_attribute_string( 'readmore-item-link' ); ?>></a>
+					<?php endif; ?>
+
 				</div>
 			<?php endforeach;
 		}
@@ -1802,7 +1822,7 @@
 	
 			?>
 			<div <?php echo $this->get_render_attribute_string( 'carousel' ); ?>>
-				<div class="swiper-container">
+				<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 					<div class="swiper-wrapper">
 			<?php
 		}

@@ -10,6 +10,7 @@ use Duplicator\Addons\ProBase\License\License;
 use Duplicator\Core\CapMng;
 use Duplicator\Installer\Core\Descriptors\ArchiveConfig;
 use Duplicator\Libs\Snap\SnapJson;
+use Duplicator\Package\Create\BuildComponents;
 
 /**
  * Variables
@@ -229,7 +230,7 @@ $archive_exists = ($package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::
                 <?php else : ?>
                     <div class="maroon">
                         <i class="fas fa-exclamation-circle"></i>
-                        <?php _e("Package files were not created succesfully.  Please see the build log for more details.", 'duplicator-pro') ?>
+                        <?php _e("Package files were not created successfully.  Please see the build log for more details.", 'duplicator-pro') ?>
                     </div><br/>
                     <b><?php DUP_PRO_U::esc_html_e("Build Log") ?>:</b>&nbsp;
                     <a href="<?php echo esc_attr($logDownloadURL); ?>" target="file_results"><?php echo $package->get_log_filename(); ?></a>
@@ -263,7 +264,8 @@ $archive_exists = ($package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::
             <i style='font-size:11px'>
                 <?php
                     printf(
-                        "%s <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q' target='_blank'>%s</a>",
+                        "%s <a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL
+                        . "how-to-work-with-daf-files-and-the-duparchive-extraction-tool' target='_blank'>%s</a>",
                         DUP_PRO_U::esc_html__("An exact copy of the database SQL and installer file can both be found inside of the archive.zip/daf file.  "
                             . "Download and extract the archive file to get a copy of the installer which will be named 'installer-backup.php'. "
                             . "For details on how to extract a archive.daf file please see: "),
@@ -481,6 +483,12 @@ $archive_exists = ($package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::
 
                     </td>
                 </tr>
+                <tr>
+                    <td><?php _e('Components: ', 'duplicator-pro'); ?></td>
+                    <td>
+                        <?php echo BuildComponents::displayComponentsList($package->components, "</br>"); ?>
+                    </td>
+                </tr>
             </table><br/>
 
             <!-- DATABASE -->
@@ -488,6 +496,7 @@ $archive_exists = ($package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::
                 <i class="fas fa-database"></i>
                 <?php DUP_PRO_U::esc_html_e('DATABASE'); ?>
             </div>
+            <?php if (!BuildComponents::isDBExcluded($package->components)) : ?>
             <table class='dup-dtl-data'>
                 <tr>
                     <td><?php DUP_PRO_U::esc_html_e("Name") ?>: </td>
@@ -552,6 +561,11 @@ $archive_exists = ($package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::
                     <td><?php echo implode("<br/>", $package->Database->info->collationList);?></td>
                 </tr>
             </table>
+            <?php else : ?>
+            <p>
+                <?php printf(__("The Database was excluded from the package.", 'duplicator-pro')); ?>
+            </p>
+            <?php endif; ?>
             <br/>
 
             <!-- SETUP -->

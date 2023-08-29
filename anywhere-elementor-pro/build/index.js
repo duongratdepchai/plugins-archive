@@ -672,19 +672,20 @@ class SwiperBase{
 
         let swiper = [];
         let swiperContainer = '.elementor-element-' + wid + ' .ae-swiper-container';
-        let active_breakpoints = elementorFrontend.config.responsive.activeBreakpoints;
+		let active_breakpoints = elementorFrontend.config.responsive.activeBreakpoints;
+		let wclass = '.elementor-element-' + wid;
+
         if (scope !== null) {
-            wid = scope.data('id');
-           // console.log(wid);
-            const slideId = scope.find('.swiper-container').data('ae-slider-id');
-            swiperContainer = '.elementor-element-' + wid + ' .ae-swiper-container[data-ae-slider-id="' + slideId + '"]'
-        }
-        const wclass = '.elementor-element-' + wid;
-       
+			wid = scope.data('id');
+			let slideId = scope.find('.ae-swiper-container').data('ae-slider-id');
+			swiperContainer = '.elementor-element-' + wid + ' [data-ae-slider-id="' + slideId + '"]';
+			wclass = '.elementor-element-' + wid + ' .ae-slider-id-' + slideId;
+		}
+		
         if (typeof data === "undefined") {
             return false;
         }
-        console.log('Data -->', data);
+
         // Special Case Only For AE-Woo-Gallery
         if(data.hasOwnProperty('widget')){
             if(data.widget == 'ae-woo-gallery' ){
@@ -809,7 +810,6 @@ class SwiperBase{
             }
         }
         
-        console.log('swiper_object =--->',swiper);
         if ('undefined' === typeof Swiper) {
             const asyncSwiper = elementorFrontend.utils.swiper;
             new asyncSwiper( jQuery( swiperContainer ), swiper).then((newSwiperInstance) => {
@@ -1480,7 +1480,8 @@ __webpack_require__(32);
 __webpack_require__(33);
 __webpack_require__(34);
 __webpack_require__(35);
-module.exports = __webpack_require__(36);
+__webpack_require__(36);
+module.exports = __webpack_require__(37);
 
 
 /***/ }),
@@ -1859,7 +1860,81 @@ __webpack_require__.r(__webpack_exports__);
 
     const ACFRepeaterDefaultHandler = ($scope, $) => {
 
-        const grid = $scope.find('.ae-acf-repeater-wrapper');
+		const grid = $scope.find('.ae-acf-repeater-wrapper');
+		/* var settings = grid.data('settings');
+		//Pagination
+		let pagination_wrapper = $scope.find('.ae-pagination-wrapper');
+		const number_of_pages = pagination_wrapper.data('page-count');
+		let page_numbers = pagination_wrapper.find('.page-numbers');
+		let goto_page = 0;
+		let page_num = 0; */
+		
+		/* $(page_numbers).each(function () {
+			$(this).on('click', function (e) {
+				e.preventDefault();
+				if ($(this).hasClass('current')) {
+					return false;
+				}
+
+				pagination_wrapper = $scope.find('.ae-pagination-wrapper');
+				pagination_wrapper.find('.page-numbers').removeClass('current');
+				pagination_wrapper.find('.page-numbers').removeAttr('disabled');
+				
+				if ($(this).hasClass('prev')) {
+					page_num = pagination_wrapper.data('current-page');
+					console.log('1',page_num);
+					if (page_num > 1) {
+						page_num = page_num - 1;
+					} else {
+						pagination_wrapper.find('.prev').addClass('current');
+						pagination_wrapper.find('.prev').attr('disabled', 'disabled');
+					}
+					console.log('2',page_num);
+					pagination_wrapper.find('.page-numbers.page[data-page="' + (page_num) + '"]').addClass('current').attr('disabled', 'disabled');
+				} else if ($(this).hasClass('next')) {
+					page_num = pagination_wrapper.data('current-page');
+					console.log('1',page_num);
+					if (page_num < number_of_pages) {
+						page_num = page_num + 1;
+					} else {
+						pagination_wrapper.find('.next').addClass('current');
+						pagination_wrapper.find('.next').attr('disabled', 'disabled');
+					}
+					console.log('2',page_num);
+					pagination_wrapper.find('.page-numbers.page[data-page="' + (page_num)  + '"]').addClass('current').attr('disabled', 'disabled');
+				} else {
+					page_num = $(this).data('page');
+					pagination_wrapper.attr('data-current-page', (page_num + 1));
+					$(this).addClass('current');
+					$(this).attr('disabled', 'disabled');
+				}
+				
+				pagination_wrapper.attr('data-current-page', page_num);
+				let page = 'page-' + page_num;
+
+				let repeater_item = grid.find('.ae-acf-repeater-item');
+				$(repeater_item).each(function () {
+					if (!$(this).hasClass('ae-hide')) {
+						$(this).addClass('ae-hide');
+					}
+					if ($(this).hasClass(page)) {
+						$(this).removeClass('ae-hide');
+					}
+				});
+
+				if (settings['pagination_scroll_top_offset'] && 0) {
+					pagination_scroll_top_offset = settings['pagination_scroll_top_offset']['size'];
+					if (document.body.dataset.elementorDeviceMode != 'desktop') {
+						pagination_scroll_top_offset = settings['pagination_scroll_top_offset_' + document.body.dataset.elementorDeviceMode]['size'];
+					}
+					var pagination_scroll_top_offset = pagination_scroll_top_offset
+					jQuery('html,body').animate({
+						scrollTop: grid.offset().top - pagination_scroll_top_offset
+					},
+						'slow');
+				}
+			});
+		}); */
 
         // Masonry Layout
         if ($scope.find('.ae-acf-repeater-widget-wrapper').hasClass('ae-masonry-yes')) {
@@ -4378,6 +4453,27 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 /* 32 */
+/***/ (function(module, exports) {
+
+(function($){
+
+	const WooAddToCartHandler = ($scope, $) => {
+		let cartQuantity = $scope.find('.ae-element-woo-add-to-cart .quantity input');
+		cartQuantity.on('change', function () {
+			let quantityVal = $(this).val();
+			let addTooCartBtn = $(this).parent().siblings('.ae-element-woo-add-to-cart-btn');
+			addTooCartBtn.attr('data-quantity', quantityVal);
+		});
+    };
+
+	$(window).on('elementor/frontend/init', function () {
+        elementorFrontend.hooks.addAction( 'frontend/element_ready/ae-woo-add-to-cart.default', 	WooAddToCartHandler );
+    });
+
+})(jQuery);
+
+/***/ }),
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4403,7 +4499,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4436,7 +4532,7 @@ var WooProductImgeGallery = function ( $scope, $ ) {
 })(jQuery);
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 (function($){
@@ -4470,7 +4566,7 @@ var WooProductImgeGallery = function ( $scope, $ ) {
 })(jQuery);
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 (function($){
@@ -4497,7 +4593,7 @@ var WooProductImgeGallery = function ( $scope, $ ) {
 })
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 (function($){

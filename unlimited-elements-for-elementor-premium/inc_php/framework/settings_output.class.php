@@ -305,6 +305,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 			$this->settings->setSettingsStateByControls();
 			$this->settings->setPairedSettings();
+			
 		}
 
 

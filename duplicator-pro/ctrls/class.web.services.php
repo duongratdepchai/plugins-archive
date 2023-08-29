@@ -7,6 +7,7 @@ use Duplicator\Ajax\AbstractAjaxService;
 use Duplicator\Ajax\AjaxWrapper;
 use Duplicator\Ajax\ServicesDashboard;
 use Duplicator\Ajax\ServicesImport;
+use Duplicator\Ajax\ServicesNotifications;
 use Duplicator\Ajax\ServicesRecovery;
 use Duplicator\Ajax\ServicesSchedule;
 use Duplicator\Ajax\ServicesSettings;
@@ -48,6 +49,8 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
         $dashboardService->init();
         $settingsService = new ServicesSettings();
         $settingsService->init();
+        $notificationsService = new ServicesNotifications();
+        $notificationsService->init();
 
         $this->addAjaxCall('wp_ajax_duplicator_pro_package_scan', 'duplicator_pro_package_scan');
         $this->addAjaxCall('wp_ajax_duplicator_pro_package_delete', 'duplicator_pro_package_delete');
@@ -540,7 +543,7 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             . '<b>' . DUP_PRO_U::__("More Information:") . '</b><br/>'
             . sprintf(
                 DUP_PRO_U::__('Please see the online FAQ titled <a href="%s" target="_blank">"How to resolve scanner warnings/errors and timeout issues?"</a>'),
-                "https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-018-q"
+                DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-resolve-scanner-warnings-errors-and-timeout-issues"
             );
     }
 
@@ -1153,22 +1156,29 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
         $use_curl       = $inputData['use_curl'];
 
         $statusMsgsObj->addMessage(__('Checking FTP parameters', 'duplicator-pro'));
+        DUP_PRO_Log::trace("Checking FTP parameters");
         if (!$storage_id) {
+            DUP_PRO_Log::trace("Error: storage_id is missing from request");
             $statusMsgsObj->addMessage(__('Error: storage_id is missing from request', 'duplicator-pro'));
         }
         if (!$storage_folder) {
+            DUP_PRO_Log::trace("Error: You haven't specified storage folder");
             $statusMsgsObj->addMessage(__('Error: You haven\'t specified storage folder', 'duplicator-pro'));
         }
         if (!$server) {
+            DUP_PRO_Log::trace("Error: You haven't specified server");
             $statusMsgsObj->addMessage(__('Error: You haven\'t specified server', 'duplicator-pro'));
         }
         if (!$port) {
+            DUP_PRO_Log::trace("Error: You haven't specified port");
             $statusMsgsObj->addMessage(__('Error: You haven\'t specified port', 'duplicator-pro'));
         }
         if ($port < 1) {
+            DUP_PRO_Log::trace("Error: Port needs to be be a positive number");
             $statusMsgsObj->addMessage(__('Error: Port needs to be be a positive number', 'duplicator-pro'));
         }
         if (!$username) {
+            DUP_PRO_Log::trace("Error: You haven't specified username");
             $statusMsgsObj->addMessage(__('Error: You haven\'t specified username', 'duplicator-pro'));
         }
 
@@ -1184,6 +1194,7 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             CapMng::can(CapMng::CAP_STORAGE);
 
             if (!$isValid) {
+                DUP_PRO_Log::trace("Invalid request.");
                 throw new Exception(__("Invalid request.", 'duplicator-pro'));
             }
 
@@ -1191,7 +1202,8 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
                 // This is a hidden value, so we need to fetch it from database
                 $storage = DUP_PRO_Storage_Entity::get_by_id($storage_id);
                 if ($storage == null) {
-                    throw new Exception(__("Couldn't find Storage ID $storage_id when performing the FTP file test", 'duplicator-pro'));
+                    DUP_PRO_Log::trace("Couldn't find Storage ID $storage_id when performing the FTP file test");
+                    throw new Exception(sprintf(__('Couldn\'t find Storage ID %1$d', 'duplicator-pro'), $storage_id));
                 }
                 $password = $storage->ftp_password;
             }
@@ -1200,13 +1212,18 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
                 $ftp_connect_exists          = function_exists('ftp_connect');
                 $ftp_connect_exists_filtered = apply_filters('duplicator_pro_ftp_connect_exists', $ftp_connect_exists);
                 if (!$ftp_connect_exists_filtered) {
+                    DUP_PRO_Log::trace("FTP storage without use cURL requires FTP module to be enabled. " .
+                        "Please install the FTP module as described in the " .
+                        "<a href=\"https://secure.php.net/manual/en/ftp.installation.php\" target=\"_blank\">" .
+                        "https://secure.php.net/manual/en/ftp.installation.php</a> or tick the 'Use cURL' checkbox.");
                     throw new Exception(sprintf(
                         DUP_PRO_U::esc_html__('FTP storage without use cURL requires FTP module to be enabled. Please install the FTP module as described in the %s.'),
-                        '<a href="https://secure.php.net/manual/en/ftp.installation.php" target="_blank">https://secure.php.net/manual/en/ftp.installation.php</a> OR tick the "Use cURL checkbox."'
+                        '<a href="https://secure.php.net/manual/en/ftp.installation.php" target="_blank">https://secure.php.net/manual/en/ftp.installation.php</a> or tick the "Use cURL" checkbox.'
                     ));
                 }
             } else {
                 if (!function_exists("curl_init") || !function_exists("curl_exec") || !function_exists("curl_getinfo")) {
+                    DUP_PRO_Log::trace("FTP storage with use cURL requires cURL extension to be enabled. That extension is not currently available on your system.");
                     throw new Exception(
                         DUP_PRO_U::esc_html__('FTP storage with use cURL requires cURL extension to be enabled. That extension is not currently available on your system.')
                     );
@@ -1216,17 +1233,21 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             DUP_PRO_Log::trace("ssl=" . DUP_PRO_STR::boolToString($ssl));
 
             // -- Store the temp file
+            DUP_PRO_Log::trace("Creating temp file");
             $statusMsgsObj->addMessage(__('Creating temp file', 'duplicator-pro'));
             $source_filepath = tempnam(sys_get_temp_dir(), 'DUP');
             if ($source_filepath === false) {
+                DUP_PRO_Log::trace("Couldn't create the temp file for the FTP send test.");
                 throw new Exception(__("Couldn't create the temp file for the FTP send test.", 'duplicator-pro'));
             }
             $statusMsgsObj->addMessage(sprintf(__('Created temp file "%1$s"', 'duplicator-pro'), $source_filepath));
             DUP_PRO_Log::trace("Created temp file $source_filepath");
 
             $statusMsgsObj->addMessage(__('Attempting to write to the temp file', 'duplicator-pro'));
+            DUP_PRO_Log::trace("Attempting to write to the temp file");
             $source_handle = fopen($source_filepath, 'w');
             if (!$source_handle) {
+                DUP_PRO_Log::trace("Couldn't open temp file for writing.");
                 throw new Exception(__("Couldn't open temp file for writing.", 'duplicator-pro'));
             }
             $rnd = rand();
@@ -1241,24 +1262,29 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             $basename = basename($source_filepath);
 
             if ($use_curl) {
+                DUP_PRO_Log::trace("Attempting to open FTP connection with cURL");
                 $statusMsgsObj->addMessage(__('Attempting to open FTP connection with cURL', 'duplicator-pro'));
                 /* @var $ftp_client DUP_PRO_FTPcURL */
                 $ftp_client = new DUP_PRO_FTPcURL($server, $port, $username, $password, $storage_folder, 15, $ssl, $passive_mode);
             } else {
+                DUP_PRO_Log::trace("Attempting to open FTP connection");
                 $statusMsgsObj->addMessage(__('Attempting to open FTP connection', 'duplicator-pro'));
                 /* @var $ftp_client DUP_PRO_FTP_Chunker */
                 $ftp_client = new DUP_PRO_FTP_Chunker($server, $port, $username, $password, 15, $ssl, $passive_mode);
             }
 
             if ($use_curl) {
+                DUP_PRO_Log::trace("Attempting to test FTP connection");
                 $statusMsgsObj->addMessage(__('Attempting to test FTP connection', 'duplicator-pro'));
                 $ftp_client->test_conn(); // Throws Exception in case of failure
             } else {
                 if (!$ftp_client->open($statusMsgsObj)) {
+                    DUP_PRO_Log::trace("Error opening FTP connection.");
                     throw new Exception(__('Error opening FTP connection.', 'duplicator-pro'));
                 }
             }
             $statusMsgsObj->addMessage(__('FTP connection is successfully established', 'duplicator-pro'));
+            DUP_PRO_Log::trace("FTP connection is successfully established");
 
             if (DUP_PRO_STR::startsWith($storage_folder, '/') == false) {
                 $storage_folder = '/' . $storage_folder;
@@ -1266,24 +1292,32 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             $storage_folder = trailingslashit($storage_folder);
 
             $statusMsgsObj->addMessage(sprintf(__('Checking if remote storage directory exists: "%1$s"', 'duplicator-pro'), $storage_folder));
+            DUP_PRO_Log::trace("Checking if remote storage directory exists: '$storage_folder'");
 
             if ($ftp_client->directory_exists($storage_folder)) {
+                DUP_PRO_Log::trace("The remote storage directory already exists");
                 $statusMsgsObj->addMessage(__('The remote storage directory already exists', 'duplicator-pro'));
             } else {
+                DUP_PRO_Log::trace("The remote storage directory does not exist yet");
                 $statusMsgsObj->addMessage(__('The remote storage directory does not exist yet', 'duplicator-pro'));
+                DUP_PRO_Log::trace("Attempting to create the remote storage directory '$storage_folder'");
                 $statusMsgsObj->addMessage(sprintf(__('Attempting to create the remote storage directory "%1$s"', 'duplicator-pro'), $storage_folder));
                 $ftp_directory_exists = $ftp_client->create_directory($storage_folder);
                 if (!$ftp_directory_exists) {
                     if ($use_curl) {
+                        DUP_PRO_Log::trace("The FTP connection is working fine but the directory can't be created.");
                         throw new Exception(__("The FTP connection is working fine but the directory can't be created.", 'duplicator-pro'));
                     } else {
+                        DUP_PRO_Log::trace("The FTP connection is working fine but the directory can't be created. Check the \"cURL\" checkbox and retry.");
                         throw new Exception(__("The FTP connection is working fine but the directory can't be created. Check the \"cURL\" checkbox and retry.", 'duplicator-pro'));
                     }
                 } else {
+                    DUP_PRO_Log::trace("The remote storage directory is created successfully");
                     $statusMsgsObj->addMessage(__('The remote storage directory is created successfully', 'duplicator-pro'));
                 }
             }
 
+            DUP_PRO_Log::trace("Attempting to upload temp file to remote directory");
             $statusMsgsObj->addMessage(__('Attempting to upload temp file to remote directory', 'duplicator-pro'));
             if ($use_curl) {
                 $ret_upload = $ftp_client->upload_file($source_filepath, basename($source_filepath));
@@ -1291,14 +1325,18 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
                 $ret_upload = $ftp_client->upload_file($source_filepath, $storage_folder);
             }
             if (!$ret_upload) {
+                DUP_PRO_Log::trace("Error uploading file.");
                 throw new Exception(__('Error uploading file.', 'duplicator-pro'));
             }
+            DUP_PRO_Log::trace("The temp file was uploaded successfully");
             $statusMsgsObj->addMessage(__('The temp file was uploaded successfully', 'duplicator-pro'));
 
             // -- Download the file --
+            DUP_PRO_Log::trace("Creating destination temp file for the FTP send test");
             $statusMsgsObj->addMessage(__('Creating destination temp file for the FTP send test', 'duplicator-pro'));
             $dest_filepath = wp_tempnam('DUP', DUPLICATOR_PRO_SSDIR_PATH_TMP);
 
+            DUP_PRO_Log::trace("Created temp file '$dest_filepath'");
             $statusMsgsObj->addMessage(sprintf(__('Created temp file "%1$s"', 'duplicator-pro'), $dest_filepath));
 
             $remote_source_filepath = $use_curl ? $basename : "$storage_folder/$basename";
@@ -1306,11 +1344,14 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             DUP_PRO_Log::trace("About to FTP download $remote_source_filepath to $dest_filepath");
 
             if (!$ftp_client->download_file($remote_source_filepath, $dest_filepath, false)) {
+                DUP_PRO_Log::trace("Error downloading file.");
                 throw new Exception(__('Error downloading file.', 'duplicator-pro'));
             }
             $statusMsgsObj->addMessage(__('The file is successfully downloaded', 'duplicator-pro'));
+            DUP_PRO_Log::trace("The file is successfully downloaded");
 
             $statusMsgsObj->addMessage(__('Attempting to delete the remote file', 'duplicator-pro'));
+            DUP_PRO_Log::trace("Attempting to delete the remote file");
             $deleted_temp_file = true;
 
             if ($ftp_client->delete($remote_source_filepath) == false) {
@@ -1319,11 +1360,14 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
                 $deleted_temp_file = false;
             } else {
                 $statusMsgsObj->addMessage(__('Successfully deleted the remote file', 'duplicator-pro'));
+                DUP_PRO_Log::trace("Successfully deleted the remote file");
             }
 
             $statusMsgsObj->addMessage(sprintf(__('Attempting to read downloaded file "%1$s"', 'duplicator-pro'), $dest_filepath));
+            DUP_PRO_Log::trace("Attempting to read downloaded file '$dest_filepath'");
             $dest_handle = fopen($dest_filepath, 'r');
             if (!$dest_handle) {
+                DUP_PRO_Log::trace("Could not open file for reading.");
                 throw new Exception(__('Could not open file for reading.', 'duplicator-pro'));
             }
             $dest_string = fread($dest_handle, 100);
@@ -1331,6 +1375,7 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             $dest_handle = null;
 
             $statusMsgsObj->addMessage(__('Looking for missmatch in files', 'duplicator-pro'));
+            DUP_PRO_Log::trace("Looking for missmatch in files");
             /* The values better match or there was a problem */
             if ($rnd != (int) $dest_string) {
                 $statusMsgsObj->addMessage(sprintf(__('Mismatch in files: %1$s != %2$d', 'duplicator-pro'), $rnd, $dest_string));
@@ -1342,6 +1387,7 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             DUP_PRO_Log::trace("Files match!");
             if ($deleted_temp_file) {
                 if ($use_curl) {
+                    DUP_PRO_Log::trace("Successfully stored and retrieved file.");
                     $json['success'] = true;
                     $json['message'] = __('Successfully stored and retrieved file.', 'duplicator-pro');
                 } else {
@@ -1349,17 +1395,21 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
                     if (is_array($raw) && !empty($raw) && isset($raw[0])) {
                         $code = intval($raw[0]);
                         if (502 === $code) {
+                            DUP_PRO_Log::trace("FTP server doesn't support REST command. It will cause problem in PHP native function chunk upload. Please proceed with ticking \"Use Curl\" checkbox. Error: " . $raw[0]);
                             throw new Exception(__("FTP server doesn't support REST command. It will cause problem in PHP native function chunk upload. Please proceed with ticking \"Use Curl\" checkbox. Error: ", 'duplicator-pro') . $raw[0]);
                         } else {
+                            DUP_PRO_Log::trace("Successfully stored and retrieved file.");
                             $json['success'] = true;
                             $json['message'] = __('Successfully stored and retrieved file.', 'duplicator-pro');
                         }
                     } else {
+                        DUP_PRO_Log::trace("Successfully stored and retrieved file.");
                         $json['success'] = true;
                         $json['message'] = __('Successfully stored and retrieved file.', 'duplicator-pro');
                     }
                 }
             } else {
+                DUP_PRO_Log::trace("Successfully stored and retrieved file however couldn't delete the temp file on the server.");
                 $json['success'] = true;
                 $json['message'] = __("Successfully stored and retrieved file however couldn't delete the temp file on the server.", 'duplicator-pro');
             }
@@ -1376,7 +1426,7 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             $statusMsgsObj->addMessage($errorMessage);
             DUP_PRO_Log::trace($errorMessage);
             $json['message'] = "{$errorMessage} " . __('For additional help see the online '
-                    . '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-400-q" target="_blank">FTP troubleshooting steps</a>.', 'duplicator-pro');
+                    . '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-do-i-fix-issues-with-sftp-ftp-storage-types" target="_blank">FTP troubleshooting steps</a>.', 'duplicator-pro');
             ;
         }
 
@@ -1473,22 +1523,29 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
         $private_key_password = $inputData['private_key_password'];
 
         $statusMsgsObj->addMessage(__('Checking SFTP parameters', 'duplicator-pro'));
+        DUP_PRO_Log::trace("Checking SFTP parameters");
         if (!$storage_id) {
+            DUP_PRO_Log::trace("Error: storage_id is missing from request");
             $statusMsgsObj->addMessage(__('Error: storage_id is missing from request', 'duplicator-pro'));
         }
         if (!$storage_folder) {
+            DUP_PRO_Log::trace("Error: You must specify storage folder");
             $statusMsgsObj->addMessage(__('Error: You must specify storage folder', 'duplicator-pro'));
         }
         if (!$server) {
+            DUP_PRO_Log::trace("Error: You must specify server");
             $statusMsgsObj->addMessage(__('Error: You must specify server', 'duplicator-pro'));
         }
         if (!$port) {
+            DUP_PRO_Log::trace("Error: You must specify port");
             $statusMsgsObj->addMessage(__('Error: You must specify port', 'duplicator-pro'));
         }
         if ($port < 1) {
+            DUP_PRO_Log::trace("Error: Port needs to be a positive number");
             $statusMsgsObj->addMessage(__('Error: Port needs to be a positive number', 'duplicator-pro'));
         }
         if (!$username) {
+            DUP_PRO_Log::trace("Error: You must specify username");
             $statusMsgsObj->addMessage(__('Error: You must specify username', 'duplicator-pro'));
         }
 
@@ -1501,6 +1558,7 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             CapMng::can(CapMng::CAP_STORAGE);
 
             if (!$isValid) {
+                DUP_PRO_Log::trace("Invalid request.");
                 throw new Exception(__("Invalid request.", 'duplicator-pro'));
             }
 
@@ -1514,7 +1572,10 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
                 // There are some hidden values, so we need to fetch them from database
                 $storage = DUP_PRO_Storage_Entity::get_by_id($storage_id);
                 if ($storage == null) {
-                    throw new Exception(__("Couldn't find Storage ID $storage_id when performing the SFTP file test", 'duplicator-pro'));
+                    DUP_PRO_Log::trace("Couldn't find Storage ID $storage_id when performing the SFTP file test");
+                    throw new Exception(
+                        sprintf(__('Couldn\'t find Storage ID %1$d when performing the SFTP file test', 'duplicator-pro'), $storage_id)
+                    );
                 }
                 if (strlen($password) == 0) {
                     $password = $storage->sftp_password;
@@ -1526,9 +1587,11 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
 
             // -- Store the temp file --
             $statusMsgsObj->addMessage(__('Attempting to create a temp file', 'duplicator-pro'));
+            DUP_PRO_Log::trace("Attempting to create a temp file");
             $source_filepath = tempnam(sys_get_temp_dir(), 'DUP');
 
             if ($source_filepath === false) {
+                DUP_PRO_Log::trace("Couldn't create the temp file for the SFTP send test");
                 throw new Exception(__("Couldn't create the temp file for the SFTP send test", 'duplicator-pro'));
             }
 
@@ -1548,24 +1611,31 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             $sFtpAdapter->setMessages($statusMsgsObj);
 
             if (!$sFtpAdapter->connect()) {
+                DUP_PRO_Log::trace("Couldn't connect to sftp server while doing the SFTP send test");
                 throw new Exception(__("Couldn't connect to sftp server while doing the SFTP send test", 'duplicator-pro'));
             }
 
             $statusMsgsObj->addMessage(sprintf(__('Checking if remote storage folder "%1$s" already exists', 'duplicator-pro'), $storage_folder));
+            DUP_PRO_Log::trace("Checking if remote storage folder '$storage_folder' already exists");
             if (!$sFtpAdapter->fileExists($storage_folder)) {
+                DUP_PRO_Log::trace("The remote storage folder '$storage_folder' does not exist, attempting to create it");
                 $statusMsgsObj->addMessage(sprintf(__('The remote storage folder "%1$s" does not exist, attempting to create it', 'duplicator-pro'), $storage_folder));
                 $storage_folder = $sFtpAdapter->mkDirRecursive($storage_folder);
                 if (!$sFtpAdapter->fileExists($storage_folder)) {
+                    DUP_PRO_Log::trace("The SFTP connection is working fine, but the directory can't be created.");
                     throw new Exception(__("The SFTP connection is working fine, but the directory can't be created.", 'duplicator-pro'));
                 } else {
+                    DUP_PRO_Log::trace("The remote storage folder is created successfully");
                     $statusMsgsObj->addMessage(__('The remote storage folder is created successfully', 'duplicator-pro'));
                 }
             } else {
+                DUP_PRO_Log::trace("The remote storage folder already exists");
                 $statusMsgsObj->addMessage(__('The remote storage folder already exists', 'duplicator-pro'));
             }
 
             // Try to upload a test file
             $statusMsgsObj->addMessage(__('Attempting to upload the test file', 'duplicator-pro'));
+            DUP_PRO_Log::trace("Attempting to upload the test file");
             $continueUpload = true;
             try {
                 if (!$sFtpAdapter->put($storage_folder . $basename, $source_filepath)) {
@@ -1588,6 +1658,7 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
                 $json['success'] = true;
                 $json['message'] = __('The connection was successful.', 'duplicator-pro');
                 $statusMsgsObj->addMessage(__('Attempting to delete the remote test file', 'duplicator-pro'));
+                DUP_PRO_Log::trace("Attempting to delete the remote test file");
                 if ($sFtpAdapter->delete($storage_folder . $basename)) {
                     $statusMsgsObj->addMessage(__('Remote test file deleted successfully', 'duplicator-pro'));
                     DUP_PRO_Log::trace("Remote test file deleted successfully.");
@@ -2918,9 +2989,6 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             case DUP_PRO_UI_Notice::OPTION_KEY_S3_CONTENTS_FETCH_FAIL_NOTICE:
                 $ret = update_option(DUP_PRO_UI_Notice::OPTION_KEY_S3_CONTENTS_FETCH_FAIL_NOTICE, false);
                 break;
-            case Notices::OPTION_KEY_EXPIRED_LICENCE_NOTICE_DISMISS_TIME:
-                $ret = update_option(Notices::OPTION_KEY_EXPIRED_LICENCE_NOTICE_DISMISS_TIME, time());
-                break;
             case DUP_PRO_UI_Notice::QUICK_FIX_NOTICE:
                 $systemGlobal->clearFixes();
                 $ret = $systemGlobal->save();
@@ -2928,6 +2996,9 @@ class DUP_PRO_Web_Services extends AbstractAjaxService
             case DUP_PRO_UI_Notice::FAILED_SCHEDULE_NOTICE:
                 $systemGlobal->schedule_failed = false;
                 $ret                           = $systemGlobal->save();
+                break;
+            case Notices::CLOSE_TO_EXPIRE_DISMISS:
+                $ret = ExpireOptions::set(Notices::CLOSE_TO_EXPIRE_DISMISS, true, Notices::CLOSE_TO_EXPIRE_DISMISS_DAYS);
                 break;
             default:
                 throw new Exception('Notice invalid');

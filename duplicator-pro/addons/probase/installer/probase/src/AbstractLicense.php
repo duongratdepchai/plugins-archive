@@ -26,17 +26,19 @@ abstract class AbstractLicense
     const TYPE_PRO             = 10;
     const TYPE_ELITE           = 11;
 
-    const CAPABILITY_BRAND                 = 1000;
-    const CAPABILITY_IMPORT_SETTINGS       = 1001;
-    const CAPABILITY_SHEDULE_HOURLY        = 1002;
-    const CAPABILITY_MULTISITE             = 1003;
-    const CAPABILITY_MULTISITE_PLUS        = 1004;
-    const CAPABILITY_POWER_TOOLS           = 1005;
-    const CAPABILITY_CHANGE_TABLE_PREFIX   = 1006;
-    const CAPABILITY_UPDATE_AUTH           = 1007;
-    const CAPABILITY_CAPABILITIES_MNG      = 1008;
-    const CAPABILITY_CAPABILITIES_MNG_PLUS = 1009;
-    const CAPABILITY_PRO_BASE              = 1010;
+    const CAPABILITY_BRAND                   = 1000;
+    const CAPABILITY_IMPORT_SETTINGS         = 1001;
+    const CAPABILITY_SHEDULE_HOURLY          = 1002;
+    const CAPABILITY_MULTISITE               = 1003;
+    const CAPABILITY_MULTISITE_PLUS          = 1004;
+    const CAPABILITY_POWER_TOOLS             = 1005;
+    const CAPABILITY_CHANGE_TABLE_PREFIX     = 1006;
+    const CAPABILITY_UPDATE_AUTH             = 1007;
+    const CAPABILITY_CAPABILITIES_MNG        = 1008;
+    const CAPABILITY_CAPABILITIES_MNG_PLUS   = 1009;
+    const CAPABILITY_PRO_BASE                = 1010;
+    const CAPABILITY_PACKAGE_COMPONENTS_PLUS = 1011;
+    const CAPABILITY_IMPORT                  = 1012;
 
     /**
      * Returns the license type this installer file is made of.
@@ -105,6 +107,8 @@ abstract class AbstractLicense
         switch ($capability) {
             case self::CAPABILITY_PRO_BASE:
                 return true;
+            case self::CAPABILITY_IMPORT:
+                return $license > 0;
             case self::CAPABILITY_MULTISITE:
                 return $license > 0;
             case self::CAPABILITY_BRAND:
@@ -129,6 +133,7 @@ abstract class AbstractLicense
             case self::CAPABILITY_MULTISITE_PLUS:
             case self::CAPABILITY_CAPABILITIES_MNG:
             case self::CAPABILITY_CAPABILITIES_MNG_PLUS:
+            case self::CAPABILITY_PACKAGE_COMPONENTS_PLUS:
                 return in_array(
                     $license,
                     [

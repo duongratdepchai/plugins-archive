@@ -34,7 +34,7 @@
                     $element = '',
                     $widgetId = 'ep-sound-effects' + this.getID(),
                     $widgetIdSelect = '#' + $widgetId,
-                    $soundAudioSource;
+                    $soundAudioSource, $soundAudioSourceMp3;
 
                 // selector creating...
                 $(this.findElement('.elementor-widget-container').get(0)).attr('id', $widgetId);
@@ -58,6 +58,7 @@
                 } else {
                     if (this.settings('hosted_url.url')) {
                         $soundAudioSource = this.settings('hosted_url.url').replace(/\.[^/.]+$/, "");
+                        $soundAudioSourceMp3 = this.settings('hosted_url_mp3.url').replace(/\.[^/.]+$/, "");
                     }
                 }
 
@@ -65,16 +66,9 @@
                     return;
                 }
 
-
-                // var console = window.console || {};
-                // console.log = console.log || function () {};
-                // console.error = console.error || console.log;
-
                 if (!document.createElement('audio').canPlayType) {
                     console.error('Oh man 😩! \nYour browser doesn\'t support audio awesomeness.');
                     return function () {}; // return an empty function if `loudLinks` is called again.
-                } else {
-                    // console.log('Audio works like a charm 👍');
                 }
 
                 // Create audio element and make it awesome
@@ -107,7 +101,10 @@
                         return;
                     }
 
-                    soundMp3Link = audioSrc + '.mp3';
+                    if ($soundAudioSourceMp3) {
+                        soundMp3Link = $soundAudioSourceMp3 + '.mp3';
+                    }
+
                     soundOggLink = audioSrc + '.ogg';
 
                     if (!eventsSet) {
@@ -122,7 +119,9 @@
 
                     // Only reset `src` and reload if source is different
                     if (soundMp3Link || soundOggLink) {
-                        // mp3Source.setAttribute('src', soundMp3Link);
+                        if ($soundAudioSourceMp3) {
+                            mp3Source.setAttribute('src', soundMp3Link);
+                        }
                         oggSource.setAttribute('src', soundOggLink);
 
                         audioPlayer.load();
@@ -151,11 +150,15 @@
                         jQuery($element).on('mouseleave', function () {
                             stopAudio();
                         });
-                        jQuery($element).on('touchmove', function () {
-                            stopAudio();
-                        });
+                        // jQuery($element).on('touchmove', function () {
+                        //     stopAudio();
+                        // });
                         jQuery($element).on('click', function () {
                             stopAudio();
+                        });
+
+                        jQuery($element).on('touchstart', function () {
+                            playAudio();
                         });
 
                     }

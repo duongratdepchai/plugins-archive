@@ -81,6 +81,12 @@ JetGMInfoBox.prototype.createJetGMInfoBoxDiv_ = function () {
 	// This handler prevents an event in the JetGMInfoBox from being passed on to the map.
 	//
 	var cancelHandler = function (e) {
+		var hasListingOverlay = 'click' === e.type && e.currentTarget.querySelector('.jet-engine-listing-overlay-wrap');
+
+		if ( hasListingOverlay ) {
+			return;
+		}
+
 		e.cancelBubble = true;
 		if (e.stopPropagation) {
 			e.stopPropagation();
@@ -774,35 +780,6 @@ JetGMInfoBox.prototype.open = function (map, anchor) {
 	this.setMap(map);
 
 	if ( this.div_ ) {
-		
-		let $infoBoxScope = jQuery( this.div_ );
-
-		$infoBoxScope.find( 'div[data-element_type]' ).each( function() {
-
-			var $this       = jQuery( this ),
-				elementType = $this.data( 'element_type' );
-
-			if( 'widget' === elementType ){
-
-				elementType = $this.data( 'widget_type' );
-
-				window.elementorFrontend.hooks.doAction(
-					'frontend/element_ready/widget',
-					$this,
-					jQuery
-				);
-
-			}
-
-			window.elementorFrontend.hooks.doAction(
-				'frontend/element_ready/' + elementType,
-				$this,
-				jQuery
-			);
-
-		});
-
-		window.JetPlugins.init( $infoBoxScope );
 
 		this.panBox_(this.disableAutoPan_); // BUG FIX 2/17/2018: add missing parameter
 
@@ -870,7 +847,7 @@ window.JetEngineMapsProvider = function() {
 		return new google.maps.LatLngBounds();
 	}
 
-	this.fitMapBounds = function( data ) {
+	this.fitMapBounds = function( data, callback ) {
 		var self = this;
 
 		data.map.fitBounds( data.bounds );
@@ -878,6 +855,8 @@ window.JetEngineMapsProvider = function() {
 		var listener = google.maps.event.addListener( data.map, 'idle', function() {
 			if ( ! data.marker.getMap() ) {
 				self.fitMapToMarker( data.marker, data.markersClusterer );
+			} else if ( callback ) {
+				callback();
 			}
 			google.maps.event.removeListener( listener );
 		} );
@@ -910,7 +889,7 @@ window.JetEngineMapsProvider = function() {
 
 		data = data || {};
 
-		data.map    = map;
+		data.map = map;
 		data.shadow = false;
 
 		google.maps.event.addListener( map, "click", ( event ) => {
@@ -931,8 +910,12 @@ window.JetEngineMapsProvider = function() {
 		google.maps.event.addListener( infoBox, 'closeclick', callback );
 	}
 
-	this.openPopup = function( trigger, callback ) {
+	this.openPopup = function( trigger, callback, infobox, map, openOn ) {
 		google.maps.event.addListener( trigger, 'click', callback );
+
+		if ( 'hover' === openOn ) {
+			google.maps.event.addListener( trigger, 'mouseover', callback );
+		}
 	}
 
 	this.triggerOpenPopup = function( trigger ) {
@@ -993,7 +976,7 @@ window.JetEngineMapsProvider = function() {
 		return marker.getMap();
 	}
 
-	this.fitMapToMarker = function( marker, markersClusterer ) {
+	this.fitMapToMarker = function( marker, markersClusterer, zoom ) {
 		var cluster = this._findClusterByMarker( markersClusterer, marker ),
 			bounds,
 			map;
@@ -1010,10 +993,22 @@ window.JetEngineMapsProvider = function() {
 			bounds: bounds,
 			marker: marker,
 			markersClusterer: markersClusterer,
+		}, () => {
+			this.panTo( {
+				map: map,
+				position: this.getMarkerPosition( marker ),
+				zoom: zoom
+			} );
 		} );
-
-		map.setCenter( this.getMarkerPosition( marker ) );
 	};
+
+	this.panTo = function( data ) {
+		data.map.panTo( data.position );
+
+		if ( data.zoom && data.zoom > data.map.getZoom() ) {
+			data.map.setZoom( data.zoom );
+		}
+	}
 
 	this._findClusterByMarker = function( markersClusterer, marker ) {
 		var clusters = markersClusterer.getClusters(),

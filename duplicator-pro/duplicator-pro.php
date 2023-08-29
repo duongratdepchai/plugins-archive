@@ -4,9 +4,9 @@
  * Plugin Name: Duplicator Pro
  * Plugin URI: https://duplicator.com/
  * Description: Create, schedule and transfer a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
- * Version: 4.5.11.1
+ * Version: 4.5.12
  * Requires at least: 4.0
- * Tested up to: 6.2
+ * Tested up to: 6.2.2
  * Requires PHP: 5.6.20
  * Author: Duplicator
  * Author URI: https://duplicator.com/
@@ -33,7 +33,7 @@
  */
 
 defined('ABSPATH') || exit;
-update_option( 'duplicator_pro_license_key', 'activated' );
+
 // CHECK PHP VERSION
 define('DUPLICATOR_PRO_PHP_MINIMUM_VERSION', '5.6.20');
 define('DUPLICATOR_PRO_PHP_SUGGESTED_VERSION', '7.4');

@@ -1651,8 +1651,13 @@ class Skin_Term_Post_Loop extends Skin_Base {
 		$this->parent->set_render_attribute( 'outer-wrapper', 'class', $outer_class );
 
 		// Collection Attributes
+		$swiper_class = 'swiper-container';
+		$swiper_latest = get_option('elementor_experiment-e_swiper_latest');
+		if ( $swiper_latest == 'active' ) {
+			$swiper_class = 'swiper';
+		}
 		$this->parent->set_render_attribute( 'collection', 'class', 'ae-post-collection' );
-		$this->parent->set_render_attribute( 'collection', 'class', 'ae-swiper-container swiper-container' );
+		$this->parent->set_render_attribute( 'collection', 'class', 'ae-swiper-container ' . $swiper_class );
 
 		//Swiper List Wrapper Attributes
 		$this->parent->set_render_attribute( 'post-list-wrapper', 'class', 'ae-post-widget-wrapper ae-swiper-wrapper swiper-wrapper' );

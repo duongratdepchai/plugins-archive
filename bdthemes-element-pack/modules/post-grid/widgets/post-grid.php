@@ -2874,7 +2874,7 @@ class Post_Grid extends Module_Base {
 				<ul class="bdt-post-grid-tag">
 					<?php foreach ($tags as $tag) :  ?>
 						<li>
-							<a href="<?php bloginfo('url'); ?>/tag/<?php echo esc_url($tag->slug); ?>">
+							<a href="<?php bloginfo('url'); ?>/tag/<?php echo esc_attr($tag->slug); ?>">
 								<?php echo esc_html($tag->name); ?>
 							</a>
 						</li>

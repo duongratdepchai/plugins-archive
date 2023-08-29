@@ -1,4 +1,41 @@
 
+version 1.5.75:
+
+-feature: added some suggestion text to add some memory in the troubleshooting section in case that needed
+-bug fix: the wrong author was displayed in loop post meta data
+-bug fix: do_shortcode to html items inside the grid and dynamic loop
+-update: Updated Freemius SDK to the latest version
+
+
+version 1.5.74:
+
+-bug fix: show search widgets at plugin install.
+-bug fix: menu picker depts in multisource
+-bug fix: set the author data to be retrievable in dynamic grid template
+-bug fix: show meta fields switcher didn't worked in multisource menu items
+
+
+version 1.5.73:
+
+- bug fix: added support for wordpress proxy in api calling
+- bug fix: fixed empty post in query result
+- bug fix: fixed "wrong template ID" elementor error in post accordion
+- feature: added options for revisions in widget editor
+
+
+version 1.5.72:
+
+-bug fix: added the swf extension in the allowed files in assets
+-feature: prepared the plugin for sort filter
+-change: updated freemius sdk to 2.5.9
+
+
+version 1.5.71:
+
+-change: removed js includes of the forms and filters from backend editor
+-change: changed colors of the free version notification in dark mode
+-bug fix: fix the "link" type in wpml integration automatic translation
+
 
 version 1.5.70:
 

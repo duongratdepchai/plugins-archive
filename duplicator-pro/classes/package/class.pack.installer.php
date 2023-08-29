@@ -21,6 +21,7 @@ use Duplicator\Libs\Snap\SnapJson;
 use Duplicator\Libs\Snap\SnapOrigFileManager;
 use Duplicator\Libs\Snap\SnapWP;
 use Duplicator\Libs\WpConfig\WPConfigTransformer;
+use Duplicator\Package\Create\BuildComponents;
 use Duplicator\Package\Create\BuildProgress;
 use Duplicator\Utils\Crypt\CryptBlowfish;
 use Duplicator\Utils\ZipArchiveExtended;
@@ -133,7 +134,7 @@ class DUP_PRO_Installer extends AbstractJsonSerializable
     }
 
     /**
-     * Returns real and normalized path to the saved installer file
+     * Returns real and normalized path to the saved installer file at default backup location
      *
      * @return string
      */
@@ -338,7 +339,8 @@ HEADER;
         $ac->package_notes         = $this->Package->notes;
         $ac->opts_delete           = SnapJson::jsonEncode($GLOBALS['DUPLICATOR_PRO_OPTS_DELETE']);
         $ac->blogname              = sanitize_text_field(get_option('blogname'));
-        $ac->exportOnlyDB          = $this->Package->Archive->ExportOnlyDB;
+        $ac->exportOnlyDB          = $this->Package->isDBOnly();
+        $ac->components            = $this->Package->components;
 
         //PRE-FILLED: GENERAL
         $ac->secure_on   = $this->OptsSecureOn;
@@ -607,8 +609,12 @@ HEADER;
         $wpInfo->configs             = new stdClass();
         $wpInfo->configs->defines    = new stdClass();
         $wpInfo->configs->realValues = new stdClass();
-        $wpInfo->plugins             = SnapWP::getPluginsInfo();
-        $wpInfo->themes              = $this->getThemesInfo();
+        $wpInfo->plugins             = SnapWP::getPluginsInfo(
+            in_array(BuildComponents::COMP_PLUGINS_ACTIVE, $this->Package->components) ?
+                SnapWP::PLUGIN_INFO_ACTIVE :
+                SnapWP::PLUGIN_INFO_ALL
+        );
+        $wpInfo->themes              = SnapWP::getThemesInfo();
 
         $this->addDefineIfExists($wpInfo->configs->defines, 'ABSPATH');
         $this->addDefineIfExists($wpInfo->configs->defines, 'DB_CHARSET');
@@ -754,71 +760,6 @@ HEADER;
         }
 
         return true;
-    }
-
-    /**
-     * get themes array info with active template, stylesheet
-     *
-     * @return array
-     */
-    public function getThemesInfo()
-    {
-        if (!function_exists('wp_get_themes')) {
-            require_once ABSPATH . 'wp-admin/includes/theme.php';
-        }
-
-        $result = array();
-
-        foreach (wp_get_themes() as $slug => $theme) {
-            $result[$slug] = self::getThemeArrayData($theme);
-        }
-
-        if (is_multisite()) {
-            foreach (SnapWP::getSitesIds() as $siteId) {
-                switch_to_blog($siteId);
-                $stylesheet = get_stylesheet();
-                if (isset($result[$stylesheet])) {
-                    $result[$stylesheet]['isActive'][] = $siteId;
-                }
-                restore_current_blog();
-            }
-        } else {
-            $stylesheet = get_stylesheet();
-            if (isset($result[$stylesheet])) {
-                $result[$stylesheet]['isActive'] = true;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * return plugin formatted data from plugin info
-     *
-     * @param WP_Theme $theme instance of WP Core class WP_Theme. theme info from get_themes function
-     *
-     * @return array
-     */
-    protected static function getThemeArrayData(WP_Theme $theme)
-    {
-        $slug   = $theme->get_stylesheet();
-        $parent = $theme->parent();
-        return array(
-            'slug'         => $slug,
-            'themeName'    => $theme->get('Name'),
-            'version'      => $theme->get('Version'),
-            'themeURI'     => $theme->get('ThemeURI'),
-            'parentTheme'  => (false === $parent) ? false : $parent->get_stylesheet(),
-            'template'     => $theme->get_template(),
-            'stylesheet'   => $theme->get_stylesheet(),
-            'description'  => $theme->get('Description'),
-            'author'       => $theme->get('Author'),
-            "authorURI"    => $theme->get('AuthorURI'),
-            'tags'         => $theme->get('Tags'),
-            'isAllowed'    => $theme->is_allowed(),
-            'isActive'     => (is_multisite() ? array() : false),
-            'defaultTheme' => (defined('WP_DEFAULT_THEME') && WP_DEFAULT_THEME == $slug),
-        );
     }
 
     private function the_brand_setup($id)

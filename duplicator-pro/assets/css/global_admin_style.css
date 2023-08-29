@@ -3,6 +3,28 @@
  * Included in all admin pages
  * ================================================ */
 
+ul.dup-pro-simple-style-disc {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+ul.dup-pro-simple-style-list {
+    margin: 0;
+}
+
+ul.dup-pro-simple-style-list li {
+    margin-bottom: 2px;
+}
+
+ul.dup-pro-simple-style-list li:last-child {
+    margin: 0;
+}
+
+ul.dup-pro-simple-style-list li::before {
+    content: "-";
+    margin: 0 5px;
+}
+
 .dup-dashboard-widget-content .maroon {
     color: maroon;
 }
@@ -106,4 +128,3 @@
 .dup-dashboard-widget-content .dup-flex-content > *:last-child {
     padding-right: 0;
 }
-

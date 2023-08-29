@@ -174,6 +174,10 @@ abstract class Base_Query {
 
 		$this->final_query = $this->query;
 
+		if ( ! $this->final_query ) {
+			$this->final_query = array();
+		}
+
 		foreach ( $this->final_query as $key => $value ) {
 			if ( is_array( $value ) ) {
 				$reset = false;
@@ -449,7 +453,10 @@ abstract class Base_Query {
 	public function merge_default_props( $prop, $value ) {
 
 		if ( is_array( $value ) ) {
-			if ( empty( $this->final_query[ $prop ] ) || ! is_array( $this->final_query[ $prop ] ) ) {
+
+			$replace_array_props = apply_filters( 'jet-engine/query-builder/query/replace-array-props', false, $prop, $value, $this );
+
+			if ( empty( $this->final_query[ $prop ] ) || ! is_array( $this->final_query[ $prop ] ) || $replace_array_props ) {
 				$this->final_query[ $prop ] = $value;
 			} else {
 				$this->final_query[ $prop ] = array_merge( $this->final_query[ $prop ], $value );

@@ -2062,7 +2062,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 	    	if(class_exists("DOMDocument") == false)
 	    		return(true);
 	    		
-	    	$dom = new DOMDocument;
+	    	$dom = new DOMDocument();
 			$dom->loadHTML($html);
 			
 	    	$isValid = $dom->validate();
@@ -2304,8 +2304,10 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		
 			$arrFiles = array();
 			foreach($arrDirs as $dir){
+				
 				if($dir == "." || $dir == "..")
 					continue;
+					
 				$dirpath = $path . "/" . $dir;
 		
 				if(is_dir($dirpath))

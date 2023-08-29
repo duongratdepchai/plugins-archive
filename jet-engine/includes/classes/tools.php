@@ -188,10 +188,19 @@ class Jet_Engine_Tools {
 	 *
 	 * @return [type] [description]
 	 */
-	public static function get_taxonomies_for_js( $key = false ) {
-		$taxonomies = get_taxonomies( array(), 'objects' );
+	public static function get_taxonomies_for_js( $key = false, $with_slug = false ) {
+		
+		$taxonomies          = get_taxonomies( array(), 'objects' );
+		$prepared_taxonomies = self::prepare_list_for_js( $taxonomies, 'name', 'label', $key );
 
-		return self::prepare_list_for_js( $taxonomies, 'name', 'label', $key );
+		if ( $with_slug ) {
+			return array_map( function( $item ) {
+				$item['label'] = $item['label'] . ' (' . $item['value'] . ')';
+				return $item;
+			}, $prepared_taxonomies );
+		}
+
+		return $prepared_taxonomies;
 	}
 
 	/**
@@ -744,6 +753,31 @@ class Jet_Engine_Tools {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Allows to insert new part pf array ($insert) into source array ($source) after gieven key ($after)
+	 * @param  array  $source [description]
+	 * @param  [type] $after  [description]
+	 * @param  array  $insert [description]
+	 * @return [type]         [description]
+	 */
+	public static function insert_after( $source = array(), $after = null, $insert = array() ) {
+
+		$keys   = array_keys( $source );
+		$index  = array_search( $after, $keys );
+
+		if ( ! $source ) {
+			$source = array();
+		}
+
+		if ( false === $index ) {
+			return $source + $insert;
+		}
+
+		$offset = $index + 1;
+
+		return array_slice( $source, 0, $offset, true ) + $insert + array_slice( $source, $offset, null, true );
 	}
 
 	/**

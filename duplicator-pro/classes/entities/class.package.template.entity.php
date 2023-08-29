@@ -10,6 +10,7 @@ use Duplicator\Core\Models\AbstractEntityList;
 use Duplicator\Core\Models\UpdateFromInputInterface;
 use Duplicator\Installer\Core\Descriptors\ArchiveConfig;
 use Duplicator\Libs\Snap\SnapUtil;
+use Duplicator\Package\Create\BuildComponents;
 use Duplicator\Package\Recovery\RecoveryStatus;
 use Duplicator\Utils\Crypt\CryptBlowfish;
 
@@ -26,6 +27,7 @@ class DUP_PRO_Package_Template_Entity extends AbstractEntityList implements Upda
     public $archive_filter_exts   = '';
     public $archive_filter_files  = '';
     public $archive_filter_names  = false;
+    public $components            = array();
     //ARCHIVE:Database
     public $database_filter_on      = 0;  // Enable Table Filters
     public $databasePrefixFilter    = false;  // If true exclude tables without prefix
@@ -60,7 +62,8 @@ class DUP_PRO_Package_Template_Entity extends AbstractEntityList implements Upda
 
     public function __construct()
     {
-        $this->name = DUP_PRO_U::__('New Template');
+        $this->name       = DUP_PRO_U::__('New Template');
+        $this->components = BuildComponents::COMPONENTS_DEFAULT;
     }
 
     /**
@@ -162,13 +165,13 @@ class DUP_PRO_Package_Template_Entity extends AbstractEntityList implements Upda
 
             if ($temp_package != null) {
                 DUP_PRO_Log::trace('SET TEMPLATE FROM TEMP PACKAGE pwd ' . $temp_package->Installer->passowrd);
-                $template->filter_sites          = $temp_package->Multisite->FilterSites;
-                $template->archive_export_onlydb = $temp_package->Archive->ExportOnlyDB;
-                $template->archive_filter_on     = $temp_package->Archive->FilterOn;
-                $template->archive_filter_dirs   = $temp_package->Archive->FilterDirs;
-                $template->archive_filter_exts   = $temp_package->Archive->FilterExts;
-                $template->archive_filter_files  = $temp_package->Archive->FilterFiles;
-                $template->archive_filter_names  = $temp_package->Archive->FilterNames;
+                $template->components           = $temp_package->components;
+                $template->filter_sites         = $temp_package->Multisite->FilterSites;
+                $template->archive_filter_on    = $temp_package->Archive->FilterOn;
+                $template->archive_filter_dirs  = $temp_package->Archive->FilterDirs;
+                $template->archive_filter_exts  = $temp_package->Archive->FilterExts;
+                $template->archive_filter_files = $temp_package->Archive->FilterFiles;
+                $template->archive_filter_names = $temp_package->Archive->FilterNames;
 
                 $template->installer_opts_brand = $temp_package->Brand_ID;
 
@@ -238,41 +241,40 @@ class DUP_PRO_Package_Template_Entity extends AbstractEntityList implements Upda
     public function setFromInput($type)
     {
         $input = SnapUtil::getInputFromType($type);
-
         $this->setFromArrayKey(
             $input,
             function ($key, $val) {
+                if (is_string($val)) {
+                    $val = stripslashes($val);
+                }
                 return (is_scalar($val) ? SnapUtil::sanitizeNSChars($val) : $val);
             }
         );
+        $this->components = BuildComponents::getFromInput($input);
 
         $this->database_filter_tables = isset($input['dbtables-list']) ? SnapUtil::sanitizeNSCharsNewlineTrim($input['dbtables-list']) : '';
 
-        if (isset($input['_archive_filter_dirs'])) {
-            $post_filter_dirs          = SnapUtil::sanitizeNSChars($input['_archive_filter_dirs']);
-            $this->archive_filter_dirs = DUP_PRO_Archive::parseDirectoryFilter($post_filter_dirs);
+        if (isset($input['filter-paths'])) {
+            $filterPaths                = SnapUtil::sanitizeNSChars($input['filter-paths']);
+            $this->archive_filter_dirs  = DUP_PRO_Archive::parseDirectoryFilter($filterPaths);
+            $this->archive_filter_files = DUP_PRO_Archive::parseFileFilter($filterPaths);
         } else {
-            $this->archive_filter_dirs = '';
+            $this->archive_filter_dirs  = '';
+            $this->archive_filter_files = '';
         }
 
-        if (isset($input['_archive_filter_exts'])) {
-            $post_filter_exts          = SnapUtil::sanitizeNSCharsNewlineTrim($input['_archive_filter_exts']);
+        if (isset($input['filter-exts'])) {
+            $post_filter_exts          = SnapUtil::sanitizeNSCharsNewlineTrim($input['filter-exts']);
             $this->archive_filter_exts = DUP_PRO_Archive::parseExtensionFilter($post_filter_exts);
         } else {
             $this->archive_filter_exts = '';
         }
 
-        if (isset($input['_archive_filter_files'])) {
-            $post_filter_files          = SnapUtil::sanitizeNSChars($input['_archive_filter_files']);
-            $this->archive_filter_files = DUP_PRO_Archive::parseFileFilter($post_filter_files);
-        } else {
-            $this->archive_filter_files = '';
-        }
+
         $this->filter_sites = !empty($input['_mu_exclude']) ? $input['_mu_exclude'] : '';
 
         //Archive
-        $this->archive_export_onlydb   = isset($input['archive_export_onlydb']) ? 1 : 0;
-        $this->archive_filter_on       = isset($input['archive_filter_on']) ? 1 : 0;
+        $this->archive_filter_on       = isset($input['filter-on']) ? 1 : 0;
         $this->database_filter_on      = isset($input['dbfilter-on']) ? 1 : 0;
         $this->databasePrefixFilter    = isset($input['db-prefix-filter']) ? 1 : 0;
         $this->databasePrefixSubFilter = isset($input['db-prefix-sub-filter']) ? 1 : 0;
@@ -286,13 +288,13 @@ class DUP_PRO_Package_Template_Entity extends AbstractEntityList implements Upda
             case ArchiveConfig::SECURE_MODE_ARC_ENCRYPT:
                 break;
             default:
-                throw new Exception(__('Select valid secure mode'));
+                throw new Exception(__('Select valid secure mode', 'duplicator-pro'));
         }
         $this->installer_opts_skip_scan   = isset($input['_installer_opts_skip_scan']) ? 1 : 0;
         $this->installer_opts_cpnl_enable = isset($input['installer_opts_cpnl_enable']) ? 1 : 0;
 
-        $this->installerPassowrd = SnapUtil::sanitizeNSCharsNewline($input['secure-pass']);
-        $this->notes             = SnapUtil::sanitizeNSCharsNewlineTrim($input['notes']);
+        $this->installerPassowrd = SnapUtil::sanitizeNSCharsNewline(stripslashes($input['secure-pass']));
+        $this->notes             = SnapUtil::sanitizeNSCharsNewlineTrim(stripslashes($input['notes']));
 
         return true;
     }

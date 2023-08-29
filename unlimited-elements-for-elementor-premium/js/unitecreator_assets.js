@@ -731,7 +731,9 @@ function UCAssetsManager(){
 		g_ucAdmin.setErrorMessageID("uc_dialog_edit_file_error");
 		g_ucAdmin.setSuccessMessageID("uc_dialog_edit_file_success");
 		
-		assetsAjaxRequest("assets_save_file", data);
+    assetsAjaxRequest('assets_save_file', data, function () {
+      triggerEvent(events.UPDATE_FILES);
+    });
 		
 	}
 	

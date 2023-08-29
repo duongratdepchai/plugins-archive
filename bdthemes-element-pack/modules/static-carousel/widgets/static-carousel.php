@@ -254,7 +254,7 @@ class Static_Carousel extends Module_Base {
         $this->add_control(
             'show_sub_title',
             [
-                'label'   => __('Show sub Title', 'bdthemes-element-pack'),
+                'label'   => __('Show Sub Title', 'bdthemes-element-pack'),
                 'type'    => Controls_Manager::SWITCHER,
                 'default' => 'yes',
                 'separator' => 'before',
@@ -285,13 +285,19 @@ class Static_Carousel extends Module_Base {
         );
 
         $this->add_control(
-			'show_readmore',
-			[
-				'label'   => esc_html__( 'Show Read More', 'bdthemes-element-pack' ),
-				'type'    => Controls_Manager::SWITCHER,
-				'default' => 'yes',
-			]
-		);
+            'readmore_link_to',
+            [
+                'label'   => __( 'Link to', 'bdthemes-element-pack' ) . BDTEP_NC,
+                'type'    => Controls_Manager::SELECT,
+                'default' => 'button',
+                'options' => [
+                    'button' => __( 'Button', 'bdthemes-element-pack' ),
+                    'title' => __( 'Title', 'bdthemes-element-pack' ),
+                    'image' => __( 'Image', 'bdthemes-element-pack' ),
+                    'item' => __( 'Item Wrapper', 'bdthemes-element-pack' ),
+                ],
+            ]
+        );
 
         $this->add_control(
             'show_image',
@@ -367,7 +373,7 @@ class Static_Carousel extends Module_Base {
 			[
 				'label'     => esc_html__( 'Read More', 'bdthemes-element-pack' ),
 				'condition' => [
-					'show_readmore' => 'yes',
+					'readmore_link_to' => 'button',
 				],
 			]
 		);
@@ -549,7 +555,7 @@ class Static_Carousel extends Module_Base {
                     ]
                 ],
                 'selectors'   => [
-                    '{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
+                    '{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
                 ],
             ]
         );
@@ -816,7 +822,7 @@ class Static_Carousel extends Module_Base {
 				'label'     => esc_html__( 'Read More', 'bdthemes-element-pack' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
-					'show_readmore' => 'yes',
+					'readmore_link_to' => 'button',
 				],
 			]
 		);
@@ -1008,6 +1014,18 @@ class Static_Carousel extends Module_Base {
 			return;
 		}
 
+        $this->add_render_attribute(
+            [
+                'readmore-link' => [
+                    'class' => [
+                        'bdt-ep-static-carousel-image-link',
+                    ],
+                    'href'   => isset($item['readmore_link']['url']) ? esc_url($item['readmore_link']['url']) : '#',
+                    'target' => $item['readmore_link']['is_external'] ? '_blank' : '_self'
+                ]
+            ], '', '', true
+        );
+
         ?>
         <div class="bdt-ep-static-carousel-image bdt-image-mask">
 
@@ -1026,6 +1044,11 @@ class Static_Carousel extends Module_Base {
                 ));
             }
             ?>
+
+            <?php if($settings['readmore_link_to'] == 'image') : ?>
+            <a <?php echo $this->get_render_attribute_string( 'readmore-link' ); ?>></a>
+            <?php endif; ?>
+
         </div>
         <?php
     }
@@ -1037,12 +1060,27 @@ class Static_Carousel extends Module_Base {
 			return;
 		}
 
+        $this->add_render_attribute(
+            [
+                'readmore-link' => [
+                    'class' => [
+                        'bdt-ep-static-carousel-title-link',
+                    ],
+                    'href'   => isset($item['readmore_link']['url']) ? esc_url($item['readmore_link']['url']) : '#',
+                    'target' => $item['readmore_link']['is_external'] ? '_blank' : '_self'
+                ]
+            ], '', '', true
+        );
+
         $this->add_render_attribute('title-wrap', 'class', 'bdt-ep-static-carousel-title', true);
 
         ?>
         <?php if ( $item['title'] ) : ?>
             <<?php echo Utils::get_valid_html_tag($settings['title_tag']); ?> <?php echo $this->get_render_attribute_string('title-wrap'); ?>>
                 <?php echo wp_kses($item['title'], element_pack_allow_tags('title')); ?>
+                <?php if($settings['readmore_link_to'] == 'title') : ?>
+                <a <?php echo $this->get_render_attribute_string( 'readmore-link' ); ?>></a>
+                <?php endif; ?>
             </<?php echo Utils::get_valid_html_tag($settings['title_tag']); ?>>
         <?php endif; ?>
         <?php
@@ -1085,9 +1123,9 @@ class Static_Carousel extends Module_Base {
     public function render_readmore($item) {
         $settings = $this->get_settings_for_display();
 
-        if ( ! $settings['show_readmore'] ) {
-			return;
-		}
+        // if ( ! $settings['show_readmore'] ) {
+		// 	return;
+		// }
 
         $this->add_render_attribute(
             [
@@ -1103,7 +1141,7 @@ class Static_Carousel extends Module_Base {
         );
 
         ?>
-        <?php if (( ! empty( $item['readmore_link']['url'] )) && ( $settings['show_readmore'] )): ?>
+        <?php if (( ! empty( $item['readmore_link']['url'] )) && ( $settings['readmore_link_to'] == 'button' )): ?>
             <div class="bdt-ep-static-carousel-readmore-wrap">
                 <a <?php echo $this->get_render_attribute_string( 'readmore-link' ); ?>>
                     <?php echo esc_html($settings['readmore_text']); ?>
@@ -1129,7 +1167,21 @@ class Static_Carousel extends Module_Base {
 
         ?>
 
-        <?php foreach ( $settings['carousel_items'] as $index => $item ) : ?>
+        <?php foreach ( $settings['carousel_items'] as $index => $item ) : 
+            
+            $this->add_render_attribute(
+                [
+                    'readmore-item-link' => [
+                        'class' => [
+                            'bdt-ep-static-carousel-item-link',
+                        ],
+                        'href'   => isset($item['readmore_link']['url']) ? esc_url($item['readmore_link']['url']) : '#',
+                        'target' => $item['readmore_link']['is_external'] ? '_blank' : '_self'
+                    ]
+                ], '', '', true
+            );
+            
+            ?>
         <div <?php echo $this->get_render_attribute_string('carosuel-item'); ?>>
             <?php $this->render_image($item); ?>
             <div class="bdt-ep-static-carousel-content">
@@ -1138,6 +1190,10 @@ class Static_Carousel extends Module_Base {
                 <?php $this->render_text($item); ?>
                 <?php $this->render_readmore($item); ?>
             </div>
+
+            <?php if($settings['readmore_link_to'] == 'item') : ?>
+            <a <?php echo $this->get_render_attribute_string( 'readmore-item-link' ); ?>></a>
+            <?php endif; ?>
         </div>
         <?php endforeach;
     }
@@ -1152,7 +1208,7 @@ class Static_Carousel extends Module_Base {
 
         ?>
         <div <?php echo $this->get_render_attribute_string( 'carousel' ); ?>>
-            <div class="swiper swiper-container">
+            <div <?php echo $this->get_render_attribute_string('swiper'); ?>>
                 <div class="swiper-wrapper">
         <?php
     }

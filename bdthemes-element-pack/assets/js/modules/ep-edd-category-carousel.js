@@ -12,7 +12,7 @@
       return;
     }
 
-    var $eddCategoryCarouselContainer = $eddCategoryCarousel.find(".swiper-container"),
+    var $eddCategoryCarouselContainer = $eddCategoryCarousel.find(".swiper-carousel"),
       $settings = $eddCategoryCarousel.data("settings");
 
     const Swiper = elementorFrontend.utils.swiper;

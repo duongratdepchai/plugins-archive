@@ -192,7 +192,7 @@ SYSTEM REQUIREMENTS -->
             <div class="dup-sys-contact">
                 <?php
                 printf(
-                    "<i class='fa fa-question-circle'></i> %s <a href='https://snapcreek.com/duplicator/docs/faqs-tech/' target='_blank'>[%s]</a>",
+                    "<i class='fa fa-question-circle'></i> %s <a href='" . DUPLICATOR_PRO_TECH_FAQ_URL . "' target='_blank'>[%s]</a>",
                     DUP_PRO_U::__("For additional help please see the "),
                     DUP_PRO_U::__("online FAQs")
                 );

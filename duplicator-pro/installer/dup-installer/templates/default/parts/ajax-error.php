@@ -24,10 +24,10 @@ $recoveryLink = PrmMng::getInstance()->getValue(PrmMng::PARAM_RECOVERY_LINK);
 </div>
 <p>
     <b>Additional Resources:</b><br/>
-    &raquo; <a target='_blank' href="https://snapcreek.com/duplicator/docs/faqs-tech/?http-status=1#faq-trouble-030-q" >
+    &raquo; <a target='_blank' href="<?php echo DUPX_Constants::FAQ_URL; ?>how-to-read-fix-various-http-status-codes" >
         Check the documentation</a> for general information about each status code<br>
-    &raquo; <a target='_blank' href='https://snapcreek.com/duplicator/docs/'>Help Resources</a><br/>
-    &raquo; <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/'>Technical FAQ</a>
+    &raquo; <a target='_blank' href='<?php echo DUPX_Constants::FAQ_URL; ?>'>Help Resources</a><br/>
+    &raquo; <a target='_blank' href='https://duplicator.com/knowledge-base-article-categories/troubleshooting'>Technical FAQ</a>
 </p>
 <p class="text-center">
     <input id="ajax-error-try-again" type="button" class="default-btn" value="&laquo; Try Again" />

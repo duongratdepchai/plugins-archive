@@ -10,9 +10,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 if (!DUPX_InstallerState::isRecoveryMode()) {
     return;
 }
-$overwriteMode = (DUPX_InstallerState::getInstance()->getMode() === DUPX_InstallerState::MODE_OVR_INSTALL);
-$created       = DUPX_ArchiveConfig::getInstance()->created;
-$packageLife   = DUPX_ArchiveConfig::getInstance()->getPackageLife();
+$created     = DUPX_ArchiveConfig::getInstance()->created;
+$packageLife = DUPX_ArchiveConfig::getInstance()->getPackageLife();
 ?>
 <div class="overview-description recovery">
     <div class="details">
@@ -24,11 +23,7 @@ $packageLife   = DUPX_ArchiveConfig::getInstance()->getPackageLife();
                     <div class="overview-subtxt-1">
                         Overwrite this site from the recovery point made on <b><?php echo $created; ?></b> [<?php echo $packageLife; ?> hour(s) old].
                     </div>
-                    <?php if ($overwriteMode) { ?>
-                        <div class="overview-subtxt-2">
-                            This will clear all site data and the current package will be installed.  This process cannot be undone!
-                        </div>
-                    <?php } ?>
+                    <?php dupxTplRender('pages-parts/step1/info-tabs/overviews/overwrite-message'); ?>
                 </td>
             </tr>
             <tr>

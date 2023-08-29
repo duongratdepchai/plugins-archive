@@ -725,6 +725,16 @@ class QueryMaster {
 	public function get_current_page_num() {
 		$current = 1;
 		//phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if($this->settings['source'] === 'relation' && $this->settings['source'] === 'post_object'){
+			if(isset( $_POST['page_num'] ) && $this->settings['ae_widget_id_hidden'] === $_POST['wid']){
+				$current = $_POST['page_num'];
+				return $current;
+			}else{
+				return $current;
+			}
+		}
+
+		//phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['page_num'] ) ) {
 			//phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$current = $_POST['page_num'];

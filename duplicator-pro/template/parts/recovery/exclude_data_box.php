@@ -9,6 +9,7 @@
 
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Core\Views\TplMng;
+use Duplicator\Package\Create\BuildComponents;
 use Duplicator\Package\Recovery\RecoveryStatus;
 
 defined("ABSPATH") or die("");
@@ -67,7 +68,7 @@ global $wpdb;
         <div class="ovr-info-sub">
             <?php
                  echo sprintf(
-                     '%s <a href="https://snapcreek.com/duplicator/docs/quick-start/#install_site" target="_blank">%s</a> %s',
+                     '%s <a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'recover-a-backup" target="_blank">%s</a> %s',
                      __(
                          "The recovery point is a streamlined recovery system used to rapidly restore your site from a disaster.  A functioning WordPress "
                          . "backend is not required, only the URL provided with the recovery point is needed to restore the package. Packages that are not "
@@ -240,8 +241,37 @@ global $wpdb;
                 <?php endif; ?>
             </div>
        </div>
-    </div><br/>
+    </div>
 
+    <!--  ===============
+    PACKAGE COMPONENTS-->
+    <div class="req-data">
+        <?php if ($recoverStatus->hasRequiredComponents()) { ?>
+            <i class="far fa-check-circle fa-fw pass"></i>
+        <?php } else { ?>
+            <i class="far fa-times-circle fa-fw fail"></i>
+        <?php } ?>
+        <a class="req-title" href="javascript:void(0)" onclick="jQuery(this).parent().children('div.req-info').toggle();">
+            <?php _e("Package Components", 'duplicator-pro'); ?>
+        </a>
+        <div class="req-info">
+            <b><?php _e('Required components:', 'duplicator-pro'); ?>:</b>   
+            <ul class="dup-recovery-package-components-required">            
+            <?php foreach (RecoveryStatus::COMPONENTS_REQUIRED as $component) { ?>
+                <li>
+                    <span class="label"><?php echo esc_html(BuildComponents::getLabel($component)); ?></span>
+                    <span class="value">
+                            <?php if ($recoverStatus->hasComponent($component)) { ?>
+                                <i class="fas fa-check-circle green"></i> <?php  _e('included', 'duplicator-pro'); ?>
+                            <?php } else { ?>
+                                <i class="fas fa-times-circle maroon"></i> <?php  _e('excluded', 'duplicator-pro'); ?>
+                            <?php } ?>
+                    </span>
+                </li>
+            <?php } ?>
+            </ul>
+        </div>
+    </div><br/>
 
     <div class="title-area">
         <div class="title">

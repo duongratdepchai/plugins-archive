@@ -6,7 +6,7 @@ use Elementor\Controls_Manager;
 use ElementPack\Base\Element_Pack_Module_Base;
 use Elementor\Modules\DynamicTags\Module as TagsModule;
 
-if ( !defined('ABSPATH') ) {
+if (!defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 
@@ -132,7 +132,7 @@ class Module extends Element_Pack_Module_Base {
         $widget->add_control(
             'ep_sound_effects_hosted_url',
             [
-                'label'              => __('Local Audio', 'elementor'),
+                'label'              => esc_html__('Local Audio', 'bdthemes-element-pack'),
                 'type'               => Controls_Manager::MEDIA,
                 'dynamic'            => [
                     'active'     => true,
@@ -153,10 +153,32 @@ class Module extends Element_Pack_Module_Base {
                 ]
             ]
         );
+
+        $widget->add_control(
+            'ep_sound_effects_hosted_url_mp3',
+            [
+                'label'              => esc_html__('Local Audio MP3 (Fallback)', 'bdthemes-element-pack') . BDTEP_NC,
+                'type'               => Controls_Manager::MEDIA,
+                'dynamic'            => [
+                    'active'     => true,
+                    'categories' => [
+                        TagsModule::POST_META_CATEGORY,
+                        TagsModule::MEDIA_CATEGORY,
+                    ],
+                ],
+                'media_type'         => 'audio',
+                'frontend_available' => true,
+                'description'        => 'Please upload MP3 file for fallback.',
+                'condition'          => [
+                    'ep_sound_effects_active' => 'yes',
+                    'ep_sound_effects_source' => 'hosted_url'
+                ]
+            ]
+        );
     }
 
     public function should_script_enqueue($widget) {
-        if ( 'yes' === $widget->get_settings_for_display('ep_sound_effects_active') ) {
+        if ('yes' === $widget->get_settings_for_display('ep_sound_effects_active')) {
             wp_enqueue_script('ep-sound-effects');
         }
     }

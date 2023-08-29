@@ -19,7 +19,7 @@ HELP FORM -->
     <?php if ($archiveConfig->brand->isDefault) : ?>
         <div class="help-online"><br/>
             <i class="far fa-file-alt fa-sm"></i> For complete help visit <br/>
-            <a href="https://snapcreek.com/support/docs/" target="_blank">Duplicator Migration and Backup Online Help</a> <br/>
+            <a href="<?php echo DUPX_Constants::FAQ_URL; ?>" target="_blank">Duplicator Migration and Backup Online Help</a> <br/>
             <small class="hlp-lite-hide">The <sup class="hlp-pro-lbl">Pro</sup> tag indicates the feature is only available in Duplicator Pro</small>
         </div>
     <?php endif; ?>

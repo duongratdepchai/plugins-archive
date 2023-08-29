@@ -706,12 +706,12 @@ class SettingsPageController extends AbstractMenuPageController
                 echo '<br/>';
                 printf(
                     DUP_PRO_U::__("Shell Zip is %s recommended %s when available. "),
-                    "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-030-q' target='_blank'>",
+                    "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-work-with-the-different-zip-engines' target='_blank'>",
                     '</a> '
                 );
                 printf(
                     DUP_PRO_U::__("For a list of supported hosting providers %s click here %s."),
-                    "<a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>",
+                    "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "what-host-providers-are-recommended-for-duplicator/' target='_blank'>",
                     '</a> '
                 );
                 echo '</i>';
@@ -805,7 +805,7 @@ class SettingsPageController extends AbstractMenuPageController
                     echo ' ';
                     printf(
                         DUP_PRO_U::__("Please check this %s for possible solution."),
-                        "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?180117075128#faq-package-005-q' target='_blank'>" .
+                        "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-resolve-dependency-checks' target='_blank'>" .
                         DUP_PRO_U::__("FAQ page") .
                         "</a>."
                     );
@@ -819,7 +819,7 @@ class SettingsPageController extends AbstractMenuPageController
                     echo ' ';
                     printf(
                         DUP_PRO_U::esc_html__("Please check this %s for possible solution."),
-                        "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?180117075128#faq-package-005-q' target='_blank'>" .
+                        "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-resolve-dependency-checks' target='_blank'>" .
                         DUP_PRO_U::esc_html__("FAQ page") .
                         "</a>."
                     );
@@ -839,7 +839,8 @@ class SettingsPageController extends AbstractMenuPageController
                     "If the problem persist contact your server admin for the correct path. " .
                     "For a list of approved providers that support mysqldump "
                 );
-                echo "<a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>" . DUP_PRO_U::esc_html__("click here") . "</a>.";
+                echo "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "what-host-providers-are-recommended-for-duplicator/' target='_blank'>"
+                . DUP_PRO_U::esc_html__("click here") . "</a>.";
             } else {
                 DUP_PRO_U::esc_html_e(
                     'The mysqldump program was not found at its default location. ' .
@@ -858,7 +859,8 @@ class SettingsPageController extends AbstractMenuPageController
                 "If the problem persist contact your server admin for the correct path. " .
                 "For a list of approved providers that support mysqldump "
             );
-            echo "<a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>" . DUP_PRO_U::__("click here") . "</a>.";
+            echo "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "what-host-providers-are-recommended-for-duplicator/' target='_blank'>"
+            . DUP_PRO_U::__("click here") . "</a>.";
         }
     }
 }

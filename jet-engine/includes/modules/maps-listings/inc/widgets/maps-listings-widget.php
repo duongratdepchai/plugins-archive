@@ -618,6 +618,19 @@ class Maps_Listings_Widget extends \Elementor\Jet_Listing_Grid_Widget {
 
 		$this->add_provider_controls( 'section_popup_settings' );
 
+		$this->add_control(
+			'popup_open_on',
+			array(
+				'label'   => esc_html__( 'Open On', 'jet-engine' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'click',
+				'options' => array(
+					'click' => esc_html__( 'Click', 'jet-engine' ),
+					'hover' => esc_html__( 'Hover', 'jet-engine' ),
+				),
+			)
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(

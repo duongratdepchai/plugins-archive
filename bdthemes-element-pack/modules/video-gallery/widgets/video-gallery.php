@@ -17,36 +17,29 @@ use Elementor\Modules\DynamicTags\Module as TagsModule;
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-class Video_Gallery extends Module_Base
-{
+class Video_Gallery extends Module_Base {
 
-	public function get_name()
-	{
+	public function get_name() {
 		return 'bdt-video-gallery';
 	}
 
-	public function get_title()
-	{
+	public function get_title() {
 		return BDTEP . esc_html__('Video Gallery', 'bdthemes-element-pack');
 	}
 
-	public function get_icon()
-	{
+	public function get_icon() {
 		return 'bdt-wi-video-gallery';
 	}
 
-	public function get_categories()
-	{
+	public function get_categories() {
 		return ['element-pack'];
 	}
 
-	public function get_keywords()
-	{
+	public function get_keywords() {
 		return ['video', 'gallery'];
 	}
 
-	public function get_style_depends()
-	{
+	public function get_style_depends() {
 		if ($this->ep_is_edit_mode()) {
 			return ['ep-styles'];
 		} else {
@@ -55,21 +48,19 @@ class Video_Gallery extends Module_Base
 	}
 
 	public function get_script_depends() {
-        if ($this->ep_is_edit_mode()) {
-            return ['rvslider', 'ep-scripts'];
-        } else {
+		if ($this->ep_is_edit_mode()) {
+			return ['rvslider', 'ep-scripts'];
+		} else {
 			return ['rvslider', 'ep-video-gallery'];
-        }
+		}
 	}
 
 
-	public function get_custom_help_url()
-	{
+	public function get_custom_help_url() {
 		return 'https://youtu.be/wbkou6p7l3s';
 	}
 
-	public function register_controls()
-	{
+	public function register_controls() {
 
 		$this->start_controls_section(
 			'section_custom_gallery_content',
@@ -1156,8 +1147,7 @@ class Video_Gallery extends Module_Base
 		$this->end_controls_section();
 	}
 
-	public function render()
-	{
+	public function render() {
 		$settings = $this->get_settings_for_display();
 
 		$this->render_header();
@@ -1253,8 +1243,7 @@ class Video_Gallery extends Module_Base
 			$this->render_footer();
 		}
 
-		public function render_header()
-		{
+		public function render_header() {
 			$settings = $this->get_settings_for_display();
 
 			$this->add_render_attribute('video-gallery', 'class', ['bdt-video-gallery', 'rvs-container', 'rvs-flat-circle-play']);
@@ -1282,8 +1271,7 @@ class Video_Gallery extends Module_Base
 						<?php
 					}
 
-					public function render_footer()
-					{
+					public function render_footer() {
 						?>
 						</div>
 						<a class="rvs-nav-next"></a>

@@ -16,7 +16,7 @@ class DUPX_Validation_test_dbonly_iswordpress extends DUPX_Validation_abstract_i
 {
     protected function runTest()
     {
-        if (!DUPX_ArchiveConfig::getInstance()->exportOnlyDB) {
+        if (!DUPX_ArchiveConfig::getInstance()->isDBOnly()) {
             return self::LV_SKIP;
         }
         if (DUPX_Server::isWordPress()) {

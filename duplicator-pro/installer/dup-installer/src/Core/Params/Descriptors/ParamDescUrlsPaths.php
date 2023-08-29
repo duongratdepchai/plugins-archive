@@ -98,7 +98,7 @@ final class ParamDescUrlsPaths implements DescriptorInterface
                         return ParamForm::STATUS_ENABLED;
                     }
                 },
-                'wrapperClasses' => array('revalidate-on-change', 'cant-be-empty'),
+                'wrapperClasses' => array('revalidate-on-change', 'cant-be-empty', 'requires-db-hide'),
                 'subNote'        => function (ParamForm $param) {
                     $archive_config = \DUPX_ArchiveConfig::getInstance();
                     $oldHomeUrl     = rtrim($archive_config->getRealValue('homeUrl'), '/');
@@ -173,7 +173,7 @@ final class ParamDescUrlsPaths implements DescriptorInterface
                     }
                 },
                 'subNote'        => 'Old value: <b>' . \DUPX_U::esc_html($oldMainPath) . '</b>',
-                'wrapperClasses' => array('revalidate-on-change', 'cant-be-empty')
+                'wrapperClasses' => array('revalidate-on-change', 'cant-be-empty', 'requires-db-hide'),
             )
         );
 

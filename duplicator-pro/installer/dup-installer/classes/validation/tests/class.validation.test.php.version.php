@@ -17,7 +17,7 @@ class DUPX_Validation_test_php_version extends DUPX_Validation_abstract_item
     protected function runTest()
     {
         $archiveConfig = DUPX_ArchiveConfig::getInstance();
-        if ($archiveConfig->exportOnlyDB) {
+        if ($archiveConfig->isDBOnly()) {
             return self::LV_GOOD;
         }
 

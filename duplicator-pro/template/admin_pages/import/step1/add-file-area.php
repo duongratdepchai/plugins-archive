@@ -118,7 +118,7 @@ DRAG/DROP AREA -->
                 <small>
                     <?php
                         echo sprintf(
-                            '%s <a href=" https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-035-q" target="_blank">%s</a>.',
+                            '%s <a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-handle-import-install-upload-launch-issues" target="_blank">%s</a>.',
                             __('This feature is in beta, for additional help visit the', 'duplicator-pro'),
                             __('online faq', 'duplicator-pro')
                         );

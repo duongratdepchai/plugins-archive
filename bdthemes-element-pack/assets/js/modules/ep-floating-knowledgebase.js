@@ -111,10 +111,14 @@
              * @param {Object} data - contains json data
              */
             function renderPopup(data) {
+
+                
+
                 var $outerWrap = $("<div>", {
                     id: "floatingHelpCenterPopup",
                     class: "floating-help-center__popup"
                 }).css('zIndex', helpCenterConfig.popupZindex);;
+
                 var $searchOuter = $("<div>", {
                     class: "searchbox"
                 });

@@ -13,6 +13,7 @@ use DUP_PRO_Storage_Entity;
 use DUP_PRO_Storage_Types;
 use DUP_PRO_U;
 use Duplicator\Libs\Snap\SnapWP;
+use Duplicator\Package\Create\BuildComponents;
 
 /**
  * Class RecoveryStatus
@@ -26,11 +27,19 @@ class RecoveryStatus
     const TYPE_SCHEDULE = 'SCHEDULE';
     const TYPE_TEMPLATE = 'TEMPLATE';
 
+    const COMPONENTS_REQUIRED = [
+        BuildComponents::COMP_DB,
+        BuildComponents::COMP_CORE,
+        BuildComponents::COMP_PLUGINS,
+        BuildComponents::COMP_THEMES,
+        BuildComponents::COMP_UPLOADS,
+    ];
+
     /** @var DUP_PRO_Package|DUP_PRO_Package_Template_Entity|DUP_PRO_Schedule_Entity */
     protected $object = null;
     /** @var string */
     protected $objectType = '';
-    /** @var ?array{dbonly: bool, filterDirs: string[], filterTables: string[]} */
+    /** @var ?array{dbonly: bool, filterDirs: string[], filterTables: string[], components: string[]} */
     protected $filteredData = null;
 
     /** @var DUP_PRO_Package_Template_Entity|null */
@@ -123,6 +132,7 @@ class RecoveryStatus
 
         return (
             $this->isLocalStorageEnabled() &&
+            $this->hasRequiredComponents() &&
             $this->isWordPressCoreComplete() &&
             $this->isDatabaseComplete()
         );
@@ -165,6 +175,28 @@ class RecoveryStatus
     }
 
     /**
+     * Returns true of the package components are set to their default value
+     *
+     * @return bool
+     */
+    public function hasRequiredComponents()
+    {
+        return array_intersect(self::COMPONENTS_REQUIRED, $this->filteredData['components']) === self::COMPONENTS_REQUIRED;
+    }
+
+    /**
+     * Returns pacjage has component
+     *
+     * @param string $component component name
+     *
+     * @return bool
+     */
+    public function hasComponent($component)
+    {
+        return in_array($component, $this->filteredData['components']);
+    }
+
+    /**
      * Is the object type filtering out any of the WordPress core directories
      *
      * @return bool     Returns true if the object type has all the proper WordPress core folders
@@ -190,7 +222,7 @@ class RecoveryStatus
     /**
      * Return filtered datat from entity
      *
-     * @return array{dbonly: bool, filterDirs: string[], filterTables: string[]}
+     * @return array{dbonly: bool, filterDirs: string[], filterTables: string[], components: string[]}
      */
     public function getFilteredData()
     {
@@ -198,14 +230,16 @@ class RecoveryStatus
             return $this->filteredData;
         }
         $this->filteredData = array(
-            'dbonly'       => false,
-            'filterDirs'   => array(),
-            'filterTables' => array()
+            'dbonly'             => false,
+            'filterDirs'         => array(),
+            'filterTables'       => array(),
+            'components' => array()
         );
 
         switch ($this->objectType) {
             case self::TYPE_PACKAGE:
-                $this->filteredData['dbonly'] = filter_var($this->object->Archive->ExportOnlyDB, FILTER_VALIDATE_BOOLEAN);
+                $this->filteredData['dbonly']     = $this->object->isDBOnly();
+                $this->filteredData['components'] = $this->object->components;
 
                 if (filter_var($this->object->Archive->FilterOn, FILTER_VALIDATE_BOOLEAN) && strlen($this->object->Archive->FilterDirs) > 0) {
                     $filterDirs                       = explode(';', $this->object->Archive->FilterDirs);
@@ -221,7 +255,8 @@ class RecoveryStatus
                 break;
             case self::TYPE_SCHEDULE:
             case self::TYPE_TEMPLATE:
-                $this->filteredData['dbonly'] = filter_var($this->activeTemplate->archive_export_onlydb, FILTER_VALIDATE_BOOLEAN);
+                $this->filteredData['dbonly']     = BuildComponents::isDBOnly($this->activeTemplate->components);
+                $this->filteredData['components'] = $this->activeTemplate->components;
 
                 if (filter_var($this->activeTemplate->archive_filter_on, FILTER_VALIDATE_BOOLEAN) && strlen($this->activeTemplate->archive_filter_dirs) > 0) {
                     $filterDirs                       = explode(';', $this->activeTemplate->archive_filter_dirs);

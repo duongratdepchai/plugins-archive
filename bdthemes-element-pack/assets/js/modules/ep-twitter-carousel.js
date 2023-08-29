@@ -16,7 +16,7 @@
 
         //console.log($twitterCarousel);
 
-		var $twitterCarouselContainer = $twitterCarousel.find('.swiper-container'),
+		var $twitterCarouselContainer = $twitterCarousel.find('.swiper-carousel'),
 			$settings 		 = $twitterCarousel.data('settings');
 
 		// Access swiper class

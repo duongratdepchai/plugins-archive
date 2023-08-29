@@ -149,7 +149,7 @@ class DUP_PRO_ShellZip
             }
 
             //DB ONLY
-            if ($archive->ExportOnlyDB) {
+            if ($package->isDBOnly()) {
                 $contains_root = true;
             }
 
@@ -193,7 +193,7 @@ class DUP_PRO_ShellZip
                         $system_global->addTextFix($error_text, $fix_text);
                     } elseif (DUP_PRO_STR::contains($stderr, 'such file or')) {
                         $fix_text = sprintf(
-                            "%s <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-160-q' target='_blank'>%s</a>",
+                            "%s <a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-resolve-zip-format-related-build-issues' target='_blank'>%s</a>",
                             DUP_PRO_U::__('See FAQ:'),
                             DUP_PRO_U::__('How to resolve "zip warning: No such file or directory"?')
                         );

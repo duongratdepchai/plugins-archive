@@ -43,8 +43,8 @@ class GlobalsProviderUC{
 	public static $isUnderNoWidgetsToDisplay = false;
 	
 	
-	
 	public static $isInsideEditor = false;	//tells that it's inside editor
+	public static $isInsideEditorBackend = false;	//tells that it's inside editor
 	
 	
 	public static $arrTestTermIDs = null;	//test term id's for render taxonomies under ajax

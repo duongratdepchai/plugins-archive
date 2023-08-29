@@ -248,6 +248,7 @@ abstract class RuleBase {
 	}
 
 	public function rule_log( $left_value, $right_value, $operator, $result ) {
+		return;
 		$log_string = $this->get_name() . ' -> ';
 
 		if ( is_array( $left_value ) ) {

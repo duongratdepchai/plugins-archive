@@ -28,6 +28,10 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				'columns'                  => 3,
 				'columns_tablet'           => 3,
 				'columns_mobile'           => 3,
+				'column_min_width'         => 240,
+				'column_min_width_tablet'  => 240,
+				'column_min_width_mobile'  => 240,
+				'inline_columns_css'       => false,
 				'is_archive_template'      => '',
 				'post_status'              => array( 'publish' ),
 				'use_random_posts_num'     => '',
@@ -1270,6 +1274,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 			$mobile_col  = esc_attr( $columns['mobile'] );
 			$base_col    = 'grid-col-';
 
+			$container_attrs   = array();
 			$container_classes = array(
 				$base_class . '__items',
 				$base_col . 'desk-' . $desktop_col,
@@ -1278,10 +1283,37 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				$base_class . '--' . absint( $settings['lisitng_id'] ),
 			);
 
+			if ( ! empty( $settings['inline_columns_css'] ) ) {
+
+				$inline_css = '';
+
+				$settings['column_min_width_tablet'] = ! empty( $settings['column_min_width_tablet'] ) ? $settings['column_min_width_tablet'] : $settings['column_min_width'];
+				$settings['column_min_width_mobile'] = ! empty( $settings['column_min_width_mobile'] ) ? $settings['column_min_width_mobile'] : $settings['column_min_width_tablet'];
+
+				if ( 'auto' === $desktop_col ) {
+					$container_classes[] = 'inline-desk-css';
+					$inline_css .= '--jet-column-min-width: ' . absint( $settings['column_min_width'] ) . 'px;';
+				}
+
+				if ( 'auto' === $tablet_col ) {
+					$container_classes[] = 'inline-tablet-css';
+					$inline_css .= '--jet-column-tablet-min-width: ' . absint( $settings['column_min_width_tablet'] ) . 'px;';
+				}
+				
+				if ( 'auto' === $mobile_col ) {
+					$container_classes[] = 'inline-mobile-css';
+					$inline_css .= '--jet-column-mobile-min-width: ' . absint( $settings['column_min_width_mobile'] ) . 'px;';
+				}
+
+				if ( $inline_css ) {
+					$container_attrs[] = 'style="' . $inline_css . '"';
+				}
+
+			}
+
 			$this->enqueue_assets( $settings );
 
 			$carousel_enabled = $this->is_carousel_enabled( $settings );
-			$container_attrs  = array();
 
 			if ( $this->is_masonry_enabled( $settings ) ) {
 				$container_classes[] = $base_class . '__masonry';
@@ -1325,6 +1357,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 
 					foreach ( $settings['scroll_slider_on'] as $device ) {
 						$scroll_slider_classes[] = sprintf( '%1$s__scroll-slider-%2$s', $base_class, esc_attr( $device ) );
+						$container_classes[] = sprintf( '%1$s__scroll-slider-wrap-%2$s', $base_class, esc_attr( $device ) );
 					}
 
 					printf( '<div class="%s">', implode( ' ', $scroll_slider_classes ) );
@@ -1549,6 +1582,15 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 		}
 
 		public function is_masonry_enabled( $settings ) {
+
+			$columns = $this->get_columns_settings( $settings );
+
+			if ( 'auto' === $columns['desktop']
+				|| 'auto' === $columns['tablet']
+				|| 'auto' === $columns['mobile'] ) {
+				return false;
+			}
+
 			$masonry_enabled  = ! empty( $settings['is_masonry'] ) ? $settings['is_masonry'] : false;
 			return filter_var( $masonry_enabled, FILTER_VALIDATE_BOOLEAN );
 		}
@@ -1686,8 +1728,7 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				$fade = true;
 			}
 
-			$options = apply_filters( 'jet-engine/listing/grid/slider-options', array(
-				'slidesToShow'   => $this->get_columns_settings( $settings ),
+			$options = array(
 				'autoplaySpeed'  => absint( $settings['autoplay_speed'] ),
 				'autoplay'       => filter_var( $settings['autoplay'], FILTER_VALIDATE_BOOLEAN ),
 				'infinite'       => filter_var( $settings['infinite'], FILTER_VALIDATE_BOOLEAN ),
@@ -1701,7 +1742,20 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 				'rtl'            => is_rtl(),
 				'itemsCount'     => absint( $settings['items_count'] ),
 				'fade'           => $fade,
-			), $settings );
+			);
+
+			$columns = $this->get_columns_settings( $settings );
+
+			if ( 'auto' === $columns['desktop']
+				|| 'auto' === $columns['tablet']
+				|| 'auto' === $columns['mobile'] ) {
+				$options['slidesToShow'] = 1;
+				$options['variableWidth'] = true;
+			} else {
+				$options['slidesToShow'] = $columns;
+			}
+
+			$options = apply_filters( 'jet-engine/listing/grid/slider-options', $options, $settings );
 
 			return $options;
 
@@ -1738,9 +1792,9 @@ if ( ! class_exists( 'Jet_Engine_Render_Listing_Grid' ) ) {
 			$mobile_col  = ! empty( $settings['columns_mobile'] ) ? absint( $settings['columns_mobile'] ) : $tablet_col;
 
 			return apply_filters( 'jet-engine/listing/grid/columns', array(
-				'desktop' => $desktop_col,
-				'tablet'  => $tablet_col,
-				'mobile'  => $mobile_col,
+				'desktop' => 0 === $desktop_col ? 'auto' : $desktop_col,
+				'tablet'  => 0 === $tablet_col ? 'auto' : $tablet_col,
+				'mobile'  => 0 === $mobile_col ? 'auto' : $mobile_col,
 			), $settings );
 		}
 

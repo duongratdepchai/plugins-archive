@@ -180,7 +180,8 @@ function returnCurrencySymbol(currency = null) {
  * Start custom calculator widget script
  */
 
-;(function ($, elementor) {
+;
+(function ($, elementor) {
     'use strict';
     var widgetCCalculator = function ($scope, $) {
         var $customCalculator = $scope.find('.bdt-ep-advanced-calculator'),
@@ -283,6 +284,14 @@ function returnCurrencySymbol(currency = null) {
                                 value: getIsRealValue,
                             });
                         }
+
+                        if (Number.isInteger(getIsRealValue) === false) {
+                            onlyValueArray.push({
+                                variable: "f" + variableIndex,
+                                value: getIsRealValue,
+                            });
+                        }
+
                         data.push({
                             type: $(item).prop("type"),
                             index: index,
@@ -307,11 +316,13 @@ function returnCurrencySymbol(currency = null) {
         function getValueIfInteger(value) {
             if (value === undefined) return null;
             // first convert this value to integer
-            let valueConvert = parseInt(value);
+            // let valueConvert = parseInt(value);
+            let valueConvert = Number(value);
             // and then check if this item is integer or not. if integer then return that value otherwise return false
-            return Number.isInteger(valueConvert) === true ? valueConvert : value;
+            return Number.isInteger(valueConvert) === true ? valueConvert : parseFloat(value);
             //return Number.isInteger(valueConvert) === true ? valueConvert : null;
         }
+
         /**
          * get the data settings from targetted element
          */
@@ -368,9 +379,6 @@ function returnCurrencySymbol(currency = null) {
                 procesingFormDataWithFormulaJs();
             });
         }
-
-
-        // end main js
 
     };
 
@@ -990,6 +998,7 @@ function returnCurrencySymbol(currency = null) {
                     });
 
                     bdtUIkit.util.on($this, 'hidden', function () {
+
                         if(editMode){
                             return;
                         }
@@ -2037,7 +2046,7 @@ $(window).on('elementor/frontend/init', function () {
 			return;
 		}
 
-		var $brandCarouselContainer = $brandCarousel.find('.swiper-container'),
+		var $brandCarouselContainer = $brandCarousel.find('.swiper-carousel'),
 			$settings = $brandCarousel.data('settings');
 
 		const Swiper = elementorFrontend.utils.swiper;
@@ -2137,7 +2146,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-        var $carouselContainer = $carousel.find('.swiper-container'),
+        var $carouselContainer = $carousel.find('.swiper-carousel'),
             $settings = $carousel.data('settings');
 
         const Swiper = elementorFrontend.utils.swiper;
@@ -3549,7 +3558,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-        var $carouselContainer = $carousel.find('.swiper-container'),
+        var $carouselContainer = $carousel.find('.swiper-carousel'),
 			$settings 		 = $carousel.data('settings');
 
 		const Swiper = elementorFrontend.utils.swiper;
@@ -3783,7 +3792,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-        var $carouselContainer = $carousel.find('.swiper-container'),
+        var $carouselContainer = $carousel.find('.swiper-carousel'),
             $settings = $carousel.data('settings');
 
         const Swiper = elementorFrontend.utils.swiper;
@@ -3903,7 +3912,7 @@ $(window).on('elementor/frontend/init', function () {
       return;
     }
 
-    var $ProductReviewCarouselContainer = $ProductReviewCarousel.find(".swiper-container"),
+    var $ProductReviewCarouselContainer = $ProductReviewCarousel.find(".swiper-carousel"),
       $settings = $ProductReviewCarousel.data("settings");
 
     const Swiper = elementorFrontend.utils.swiper;
@@ -3949,7 +3958,7 @@ $(window).on('elementor/frontend/init', function () {
       return;
     }
 
-    var $eddCategoryCarouselContainer = $eddCategoryCarousel.find(".swiper-container"),
+    var $eddCategoryCarouselContainer = $eddCategoryCarousel.find(".swiper-carousel"),
       $settings = $eddCategoryCarousel.data("settings");
 
     const Swiper = elementorFrontend.utils.swiper;
@@ -3995,7 +4004,7 @@ $(window).on('elementor/frontend/init', function () {
       return;
     }
 
-    var $eddProductCarouselContainer = $eddProductCarousel.find(".swiper-container"),
+    var $eddProductCarouselContainer = $eddProductCarousel.find(".swiper-carousel"),
       $settings = $eddProductCarousel.data("settings");
 
     const Swiper = elementorFrontend.utils.swiper;
@@ -4183,7 +4192,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-        var $eventCarouselContainer = $eventCarousel.find('.swiper-container'),
+        var $eventCarouselContainer = $eventCarousel.find('.swiper-carousel'),
             $settings = $eventCarousel.data('settings');
         const Swiper = elementorFrontend.utils.swiper;
         initSwiper();
@@ -4231,7 +4240,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-        var $sliderContainer = $slider.find('.swiper-container'),
+        var $sliderContainer = $slider.find('.swiper-carousel'),
             $settings = $slider.data('settings');
 
         const Swiper = elementorFrontend.utils.swiper;
@@ -6078,9 +6087,9 @@ var widgetVideoAccordion = function ($scope, $) {
             return;
         }
 
-        var $sliderContainer = $slider.find('.swiper-container'),
+        var $sliderContainer = $slider.find('.swiper-carousel'),
             $settings = $slider.data('settings'),
-            $swiperId = $($settings.id).find('.swiper-container');
+            $swiperId = $($settings.id).find('.swiper-carousel');
 
             const Swiper = elementorFrontend.utils.swiper;
             initSwiper();
@@ -8430,7 +8439,7 @@ jQuery(window).on('elementor/frontend/init', function() {
 			return;
 		}
 
-		var $sliderContainer = $slider.find('.swiper-container'),
+		var $sliderContainer = $slider.find('.swiper-carousel'),
 			$settings = $slider.data('settings'),
 			$widgetSettings = $slider.data('widget-settings');
 
@@ -8836,7 +8845,7 @@ jQuery(window).on('elementor/frontend/init', function() {
             return;
         }
 
-        var $carouselContainer = $carousel.find('.swiper-container'),
+        var $carouselContainer = $carousel.find('.swiper-carousel'),
             $settings = $carousel.data('settings');
 
         const Swiper = elementorFrontend.utils.swiper;
@@ -9508,7 +9517,7 @@ jQuery(window).on('elementor/frontend/init', function() {
 			return;
 		}
 
-		var $reviewCardCarouselContainer = $reviewCardCarousel.find('.swiper-container'),
+		var $reviewCardCarouselContainer = $reviewCardCarousel.find('.swiper-carousel'),
 			$settings = $reviewCardCarousel.data('settings');
 
 		const Swiper = elementorFrontend.utils.swiper;
@@ -9817,7 +9826,7 @@ jQuery(window).on('elementor/frontend/init', function() {
             return;
         }
 
-        var $sliderContainer = $slider.find('.swiper-container'),
+        var $sliderContainer = $slider.find('.swiper-carousel'),
 			$settings 		 = $slider.data('settings');
 
 		// Access swiper class
@@ -9950,7 +9959,7 @@ jQuery(window).on('elementor/frontend/init', function() {
                     $element = '',
                     $widgetId = 'ep-sound-effects' + this.getID(),
                     $widgetIdSelect = '#' + $widgetId,
-                    $soundAudioSource;
+                    $soundAudioSource, $soundAudioSourceMp3;
 
                 // selector creating...
                 $(this.findElement('.elementor-widget-container').get(0)).attr('id', $widgetId);
@@ -9974,6 +9983,7 @@ jQuery(window).on('elementor/frontend/init', function() {
                 } else {
                     if (this.settings('hosted_url.url')) {
                         $soundAudioSource = this.settings('hosted_url.url').replace(/\.[^/.]+$/, "");
+                        $soundAudioSourceMp3 = this.settings('hosted_url_mp3.url').replace(/\.[^/.]+$/, "");
                     }
                 }
 
@@ -9981,16 +9991,9 @@ jQuery(window).on('elementor/frontend/init', function() {
                     return;
                 }
 
-
-                // var console = window.console || {};
-                // console.log = console.log || function () {};
-                // console.error = console.error || console.log;
-
                 if (!document.createElement('audio').canPlayType) {
                     console.error('Oh man 😩! \nYour browser doesn\'t support audio awesomeness.');
                     return function () {}; // return an empty function if `loudLinks` is called again.
-                } else {
-                    // console.log('Audio works like a charm 👍');
                 }
 
                 // Create audio element and make it awesome
@@ -10023,7 +10026,10 @@ jQuery(window).on('elementor/frontend/init', function() {
                         return;
                     }
 
-                    soundMp3Link = audioSrc + '.mp3';
+                    if ($soundAudioSourceMp3) {
+                        soundMp3Link = $soundAudioSourceMp3 + '.mp3';
+                    }
+
                     soundOggLink = audioSrc + '.ogg';
 
                     if (!eventsSet) {
@@ -10038,7 +10044,9 @@ jQuery(window).on('elementor/frontend/init', function() {
 
                     // Only reset `src` and reload if source is different
                     if (soundMp3Link || soundOggLink) {
-                        // mp3Source.setAttribute('src', soundMp3Link);
+                        if ($soundAudioSourceMp3) {
+                            mp3Source.setAttribute('src', soundMp3Link);
+                        }
                         oggSource.setAttribute('src', soundOggLink);
 
                         audioPlayer.load();
@@ -10067,11 +10075,15 @@ jQuery(window).on('elementor/frontend/init', function() {
                         jQuery($element).on('mouseleave', function () {
                             stopAudio();
                         });
-                        jQuery($element).on('touchmove', function () {
-                            stopAudio();
-                        });
+                        // jQuery($element).on('touchmove', function () {
+                        //     stopAudio();
+                        // });
                         jQuery($element).on('click', function () {
                             stopAudio();
+                        });
+
+                        jQuery($element).on('touchstart', function () {
+                            playAudio();
                         });
 
                     }
@@ -10163,7 +10175,7 @@ jQuery(window).on('elementor/frontend/init', function() {
             return;
         }
 
-		var $ProductCarouselContainer = $ProductCarousel.find('.swiper-container'),
+		var $ProductCarouselContainer = $ProductCarousel.find('.swiper-carousel'),
 			$settings 		 = $ProductCarousel.data('settings');
 
 		// Access swiper class
@@ -10213,7 +10225,7 @@ jQuery(window).on('elementor/frontend/init', function() {
             return;
         }
 
-		var $StaticCarouselContainer = $StaticCarousel.find('.swiper-container'),
+		var $StaticCarouselContainer = $StaticCarousel.find('.swiper-carousel'),
 			$settings 		 = $StaticCarousel.data('settings');
 
 		// Access swiper class
@@ -11175,7 +11187,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-		var $tCarouselContainer = $tCarousel.find('.swiper-container'),
+		var $tCarouselContainer = $tCarousel.find('.swiper-carousel'),
 			$settings 		 = $tCarousel.data('settings');
 
 		// Access swiper class
@@ -11227,7 +11239,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-        var $carouselContainer = $carousel.find('.swiper-container'),
+        var $carouselContainer = $carousel.find('.swiper-carousel'),
 			$settings 		 = $carousel.data('settings');
 
 		// Access swiper class
@@ -12016,7 +12028,7 @@ $(window).on('elementor/frontend/init', function () {
 			return;
 		}
 
-		var $tutorCarouselContainer = $tutorCarousel.find('.swiper-container'),
+		var $tutorCarouselContainer = $tutorCarousel.find('.swiper-carousel'),
 			$settings = $tutorCarousel.data('settings');
 
 		// Access swiper class
@@ -12061,7 +12073,7 @@ $(window).on('elementor/frontend/init', function () {
       return;
     }
 
-    var $eddProductCarouselContainer = $eddProductCarousel.find(".swiper-container"),
+    var $eddProductCarouselContainer = $eddProductCarousel.find(".swiper-carousel"),
       $settings = $eddProductCarousel.data("settings");
 
     const Swiper = elementorFrontend.utils.swiper;
@@ -12111,7 +12123,7 @@ $(window).on('elementor/frontend/init', function () {
 
         //console.log($twitterCarousel);
 
-		var $twitterCarouselContainer = $twitterCarousel.find('.swiper-container'),
+		var $twitterCarouselContainer = $twitterCarousel.find('.swiper-carousel'),
 			$settings 		 = $twitterCarousel.data('settings');
 
 		// Access swiper class
@@ -12160,7 +12172,7 @@ $(window).on('elementor/frontend/init', function () {
             return;
         }
 
-		var $twitterSliderContainer = $twitterSlider.find('.swiper-container'),
+		var $twitterSliderContainer = $twitterSlider.find('.swiper-carousel'),
 			$settings 		 = $twitterSlider.data('settings');
 
 		// Access swiper class
@@ -12742,35 +12754,33 @@ $(window).on('elementor/frontend/init', function () {
 /**
  * Start video gallery widget script
  */
- 
-( function( $, elementor ) {
+
+(function ($, elementor) {
 
 	'use strict';
 
-	var widgetVideoGallery = function( $scope, $ ) {
+	var widgetVideoGallery = function ($scope, $) {
 
-		var $video_gallery = $scope.find( '.rvs-container' );
-				
-        if ( ! $video_gallery.length ) {
-            return;
-        }
+		var $video_gallery = $scope.find('.rvs-container');
 
-        $($video_gallery).rvslider();
+		if (!$video_gallery.length) {
+			return;
+		}
+
+		$($video_gallery).rvslider();
 
 	};
 
 
-	jQuery(window).on('elementor/frontend/init', function() {
-		elementorFrontend.hooks.addAction( 'frontend/element_ready/bdt-video-gallery.default', widgetVideoGallery );
+	jQuery(window).on('elementor/frontend/init', function () {
+		elementorFrontend.hooks.addAction('frontend/element_ready/bdt-video-gallery.default', widgetVideoGallery);
 	});
 
-}( jQuery, window.elementorFrontend ) );
+}(jQuery, window.elementorFrontend));
 
 /**
  * End video gallery widget script
  */
-
-
 /**
  * Start weather widget script
  */
@@ -12848,14 +12858,11 @@ jQuery(document).ready(function () {
         }
 
         if (!$settings.remoteId) {
-            // return;
-            // try to auto detect
             var $parentSection = $scope.closest('.elementor-section');
-
             $settings['remoteId'] = $parentSection;
         }
 
-        if ($($settings.remoteId).find('.swiper-container').length <= 0) {
+        if ($($settings.remoteId).find('.swiper-container, .swiper').length <= 0) {
             if (editMode == true) {
                 $($settings.id + '-notice').removeClass('bdt-hidden');
             }
@@ -12866,8 +12873,7 @@ jQuery(document).ready(function () {
 
         $(document).ready(function () {
             setTimeout(() => {
-                // const swiperInstance = $($settings.remoteId + '  .swiper-container')[0].swiper;
-                const swiperInstance = $($settings.remoteId).find('.swiper-container')[0].swiper;
+                const swiperInstance = $($settings.remoteId).find('.swiper-container, .swiper')[0].swiper;
 
                 $($settings.id).find('.bdt-prev').on("click", function () {
                     swiperInstance.slidePrev();
@@ -12915,7 +12921,7 @@ jQuery(document).ready(function () {
             $settings['remoteId'] = $parentSection;
         }
 
-        if ($($settings.remoteId).find('.swiper-container').length <= 0) {
+        if ($($settings.remoteId).find('.swiper-container, .swiper').length <= 0) {
             if (editMode == true) {
                 $($settings.id + '-notice').removeClass('bdt-hidden');
             }
@@ -12926,7 +12932,7 @@ jQuery(document).ready(function () {
 
         $(document).ready(function () {
             setTimeout(() => {
-                const swiperInstance = $($settings.remoteId).find('.swiper-container')[0].swiper;
+                const swiperInstance = $($settings.remoteId).find('.swiper-container, .swiper')[0].swiper;
 
                 var $slideActive = $($settings.remoteId).find('.swiper-slide-active');
                 var realIndex = $slideActive.data('swiper-slide-index')
@@ -13001,7 +13007,7 @@ jQuery(document).ready(function () {
             $settings['remoteId'] = $parentSection;
         }
 
-        if ($($settings.remoteId).find('.swiper-container').length <= 0) {
+        if ($($settings.remoteId).find('.swiper-container, .swiper').length <= 0) {
             if (editMode == true) {
                 $($settings.id + '-notice').removeClass('bdt-hidden');
             }
@@ -13012,7 +13018,7 @@ jQuery(document).ready(function () {
 
         $(document).ready(function () {
             setTimeout(() => {
-                const swiperInstance = $($settings.remoteId).find('.swiper-container')[0].swiper;
+                const swiperInstance = $($settings.remoteId).find('.swiper-container, .swiper')[0].swiper;
 
                 var $slideActive = $($settings.remoteId).find('.swiper-slide-active');
                 var realIndex = $slideActive.data('swiper-slide-index')
@@ -13088,7 +13094,7 @@ jQuery(document).ready(function () {
             $settings['remoteId'] = $parentSection;
         }
 
-        if ($($settings.remoteId).find('.swiper-container').length <= 0) {
+        if ($($settings.remoteId).find('.swiper-container, .swiper').length <= 0) {
             if (editMode == true) {
                 $($settings.id + '-notice').removeClass('bdt-hidden');
             }
@@ -13099,7 +13105,7 @@ jQuery(document).ready(function () {
 
         $(document).ready(function () {
             setTimeout(() => {
-                const swiperInstance = $($settings.remoteId).find('.swiper-container')[0].swiper;
+                const swiperInstance = $($settings.remoteId).find('.swiper-container, .swiper')[0].swiper;
 
                 var $slideActive = $($settings.remoteId).find('.swiper-slide-active');
                 var realIndex = $slideActive.data('swiper-slide-index')
@@ -13201,7 +13207,7 @@ jQuery(document).ready(function () {
 			return;
 		}
 
-		var $fbCarouselContainer = $fbCarousel.find('.swiper-container'),
+		var $fbCarouselContainer = $fbCarousel.find('.swiper-carousel'),
 			$settings = $fbCarousel.data('settings');
 
 		const Swiper = elementorFrontend.utils.swiper;
@@ -14504,7 +14510,7 @@ jQuery(document).ready(function () {
 
                     $($cryptoWidget).find('.swiper-wrapper').append(output);
 
-                    var $carouselContainer = $carousel.find('.swiper-container'),
+                    var $carouselContainer = $carousel.find('.swiper-carousel'),
                         $carouselSettings = $carousel.data('settings');
 
                     const Swiper = elementorFrontend.utils.swiper;
@@ -15042,7 +15048,7 @@ jQuery(document).ready(function () {
 
                     $($cryptoWidget).find('.swiper-wrapper').append(output);
 
-                    var $carouselContainer = $carousel.find('.swiper-container'),
+                    var $carouselContainer = $carousel.find('.swiper-carousel'),
                         $carouselSettings = $carousel.data('settings');
 
                     const Swiper = elementorFrontend.utils.swiper;
@@ -15597,10 +15603,14 @@ jQuery(document).ready(function () {
              * @param {Object} data - contains json data
              */
             function renderPopup(data) {
+
+                
+
                 var $outerWrap = $("<div>", {
                     id: "floatingHelpCenterPopup",
                     class: "floating-help-center__popup"
                 }).css('zIndex', helpCenterConfig.popupZindex);;
+
                 var $searchOuter = $("<div>", {
                     class: "searchbox"
                 });

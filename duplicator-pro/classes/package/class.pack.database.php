@@ -16,6 +16,7 @@ use Duplicator\Libs\Snap\SnapDB;
 use Duplicator\Libs\Snap\SnapURL;
 use Duplicator\Libs\Snap\SnapWP;
 use Duplicator\Libs\Shell\Shell;
+use Duplicator\Package\Create\BuildComponents;
 use Duplicator\Package\Create\DatabaseInfo;
 use Duplicator\Utils\GroupOptions;
 
@@ -36,6 +37,10 @@ class DUP_PRO_Database
      * Updating the percentage of progression in the serialized structure in the database is a heavy action so every TOT entries are made.
      */
     const ROWS_NUM_TO_UPDATE_PROGRESS = 10000;
+    /**
+     * The mysqldump allowed size difference to memory limit in bytes. Run musqldump only on DBs smaller than memory_limit minus this value.
+     */
+    const MYSQLDUMP_ALLOWED_SIZE_DIFFERENCE = 50 * MB_IN_BYTES;
     /**
      * prefix of the file used to save the offsets of the inserted tables
      */
@@ -227,28 +232,33 @@ class DUP_PRO_Database
     public function getScanData()
     {
         global $wpdb;
-        $filterTables              = explode(',', $this->FilterTables);
-        $tblBaseCount              = 0;
-        $tblFinalCount             = 0;
-        $muFilteredTableCount      = 0;
-        $tables                    = $this->getBaseTables();
-        $views                     = $wpdb->get_results("SHOW FULL TABLES WHERE Table_Type = 'VIEW'", ARRAY_A);
-        $procs                     = $wpdb->get_results("SHOW PROCEDURE STATUS WHERE `Db`='" . DB_NAME . "'", ARRAY_A);
-        $funcs                     = $wpdb->get_results("SHOW FUNCTION STATUS WHERE `Db`='" . DB_NAME . "'", ARRAY_A);
-        $info                      = array();
-        $info['Status']['Success'] = is_null($tables) ? false : true;
-        $info['Status']['Size']    = 'Good';
-        $info['Status']['Rows']    = 'Good';
-        $info['Size']              = 0;
-        $info['Rows']              = 0;
-        $info['TableCount']        = 0;
-        $info['TableList']         = array();
-        $tblCaseFound              = false;
-        $ms_tables_to_filter       = $this->Package->Multisite->getTablesToFilter();
-        $this->info->tablesList    = array();
+        $filterTables               = explode(',', $this->FilterTables);
+        $tblBaseCount               = 0;
+        $tblFinalCount              = 0;
+        $muFilteredTableCount       = 0;
+        $tables                     = $this->getBaseTables();
+        $views                      = $wpdb->get_results("SHOW FULL TABLES WHERE Table_Type = 'VIEW'", ARRAY_A);
+        $procs                      = $wpdb->get_results("SHOW PROCEDURE STATUS WHERE `Db`='" . DB_NAME . "'", ARRAY_A);
+        $funcs                      = $wpdb->get_results("SHOW FUNCTION STATUS WHERE `Db`='" . DB_NAME . "'", ARRAY_A);
+        $info                       = array();
+        $info['Status']['Success']  = is_null($tables) ? false : true;
+        $info['Status']['Size']     = 'Good';
+        $info['Status']['Rows']     = 'Good';
+        $info['Status']['Excluded'] = BuildComponents::isDBExcluded($this->Package->components) ? 'Warn' : 'Good';
+        $info['Size']               = 0;
+        $info['Rows']               = 0;
+        $info['TableCount']         = 0;
+        $info['TableList']          = array();
+        $tblCaseFound               = false;
+        $ms_tables_to_filter        = $this->Package->Multisite->getTablesToFilter();
+        $this->info->tablesList     = array();
         //Only return what we really need
         foreach ($tables as $table) {
             $tblBaseCount++;
+            if (BuildComponents::isDBExcluded($this->Package->components)) {
+                continue;
+            }
+
             $name = DUP_PRO_DB::updateCaseSensitivePrefix($table["name"]);
             if (in_array($name, $ms_tables_to_filter)) {
                 $muFilteredTableCount++;
@@ -279,9 +289,12 @@ class DUP_PRO_Database
         }
 
         $this->info->addTriggers();
-        $info['Status']['Size']           = ($info['Size'] > DUPLICATOR_PRO_SCAN_DB_ALL_SIZE) ? 'Warn' : 'Good';
-        $info['Status']['Rows']           = ($info['Rows'] > DUPLICATOR_PRO_SCAN_DB_ALL_ROWS) ? 'Warn' : 'Good';
-        $info['Status']['Triggers']       = count($this->info->triggerList) > 0 ? 'Warn' : 'Good';
+        $info['Status']['Size']                   = ($info['Size'] > DUPLICATOR_PRO_SCAN_DB_ALL_SIZE) ? 'Warn' : 'Good';
+        $info['Status']['Rows']                   = ($info['Rows'] > DUPLICATOR_PRO_SCAN_DB_ALL_ROWS) ? 'Warn' : 'Good';
+        $info['Status']['Triggers']               = count($this->info->triggerList) > 0 ? 'Warn' : 'Good';
+        $info['Status']['mysqlDumpMemoryCheck']   = self::mysqldumpMemoryCheck($info['Size']);
+        $info['Status']['requiredMysqlDumpLimit'] = DUP_PRO_U::byteSize(self::requiredMysqlDumpLimit($info['Size']));
+
         $info['TableCount']               = $tblFinalCount;
         $this->info->name                 = $wpdb->dbname;
         $this->info->isNameUpperCase      = (preg_match('/[A-Z]/', $wpdb->dbname) === 1);
@@ -302,6 +315,7 @@ class DUP_PRO_Database
         $this->info->viewCount            = count($views);
         $this->info->procCount            = count($procs);
         $this->info->funcCount            = count($funcs);
+
         return $info;
     }
 
@@ -321,7 +335,7 @@ class DUP_PRO_Database
             return false;
         }
 
-        if ($this->mysqlDumpWriteCreates($exePath) != true) {
+        if (!BuildComponents::isDBExcluded($this->Package->components) && $this->mysqlDumpWriteCreates($exePath) != true) {
             DUP_PRO_Log::trace("Mysqldump error while writing CREATE queries");
             return false;
         }
@@ -561,6 +575,35 @@ class DUP_PRO_Database
         return true;
     }
 
+    /**
+     * Checks if database size is within the mysqldump size limit
+     *
+     * @param int $dbSize Size of the database to check
+     *
+     * @return bool Returns true if DB size is within the mysqldump size limit, otherwise false
+     */
+    protected static function mysqldumpMemoryCheck($dbSize)
+    {
+        if (($mem = SnapUtil::phpIniGet('memory_limit', false)) === false) {
+            $mem = 0;
+        } else {
+            $mem = SnapUtil::convertToBytes($mem);
+        }
+
+        return (self::requiredMysqlDumpLimit($dbSize) <= $mem);
+    }
+
+    /**
+     * Return mysql required limit
+     *
+     * @param int $dbSize Size of the database to check
+     *
+     * @return int
+     */
+    protected static function requiredMysqlDumpLimit($dbSize)
+    {
+        return $dbSize + self::MYSQLDUMP_ALLOWED_SIZE_DIFFERENCE;
+    }
 
     /**
      * Get mysql dump command
@@ -672,8 +715,10 @@ class DUP_PRO_Database
         $filterTables = ($this->FilterOn ? explode(',', $this->FilterTables) : array());
         // SUB SITE FILTER TABLE
         $muFilterTables = $this->Package->Multisite->getTablesToFilter();
+        //COMPONENT FILTER TABLE
+        $componentFilterTables = BuildComponents::isDBExcluded($this->Package->components) ? $allTables : [];
         // TOTAL FILTER TABLES
-        $allFilterTables = array_unique(array_merge($filterTables, $muFilterTables));
+        $allFilterTables = !empty($componentFilterTables) ? $componentFilterTables : array_unique(array_merge($filterTables, $muFilterTables));
         $allTablesCount  = count($allTables);
         $allFilterCount  = count($allFilterTables);
         $createCount     = $allTablesCount - $allFilterCount;
@@ -1059,33 +1104,36 @@ class DUP_PRO_Database
             }
         }
 
-        $procedures = $wpdb->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '{$wpdb->dbname}'", 1);
-        if (count($procedures)) {
-            foreach ($procedures as $procedure) {
-                SnapIO::fwrite($handle, "DELIMITER ;;\n");
-                $create = $wpdb->get_row("SHOW CREATE PROCEDURE `{$procedure}`", ARRAY_N);
-                SnapIO::fwrite($handle, "{$create[2]} ;;\n");
-                SnapIO::fwrite($handle, "DELIMITER ;\n\n");
+        if (!BuildComponents::isDBExcluded($this->Package->components)) {
+            $procedures = $wpdb->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '{$wpdb->dbname}'", 1);
+            if (count($procedures)) {
+                foreach ($procedures as $procedure) {
+                    SnapIO::fwrite($handle, "DELIMITER ;;\n");
+                    $create = $wpdb->get_row("SHOW CREATE PROCEDURE `{$procedure}`", ARRAY_N);
+                    SnapIO::fwrite($handle, "{$create[2]} ;;\n");
+                    SnapIO::fwrite($handle, "DELIMITER ;\n\n");
+                }
+            }
+
+            $functions = $wpdb->get_col("SHOW FUNCTION STATUS WHERE `Db` = '{$wpdb->dbname}'", 1);
+            if (count($functions)) {
+                foreach ($functions as $function) {
+                    SnapIO::fwrite($handle, "DELIMITER ;;\n");
+                    $create = $wpdb->get_row("SHOW CREATE FUNCTION `{$function}`", ARRAY_N);
+                    SnapIO::fwrite($handle, "{$create[2]} ;;\n");
+                    SnapIO::fwrite($handle, "DELIMITER ;\n\n");
+                }
+            }
+
+            $views = $wpdb->get_col("SHOW FULL TABLES WHERE Table_Type = 'VIEW'");
+            if (count($views)) {
+                foreach ($views as $view) {
+                    $create = $wpdb->get_row("SHOW CREATE VIEW `{$view}`", ARRAY_N);
+                    SnapIO::fwrite($handle, "{$create[1]};\n\n");
+                }
             }
         }
 
-        $functions = $wpdb->get_col("SHOW FUNCTION STATUS WHERE `Db` = '{$wpdb->dbname}'", 1);
-        if (count($functions)) {
-            foreach ($functions as $function) {
-                SnapIO::fwrite($handle, "DELIMITER ;;\n");
-                $create = $wpdb->get_row("SHOW CREATE FUNCTION `{$function}`", ARRAY_N);
-                SnapIO::fwrite($handle, "{$create[2]} ;;\n");
-                SnapIO::fwrite($handle, "DELIMITER ;\n\n");
-            }
-        }
-
-        $views = $wpdb->get_col("SHOW FULL TABLES WHERE Table_Type = 'VIEW'");
-        if (count($views)) {
-            foreach ($views as $view) {
-                $create = $wpdb->get_row("SHOW CREATE VIEW `{$view}`", ARRAY_N);
-                SnapIO::fwrite($handle, "{$create[1]};\n\n");
-            }
-        }
         SnapIO::fwrite($handle, self::TABLE_CREATION_END_MARKER);
         $dbInsertIterator = $this->getDbBuildIterator();
         $fileStat         = fstat($handle);

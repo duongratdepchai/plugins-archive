@@ -189,7 +189,10 @@ if ( ! class_exists( 'Jet_Listing_Render_Calendar' ) ) {
 							$end_date = jet_engine()->listings->data->get_prop( $end_date_key, $post );
 						}
 
-						if ( $key && $multiday && $end_date ) {
+						if ( $key && $multiday && $end_date
+							 && Jet_Engine_Tools::is_valid_timestamp( $key )
+							 && Jet_Engine_Tools::is_valid_timestamp( $end_date )
+						) {
 
 							/*
 							 * $days = absint( $end_date ) - absint( $key );

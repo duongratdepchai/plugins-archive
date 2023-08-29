@@ -306,7 +306,7 @@ class Button extends Base {
 					],
 					[
 						'property' => 'fill',
-						'selector' => $this->css_selector( '__icon :is(svg, path)' ),
+						'selector' => $this->css_selector( '__icon :is(svg)' ) . ', ' . $this->css_selector( '__icon :is(path)' ),
 					],
 				],
 			]

@@ -422,7 +422,7 @@ class Testimonial_Carousel extends Module_Base
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors' => [
-                    '{{WRAPPER}} .bdt-testimonial-carousel .bdt-testimonial-carousel-item, {{WRAPPER}} .bdt-testimonial-carousel .swiper-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
+                    '{{WRAPPER}} .bdt-testimonial-carousel .bdt-testimonial-carousel-item, {{WRAPPER}} .bdt-testimonial-carousel .swiper-carousel' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
                 ],
             ]
         );
@@ -548,7 +548,7 @@ class Testimonial_Carousel extends Module_Base
                     'size' => 10,
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -1578,7 +1578,7 @@ if (has_excerpt()) {
 
         ?>
         <div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-            <div class="swiper-container">
+            <div <?php echo $this->get_render_attribute_string('swiper'); ?>>
                 <div class="swiper-wrapper">
                     <?php
 }

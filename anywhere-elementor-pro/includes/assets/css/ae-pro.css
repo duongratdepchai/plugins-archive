@@ -4991,3 +4991,11 @@ div#ae-dynamic-calendar .ae-dc-date-cell{
     position: relative;
     z-index: 1;
 }
+
+.ae-acf-repeater-layout-grid .ae-acf-repeater-widget-wrapper:not(.ae-masonry-yes) .ae-acf-repeater-inner {
+    height: 100%;
+}
+
+.ae-acf-repeater-widget-wrapper .ae-pagination-wrapper .page-numbers.current {
+    cursor: default;
+}

@@ -371,7 +371,7 @@ class EDD_Product_Carousel extends Module_Base {
                     ]
                 ],
                 'selectors'   => [
-                    '{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
+                    '{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
                 ],
             ]
         );
@@ -875,7 +875,7 @@ class EDD_Product_Carousel extends Module_Base {
         $this->render_swiper_header_attribute('edd-product-carousel');
         $this->add_render_attribute('carousel', 'class', ['bdt-edd-product-carousel']); ?>
         <div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-            <div class="swiper-container">
+            <div <?php echo $this->get_render_attribute_string('swiper'); ?>>
                 <div class="swiper-wrapper">
                     <?php
                 }

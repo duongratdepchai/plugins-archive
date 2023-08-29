@@ -211,7 +211,7 @@ class PackageDupArchive
                 $global = DUP_PRO_System_Global_Entity::getInstance();
                 $err    = 'Package build failure due to building a large package on 32 bit PHP.';
                 $fix    = sprintf(
-                    "%s <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-035-q' target='_blank'>%s</a> %s",
+                    "%s <a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-resolve-file-io-related-build-issues' target='_blank'>%s</a> %s",
                     DUP_PRO_U::__('Package build failure due to building a large package on 32 bit PHP. Please see '),
                     DUP_PRO_U::__("Tech docs"),
                     DUP_PRO_U::__("for instructions on how to resolve.")

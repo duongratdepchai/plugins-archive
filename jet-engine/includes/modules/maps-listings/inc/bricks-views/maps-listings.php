@@ -561,6 +561,20 @@ class Maps_Listings extends Listing_Grid {
 
 		$this->add_provider_controls( 'section_popup_settings' );
 
+		$this->register_jet_control(
+			'popup_open_on',
+			[
+				'tab'     => 'content',
+				'label'   => esc_html__( 'Open On', 'jet-engine' ),
+				'type'    => 'select',
+				'options' => array(
+					'click' => esc_html__( 'Click', 'jet-engine' ),
+					'hover' => esc_html__( 'Hover', 'jet-engine' ),
+				),
+				'default' => 'click',
+			]
+		);
+
 		$this->end_jet_control_group();
 
 		$this->register_controls_query_settings();

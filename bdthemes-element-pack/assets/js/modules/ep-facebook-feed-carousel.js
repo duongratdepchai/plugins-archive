@@ -14,7 +14,7 @@
 			return;
 		}
 
-		var $fbCarouselContainer = $fbCarousel.find('.swiper-container'),
+		var $fbCarouselContainer = $fbCarousel.find('.swiper-carousel'),
 			$settings = $fbCarousel.data('settings');
 
 		const Swiper = elementorFrontend.utils.swiper;

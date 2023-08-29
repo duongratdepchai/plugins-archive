@@ -1,5 +1,6 @@
 <?php
 
+use Duplicator\Package\Create\BuildComponents;
 use Duplicator\Installer\Core\Descriptors\ArchiveConfig;
 
 defined("ABSPATH") or die("");
@@ -123,7 +124,7 @@ SIZE CHECKS -->
                 echo '<li>' . DUP_PRO_U::__('Apply the "Quick Filters" below or click the back button to apply on previous page.') . '</li>';
                 echo '<li>' .
                     DUP_PRO_U::__('See the FAQ link to adjust this hosts timeout limits: ') .
-                    "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>" .
+                    "&nbsp;<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-handle-server-timeout-issues' target='_blank'>" .
                     DUP_PRO_U::__('What can I try for Timeout Issues?') .
                     '</a></li>';
                 echo '</ul>';
@@ -378,139 +379,240 @@ DATABASE
 </div>
 
 <div id="dup-scan-db">
-    <div class="scan-item">
-        <div class='title' onclick="DupPro.Pack.toggleScanItem(this);">
-            <div class="text"><i class="fa fa-caret-right"></i> <?php DUP_PRO_U::esc_html_e('Overview');?></div>
-            <div id="data-db-status-size1"></div>
-        </div>
-        <div class="info">
-            <?php echo '<b>' . DUP_PRO_U::__('TOTAL SIZE') . ' &nbsp; &#8667; &nbsp; </b>'; ?>
-            <b><?php DUP_PRO_U::esc_html_e('Size'); ?>:</b> <span id="data-db-size2"></span> &nbsp; | &nbsp;
-            <b><?php DUP_PRO_U::esc_html_e('Tables'); ?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
-            <b><?php DUP_PRO_U::esc_html_e('Records'); ?>:</b> <span id="data-db-rows"></span> <br/>
-            <?php
-            printf(
-                DUP_PRO_U::__('Total size and row count are approximate values.  The thresholds that trigger warnings are <i>%1$s OR %2$s records</i> total for the entire database.  '
-                . 'Large databases take time to process and can cause issues with server timeout and memory settings on some budget hosts.  If your server supports popen or exec '
-                . 'and mysqldump you can try to enable Shell Execution from the settings menu.'),
-                DUP_PRO_U::byteSize(DUPLICATOR_PRO_SCAN_DB_ALL_SIZE),
-                number_format(DUPLICATOR_PRO_SCAN_DB_ALL_ROWS)
-            );
-            ?>
-            <br/>
-            <br/>
-            <hr size="1" />
-            <?php
-            //TABLE DETAILS
-            echo '<b>' . DUP_PRO_U::__('TABLE DETAILS:') . '</b><br/>';
-            printf(
-                DUP_PRO_U::__(
-                    'The notices for tables are <i>%1$s, %2$s records or names with upper-case characters</i>. '
-                    . 'Individual tables will not trigger '
-                    . 'a notice message, but can help narrow down issues if they occur later on.'
-                ),
-                DUP_PRO_U::byteSize(DUPLICATOR_PRO_SCAN_DB_TBL_SIZE),
-                number_format(DUPLICATOR_PRO_SCAN_DB_TBL_ROWS)
-            );
-            ?>
-            <p>
-                <b><?php printf(esc_html__('Exclude all tables without prefix "%s"', 'duplicator-pro'), $wpdb->prefix); ?>:</b>&nbsp;
-                <i class="maroon" >
-                    <?php echo ($Package->Database->prefixFilter ?
-                        esc_html_e('Enabled', 'duplicator-pro') :
-                        esc_html_e('Disabled', 'duplicator-pro')
-                    ); ?>
-                </i><br>
-                <?php if (is_multisite()) { ?>
-                    <b><?php esc_html_e('Exclude not existing subsite filter', 'duplicator-pro'); ?>:</b>&nbsp;
-                    <i class="red" >
-                        <?php echo ($Package->Database->prefixSubFilter ?
+    <?php if ($Package->isDBExcluded()) { ?>
+        <div class="scan-item">
+            <div class='title' onclick="DupPro.Pack.toggleScanItem(this);">
+                <div class="text"><i class="fa fa-caret-right"></i> <?php DUP_PRO_U::esc_html_e('Database excluded');?></div>
+                <div id="data-db-status-size1"></div>
+            </div>
+            <div class="info">
+                <?php
+                    _e(
+                        'The database is excluded from the package build process. ' .
+                        'To include it make sure to check the "Database" package component checkbox at Step 1 of the build process.',
+                        'duplicator-pro'
+                    );
+                ?>
+            </div>
+        </div> 
+    <?php } else { ?>
+        <div class="scan-item">
+            <div class='title' onclick="DupPro.Pack.toggleScanItem(this);">
+                <div class="text"><i class="fa fa-caret-right"></i> <?php DUP_PRO_U::esc_html_e('Overview');?></div>
+                <div id="data-db-status-size1"></div>
+            </div>
+            <div class="info">
+                <?php echo '<b>' . DUP_PRO_U::__('TOTAL SIZE') . ' &nbsp; &#8667; &nbsp; </b>'; ?>
+                <b><?php DUP_PRO_U::esc_html_e('Size'); ?>:</b> <span id="data-db-size2"></span> &nbsp; | &nbsp;
+                <b><?php DUP_PRO_U::esc_html_e('Tables'); ?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
+                <b><?php DUP_PRO_U::esc_html_e('Records'); ?>:</b> <span id="data-db-rows"></span> <br/>
+                <?php
+                printf(
+                    DUP_PRO_U::__('Total size and row count are approximate values.  The thresholds that trigger warnings are <i>%1$s OR %2$s records</i> total for the entire database.  '
+                    . 'Large databases take time to process and can cause issues with server timeout and memory settings on some budget hosts.  If your server supports popen or exec '
+                    . 'and mysqldump you can try to enable Shell Execution from the settings menu.'),
+                    DUP_PRO_U::byteSize(DUPLICATOR_PRO_SCAN_DB_ALL_SIZE),
+                    number_format(DUPLICATOR_PRO_SCAN_DB_ALL_ROWS)
+                );
+                ?>
+                <br/>
+                <br/>
+                <hr size="1" />
+                <?php
+                //TABLE DETAILS
+                echo '<b>' . DUP_PRO_U::__('TABLE DETAILS:') . '</b><br/>';
+                printf(
+                    DUP_PRO_U::__(
+                        'The notices for tables are <i>%1$s, %2$s records or names with upper-case characters</i>. '
+                        . 'Individual tables will not trigger '
+                        . 'a notice message, but can help narrow down issues if they occur later on.'
+                    ),
+                    DUP_PRO_U::byteSize(DUPLICATOR_PRO_SCAN_DB_TBL_SIZE),
+                    number_format(DUPLICATOR_PRO_SCAN_DB_TBL_ROWS)
+                );
+                ?>
+                <p>
+                    <b><?php printf(esc_html__('Exclude all tables without prefix "%s"', 'duplicator-pro'), $wpdb->prefix); ?>:</b>&nbsp;
+                    <i class="maroon" >
+                        <?php echo ($Package->Database->prefixFilter ?
                             esc_html_e('Enabled', 'duplicator-pro') :
                             esc_html_e('Disabled', 'duplicator-pro')
                         ); ?>
-                    </i>
-                <?php } ?>
-            </p>
-            <div id="dup-scan-db-info">
-                <div id="data-db-tablelist">
+                    </i><br>
+                    <?php if (is_multisite()) { ?>
+                        <b><?php esc_html_e('Exclude not existing subsite filter', 'duplicator-pro'); ?>:</b>&nbsp;
+                        <i class="red" >
+                            <?php echo ($Package->Database->prefixSubFilter ?
+                                esc_html_e('Enabled', 'duplicator-pro') :
+                                esc_html_e('Disabled', 'duplicator-pro')
+                            ); ?>
+                        </i>
+                    <?php } ?>
+                </p>
+                <div id="dup-scan-db-info">
+                    <div id="data-db-tablelist">
+                    </div>
                 </div>
+                <br/>
+                <hr size="1" />
+                <?php
+                //RECOMMENDATIONS
+                echo '<b>' . DUP_PRO_U::__('RECOMMENDATIONS:') . '</b><br/>';
+                echo '<i>' . DUP_PRO_U::__('The following recommendations are not needed unless you are having issues building or installing the package.') . '</i><br/>';
+                echo '<div style="padding:5px">';
+                $lnk = '<a href="' . admin_url('maint/repair.php') . '" target="_blank">' . DUP_PRO_U::__('repair and optimization') . '</a>';
+                printf(DUP_PRO_U::__('1. Run a %1$s on the table to improve the overall size and performance.'), $lnk);
+                echo '<br/><br/>';
+                _e('2. Remove post revisions and stale data from tables.  Tables such as logs, statistical or other non-critical data should be cleared.', 'duplicator-pro');
+                echo '<br/><br/>';
+                $lnk = '<a href="?page=duplicator-pro-settings&tab=package" target="_blank">' . DUP_PRO_U::__('Enable mysqldump') . '</a>';
+                printf(DUP_PRO_U::__('3. %1$s if this host supports the option.'), $lnk);
+                echo '<br/><br/>';
+                $lnk = '<a href="http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names" target="_blank">lower_case_table_names</a>';
+                printf(DUP_PRO_U::__('4. Restoring mixed-case tables can cause problems on some servers. If you experience a problem installing the package change the %1$s system variable on the destination site\'s MySQL Server.'), $lnk);
+                echo '</div>';
+                ?>
             </div>
-            <br/>
-            <hr size="1" />
-            <?php
-            //RECOMMENDATIONS
-            echo '<b>' . DUP_PRO_U::__('RECOMMENDATIONS:') . '</b><br/>';
-            echo '<i>' . DUP_PRO_U::__('The following recommendations are not needed unless you are having issues building or installing the package.') . '</i><br/>';
-            echo '<div style="padding:5px">';
-            $lnk = '<a href="' . admin_url('maint/repair.php') . '" target="_blank">' . DUP_PRO_U::__('repair and optimization') . '</a>';
-            printf(DUP_PRO_U::__('1. Run a %1$s on the table to improve the overall size and performance.'), $lnk);
-            echo '<br/><br/>';
-            _e('2. Remove post revisions and stale data from tables.  Tables such as logs, statistical or other non-critical data should be cleared.');
-            echo '<br/><br/>';
-            $lnk = '<a href="?page=duplicator-pro-settings&tab=package" target="_blank">' . DUP_PRO_U::__('Enable mysqldump') . '</a>';
-            printf(DUP_PRO_U::__('3. %1$s if this host supports the option.'), $lnk);
-            echo '<br/><br/>';
-            $lnk = '<a href="http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names" target="_blank">lower_case_table_names</a>';
-            printf(DUP_PRO_U::__('4. Restoring mixed-case tables can cause problems on some servers. If you experience a problem installing the package change the %1$s system variable on the destination site\'s MySQL Server.'), $lnk);
-            echo '</div>';
-            ?>
         </div>
-    </div>
-    <?php
-    $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
-    $functions  = $GLOBALS['wpdb']->get_col("SHOW FUNCTION STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
-    if (count($procedures) > 0 || count($functions) > 0) { ?>
-    <div class="scan-item">
-        <div class='title' onclick="DupPro.Pack.toggleScanItem(this);">
-            <div class="text"><i class="fa fa-caret-right"></i> <?php DUP_PRO_U::esc_html_e('Object Access');?></div>
-            <div id="data-arc-status-showcreatefunc"></div>
-        </div>
-        <div class="info">
-            <script id="hb-showcreatefunc-result" type="text/x-handlebars-template">
-                <div class="container">
-                    <div class="data">
-                        {{#if ARC.Status.showCreateFunc}}
-                        <?php DUP_PRO_U::esc_html_e(
-                            "The database user for this WordPress site has sufficient permissions to write stored procedures " .
-                            "and functions to the sql file of the archive. [The commands SHOW CREATE PROCEDURE/FUNCTION will work.]"
-                        ); ?>
+        <?php if ($dbbuild_mode == DUP_PRO_DB::BUILD_MODE_MYSQLDUMP) { ?>
+            <div class="scan-item" id="mysqldump-limit-result"></div>
+            <script id="hb-mysqldump-limit-result" type="text/x-handlebars-template">
+                <div class="title" onclick="DupPro.Pack.toggleScanItem(this);">
+                    <div class="text">
+                        <i class="fa fa-caret-right"></i> <?php esc_html_e('Mysqldump memory check', 'duplicator-pro'); ?>
+                    </div>
+                    <div id="data-db-status-mysqldump-limit">
+                        {{#if DB.Status.mysqlDumpMemoryCheck}}
+                            <div class="badge badge-pass"><?php esc_html_e('Good', 'duplicator-pro'); ?></div>
                         {{else}}
-                        <span style="color: red;">
-                            <?php
-                            DUP_PRO_U::esc_html_e("The database user for this WordPress site does NOT have sufficient permissions to write stored procedures to the sql file of the archive. [The command SHOW CREATE FUNCTION will NOT work.]");
-                            ?>
-                        </span>
+                            <div class="badge badge-warn"><?php esc_html_e('Notice', 'duplicator-pro'); ?></div>
                         {{/if}}
                     </div>
                 </div>
+                {{#if DB.Status.mysqlDumpMemoryCheck}}
+                    <div class="info">
+                        <p class="green">
+                            <?php esc_html_e('The database size is within the allowed mysqldump size limit.', 'duplicator-pro'); ?>
+                        </p>
+                        <?php
+                        printf(
+                            _x(
+                                'If you encounter any issues with mysqldump please change the setting SQL Mode to PHP Code.'
+                                . ' You can do that by opening %1$sDuplicator Pro > Settings > Packages.%2$s',
+                                '1$s and 2$s represent opening and closing anchor tags',
+                                'duplicator-pro'
+                            ),
+                            '<a href="?page=duplicator-pro-settings&tab=package" target="_blank">',
+                            '</a>'
+                        );
+                        ?>
+                    </div>
+                {{else}}
+                    <div class="info" style="display:block;">
+                        <p class="red">
+                            <?php esc_html_e('The database size exceeds the allowed mysqldump size limit.', 'duplicator-pro'); ?>
+                        </p>
+                        <?php
+                        esc_html_e(
+                            'The database size is larger than the PHP memory_limit value.'
+                            . ' This can lead into issues when building a package, during which the system can run out of memory.'
+                            . ' To fix this issue please consider doing one of the below mentioned recommendations.',
+                            'duplicator-pro'
+                        );
+                        ?>
+                        <hr size="1" />
+                        <p>
+                            <b><?php _e('RECOMMENDATIONS:', 'duplicator-pro'); ?></b>
+                        </p>
+                        <ul class="dup-pro-simple-style-disc" >
+                            <li>
+                                <?php
+                                    printf(
+                                        _x(
+                                            'Please change the setting SQL Mode to PHP Code.'
+                                            . ' You can do that by opening %1$sDuplicator Pro > Settings > Packages.%2$s',
+                                            '%1$s and %2$s represent opening and closing anchor tags',
+                                            'duplicator-pro'
+                                        ),
+                                        '<a href="?page=duplicator-pro-settings&tab=package" target="_blank">',
+                                        '</a>'
+                                    );
+                                ?>
+                            </li>
+                            <li>
+                                <?php
+                                    printf(
+                                        _x(
+                                            'If you want to build the package with mysqldump, increase the PHP <b>memory_limit</b> ' .
+                                            'value in your php.ini file to at least %1$s.',
+                                            '%1$s represents the memory limit value (e.g. 256MB)',
+                                            'duplicator-pro'
+                                        ),
+                                        '<b><span id="data-db-size3">{{DB.Status.requiredMysqlDumpLimit}}</span></b>'
+                                    );
+                                ?>
+                            </li>
+                        </ul>
+                    </div>
+                {{/if}}
             </script>
-            <div id="showcreatefunc-package-result"></div>
-        </div>
-    </div>
-    <?php } ?>
-    <?php
-    $triggers = $GLOBALS['wpdb']->get_col("SHOW TRIGGERS", 1);
-    if (count($triggers)) { ?>
+            <?php
+        }
+        $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
+        $functions  = $GLOBALS['wpdb']->get_col("SHOW FUNCTION STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
+        if (count($procedures) > 0 || count($functions) > 0) { ?>
         <div class="scan-item">
             <div class='title' onclick="DupPro.Pack.toggleScanItem(this);">
-                <div class="text"><i class="fa fa-caret-right"></i> <?php DUP_PRO_U::esc_html_e('Triggers');?></div>
-                <div id="data-arc-status-triggers"></div>
+                <div class="text"><i class="fa fa-caret-right"></i> <?php DUP_PRO_U::esc_html_e('Object Access');?></div>
+                <div id="data-arc-status-showcreatefunc"></div>
             </div>
             <div class="info">
-                <script id="hb-triggers-result" type="text/x-handlebars-template">
+                <script id="hb-showcreatefunc-result" type="text/x-handlebars-template">
                     <div class="container">
                         <div class="data">
-                             <span class="red">
-                                <?php DUP_PRO_U::esc_html_e("The database contains triggers which will have to be manually imported at install time.  "
-                                    . "No action needs to be performed at this time.  During the install process you will be presented with the proper trigger SQL statements "
-                                    . "that you can optionally run."); ?>
+                            {{#if ARC.Status.showCreateFunc}}
+                            <?php DUP_PRO_U::esc_html_e(
+                                "The database user for this WordPress site has sufficient permissions to write stored procedures " .
+                                "and functions to the sql file of the archive. [The commands SHOW CREATE PROCEDURE/FUNCTION will work.]"
+                            ); ?>
+                            {{else}}
+                            <span style="color: red;">
+                                <?php
+                                DUP_PRO_U::esc_html_e("The database user for this WordPress site does NOT have sufficient permissions to write stored procedures to the sql file of the archive. [The command SHOW CREATE FUNCTION will NOT work.]");
+                                ?>
                             </span>
+                            {{/if}}
                         </div>
                     </div>
                 </script>
-                <div id="triggers-result"></div>
+                <div id="showcreatefunc-package-result"></div>
             </div>
         </div>
+        <?php } ?>
+        <?php
+        $triggers = $GLOBALS['wpdb']->get_col("SHOW TRIGGERS", 1);
+        if (count($triggers)) { ?>
+            <div class="scan-item">
+                <div class='title' onclick="DupPro.Pack.toggleScanItem(this);">
+                    <div class="text"><i class="fa fa-caret-right"></i> <?php DUP_PRO_U::esc_html_e('Triggers');?></div>
+                    <div id="data-arc-status-triggers"></div>
+                </div>
+                <div class="info">
+                    <script id="hb-triggers-result" type="text/x-handlebars-template">
+                        <div class="container">
+                            <div class="data">
+                                <span class="red">
+                                    <?php DUP_PRO_U::esc_html_e("The database contains triggers which will have to be manually imported at install time.  "
+                                        . "No action needs to be performed at this time.  During the install process you will be presented with the proper trigger SQL statements "
+                                        . "that you can optionally run."); ?>
+                                </span>
+                            </div>
+                        </div>
+                    </script>
+                    <div id="triggers-result"></div>
+                </div>
+            </div>
+        <?php } ?>
     <?php } ?>
 </div>
 <br/>
@@ -847,6 +949,10 @@ jQuery(document).ready(function($)
             alert('No filter selected');
             return false;
         }
+
+        dirFilters = dirFilters.map( function (path) {
+            return path.slice(-1) !== '\/' ? path + '\/' : path;
+        });
 
         DupPro.Pack.FilterButton.loading(filterButton);
     
@@ -1244,6 +1350,14 @@ jQuery(document).ready(function($)
             var templateScript = Handlebars.compile(template);
             var html = templateScript(data);
             $('#triggers-result').html(html);
+        }
+
+        //MYSQLDUMP LIMIT
+        if ($("#hb-mysqldump-limit-result").length) {
+        var template = $('#hb-mysqldump-limit-result').html();
+        var templateScript = Handlebars.compile(template);
+        var html = templateScript(data);
+        $('#mysqldump-limit-result').html(html);
         }
 
         DuplicatorTooltip.reload();

@@ -134,6 +134,11 @@
   color: #00496e;
 }
 
+.jet-engine-description {
+  display: block;
+  margin-top: 5px;
+}
+
 .indent-top {
   padding-top: 15px;
 }
@@ -377,4 +382,19 @@
 .jet-engine-accent-text,
 .jet-engine-condition-field-name {
   color: #007CBA;
+}
+
+.jet-engine-condition-field-value {
+  font-weight: 500;
+  font-style: normal;
+  color: #007CBA;
+  margin: 0 0 0 10px;
+}
+.rtl .jet-engine-condition-field-value {
+  margin: 0 10px 0 0;
+}
+
+.jet-engine-condition-popup .cx-vui-popup__content > .cx-vui-component {
+  padding-left: 0;
+  padding-right: 0;
 }

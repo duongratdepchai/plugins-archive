@@ -13,15 +13,18 @@
 
 namespace Duplicator\Addons\ProBase\License;
 
+use DUP_PRO_UI_Notice;
 use Duplicator\Addons\ProBase\LicensingController;
 use Duplicator\Core\CapMng;
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Core\Views\TplMng;
+use Duplicator\Utils\ExpireOptions;
 
 class Notices
 {
-    const OPTION_KEY_EXPIRED_LICENCE_NOTICE_DISMISS_TIME = 'duplicator_pro_expired_licence_notice_time';
-    const EXPIRED_LICENCE_NOTICE_DISMISS_FOR_DAYS        = 14;
+    const PRE_EXPIRE_WARNING_DAYS      = 30;
+    const CLOSE_TO_EXPIRE_DISMISS      = 'close_to_expire_dismiss';
+    const CLOSE_TO_EXPIRE_DISMISS_DAYS = 7 * DAY_IN_SECONDS;
 
 
     /**
@@ -77,13 +80,13 @@ class Notices
                         'duplicator-pro'
                     ),
                     'admin.php?page=duplicator-pro-settings&tab=licensing',
-                    'https://duplicator.com/duplicator/pricing'
+                    DUPLICATOR_PRO_BLOG_URL . 'pricing/'
                 );
             } elseif ($global->license_status === License::STATUS_EXPIRED) {
                 $license_key = License::getLicenseKey();
 
                 if ($license_key !== false) {
-                    $renewal_url = 'https://duplicator.com/checkout?edd_license_key=' . $license_key;
+                    $renewal_url = DUPLICATOR_PRO_BLOG_URL . 'checkout?edd_license_key=' . $license_key;
 
                     $error_string = sprintf(
                         __(
@@ -118,55 +121,62 @@ class Notices
      */
     public static function licenseAlertCheck()
     {
-        if (!CapMng::can(CapMng::CAP_BASIC, false)) {
-            return;
-        }
-
-        $on_licensing_tab = (isset($_REQUEST['tab']) && ($_REQUEST['tab'] === 'licensing'));
-
-        if ($on_licensing_tab) {
+        if (
+            !CapMng::can(CapMng::CAP_BASIC, false) ||
+            ControllersManager::isCurrentPage(
+                ControllersManager::SETTINGS_SUBMENU_SLUG,
+                LicensingController::L2_SLUG_LICENSING
+            )
+        ) {
             return;
         }
 
         if (file_exists(DUPLICATOR_PRO_SSDIR_PATH . "/ovr.dup")) {
             return;
         }
-        //Style needs to be loaded here because css is global across wp-admin
-        wp_enqueue_style('dup-pro-plugin-style-notices', DUPLICATOR_PRO_PLUGIN_URL . 'assets/css/admin-notices.css', [], DUPLICATOR_PRO_VERSION);
 
-        $license_status = License::STATUS_UNKNOWN;
+        //Style needs to be loaded here because css is global across wp-admin
+        wp_enqueue_style(
+            'dup-pro-plugin-style-notices',
+            DUPLICATOR_PRO_PLUGIN_URL . 'assets/css/admin-notices.css',
+            [],
+            DUPLICATOR_PRO_VERSION
+        );
+
         try {
             $license_status = License::getLicenseStatus(false);
         } catch (\Exception $ex) {
+            $license_status = License::STATUS_UNKNOWN;
             \DUP_PRO_Log::traceError("Could not get license status.");
         }
 
-        if ($license_status === License::STATUS_EXPIRED) {
-            $expired_licence_notice_dismiss_time = get_option(self::OPTION_KEY_EXPIRED_LICENCE_NOTICE_DISMISS_TIME, false);
-            if (
-                false === $expired_licence_notice_dismiss_time ||
-                (time() - $expired_licence_notice_dismiss_time) > (DAY_IN_SECONDS * self::EXPIRED_LICENCE_NOTICE_DISMISS_FOR_DAYS)
-            ) {
-                self::showExpired();
-            }
-        } elseif ($license_status !== License::STATUS_VALID) {
-            $global = \DUP_PRO_Global_Entity::getInstance();
-
-            if ($global->license_no_activations_left) {
-                self::showNoActivationsLeft();
-            } else {
-                $days_invalid = (int) floor((time() - $global->initial_activation_timestamp) / 86400);
-
-                // If an md5 is present always do standard nag
-                $license_key = get_option(License::LICENSE_KEY_OPTION_NAME, '');
-                $md5_present = \DUP_PRO_Low_U::isValidMD5($license_key);
-
-                if ($md5_present || ($days_invalid < License::UNLICENSED_SUPER_NAG_DELAY_IN_DAYS)) {
-                    self::showInvalidStandardNag();
-                } else {
-                    self::showInvalidSuperNag($days_invalid);
+        $global = \DUP_PRO_Global_Entity::getInstance();
+        switch ($license_status) {
+            case License::STATUS_VALID:
+                if (
+                    License::getExpirationDays() >= 0 &&
+                    License::getExpirationDays() < self::PRE_EXPIRE_WARNING_DAYS
+                ) {
+                    self::showCloseToExpire();
                 }
-            }
+                break;
+            case License::STATUS_EXPIRED:
+                self::showExpired();
+                break;
+            case License::STATUS_OUT_OF_LICENSES:
+            case License::STATUS_UNCACHED:
+            case License::STATUS_UNKNOWN:
+            case License::STATUS_INVALID:
+            case License::STATUS_INACTIVE:
+            case License::STATUS_DISABLED:
+            case License::STATUS_SITE_INACTIVE:
+            default:
+                if ($global->license_no_activations_left) {
+                    self::showNoActivationsLeft();
+                } else {
+                    self::showInvalidStandardNag();
+                }
+                break;
         }
     }
 
@@ -177,48 +187,30 @@ class Notices
      */
     private static function showInvalidStandardNag()
     {
-        $img_url           = plugins_url('duplicator-pro/assets/img/warning.png');
-        $licensing_tab_url = ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, LicensingController::L2_SLUG_LICENSING);
-
         $problem_text = 'missing';
 
         if (get_option(License::LICENSE_KEY_OPTION_NAME, '') !== '') {
             $problem_text = 'invalid or disabled';
         }
 
-        TplMng::getInstance()->render(
-            'licensing/inactive_message',
+        $htmlMsg = TplMng::getInstance()->render(
+            'licensing/notices/inactive_message',
             [
                 'problem' => $problem_text
-            ]
+            ],
+            false
         );
-    }
 
-    /**
-     * Shows the larger super nag screen used for display after the trial period
-     *
-     * @param int $daysInvalid The number of days the license has been invalid
-     *
-     * @return void
-     */
-    private static function showInvalidSuperNag($daysInvalid)
-    {
-        $licensing_tab_url = ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, LicensingController::L2_SLUG_LICENSING);
-        ?>
-        <div class="update-nag dpro-admin-notice dpro-invalid-license">
-            <h2>
-                <?php _e('INVALID LICENSE', 'duplicator-pro'); ?>
-            </h2>
-
-            The Duplicator Pro plugin has been running for at least 30 days without a valid license.<br/>
-            This means you don't have access to <b>security updates</b>, <i>bug fixes</i>, <b>support requests</b> or <i>new features</i>.<br/>
-            <p>
-                <a href="<?php echo $licensing_tab_url; ?>">Activate Your License Now!</a> <br/>
-                - OR - <br/>
-                <a target='_blank' href='https://duplicator.com/duplicator/pricing'>Purchase Now!</a> <br/>
-            </p>
-        </div>
-        <?php
+        DUP_PRO_UI_Notice::displayGeneralAdminNotice(
+            $htmlMsg,
+            DUP_PRO_UI_Notice::GEN_ERROR_NOTICE,
+            false,
+            [
+                'dup-license-message'
+            ],
+            [],
+            true
+        );
     }
 
     /**
@@ -228,20 +220,21 @@ class Notices
      */
     private static function showNoActivationsLeft()
     {
-        $licensing_tab_url = ControllersManager::getMenuLink(ControllersManager::SETTINGS_SUBMENU_SLUG, LicensingController::L2_SLUG_LICENSING);
-        $dashboard_url     = 'https://duplicator.com/dashboard';
-        $img_url           = plugins_url('duplicator-pro/assets/img/warning.png');
-
-        echo '<div class="update-nag dpro-admin-notice" style="font-size:1.2rem">' .
-        '<div style="text-align:center">' .
-        "<img src='$img_url' style='/* float:left; */text-align: center;margin: auto;padding:0 10px 0 5px; width:80px'>" .
-        '</div>' .
-        '<p style="text-align: center;font-size: 2rem;line-height: 2.7rem; margin-top:10px">' .
-        'Duplicator Pro\'s license is deactivated because you\'re out of site activations.</p>' .
-        "<p style='text-align: center;font-size: 1.3rem; line-height: 2.2rem'>" .
-        "Upgrade your license using the <a href='$dashboard_url' target='_blank'>Snap Creek Dashboard</a> or deactivate plugin on old sites.<br/>" .
-        "After making necessary changes <a href='" . esc_url($licensing_tab_url) . "'>refresh the license status.</a>" .
-        '</div>';
+        $htmlMsg = TplMng::getInstance()->render(
+            'licensing/notices/no_activation_left',
+            [],
+            false
+        );
+        DUP_PRO_UI_Notice::displayGeneralAdminNotice(
+            $htmlMsg,
+            DUP_PRO_UI_Notice::GEN_ERROR_NOTICE,
+            false,
+            [
+                'dup-license-message'
+            ],
+            [],
+            true
+        );
     }
 
     /**
@@ -252,28 +245,60 @@ class Notices
     private static function showExpired()
     {
         $license_key = get_option(License::LICENSE_KEY_OPTION_NAME, '');
-        $renewal_url = 'https://duplicator.com/checkout?edd_license_key=' . $license_key;
-        $txtTitle    = __('Warning! Your Duplicator Pro license has expired...', 'duplicator-pro');
-        $txtMsg1     = __('You\'re currently missing important updates for <b>security patches</b>, <i>bug fixes</i>, support requests, &amp; '
-            . '<u>new features</u>', 'duplicator-pro');
-        $txtMsg2     = __('Renew Now!', 'duplicator-pro');
-
-        //Styles go in admin-notices.css
-        $htmlMsg = "<span class='dashicons dashicons-admin-plugins dup-license-expired'></span>" .
-            "<b style='font-size:16px'>{$txtTitle}</b> <br/> {$txtMsg1}.<br/>" .
-            "<a target='_blank' href='{$renewal_url}'>{$txtMsg2}</a>";
-        \DUP_PRO_UI_Notice::displayGeneralAdminNotice(
+        $renewal_url = DUPLICATOR_PRO_BLOG_URL . 'checkout?edd_license_key=' . $license_key;
+        $htmlMsg     = TplMng::getInstance()->render(
+            'licensing/notices/expired',
+            [
+                'renewal_url' => $renewal_url
+            ],
+            false
+        );
+        DUP_PRO_UI_Notice::displayGeneralAdminNotice(
             $htmlMsg,
-            \DUP_PRO_UI_Notice::GEN_ERROR_NOTICE,
+            DUP_PRO_UI_Notice::GEN_ERROR_NOTICE,
+            false,
+            [
+                'dup-license-message'
+            ],
+            [],
+            true
+        );
+    }
+
+    /**
+     * Shows the expired message alert
+     *
+     * @return void
+     */
+    private static function showCloseToExpire()
+    {
+        if (
+            !CapMng::can(CapMng::CAP_LICENSE, false) ||
+            ExpireOptions::get(self::CLOSE_TO_EXPIRE_DISMISS)
+        ) {
+            return;
+        }
+
+        $license_key = get_option(License::LICENSE_KEY_OPTION_NAME, '');
+        $renewal_url = DUPLICATOR_PRO_BLOG_URL . 'checkout?edd_license_key=' . $license_key;
+        $htmlMsg     = TplMng::getInstance()->render(
+            'licensing/notices/close_to_expire',
+            [
+                'renewal_url' => $renewal_url
+            ],
+            false
+        );
+        DUP_PRO_UI_Notice::displayGeneralAdminNotice(
+            $htmlMsg,
+            DUP_PRO_UI_Notice::GEN_WARNING_NOTICE,
             true,
+            [
+                'dup-license-message'
+            ],
             array(
-                'duplicator-pro-admin-notice',
-                'dpro-admin-notice'
+                'data-to-dismiss' => self::CLOSE_TO_EXPIRE_DISMISS
             ),
-            array(
-                'data-to-dismiss' => self::OPTION_KEY_EXPIRED_LICENCE_NOTICE_DISMISS_TIME,
-                'title' => sprintf(__('Dismiss notice for %s days', 'duplicator-pro'), self::EXPIRED_LICENCE_NOTICE_DISMISS_FOR_DAYS)
-            )
+            true
         );
     }
 

@@ -23,8 +23,7 @@ class UCAdminNoticeBuilder extends UCAdminNoticeBuilderAbstract{
 	private $heading;
 	private $content;
 	private $actions = array();
-	
-	
+
 	/**
 	 * set the notice color
 	 */
@@ -81,11 +80,8 @@ class UCAdminNoticeBuilder extends UCAdminNoticeBuilderAbstract{
 	public function withDismissAction($text, $variant = self::ACTION_VARIANT_SECONDARY){
 
 		$ajaxUrl = $this->getDismissAjaxUrl();
-		$text = __("Dissmiss Notice","");
-		
-		$text = esc_attr($text);
-		
-		$action = '<a class="button button-' . $variant . '" href="#" title='.$text.' data-action="dismiss" data-ajax-url="' . esc_attr($ajaxUrl) . '">' . $text . '</a>';
+
+		$action = '<a class="button button-' . $variant . '" href="#" data-action="dismiss" data-ajax-url="' . esc_attr($ajaxUrl) . '">' . $text . '</a>';
 
 		return $this->addAction($action);
 	}
@@ -96,6 +92,7 @@ class UCAdminNoticeBuilder extends UCAdminNoticeBuilderAbstract{
 	public function withPostponeAction($text, $duration, $variant = self::ACTION_VARIANT_SECONDARY){
 
 		$ajaxUrl = $this->getPostponeAjaxUrl($duration);
+
 		$action = '<a class="button button-' . $variant . '" href="#" data-action="postpone" data-ajax-url="' . esc_attr($ajaxUrl) . '">' . $text . '</a>';
 
 		return $this->addAction($action);

@@ -98,8 +98,12 @@ class Daws
             $fileModeOverride         = SnapUtil::getArrayValue($params, 'file_mode_override', false, 0644);
             $includedFiles            = SnapUtil::getArrayValue($params, 'includedFiles', false, array());
             $directoryModeOverride    = SnapUtil::getArrayValue($params, 'dir_mode_override', false, 0755);
+            $keepFileTime             = SnapUtil::getArrayValue($params, 'keep_file_time', false, false);
 
-            $archveHeader                          = DupArchiveEngine::getArchiveHeader($archiveFilepath, Security::getInstance()->getArchivePassword());
+            $archveHeader                          = DupArchiveEngine::getArchiveHeader(
+                $archiveFilepath,
+                Security::getInstance()->getArchivePassword()
+            );
             $expandState                           = new DawsExpandState($archveHeader);
             $expandState->archivePath              = $archiveFilepath;
             $expandState->working                  = true;
@@ -113,6 +117,7 @@ class Daws
             $expandState->fileModeOverride         = $fileModeOverride;
             $expandState->directoryModeOverride    = $directoryModeOverride;
             $expandState->throttleDelayInUs        = 1000 * $throttleDelayInMs;
+            $expandState->keepFileTime             = $keepFileTime;
             $expandState->save();
 
             $action = 'expand';

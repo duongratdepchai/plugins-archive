@@ -162,7 +162,13 @@ if ( ! class_exists( 'Jet_Engine_Elementor_Frontend' ) ) {
 			add_action( 'elementor/frontend/before_get_builder_content', array( $this, 'maybe_reset_excerpt_flag' ), 10, 2 );
 			add_action( 'elementor/frontend/before_get_builder_content', array( $this, 'find_inner_templates' ) );
 
-			$content = Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $listing_id, $is_edit_mode );
+			/**
+			 * @since 3.2.3.1 get_builder_content_for_display() replaced with get_builder_content()
+			 * 
+			 * get_builder_content_for_display() caused errors in the editor after Elementor 3.15.0 update
+			 * It was related clearing controls stack before sending it to editor config.
+			 */
+			$content = Elementor\Plugin::instance()->frontend->get_builder_content( $listing_id, $is_edit_mode );
 
 			if ( $this->reset_excerpt_flag ) {
 				Elementor\Plugin::instance()->frontend->start_excerpt_flag( null );

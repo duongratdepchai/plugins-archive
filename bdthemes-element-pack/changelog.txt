@@ -1,3 +1,50 @@
+## 7.3.0 [30th July 2023]
+
+### Added
+
+- MP3 audio fallback added in Sound Effects Extensions
+- Row Gap option added in tabs widget
+
+### Updated
+
+- Cache Time feature updated in Facebook Feed & Facebook Carousel widgets
+
+### Fixed
+
+- Arrow icon issue fixed in sub menu widget
+- Lightbox conflict issue fixed in advanced image gallery widget
+- PHP warning issue fixed in Slider (Thanks to Dimon)
+
+## 7.2.0 [9th July 2023]
+
+### Added
+
+- Item wrapper link option added in product carousel widget
+- Link to button, title, image, item option added in static carousel widget
+- One column added in Logo Grid widget (Thanks to David Gilfillan)
+
+### Fixed
+
+- Z-Index fixed in Cursor Effect extension (Thanks to Kelley Wilson)
+- Swiper Library v8.45 compatiblity added in Remote Arrows, Fraction, Pagination and Thumbs widgets
+
+## 7.1.2 [21st June 2023]
+
+### Fixed
+
+- Elementor pro (swiper caroseul) Compatibility issue fixed
+
+## 7.1.1 [20th June 2023]
+
+### Added
+
+- Decimal Value will work in the Advanced Calculator widget
+
+### Fixed
+
+- WooCommerce 7.8 Compatibility issue fixed for Mini Cart (Thanks to Guy Whettam)
+- Image Mask issue fixed in Interactive card widget (Thanks to Sergio Sánchez López)
+
 ## 7.1.0 [8th June 2023]
 
 ### Added
@@ -5,14 +52,14 @@
 - Badge arrow option added in content switcher widget
 - Empty product icon size option added in wc mini cart widget
 - No events warning message added in Events Calendar widget (Thanks to Rory Smith)
-- Testimonial carousel widget quatation offset option added
+- Testimonial carousel widget quotation offset option added
 
 ### Fixed
 
 - Filter error fixed in WC Product widget(Thanks to Webber)
 - Style 4 border radius issue fixed in content switcher widget
 - Glitching issue fixed in Mega Menu widget(Thanks to Shawn Palmer)
-- Target blank issue fixed in Icon Mobile Menu widget(Thanks to Charles-Dominique MAZY)
+- Target blank issue fixed in Icon Mobile Menu widget (Thanks to Charles-Dominique MAZY)
 - Age Gate Blink Modal issue fixed
 
 ### Updated

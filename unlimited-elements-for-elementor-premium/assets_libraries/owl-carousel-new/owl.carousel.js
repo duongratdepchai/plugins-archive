@@ -1,5 +1,5 @@
 /**
-* Owl Carousel v2.3.8 - UE18
+* Owl Carousel v2.3.8 - UE19
 * Copyright 2013-2018 David Deutsch
 * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
 */
@@ -832,10 +832,11 @@
       var objChild = jQuery(this);          
       var objChildImg = objChild.find('img');
       
-      if(objChildImg.hasClass("lazyloading") == false)
+      if(objChildImg.hasClass("lazyloading") == false || objChildImg.hasClass("lazy-loaded") == false)
       return(false);
       
       objChildImg.removeClass("lazyloading");
+	  objChildImg.removeClass("lazy-loaded");
       
       var srcLazy = objChildImg.data("src");
       

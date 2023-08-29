@@ -180,7 +180,7 @@ class DUP_PRO_Server
                 true,
                 'https://www.php.net/manual/en/class.ziparchive.php',
                 '<i style="font-size:12px">'
-                   . '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-060-q" target="_blank">'
+                   . '<a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-work-with-the-different-zip-engines" target="_blank">'
                    . esc_html__('Overview on how to enable ZipArchive', 'duplicator-pro') . '</i></a>'
             );
         }

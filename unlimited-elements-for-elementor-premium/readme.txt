@@ -14,6 +14,20 @@ The best package of Free Elementor Addons. +100 Free Elementor Widgets, +10 Free
 
 == Description ==
 
+<h3>Celebrate our 4th  Birthday with us!! </h3>
+
+We are happy to announce 50% off all our pricing plans!!
+This offers you an incredible opportunity to become part of our growing community with over +200,000 happy users.
+Don't miss out on the biggest sale of the year. 
+The offer is for a limited time only!
+Check out the deal here: 
+
+<a href="https://unlimited-elements.com/pricing/">https://unlimited-elements.com/pricing</a>
+
+and learn how you can build better Elementor websites faster.
+It's time to give your Elementor website Superpowers.
+
+
 Take your Elementor page building experience to the next level with Unlimited Elements for Elementor. This is the last widget pack you will need. Find everything in one place and get more than +100 free widgets for your Elementor website. All our elements are easy to use and built with our unique Widget Creator framework. 
 <a href="https://unlimited-elements.com/elementor-widgets/">CHECK OUT THE DEMOS</a>
 <br>
@@ -1237,6 +1251,45 @@ Note : This plugin works with Elementor. Make sure you have [Elementor](https://
 3. Navigate to Unlimited Elements in the WordPress side menu and install the widget you want by hovering over it and clicking install.
 
 == Changelog ==
+
+version 1.5.75: 2023-07-05
+
+* Feature: added some suggestion text to add some memory in the troubleshooting section in case that needed
+* Fix: the wrong author was displayed in loop post meta data
+* Fix: do_shortcode to html items inside the grid and dynamic loop
+* Update: Updated Freemius SDK to the latest version
+
+
+version 1.5.74: 2023-07-04
+
+* Fix: show search widgets at plugin install.
+* Fix: menu picker depts in multisource
+* Fix: set the author data to be retrievable in dynamic grid template
+* Fix: show meta fields switcher didn't worked in multisource menu items
+
+
+version 1.5.73: 2023-06-26
+
+* Feature: added options for revisions in widget editor
+* Fix: added support for wordpress proxy in api calling
+* Fix: fixed empty post in query result
+* Fix: fixed "wrong template ID" elementor error in post accordion
+
+
+version 1.5.72: 2023-06-21
+
+* Fix: added the swf extension in the allowed files in assets
+* Feature: prepared the plugin for sort filter
+* Change: updated freemius sdk to 2.5.9
+
+
+version 1.5.71: 2023-06-20
+
+* Change: removed js includes of the forms and filters from backend editor
+* Change: changed colors of the free version notification in dark mode
+* Fix: fix the "link" type in wpml integration automatic translation
+* Feature: add support for the conditions in ue forms
+
 
 version 1.5.70 2023-06-19:
 

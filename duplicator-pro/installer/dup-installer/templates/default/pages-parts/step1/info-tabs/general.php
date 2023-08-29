@@ -30,9 +30,9 @@ $paramsManager = PrmMng::getInstance();
             <?php $paramsManager->getHtmlFormParam(PrmMng::PARAM_SUBSITE_OVERWRITE_MAPPING); ?>
         </div>
     <?php }
-    if (DUPX_InstallerState::isMultisiteInstallAvaiable()) {
+    if (DUPX_InstallerState::isMultisiteInstallAvaiable() && !DUPX_InstallerState::dbDoNothing()) {
         ?>
-        <div id="url-multisite-mapping-wrapper" class="<?php echo DUPX_InstallerState::isMultisiteInstall() ? '' : 'no-display'; ?>">
+        <div id="url-multisite-mapping-wrapper" class="<?php echo DUPX_InstallerState::isMultisiteInstall() ? '' : 'no-display'; ?> requires-db-hide">
             <?php  $paramsManager->getHtmlFormParam(PrmMng::PARAM_MU_REPLACE); ?>
         </div>
     <?php } ?>

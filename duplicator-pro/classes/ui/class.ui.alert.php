@@ -76,12 +76,17 @@ class DUP_PRO_UI_Alert
         }
 
         $html .= "</ul></div>";
-        DUP_PRO_UI_Notice::displayGeneralAdminNotice($html, DUP_PRO_UI_Notice::GEN_WARNING_NOTICE, true, array(
-                'duplicator-pro-admin-notice',
-                'dpro-admin-notice',
+        DUP_PRO_UI_Notice::displayGeneralAdminNotice(
+            $html,
+            DUP_PRO_UI_Notice::GEN_WARNING_NOTICE,
+            true,
+            array(
                 'dpro-yellow-border'
-            ), array(
+            ),
+            array(
                 'data-to-dismiss' => DUP_PRO_UI_Notice::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL
-            ), true);
+            ),
+            true
+        );
     }
 }

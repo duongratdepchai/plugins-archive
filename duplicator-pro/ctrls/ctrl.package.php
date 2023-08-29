@@ -52,17 +52,18 @@ class DUP_PRO_CTRL_Package extends DUP_PRO_CTRL_Base
             // Need to update both the template and the temporary package because:
             // 1) We need to preserve preferences of this build for future manual builds - the manual template is used for this.
             // 2) Temporary package is used during this build - keeps all the settings/storage information.  Will be inserted into the package table after they ok the scan results.
-            $template = DUP_PRO_Package_Template_Entity::get_manual_template();
-            if ($template->archive_filter_on) {
-                $template->archive_filter_dirs  = $template->archive_filter_dirs . (strlen($template->archive_filter_dirs) ? ';' : '') . SnapUtil::sanitizeNSChars($inputData['dir_paths']);
-                $template->archive_filter_files = $template->archive_filter_files . (strlen($template->archive_filter_files) ? ';' : '') . SnapUtil::sanitizeNSChars($inputData['file_paths']);
-            } else {
-                $template->archive_filter_dirs  = SnapUtil::sanitizeNSChars($inputData['dir_paths']);
-                $template->archive_filter_files = SnapUtil::sanitizeNSChars($inputData['file_paths']);
+            $template  = DUP_PRO_Package_Template_Entity::get_manual_template();
+            $dirPaths  = DUP_PRO_Archive::parseDirectoryFilter(SnapUtil::sanitizeNSChars($inputData['dir_paths']));
+            $filePaths = DUP_PRO_Archive::parseFileFilter(SnapUtil::sanitizeNSChars($inputData['file_paths']));
+
+            if (strlen($dirPaths) > 0) {
+                $template->archive_filter_dirs .= strlen($template->archive_filter_dirs) > 0 ? ';' . $dirPaths : $dirPaths;
             }
 
-            $template->archive_filter_dirs  = DUP_PRO_Archive::parseDirectoryFilter($template->archive_filter_dirs);
-            $template->archive_filter_files = DUP_PRO_Archive::parseDirectoryFilter($template->archive_filter_files);
+            if (strlen($filePaths) > 0) {
+                $template->archive_filter_files .= strlen($template->archive_filter_files) > 0 ? ';' . $filePaths : $filePaths;
+            }
+
             if (!$template->archive_filter_on) {
                 $template->archive_filter_exts = '';
             }
@@ -82,9 +83,7 @@ class DUP_PRO_CTRL_Package extends DUP_PRO_CTRL_Base
             $payload['filter-files'] = $temporary_package->Archive->FilterFiles;
             $payload['filter-names'] = $temporary_package->Archive->FilterNames;
             // RETURN RESULT
-            //$test = ($success) ? DUP_PRO_CTRL_Status::SUCCESS : DUP_PRO_CTRL_Status::FAILED;
-            $test = DUP_PRO_CTRL_Status::SUCCESS;
-            $result->process($payload, $test);
+            $result->process($payload, DUP_PRO_CTRL_Status::SUCCESS);
         } catch (Exception $exc) {
             $result->processError($exc);
         }

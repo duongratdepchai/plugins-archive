@@ -134,6 +134,7 @@ class Query {
 			// setup AJAX query args
 			$query_object->set_filtered_prop( 'meta_query', $query_args['meta_query'] );
 			$query_args['args'] = $query_object->final_query['args'];
+			unset($query_args['meta_query'] );
 		}
 
 		$args  = $content_type->prepare_query_args( $this->format_filter_args( $query_args ) );
@@ -416,7 +417,7 @@ class Query {
 		$item      = $this->get_current_item( $post_id, $post_type );
 
 		if ( ! $item ) {
-			return;
+			return $post;
 		}
 
 		foreach ( $item as $prop => $value ) {

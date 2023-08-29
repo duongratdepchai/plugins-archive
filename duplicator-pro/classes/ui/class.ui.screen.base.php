@@ -102,6 +102,18 @@ class DUP_PRO_UI_Screen
             .button-primary i[data-tooltip].fa-question-circle.dup-base-color {
                 color: <?php echo $colorScheme->colors[1]; ?>;
             }
+
+            .dup-radio-button-group-wrapper input[type="radio"] + label {
+                color: <?php echo $primaryButtonColor; ?>;
+                border-color: <?php echo $primaryButtonColor; ?>;
+            }
+
+            .dup-radio-button-group-wrapper input[type="radio"] + label:hover,
+            .dup-radio-button-group-wrapper input[type="radio"]:focus + label, 
+            .dup-radio-button-group-wrapper input[type="radio"]:checked + label {
+                background: <?php echo $primaryButtonColor; ?>;
+                border-color: <?php echo $primaryButtonColor; ?>;
+            }
         </style>
         <?php
     }
@@ -160,9 +172,9 @@ class DUP_PRO_UI_Screen
     {
         $content = DUP_PRO_U::__("<b>Need Help?</b>  Please check out these resources:"
             . "<ul class='dup-help-support'>"
-            . "<li><a href='https://snapcreek.com/duplicator/docs/guide{$guide}' class='dup-user-guide' target='_sc-faq'>Full Online User Guide</a></li>"
-            . "<li><a href='https://snapcreek.com/duplicator/docs/faqs-tech{$faq}' class='dup-faq' target='_sc-faq'>Frequently Asked Questions</a></li>"
-            . "<li><a href='https://snapcreek.com/duplicator/docs/quick-start/' class='dup-quick-start' target='_sc-faq'>Quick Start Guide</a></li>"
+            . "<li><a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . $guide . "' class='dup-user-guide' target='_sc-faq'>Full Online User Guide</a></li>"
+            . "<li><a href='" . DUPLICATOR_PRO_TECH_FAQ_URL . $faq . "' class='dup-faq' target='_sc-faq'>Frequently Asked Questions</a></li>"
+            . "<li><a href='" . DUPLICATOR_PRO_BLOG_URL . "knowledge-base-article-categories/quick-start/' class='dup-quick-start' target='_sc-faq'>Quick Start Guide</a></li>"
             . "</ul>");
 
         $this->screen->add_help_tab(array(

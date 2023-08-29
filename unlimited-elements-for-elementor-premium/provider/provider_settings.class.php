@@ -356,11 +356,17 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 	 */
 	protected function addMenuPicker($name, $value, $title, $extra){
 		
+		$useFor = UniteFunctionsUC::getVal($extra, "usefor");
+		
+		$showLimitedDepts = false;
+		if($useFor == "multisource")
+			$showLimitedDepts = true;
+		
+		
 		$arrMenus = array();
 		
 		//if(GlobalsUC::$is_admin == true)
 			$arrMenus = UniteFunctionsWPUC::getMenusListShort();
-		
 		
 		$menuID = UniteFunctionsUC::getVal($value, $name."_id");
 		
@@ -375,12 +381,16 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		$this->addSelect($name."_id", $arrMenus, __("Select Menu", "unlimited-elements-for-elementor"), $menuID, $params);
 		
 		//add depth
+		
 		$arrDepth = array();
 		$arrDepth["0"] = __("All Depths", "unlimited-elements-for-elementor");
 		$arrDepth["1"] = __("1", "unlimited-elements-for-elementor");
-		$arrDepth["2"] = __("2", "unlimited-elements-for-elementor");
-		$arrDepth["3"] = __("3", "unlimited-elements-for-elementor");
 		
+		if($showLimitedDepts == false){
+			$arrDepth["2"] = __("2", "unlimited-elements-for-elementor");
+			$arrDepth["3"] = __("3", "unlimited-elements-for-elementor");
+		}
+				
 		$arrDepth = array_flip($arrDepth);
 		$depth = UniteFunctionsUC::getVal($value, $name."_depth", "0");
 				
@@ -1196,6 +1206,7 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 			
 			if($isForWooProducts == true)
 				$maxPostsPerPage = UniteCreatorWooIntegrate::getDefaultCatalogNumPosts();
+
 			
 			$this->addStaticText("The current $textPosts are being used in archive pages. Posts per page: {$maxPostsPerPage}. Set this option in Settings -> Reading ", $name."_currenttext", $params);
 			
@@ -1213,7 +1224,7 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 						
 			$this->addStaticText($staticText, $name."_relatedtext", $params);
 			
-		}
+		}//if current posts
 		
 		//----- post type -----
 		
@@ -1994,14 +2005,13 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		
 		
 		//------- max items for current --------
-		
+				
 		$params = array("unit"=>"posts");
 		
 		if(empty($defaultMaxPosts))
 			$defaultMaxPosts = 10;
-				
+		
 		$params["origtype"] = UniteCreatorDialogParam::PARAM_TEXTFIELD;
-		$params["placeholder"] = $maxPostsPerPage;
 		
 		$params["description"] = sprintf(__("Override Number Of %s, leave empty for default. If you are using pagination widget, leave it empty", "unlimited-elements-for-elementor"),$textPosts);
 		
@@ -2052,9 +2062,7 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		$params["add_dynamic"] = false;
 		
 		$this->addTextBox($name."_orderby_meta_key1", "" , __("&nbsp;&nbsp;Custom Field Name","unlimited-elements-for-elementor"), $params);
-		
-		$this->addControl($name."_orderby", $name."_orderby_meta_key1", "show", UniteFunctionsWPUC::SORTBY_META_VALUE.",".UniteFunctionsWPUC::SORTBY_META_VALUE_NUM);
-		
+				
 		//---- order dir -----
 		
 		$params = array();

@@ -216,7 +216,7 @@ class BootstrapView
             Please Note: ZipArchive or ShellExec Unzip will need to be enabled for the installer to
             run automatically otherwise a manual extraction
             will need to be performed. In order to run the installer manually follow the instructions to
-            <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q' target='_blank'>
+            <a href='https://duplicator.com/knowledge-base/how-to-handle-various-install-scenarios' target='_blank'>
                 manually extract
             </a> before running the installer.
         </div>

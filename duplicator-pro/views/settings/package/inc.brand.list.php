@@ -92,8 +92,8 @@ TOOL-BAR -->
         <tr>
             <td>
                 <select id="bulk_action">
-                    <option value="-1" selected="selected"><?php _e("Bulk Actions"); ?></option>
-                    <option value="delete" title="<?php DUP_PRO_U::esc_attr_e('Delete selected brand endpoint(s)'); ?>"><?php _e("Delete"); ?></option>
+                    <option value="-1" selected="selected"><?php _e('Bulk Actions', 'duplicator-pro'); ?></option>
+                    <option value="delete" title="<?php DUP_PRO_U::esc_attr_e('Delete selected brand endpoint(s)'); ?>"><?php _e('Delete', 'duplicator-pro'); ?></option>
                 </select>
                 <input type="button" class="button action" value="<?php DUP_PRO_U::esc_html_e("Apply") ?>" onclick="DupPro.Settings.Brand.BulkAction()">
             </td>

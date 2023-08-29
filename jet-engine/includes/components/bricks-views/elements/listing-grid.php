@@ -1,5 +1,4 @@
 <?php
-
 namespace Jet_Engine\Bricks_Views\Elements;
 
 use Jet_Engine\Bricks_Views\Helpers\Options_Converter;
@@ -194,11 +193,22 @@ class Listing_Grid extends Base {
 			[
 				'tab'     => 'content',
 				'label'   => esc_html__( 'Columns', 'jet-engine' ),
-				'type'    => 'number',
+				'type'    => 'select',
 				'inline'  => true,
 				'default' => 3,
-				'min'     => 1,
-				'max'     => 10,
+				'options' => array(
+					1  => 1,
+					2  => 2,
+					3  => 3,
+					4  => 4,
+					5  => 5,
+					6  => 6,
+					7  => 7,
+					8  => 8,
+					9  => 9,
+					10 => 10,
+					'auto' => __( 'Auto', 'jet-engine' ),
+				),
 				'css'     => [
 					[
 						'property' => '--columns',
@@ -206,6 +216,19 @@ class Listing_Grid extends Base {
 					],
 				],
 			],
+		);
+
+		$this->register_jet_control(
+			'column_min_width',
+			array(
+				'label'    => __( 'Column Min Width', 'jet-engine' ),
+				'type'     => 'number',
+				'default'  => 240,
+				'min'      => 0,
+				'max'      => 1600,
+				'step'     => 1,
+				'required' => [ 'columns', '=', 'auto' ],
+			)
 		);
 
 		$this->register_jet_control(
@@ -327,10 +350,11 @@ class Listing_Grid extends Base {
 		$this->register_jet_control(
 			'is_masonry',
 			[
-				'tab'     => 'content',
-				'label'   => esc_html__( 'Is masonry grid', 'jet-engine' ),
-				'type'    => 'checkbox',
-				'default' => false,
+				'tab'      => 'content',
+				'label'    => esc_html__( 'Is masonry grid', 'jet-engine' ),
+				'type'     => 'checkbox',
+				'default'  => false,
+				'required' => [ 'columns', '!=', 'auto' ],
 			]
 		);
 
@@ -1304,7 +1328,7 @@ class Listing_Grid extends Base {
 
 	// Enqueue element styles and scripts
 	public function enqueue_scripts() {
-		$this->get_jet_render_instance()->enqueue_assets( $this->get_jet_settings() );
+		$this->get_jet_render_instance( [ 'inline_columns_css' => true ] )->enqueue_assets( $this->get_jet_settings() );
 		wp_enqueue_style( 'jet-engine-frontend' );
 	}
 
@@ -1317,6 +1341,7 @@ class Listing_Grid extends Base {
 
 		$this->set_attribute( '_root', 'class', 'brxe-' . $this->id );
 		$this->set_attribute( '_root', 'class', 'brxe-jet-listing-el' );
+		$this->set_attribute( '_root', 'class', 'jet-listing-base' );
 		$this->set_attribute( '_root', 'data-element-id', $this->id );
 		$this->set_attribute( '_root', 'data-listing-type', 'bricks' );
 
@@ -1331,7 +1356,7 @@ class Listing_Grid extends Base {
 
 		$this->enqueue_scripts();
 
-		$render = $this->get_jet_render_instance();
+		$render = $this->get_jet_render_instance( [ 'inline_columns_css' => true ] );
 
 		// STEP: Listing renderer class not found: Show placeholder text
 		if ( ! $render ) {

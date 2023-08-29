@@ -43,6 +43,7 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 	private $isInsideParent = false;
 	private $isWebCatalogMode = false;
 	private $showAddonFilters = true;
+	private $showAddonFilters_catalog = true;
 	
 	public static $stateLabelCounter = 0;
 	
@@ -1686,8 +1687,8 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 			 isset($arrCats["Uncategorized"]))  && 
 			empty($params) && 
 			$filterCatalog == self::FILTER_CATALOG_MIXED){
-							
-			$this->showAddonFilters = false;
+			
+			$this->showAddonFilters_catalog = false;
 		}
 		
 		if(empty($params))
@@ -2012,7 +2013,10 @@ class UniteCreatorManagerAddonsWork extends UniteCreatorManager{
 					$this->putItemsFilters_active();
 			?>
 			
-			<?php $this->putFiltersCatalog()?>
+			<?php 
+				if($this->showAddonFilters_catalog == true)
+					$this->putFiltersCatalog()
+			?>
 			
 			<?php 
 				if($this->enableSearchFilter == true)

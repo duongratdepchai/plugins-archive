@@ -153,7 +153,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
     {
         parent::__construct();
         $this->verifiers['name']       = new DUP_PRO_Required_Verifier("Name must not be blank");
-        $this->name                    = DUP_PRO_U::__('New Storage');
+        $this->name                    = __('New Storage', "duplicator-pro");
         $this->dropbox_storage_folder  = self::get_default_storage_folder();
         $this->ftp_storage_folder      = '/' . self::get_default_storage_folder();
         $this->sftp_storage_folder     = '/';
@@ -334,7 +334,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
         $this->sftp_disable_chunking_mode   = $source_storage->sftp_disable_chunking_mode;
         $this->local_storage_folder         = $source_storage->local_storage_folder;
         $this->local_max_files              = $source_storage->local_max_files;
-        $this->name                         = sprintf(DUP_PRO_U::__('%1$s - Copy'), $source_storage->name);
+        $this->name                         = sprintf(__('%1$s - Copy', "duplicator-pro"), $source_storage->name);
         $this->notes                        = $source_storage->notes;
         $this->storage_type                 = $source_storage->storage_type;
         $this->gdrive_access_token_set_json = $source_storage->gdrive_access_token_set_json;
@@ -535,7 +535,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
 
     public function purge_old_onedrive_packages($onedrive)
     {
-        DUP_PRO_Log::trace("Starting purging of old packages in OneDrive");
+        DUP_PRO_Log::trace("Starting purge of old packages in OneDrive");
         $global            = DUP_PRO_Global_Entity::getInstance();
         $storage_folder_id = $this->onedrive_storage_folder_id;
         $package_items     = $onedrive->fetchDriveItems($storage_folder_id);
@@ -555,7 +555,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
             //$archive_name = pathinfo($archive->getName())["filename"];
             $pathinfo     = pathinfo($archive->getName());
             $archive_name = $pathinfo["filename"];
-            DUP_PRO_Log::trace($archive_name);
+            DUP_PRO_Log::trace($archive_name . ", looking for installer for this archive.");
             $archive_name = str_replace('_archive', '', $archive_name);
             foreach ($installers as $installer) {
                 //$installer_name = pathinfo($installer->getName())["filename"];
@@ -565,12 +565,13 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                 DUP_PRO_Log::trace($installer_name);
                 $installer_name = str_replace('_installer', '', $installer_name);
                 if ($archive_name == $installer_name) {
+                    DUP_PRO_Log::trace("Found installer for the archive. Adding them to complete_packages.");
                     $complete_packages[] = array(
                         "archive_id"    => $archive->getId(),
                         "installer_id"  => $installer->getId(),
                         "created_time"  => $archive->getCreatedTime(),
                     );
-                    DUP_PRO_Log::trace(print_r($archive, true));
+                    break;
                 }
             }
         }
@@ -1045,23 +1046,23 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
     {
         switch ($this->storage_type) {
             case DUP_PRO_Storage_Types::Local:
-                return DUP_PRO_U::__('Local');
+                return __('Local', "duplicator-pro");
             case DUP_PRO_Storage_Types::Dropbox:
-                return DUP_PRO_U::__('Dropbox');
+                return __('Dropbox', "duplicator-pro");
             case DUP_PRO_Storage_Types::FTP:
-                return DUP_PRO_U::__('FTP');
+                return __('FTP', "duplicator-pro");
             case DUP_PRO_Storage_Types::SFTP:
-                return DUP_PRO_U::__('SFTP');
+                return __('SFTP', "duplicator-pro");
             case DUP_PRO_Storage_Types::GDrive:
-                return DUP_PRO_U::__('Google Drive');
+                return __('Google Drive', "duplicator-pro");
             case DUP_PRO_Storage_Types::S3:
-                return $this->s3_is_amazon() ? DUP_PRO_U::__('Amazon S3') : DUP_PRO_U::__('S3-Compatible (Generic)');
+                return $this->s3_is_amazon() ? __('Amazon S3', "duplicator-pro") : __('S3-Compatible (Generic)', "duplicator-pro");
             case DUP_PRO_Storage_Types::OneDrive:
-                return DUP_PRO_U::__('OneDrive (v0.1)');
+                return __('OneDrive (v0.1)', "duplicator-pro");
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                return DUP_PRO_U::__('OneDrive');
+                return __('OneDrive', "duplicator-pro");
             default:
-                return DUP_PRO_U::__('Unknown');
+                return __('Unknown', "duplicator-pro");
         }
     }
 
@@ -1073,26 +1074,26 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                 $text = __('Copying to directory:', 'duplicator-pro') . '<br>' . $this->get_storage_folder();
                 break;
             case DUP_PRO_Storage_Types::Dropbox:
-                $text = sprintf(DUP_PRO_U::__('Transferring to Dropbox folder:<br/> <i>%1$s</i>'), $this->get_storage_folder());
+                $text = sprintf(__('Transferring to Dropbox folder:<br/> <i>%1$s</i>', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::FTP:
-                $text = sprintf(DUP_PRO_U::__('Transferring to FTP server %1$s in folder:<br/> <i>%2$s</i>'), $this->ftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Transferring to FTP server %1$s in folder:<br/> <i>%2$s</i>', "duplicator-pro"), $this->ftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::SFTP:
-                $text = sprintf(DUP_PRO_U::__('Transferring to SFTP server %1$s in folder:<br/> <i>%2$s</i>'), $this->sftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Transferring to SFTP server %1$s in folder:<br/> <i>%2$s</i>', "duplicator-pro"), $this->sftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::GDrive:
-                $text = sprintf(DUP_PRO_U::__('Transferring to Google Drive folder:<br/> <i>%1$s</i>'), $this->get_storage_folder());
+                $text = sprintf(__('Transferring to Google Drive folder:<br/> <i>%1$s</i>', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::S3:
-                $text = sprintf(DUP_PRO_U::__('Transferring to S3 (or S3 Compatible) folder:<br/> <i>%1$s</i>'), $this->get_storage_folder());
+                $text = sprintf(__('Transferring to S3 (or S3 Compatible) folder:<br/> <i>%1$s</i>', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::OneDrive:
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                $text = sprintf(DUP_PRO_U::__('Transferring to OneDrive folder:<br/> <i>%1$s</i>'), $this->get_storage_folder());
+                $text = sprintf(__('Transferring to OneDrive folder:<br/> <i>%1$s</i>', "duplicator-pro"), $this->get_storage_folder());
                 break;
             default:
-                $text = DUP_PRO_U::__('Transferring to unknown storage type');
+                $text = __('Transferring to unknown storage type', "duplicator-pro");
         }
         return $text;
     }
@@ -1102,26 +1103,26 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
         $text = '';
         switch ($this->storage_type) {
             case DUP_PRO_Storage_Types::Local:
-                $text = sprintf(DUP_PRO_U::__('Copy to directory %1$s is pending'), $this->get_storage_folder());
+                $text = sprintf(__('Copy to directory %1$s is pending', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::Dropbox:
-                $text = sprintf(DUP_PRO_U::__('Transfer to Dropbox folder %1$s is pending'), $this->get_storage_folder());
+                $text = sprintf(__('Transfer to Dropbox folder %1$s is pending', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::FTP:
-                $text = sprintf(DUP_PRO_U::__('Transfer to FTP server %1$s in folder %2$s is pending'), $this->ftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Transfer to FTP server %1$s in folder %2$s is pending', "duplicator-pro"), $this->ftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::SFTP:
-                $text = sprintf(DUP_PRO_U::__('Transfer to SFTP server %1$s in folder %2$s is pending'), $this->sftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Transfer to SFTP server %1$s in folder %2$s is pending', "duplicator-pro"), $this->sftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::GDrive:
-                $text = sprintf(DUP_PRO_U::__('Transfer to Google Drive folder %1$s is pending'), $this->get_storage_folder());
+                $text = sprintf(__('Transfer to Google Drive folder %1$s is pending', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::S3:
-                $text = sprintf(DUP_PRO_U::__('Transfer to S3 (or S3 Compatible) folder %1$s is pending'), $this->get_storage_folder());
+                $text = sprintf(__('Transfer to S3 (or S3 Compatible) folder %1$s is pending', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::OneDrive:
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                $text = sprintf(DUP_PRO_U::__('Transfer to OneDrive folder %1$s is pending'), $this->get_storage_folder());
+                $text = sprintf(__('Transfer to OneDrive folder %1$s is pending', "duplicator-pro"), $this->get_storage_folder());
                 break;
         }
         return $text;
@@ -1132,26 +1133,26 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
         $text = '';
         switch ($this->storage_type) {
             case DUP_PRO_Storage_Types::Local:
-                $text = sprintf(DUP_PRO_U::__('Failed to copy to directory %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Failed to copy to directory %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::Dropbox:
-                $text = sprintf(DUP_PRO_U::__('Failed to transfer to Dropbox folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Failed to transfer to Dropbox folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::FTP:
-                $text = sprintf(DUP_PRO_U::__('Failed to transfer to FTP server %1$s in folder %2$s'), $this->ftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Failed to transfer to FTP server %1$s in folder %2$s', "duplicator-pro"), $this->ftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::SFTP:
-                $text = sprintf(DUP_PRO_U::__('Failed to transfer to SFTP server %1$s in folder %2$s'), $this->sftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Failed to transfer to SFTP server %1$s in folder %2$s', "duplicator-pro"), $this->sftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::GDrive:
-                $text = sprintf(DUP_PRO_U::__('Failed to transfer to Google Drive folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Failed to transfer to Google Drive folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::S3:
-                $text = sprintf(DUP_PRO_U::__('Failed to transfer to S3 (or S3 Compatible) folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Failed to transfer to S3 (or S3 Compatible) folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::OneDrive:
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                $text = sprintf(DUP_PRO_U::__('Failed to transfer to OneDrive folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Failed to transfer to OneDrive folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
         }
         return $text;
@@ -1162,26 +1163,26 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
         $text = '';
         switch ($this->storage_type) {
             case DUP_PRO_Storage_Types::Local:
-                $text = sprintf(DUP_PRO_U::__('Cancelled before could copy to directory %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Cancelled before could copy to directory %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::Dropbox:
-                $text = sprintf(DUP_PRO_U::__('Cancelled before could transfer to Dropbox folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Cancelled before could transfer to Dropbox folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::FTP:
-                $text = sprintf(DUP_PRO_U::__('Cancelled before could transfer to FTP server:<br/>%1$s in folder %2$s'), $this->ftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Cancelled before could transfer to FTP server:<br/>%1$s in folder %2$s', "duplicator-pro"), $this->ftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::SFTP:
-                $text = sprintf(DUP_PRO_U::__('Cancelled before could transfer to SFTP server:<br/>%1$s in folder %2$s'), $this->sftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Cancelled before could transfer to SFTP server:<br/>%1$s in folder %2$s', "duplicator-pro"), $this->sftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::GDrive:
-                $text = sprintf(DUP_PRO_U::__('Cancelled before could transfer to Google Drive folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Cancelled before could transfer to Google Drive folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::S3:
-                $text = sprintf(DUP_PRO_U::__('Cancelled before could transfer to S3 (or S3 Compatible) folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Cancelled before could transfer to S3 (or S3 Compatible) folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::OneDrive:
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                $text = sprintf(DUP_PRO_U::__('Cancelled before could transfer to OneDrive folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Cancelled before could transfer to OneDrive folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
         }
         return $text;
@@ -1192,26 +1193,26 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
         $text = '';
         switch ($this->storage_type) {
             case DUP_PRO_Storage_Types::Local:
-                $text = sprintf(DUP_PRO_U::__('Copied package to directory %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Copied package to directory %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::Dropbox:
-                $text = sprintf(DUP_PRO_U::__('Transferred package to Dropbox folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Transferred package to Dropbox folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::FTP:
-                $text = sprintf(DUP_PRO_U::__('Transferred package to FTP server:<br/>%1$s in folder %2$s'), $this->ftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Transferred package to FTP server:<br/>%1$s in folder %2$s', "duplicator-pro"), $this->ftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::SFTP:
-                $text = sprintf(DUP_PRO_U::__('Transferred package to SFTP server:<br/>%1$s in folder %2$s'), $this->sftp_server, $this->get_storage_folder());
+                $text = sprintf(__('Transferred package to SFTP server:<br/>%1$s in folder %2$s', "duplicator-pro"), $this->sftp_server, $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::GDrive:
-                $text = sprintf(DUP_PRO_U::__('Transferred package to Google Drive folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Transferred package to Google Drive folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::S3:
-                $text = sprintf(DUP_PRO_U::__('Transferred package to S3 (or S3 Compatible) folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Transferred package to S3 (or S3 Compatible) folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
             case DUP_PRO_Storage_Types::OneDrive:
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                $text = sprintf(DUP_PRO_U::__('Transferred package to OneDrive folder %1$s'), $this->get_storage_folder());
+                $text = sprintf(__('Transferred package to OneDrive folder %1$s', "duplicator-pro"), $this->get_storage_folder());
                 break;
         }
         return $text;
@@ -1265,7 +1266,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
     {
 
         if ($this->id == DUP_PRO_Virtual_Storage_IDs::Default_Local) {
-            DUP_PRO_Log::infoTrace("SUCCESS: copied to default location: " . DUPLICATOR_PRO_SSDIR_PATH);
+            DUP_PRO_Log::infoTrace("SUCCESS: package is in default location: " . DUPLICATOR_PRO_SSDIR_PATH);
             // It's the default local storage location so do nothing - it's already there
             $upload_info->copied_archive   = true;
             $upload_info->copied_installer = true;
@@ -1293,22 +1294,22 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
 
         switch ($storageUpload->start()) {
             case StorageUploadChunkFiles::CHUNK_COMPLETE:
-                DUP_PRO_Log::trace('CHUNK LOCAL UPLOAD COMPLETE');
+                DUP_PRO_Log::trace('LOCAL UPLOAD IN CHUNKS COMPLETED');
                 $upload_info->copied_installer = true;
                 $upload_info->copied_archive   = true;
 
                 if ($this->local_max_files > 0) {
-                    DUP_PRO_Log::trace('Trying to purge local');
+                    DUP_PRO_Log::trace('Purge old local packages');
                     $this->purge_old_local_packages();
                 }
                 break;
             case StorageUploadChunkFiles::CHUNK_STOP:
-                DUP_PRO_Log::trace('CHUNK LOCAL UPLOAD NOT COMPLETE >> CONTINUE NEXT CHUNK');
+                DUP_PRO_Log::trace('LOCAL UPLOAD IN CHUNKS NOT COMPLETED >> CONTINUE NEXT CHUNK');
                 //do nothing for now
                 break;
             case StorageUploadChunkFiles::CHUNK_ERROR:
             default:
-                DUP_PRO_Log::infoTrace('Chunk upload error: ' . $storageUpload->getLastErrorMessage());
+                DUP_PRO_Log::infoTrace('Local upload in chunks, upload error: ' . $storageUpload->getLastErrorMessage());
                 $upload_info->failed = true;
         }
         $package->update();
@@ -1316,20 +1317,28 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
 
     private function copy_to_dropbox(DUP_PRO_Package $package, DUP_PRO_Package_Upload_Info $upload_info)
     {
+        DUP_PRO_Log::trace("Copying to Dropbox storage");
+
         $source_archive_filepath   = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Archive);
         $source_installer_filepath = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Installer);
 
+        if ($source_archive_filepath === false) {
+            DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
+            $upload_info->failed = true;
+        }
+
+        if ($source_installer_filepath === false) {
+            DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
+            $upload_info->failed = true;
+        }
+
+        if ($upload_info->failed == true) {
+            DUP_PRO_Log::infoTrace('Dropbox storage failed flag ($upload_info->failed) has been already set.');
+            $package->update();
+            return;
+        }
+
         try {
-            if ($source_archive_filepath === false) {
-                $upload_info->failed = true;
-                throw new Exception("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
-            }
-
-            if ($source_installer_filepath === false) {
-                $upload_info->failed = true;
-                throw new Exception("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
-            }
-
             $dropbox                 = $this->get_dropbox_client(false);
             $dropbox_archive_path    = basename($source_archive_filepath);
             $dropbox_archive_path    = $this->dropbox_storage_folder . "/$dropbox_archive_path";
@@ -1340,7 +1349,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                 DUP_PRO_Log::trace("ATTEMPT: Dropbox upload installer file $source_installer_filepath to $dropbox_installer_path");
                 $installer_meta = $dropbox->UploadFile($source_installer_filepath, $dropbox_installer_path, $dest_installer_filename);
                 if (!$dropbox->checkFileHash($installer_meta, $source_installer_filepath)) {
-                    throw new Exception("**ERROR: installer upload to DropBox" . $dropbox_installer_path . ". Uploaded installer file may be corrupted. Hashes doesn't match.");
+                    throw new Exception("**ERROR: installer upload to DropBox" . $dropbox_installer_path . ". Uploaded installer file may be corrupted. Hashes don't match.");
                 }
 
                 DUP_PRO_Log::infoTrace("SUCCESS: installer upload to DropBox " . $dropbox_installer_path);
@@ -1393,7 +1402,9 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
 
                     $upload_info->copied_archive = true;
                     if ($this->dropbox_max_files > 0) {
+                        DUP_PRO_Log::infoTrace("Attempting to purge old packages at Dropbox storage.");
                         $this->purge_old_dropbox_packages($dropbox);
+                        DUP_PRO_Log::infoTrace("Purge of old packages at Dropbox storage completed.");
                     }
                 }
             } else {
@@ -1404,7 +1415,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
             DUP_PRO_Log::trace("Exception caught copying package $package->Name to $this->dropbox_storage_folder. " . $e->getMessage());
         }
 
-        if ($upload_info->failed) {
+        if ($upload_info->failed) { // @phpstan-ignore-line
             DUP_PRO_Log::infoTrace('Dropbox storage failed flag ($upload_info->failed) has been already set.');
         }
 
@@ -1414,134 +1425,147 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
 
     private function copy_to_onedrive(DUP_PRO_Package $package, DUP_PRO_Package_Upload_Info $upload_info)
     {
+        DUP_PRO_Log::trace("Copying to OneDrive storage");
+
         $source_archive_filepath   = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Archive);
         $source_installer_filepath = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Installer);
-        if ($source_archive_filepath !== false) {
-            if ($source_installer_filepath !== false) {
-                $onedrive                = $this->get_onedrive_client();
-                $onedrive_archive_path   = basename($source_archive_filepath);
-                $onedrive_archive_path   = $this->get_sanitized_storage_folder() . $onedrive_archive_path;
-                $onedrive_installer_name = $package->Installer->getInstallerName();
-                $onedrive_installer_path = $this->get_sanitized_storage_folder() . $onedrive_installer_name;
-                try {
-                    $folder_id = $this->onedrive_storage_folder_id;
-                    if (!$folder_id) {
-                        $this->get_onedrive_storage_folder();
-                    }
-                    if (!$upload_info->copied_installer) {
-                        DUP_PRO_Log::trace("ATTEMPT: OneDrive upload installer file $source_installer_filepath to $onedrive_installer_path");
-                        $onedrive->uploadFileChunk($source_installer_filepath, $onedrive_installer_path);
-                        try {
-                            if ($onedrive->RUploader->sha1CheckSum($source_installer_filepath)) {
-                                DUP_PRO_Log::infoTrace("SUCCESS: installer upload to OneDrive " . $onedrive_installer_path);
-                                $upload_info->copied_installer = true;
-                                $upload_info->progress         = 5;
-                                // The package update will automatically capture the upload_info since its part of the package
-                                $package->update();
-                            } else {
-                                DUP_PRO_Log::infoTrace("FAIL: installer upload to OneDrive $onedrive_installer_path. The uploaded Uploaded installer file is corrupted, the sha1 hashes don't match!");
-                                $upload_info->increase_failure_count();
-                            }
-                        } catch (Exception $exception) {
-                            if ($exception->getCode() == 404 && $onedrive->isBusiness()) {
-                                DUP_PRO_Log::infoTrace("SUCCESS: installer upload to OneDrive " . $onedrive_installer_path);
-                                $upload_info->copied_installer = true;
-                                $upload_info->progress         = 5;
-                                // The package update will automatically capture the upload_info since its part of the package
-                                $package->update();
-                            } else {
-                                DUP_PRO_Log::traceError("FAIL: installer upload to OneDrive $onedrive_installer_path. An error occurred while checking the file checksum. Exception message: " . $exception->getMessage());
-                                $upload_info->increase_failure_count();
-                            }
-                        }
-                    } else {
-                        DUP_PRO_Log::trace("Already copied installer on previous execution of Onedrive $this->name so skipping");
-                    }
-                    if (!$upload_info->copied_archive) {
-                        /* Delete the archive if we are just starting it (in the event they are pushing another copy */
-                        if ($upload_info->archive_offset == 0) {
-                            DUP_PRO_Log::trace("Archive offset is 0 so try to delete $onedrive_archive_path");
-                            try {
-                                $onedrive_archive = $onedrive->fetchDriveItemByPath($onedrive_archive_path);
-                                $onedrive->deleteDriveItem($onedrive_archive->getId());
-                            } catch (Exception $ex) {
-                                // Burying exceptions
-                            }
-                        }
 
-                        /* @var $global DUP_PRO_Global_Entity */
-                        $global = DUP_PRO_Global_Entity::getInstance();
-                        if ($upload_info->data != '' && $upload_info->data2 != '') {
-                            $resumable = (object)array(
-                                "uploadUrl" => $upload_info->data,
-                                "expirationTime" => $upload_info->data2
-                            );
-                            $onedrive->uploadFileChunk($source_archive_filepath, null, $resumable, $global->php_max_worker_time_in_sec, (50 + $this->throttleDelayInUs), $upload_info->archive_offset);
-                        } else {
-                            $onedrive->uploadFileChunk($source_archive_filepath, $onedrive_archive_path, null, $global->php_max_worker_time_in_sec, (50 + $this->throttleDelayInUs), $upload_info->archive_offset);
-                        }
-
-                        /* @var $onedrive_upload_info \Krizalys\Onedrive\ResumableUploader */
-                        $onedrive_upload_info = $onedrive->RUploader;
-                        $upload_info->data    = $onedrive_upload_info->getUploadUrl();
-                        $upload_info->data2   = $onedrive_upload_info->getExpirationTime();
-                        if ($onedrive_upload_info->getError() == null) {
-                            // Clear the failure count - we are just looking for consecutive errors
-                            $upload_info->failure_count  = 0;
-                            $upload_info->archive_offset = $onedrive_upload_info->getUploadOffset();
-                            $file_size                   = filesize($source_archive_filepath);
-                            $upload_info->progress       = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
-                            DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
-                            if ($onedrive_upload_info->completed()) {
-                                try {
-                                    if ($onedrive_upload_info->sha1CheckSum($source_archive_filepath)) {
-                                        DUP_PRO_Log::infoTrace("SUCCESS: archive upload to OneDrive.");
-                                        $upload_info->archive_offset = $file_size;
-                                        $upload_info->copied_archive = true;
-                                        $this->purge_old_onedrive_packages($onedrive);
-                                    } else {
-                                        DUP_PRO_Log::infoTrace("FAIL: archive upload to OneDrive. sha1 hashes don't match!");
-                                        $this->set_onedrive_archive_offset($upload_info, $onedrive_upload_info);
-                                        $upload_info->increase_failure_count();
-                                    }
-                                } catch (Exception $exception) {
-                                    if ($exception->getCode() == 404 && $onedrive->isBusiness()) {
-                                        DUP_PRO_Log::infoTrace("SUCCESS: archive upload to OneDrive.");
-                                        $upload_info->archive_offset = $file_size;
-                                        $upload_info->copied_archive = true;
-                                        $this->purge_old_onedrive_packages($onedrive);
-                                    } else {
-                                        DUP_PRO_Log::infoTrace("FAIL: archive upload to OneDrive. An error occurred while checking the file checksum. Exception message: " . $exception->getMessage());
-                                        $upload_info->increase_failure_count();
-                                    }
-                                }
-                            }
-                        } else {
-                            DUP_PRO_Log::traceError("FAIL: archive upload to OneDrive. An error occurred while checking the file checksum. Error message: " . $onedrive_upload_info->getError());
-                            // error_log("* Else Problem uploading archive for package $package->Name: ".$onedrive_upload_info->getError());
-
-                            // Could have partially uploaded so retain that offset.
-                            $this->set_onedrive_archive_offset($upload_info, $onedrive_upload_info);
-                            $upload_info->increase_failure_count();
-                        }
-                    } else {
-                        DUP_PRO_Log::trace("Already copied archive on previous execution of Onedrive $this->name so skipping");
-                    }
-                } catch (Exception $e) {
-                    DUP_PRO_Log::trace("Exception caught copying package $package->Name to $this->onedrive_storage_folder. " . $e->getMessage());
-                    $this->set_onedrive_archive_offset($upload_info, (isset($onedrive_upload_info) ? $onedrive_upload_info : null));
-                    $upload_info->increase_failure_count();
-                }
-            } else {
-                DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
-                $upload_info->failed = true;
-            }
-        } else {
+        if ($source_archive_filepath === false) {
             DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
             $upload_info->failed = true;
         }
 
-        if ($upload_info->failed) {
+        if ($source_installer_filepath === false) {
+            DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
+            $upload_info->failed = true;
+        }
+
+        if ($upload_info->failed == true) {
+            DUP_PRO_Log::infoTrace('OneDrive storage failed flag ($upload_info->failed) has been already set.');
+            $package->update();
+            return;
+        }
+
+        $onedrive                = $this->get_onedrive_client();
+        $onedrive_archive_path   = basename($source_archive_filepath);
+        $onedrive_archive_path   = $this->get_sanitized_storage_folder() . $onedrive_archive_path;
+        $onedrive_installer_name = $package->Installer->getInstallerName();
+        $onedrive_installer_path = $this->get_sanitized_storage_folder() . $onedrive_installer_name;
+        try {
+            $folder_id = $this->onedrive_storage_folder_id;
+            if (!$folder_id) {
+                $this->get_onedrive_storage_folder();
+            }
+            if (!$upload_info->copied_installer) {
+                DUP_PRO_Log::trace("ATTEMPT: OneDrive upload installer file $source_installer_filepath to $onedrive_installer_path");
+                $onedrive->uploadFileChunk($source_installer_filepath, $onedrive_installer_path);
+                try {
+                    if ($onedrive->RUploader->sha1CheckSum($source_installer_filepath)) {
+                        DUP_PRO_Log::infoTrace("SUCCESS: installer upload to OneDrive " . $onedrive_installer_path);
+                        $upload_info->copied_installer = true;
+                        $upload_info->progress         = 5;
+                        // The package update will automatically capture the upload_info since its part of the package
+                        $package->update();
+                    } else {
+                        DUP_PRO_Log::infoTrace("FAIL: installer upload to OneDrive $onedrive_installer_path. The uploaded Uploaded installer file is corrupted, the sha1 hashes don't match!");
+                        $upload_info->increase_failure_count();
+                    }
+                } catch (Exception $exception) {
+                    if ($exception->getCode() == 404 && $onedrive->isBusiness()) {
+                        DUP_PRO_Log::infoTrace("SUCCESS: installer upload to OneDrive " . $onedrive_installer_path);
+                        $upload_info->copied_installer = true;
+                        $upload_info->progress         = 5;
+                        // The package update will automatically capture the upload_info since its part of the package
+                        $package->update();
+                    } else {
+                        DUP_PRO_Log::traceError("FAIL: installer upload to OneDrive $onedrive_installer_path. An error occurred while checking the file checksum. Exception message: " . $exception->getMessage());
+                        $upload_info->increase_failure_count();
+                    }
+                }
+            } else {
+                DUP_PRO_Log::trace("Already copied installer on previous execution of Onedrive $this->name so skipping");
+            }
+            if (!$upload_info->copied_archive) {
+                /* Delete the archive if we are just starting it (in the event they are pushing another copy */
+                if ($upload_info->archive_offset == 0) {
+                    DUP_PRO_Log::trace("Archive offset is 0 so try to delete $onedrive_archive_path");
+                    try {
+                        $onedrive_archive = $onedrive->fetchDriveItemByPath($onedrive_archive_path);
+                        $onedrive->deleteDriveItem($onedrive_archive->getId());
+                    } catch (Exception $ex) {
+                        // Burying exceptions
+                    }
+                }
+
+                /* @var $global DUP_PRO_Global_Entity */
+                $global = DUP_PRO_Global_Entity::getInstance();
+                if ($upload_info->data != '' && $upload_info->data2 != '') {
+                    $resumable = (object)array(
+                        "uploadUrl" => $upload_info->data,
+                        "expirationTime" => $upload_info->data2
+                    );
+                    $onedrive->uploadFileChunk($source_archive_filepath, null, $resumable, $global->php_max_worker_time_in_sec, (50 + $this->throttleDelayInUs), $upload_info->archive_offset);
+                } else {
+                    $onedrive->uploadFileChunk($source_archive_filepath, $onedrive_archive_path, null, $global->php_max_worker_time_in_sec, (50 + $this->throttleDelayInUs), $upload_info->archive_offset);
+                }
+
+                /* @var $onedrive_upload_info \Krizalys\Onedrive\ResumableUploader */
+                $onedrive_upload_info = $onedrive->RUploader;
+                $upload_info->data    = $onedrive_upload_info->getUploadUrl();
+                $upload_info->data2   = $onedrive_upload_info->getExpirationTime();
+                if ($onedrive_upload_info->getError() == null) {
+                    // Clear the failure count - we are just looking for consecutive errors
+                    $upload_info->failure_count  = 0;
+                    $upload_info->archive_offset = $onedrive_upload_info->getUploadOffset();
+                    $file_size                   = filesize($source_archive_filepath);
+                    $upload_info->progress       = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
+                    DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
+                    if ($onedrive_upload_info->completed()) {
+                        try {
+                            if ($onedrive_upload_info->sha1CheckSum($source_archive_filepath)) {
+                                DUP_PRO_Log::infoTrace("SUCCESS: archive upload to OneDrive.");
+                                $upload_info->archive_offset = $file_size;
+                                $upload_info->copied_archive = true;
+                                DUP_PRO_Log::infoTrace("Attempting to purge old packages at OneDrive storage.");
+                                $this->purge_old_onedrive_packages($onedrive);
+                                DUP_PRO_Log::infoTrace("Purge of old packages at OneDrive storage completed.");
+                            } else {
+                                DUP_PRO_Log::infoTrace("FAIL: archive upload to OneDrive. sha1 hashes don't match!");
+                                $this->set_onedrive_archive_offset($upload_info, $onedrive_upload_info);
+                                $upload_info->increase_failure_count();
+                            }
+                        } catch (Exception $exception) {
+                            if ($exception->getCode() == 404 && $onedrive->isBusiness()) {
+                                DUP_PRO_Log::infoTrace("SUCCESS: archive upload to OneDrive business.");
+                                $upload_info->archive_offset = $file_size;
+                                $upload_info->copied_archive = true;
+                                DUP_PRO_Log::infoTrace("Attempting to purge old packages at OneDrive storage.");
+                                $this->purge_old_onedrive_packages($onedrive);
+                                DUP_PRO_Log::infoTrace("Purge of old packages at OneDrive storage completed.");
+                            } else {
+                                DUP_PRO_Log::infoTrace("FAIL: archive upload to OneDrive. An error occurred while checking the file checksum. Exception message: " . $exception->getMessage());
+                                $upload_info->increase_failure_count();
+                            }
+                        }
+                    }
+                } else {
+                    DUP_PRO_Log::traceError("FAIL: archive upload to OneDrive. An error occurred while checking the file checksum. Error message: " . $onedrive_upload_info->getError());
+                    // error_log("* Else Problem uploading archive for package $package->Name: ".$onedrive_upload_info->getError());
+
+                    // Could have partially uploaded so retain that offset.
+                    $this->set_onedrive_archive_offset($upload_info, $onedrive_upload_info);
+                    $upload_info->increase_failure_count();
+                }
+            } else {
+                DUP_PRO_Log::trace("Already copied archive on previous execution of Onedrive $this->name so skipping");
+            }
+        } catch (Exception $e) {
+            DUP_PRO_Log::trace("Exception caught copying package $package->Name to $this->onedrive_storage_folder. " . $e->getMessage());
+            $this->set_onedrive_archive_offset($upload_info, (isset($onedrive_upload_info) ? $onedrive_upload_info : null));
+            $upload_info->increase_failure_count();
+        }
+
+        if ($upload_info->failed) { // @phpstan-ignore-line
             DUP_PRO_Log::infoTrace('OneDrive storage failed flag ($upload_info->failed) has been already set.');
         }
 
@@ -1573,7 +1597,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                 if ($next_expected_range_parts[0] > 0) {
                     $archive_offset = $next_expected_range_parts[0];
                     // error_log("Got OneDrive Archive offset $archive_offset from GET resume URL");
-                    DUP_PRO_Log::info("Got OneDrive Archive offset $archive_offset from OneDrive GET resume URL.");
+                    DUP_PRO_Log::infoTrace("Got OneDrive Archive offset $archive_offset from OneDrive GET resume URL.");
                 }
             }
         }
@@ -1597,145 +1621,155 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
 
         /* @var $package DUP_PRO_Package */
 
+        DUP_PRO_Log::trace("Copying to GDrive storage");
+
         $source_archive_filepath   = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Archive);
         $source_installer_filepath = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Installer);
         $dest_installer_filename   = $package->Installer->getInstallerName();
-        if ($source_archive_filepath !== false) {
-            if ($source_installer_filepath !== false) {
-                try {
-                    /* @var $google_client Duplicator_Pro_Google_Client */
-                    $google_client = $this->get_full_google_client();
-                    if ($google_client == null) {
-                        throw new Exception("Google client is null!");
-                    }
 
-                    if (empty($upload_info->data)) {
-                        $google_service_drive = new Duplicator_Pro_Google_Service_Drive($google_client);
-                        $upload_info->data    = DUP_PRO_GDrive_U::get_directory_id($google_service_drive, $this->gdrive_storage_folder);
-                        if ($upload_info->data == null) {
-                            $upload_info->failed = true;
-                            DUP_PRO_Log::infoTrace("Error getting/creating Google Drive directory $this->gdrive_storage_folder.");
-                            $package->update();
-                            return;
-                        }
-                    }
+        if ($source_archive_filepath === false) {
+            DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
+            $upload_info->failed = true;
+        }
 
-                    $tried_copying_installer = false;
-                    if (!$upload_info->copied_installer) {
-                        $tried_copying_installer = true;
-                        DUP_PRO_Log::trace("ATTEMPT: Dropbox upload installer file $source_installer_filepath to $this->gdrive_storage_folder");
-                        $google_service_drive = new Duplicator_Pro_Google_Service_Drive($google_client);
-                        //$upload_info->data is the parent file id
-                        $source_installer_filename = basename($source_installer_filepath);
-                        $existing_file_id          = DUP_PRO_GDrive_U::get_file(
-                            $google_service_drive,
-                            $source_installer_filename,
-                            $upload_info->data
-                        );
-                        if ($existing_file_id != null) {
-                            DUP_PRO_Log::trace("Installer already exists so deleting $source_installer_filename before uploading again. Existing file id = $existing_file_id");
-                            DUP_PRO_GDrive_U::delete_file($google_service_drive, $existing_file_id);
-                        } else {
-                            DUP_PRO_Log::trace("Installer doesn't exist already so no need to delete $source_installer_filename");
-                        }
+        if ($source_installer_filepath === false) {
+            DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
+            $upload_info->failed = true;
+        }
 
-                        if (DUP_PRO_GDrive_U::upload_file($google_client, $source_installer_filepath, $upload_info->data, $dest_installer_filename)) {
-                            DUP_PRO_Log::infoTrace('SUCCESS: Installer upload to Google Drive.');
-                            $upload_info->copied_installer = true;
-                            $upload_info->progress         = 5;
-                        } else {
-                            $upload_info->failed = true;
-                            DUP_PRO_Log::infoTrace('FAIL: Installer upload to Google Drive.');
-                        }
+        if ($upload_info->failed == true) {
+            DUP_PRO_Log::infoTrace('Google Drive storage failed flag ($upload_info->failed) has been already set.');
+            $package->update();
+            return;
+        }
 
-                        // The package update will automatically capture the upload_info since its part of the package
-                        $package->update();
+        try {
+            /* @var $google_client Duplicator_Pro_Google_Client */
+            $google_client = $this->get_full_google_client();
+            if ($google_client == null) {
+                throw new Exception("Google client is null!");
+            }
+
+            if (empty($upload_info->data)) {
+                $google_service_drive = new Duplicator_Pro_Google_Service_Drive($google_client);
+                $upload_info->data    = DUP_PRO_GDrive_U::get_directory_id($google_service_drive, $this->gdrive_storage_folder);
+                if ($upload_info->data == null) {
+                    $upload_info->failed = true;
+                    DUP_PRO_Log::infoTrace("Error getting/creating Google Drive directory $this->gdrive_storage_folder.");
+                    $package->update();
+                    return;
+                }
+            }
+
+            $tried_copying_installer = false;
+            if (!$upload_info->copied_installer) {
+                $tried_copying_installer = true;
+                DUP_PRO_Log::trace("ATTEMPT: GDrive upload installer file $source_installer_filepath to $this->gdrive_storage_folder");
+                $google_service_drive = new Duplicator_Pro_Google_Service_Drive($google_client);
+                //$upload_info->data is the parent file id
+                $source_installer_filename = basename($source_installer_filepath);
+                $existing_file_id          = DUP_PRO_GDrive_U::get_file(
+                    $google_service_drive,
+                    $source_installer_filename,
+                    $upload_info->data
+                );
+                if ($existing_file_id != null) {
+                    DUP_PRO_Log::trace("Installer already exists so deleting $source_installer_filename before uploading again. Existing file id = $existing_file_id");
+                    DUP_PRO_GDrive_U::delete_file($google_service_drive, $existing_file_id);
+                } else {
+                    DUP_PRO_Log::trace("Installer doesn't exist already so no need to delete $source_installer_filename");
+                }
+
+                if (DUP_PRO_GDrive_U::upload_file($google_client, $source_installer_filepath, $upload_info->data, $dest_installer_filename)) {
+                    DUP_PRO_Log::infoTrace('SUCCESS: Installer upload to Google Drive.');
+                    $upload_info->copied_installer = true;
+                    $upload_info->progress         = 5;
+                } else {
+                    $upload_info->failed = true;
+                    DUP_PRO_Log::infoTrace('FAIL: Installer upload to Google Drive.');
+                }
+
+                // The package update will automatically capture the upload_info since its part of the package
+                $package->update();
+            } else {
+                DUP_PRO_Log::trace("Already copied installer on previous execution of Google Drive $this->name so skipping");
+            }
+
+            if ((!$upload_info->copied_archive) && (!$tried_copying_installer)) {
+                /* @var $global DUP_PRO_Global_Entity */
+                $global = DUP_PRO_Global_Entity::getInstance();
+                /* @var $dropbox_upload_info DUP_PRO_DropboxClient_UploadInfo */
+
+                // Warning: Google client is set to defer mode within this function
+                // The upload_id for google drive is just the resume uri
+
+                if ($upload_info->archive_offset == 0) {
+                    // If just starting on this go ahead and delete existing file
+
+                    $google_service_drive = new Duplicator_Pro_Google_Service_Drive($google_client);
+                    //$upload_info->data is the parent file id
+                    $source_archive_filename = basename($source_archive_filepath);
+                    $existing_file_id        = DUP_PRO_GDrive_U::get_file($google_service_drive, $source_archive_filename, $upload_info->data);
+                    if ($existing_file_id != null) {
+                        DUP_PRO_Log::trace("Archive already exists so deleting $source_archive_filename before uploading again");
+                        DUP_PRO_GDrive_U::delete_file($google_service_drive, $existing_file_id);
                     } else {
-                        DUP_PRO_Log::trace("Already copied installer on previous execution of Google Drive $this->name so skipping");
+                        DUP_PRO_Log::trace("Archive doesn't exist so no need to delete $source_archive_filename");
                     }
+                }
 
-                    if ((!$upload_info->copied_archive) && (!$tried_copying_installer)) {
-                        /* @var $global DUP_PRO_Global_Entity */
-                        $global = DUP_PRO_Global_Entity::getInstance();
-                        /* @var $dropbox_upload_info DUP_PRO_DropboxClient_UploadInfo */
+                // error_log('## offset: '.$upload_info->archive_offset);
+                // Google Drive worker time capped at 10 seconds
+                $gdrive_upload_info = DUP_PRO_GDrive_U::upload_file_chunk(
+                    $google_client,
+                    $source_archive_filepath,
+                    $upload_info->data,
+                    $global->gdrive_upload_chunksize_in_kb * 1024,
+                    10,
+                    $upload_info->archive_offset,
+                    $upload_info->upload_id,
+                    (50 + $this->throttleDelayInUs)
+                );
+                $file_size          = filesize($source_archive_filepath);
+                // Attempt to test self killing
+                /*
+                if (time() % 5 === 0) {
+                    error_log('Attempting to make custom error');
+                    $gdrive_upload_info->error_details = "Custom Error";
+                }
+                */
 
-                        // Warning: Google client is set to defer mode within this function
-                        // The upload_id for google drive is just the resume uri
-                        //
-
-                        if ($upload_info->archive_offset == 0) {
-                            // If just starting on this go ahead and delete existing file
-
-                            $google_service_drive = new Duplicator_Pro_Google_Service_Drive($google_client);
-                            //$upload_info->data is the parent file id
-                            $source_archive_filename = basename($source_archive_filepath);
-                            $existing_file_id        = DUP_PRO_GDrive_U::get_file($google_service_drive, $source_archive_filename, $upload_info->data);
-                            if ($existing_file_id != null) {
-                                DUP_PRO_Log::trace("Archive already exists so deleting $source_archive_filename before uploading again");
-                                DUP_PRO_GDrive_U::delete_file($google_service_drive, $existing_file_id);
-                            } else {
-                                DUP_PRO_Log::trace("Archive doesn't exist so no need to delete $source_archive_filename");
-                            }
+                if ($gdrive_upload_info->error_details == null) {
+                    // Clear the failure count - we are just looking for consecutive errors
+                    $upload_info->failure_count  = 0;
+                    $upload_info->archive_offset = isset($gdrive_upload_info->next_offset) ? $gdrive_upload_info->next_offset : 0;
+                    // We are considering the whole Resume URI as the Upload ID
+                    $upload_info->upload_id = $gdrive_upload_info->resume_uri;
+                    $upload_info->progress  = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
+                    DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
+                    if ($gdrive_upload_info->is_complete) {
+                        DUP_PRO_Log::infoTrace('SUCCESS: Archive upload to Google Drive.');
+                        $upload_info->copied_archive = true;
+                        if ($this->gdrive_max_files > 0) {
+                            DUP_PRO_Log::infoTrace("Attempting to purge old packages at GDrive storage.");
+                            $this->purge_old_gdrive_packages($google_client, $upload_info);
+                            DUP_PRO_Log::infoTrace("Purge of old packages at GDrive storage completed.");
                         }
-
-                        // error_log('## offset: '.$upload_info->archive_offset);
-                        // Google Drive worker time capped at 10 seconds
-                        $gdrive_upload_info = DUP_PRO_GDrive_U::upload_file_chunk(
-                            $google_client,
-                            $source_archive_filepath,
-                            $upload_info->data,
-                            $global->gdrive_upload_chunksize_in_kb * 1024,
-                            10,
-                            $upload_info->archive_offset,
-                            $upload_info->upload_id,
-                            (50 + $this->throttleDelayInUs)
-                        );
-                        $file_size          = filesize($source_archive_filepath);
-                        // Attempt to test self killing
-                        /*
-    if (time() % 5 === 0) {
-    error_log('Attempting to make custom error');
-    $gdrive_upload_info->error_details = "Custom Error";
-    }
-    */
-
-                        if ($gdrive_upload_info->error_details == null) {
-                            // Clear the failure count - we are just looking for consecutive errors
-                            $upload_info->failure_count  = 0;
-                            $upload_info->archive_offset = isset($gdrive_upload_info->next_offset) ? $gdrive_upload_info->next_offset : 0;
-                            // We are considering the whole Resume URI as the Upload ID
-                            $upload_info->upload_id = $gdrive_upload_info->resume_uri;
-                            $upload_info->progress  = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
-                            DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
-                            if ($gdrive_upload_info->is_complete) {
-                                DUP_PRO_Log::infoTrace('SUCCESS: Archive upload to Google Drive.');
-                                $upload_info->copied_archive = true;
-                                if ($this->gdrive_max_files > 0) {
-                                    $this->purge_old_gdrive_packages($google_client, $upload_info);
-                                }
-                            }
-                        } else {
-                            DUP_PRO_Log::traceError('FAIL: Archive upload to Google Drive. ERROR: ' . $gdrive_upload_info->error_details);
-                            // error_log('$$ ELSE: '.$gdrive_upload_info->error_details);
-                            $this->set_gdrive_archive_offset($upload_info);
-                            $upload_info->increase_failure_count();
-                        }
-                    } else {
-                        DUP_PRO_Log::trace("Already copied archive on previous execution of Google Drive $this->name so skipping");
                     }
-                } catch (Exception $e) {
-                    // error_log('**** Catch ****');
-                    DUP_PRO_Log::traceError('EXCEPTION ERROR: Problems copying package $package->Name to $this->gdrive_storage_folder. Message: ' . $e->getMessage());
+                } else {
+                    DUP_PRO_Log::traceError('FAIL: Archive upload to Google Drive. ERROR: ' . $gdrive_upload_info->error_details);
+                    // error_log('$$ ELSE: '.$gdrive_upload_info->error_details);
                     $this->set_gdrive_archive_offset($upload_info);
                     $upload_info->increase_failure_count();
                 }
             } else {
-                DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
-                $upload_info->failed = true;
+                DUP_PRO_Log::trace("Already copied archive on previous execution of Google Drive $this->name so skipping");
             }
-        } else {
-            DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
-            $upload_info->failed = true;
+        } catch (Exception $e) {
+            // error_log('**** Catch ****');
+            DUP_PRO_Log::traceError("EXCEPTION ERROR: Problems copying package $package->Name to $this->gdrive_storage_folder. Message: " . $e->getMessage());
+            $this->set_gdrive_archive_offset($upload_info);
+            $upload_info->increase_failure_count();
         }
 
         if ($upload_info->failed) {
@@ -1774,7 +1808,6 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                     } else {
                         $upload_info->archive_offset = 0;
                     }
-
                     break;
                 case 200:
                 case 201:
@@ -1782,15 +1815,14 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                     $upload_info->copied_archive = true;
                     if ($this->gdrive_max_files > 0) {
                         $google_client = $this->get_full_google_client();
+                        DUP_PRO_Log::infoTrace("Attempting to purge old packages at GDrive storage.");
                         $this->purge_old_gdrive_packages($google_client, $upload_info);
+                        DUP_PRO_Log::infoTrace("Purge of old packages at GDrive storage completed.");
                     }
-
-
                     break;
                 case 404:
                 default:
                     $upload_info->archive_offset = 0;
-
                     break;
             }
         }
@@ -1798,96 +1830,166 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
         DUP_PRO_Log::trace("Setting archive offset to the " . $upload_info->archive_offset);
     }
 
+    /**
+     * This function will check for DUP_PRO_Handler errors caught with MODE_VAR,
+     * throw exception in case of some of them.
+     *
+     * @param string $errorsOutput These are errors from DUP_PRO_Handler's internal log string
+     *
+     * @throws Exception In case if errno=28 is found in DUP_PRO_Handler, coming from EntityBody.php
+     *                   That error happens when php://temp is on a full partition.
+     * @return void
+     */
+    private function checkS3ErrorHandler($errorsOutput)
+    {
+        if (strlen($errorsOutput) == 0) {
+            return;
+        }
+
+        if (preg_match('/fwrite.+write.+failed.+errno\s*=\s*28/i', $errorsOutput) === 1) {
+            $errorText = "***ERROR*** " . sys_get_temp_dir() . " folder is probably on a full partition. ";
+            $fixText   = "You should contact your server/hosting administrator and ask " .
+                "why is the partition that contains folder " . sys_get_temp_dir() . " " .
+                "full? Can they free up more space? ";
+            DUP_PRO_Log::infoTrace($errorText . $fixText);
+
+            $systemGlobal = DUP_PRO_System_Global_Entity::getInstance();
+            $systemGlobal->addTextFix($errorText, $fixText);
+            $systemGlobal->save();
+
+            throw new Exception(
+                $errorText . $fixText .
+                "\nList of errors caught in error handler log:\n" .
+                $errorsOutput .
+                "End of list of errors caught in error handler log"
+            );
+        }
+
+        DUP_PRO_Log::trace(
+            "\nList of errors caught in error handler log:\n" .
+            $errorsOutput .
+            "End of list of errors caught in error handler log"
+        );
+    }
+
     private function copy_to_s3(DUP_PRO_Package $package, DUP_PRO_Package_Upload_Info $upload_info)
     {
         DUP_PRO_Log::trace("Copying to S3");
+
         $source_archive_filepath   = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Archive);
         $source_installer_filepath = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Installer);
-        if ($source_archive_filepath !== false) {
-            if ($source_installer_filepath !== false) {
-                $s3_client = $this->get_full_s3_client();
-                try {
-                    $tried_copying_installer = !$upload_info->copied_installer;
-                    if ($upload_info->copied_installer == false) {
-                        DUP_PRO_Log::trace("ATTEMPT: S3 upload installer file $source_installer_filepath to $this->s3_storage_folder");
-                        $dest_installer_filename = $package->Installer->getInstallerName();
-                        if (DUP_PRO_S3_U::upload_file($s3_client, $this->s3_bucket, $source_installer_filepath, $this->s3_storage_folder, $this->s3_storage_class, $this->s3_ACL_full_control, $dest_installer_filename)) {
-                            DUP_PRO_Log::infoTrace("SUCCESS: installer upload to S3 " . $this->s3_storage_folder);
-                            $upload_info->copied_installer = true;
-                            $upload_info->progress         = 5;
-                        } else {
-                            $upload_info->failed = true;
-                            DUP_PRO_Log::infoTrace("FAIL: installer upload to S3.");
-                        }
 
-                        // The package update will automatically capture the upload_info since its part of the package
-                        $package->update();
-                        return;
-                    } else {
-                        DUP_PRO_Log::trace("Already copied installer on previous execution of S3 $this->name so skipping");
+        if ($source_archive_filepath === false) {
+            DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
+            $upload_info->failed = true;
+        }
+
+        if ($source_installer_filepath === false) {
+            DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
+            $upload_info->failed = true;
+        }
+
+        if ($upload_info->failed == true) {
+            DUP_PRO_Log::infoTrace('S3 storage failed flag ($upload_info->failed) has been already set.');
+            $package->update();
+            return;
+        }
+
+        $s3_client = $this->get_full_s3_client();
+        try {
+            $tried_copying_installer = !$upload_info->copied_installer;
+            if ($upload_info->copied_installer == false) {
+                DUP_PRO_Log::trace("ATTEMPT: S3 upload installer file $source_installer_filepath to $this->s3_storage_folder");
+                $dest_installer_filename = $package->Installer->getInstallerName();
+
+                // Temporarily switch mode to try to catch an error
+                DUP_PRO_Handler::setMode(DUP_PRO_Handler::MODE_VAR);
+                if (DUP_PRO_S3_U::upload_file($s3_client, $this->s3_bucket, $source_installer_filepath, $this->s3_storage_folder, $this->s3_storage_class, $this->s3_ACL_full_control, $dest_installer_filename)) {
+                    DUP_PRO_Log::infoTrace("SUCCESS: installer upload to S3 " . $this->s3_storage_folder);
+                    $upload_info->copied_installer = true;
+                    $upload_info->progress         = 5;
+                } else {
+                    $upload_info->failed = true;
+                    DUP_PRO_Log::infoTrace("FAIL: installer upload to S3.");
+                }
+
+                // The following call will check for DUP_PRO_Handler errors caught with MODE_VAR,
+                // throw exception in case of some of them, but also switch back MODE_VAR to MODE_LOG.
+                $errorsOutput = DUP_PRO_Handler::getVarLogClean();
+                DUP_PRO_Handler::setMode(DUP_PRO_Handler::MODE_LOG);
+                $this->checkS3ErrorHandler($errorsOutput);
+
+                // The package update will automatically capture the upload_info since its part of the package
+                $package->update();
+                return;
+            } else {
+                DUP_PRO_Log::trace("Already copied installer on previous execution of S3 $this->name so skipping");
+            }
+
+            if ($upload_info->copied_archive == false && $tried_copying_installer == false) {
+                $global = DUP_PRO_Global_Entity::getInstance();
+                // Data
+                $s3_upload_info                 = new DUP_PRO_S3_Client_UploadInfo();
+                $s3_upload_info->bucket         = $this->s3_bucket;
+                $s3_upload_info->upload_id      = $upload_info->upload_id;
+                $s3_upload_info->dest_directory = $this->s3_storage_folder;
+                $s3_upload_info->src_filepath   = $source_archive_filepath;
+                $s3_upload_info->next_offset    = $upload_info->archive_offset;
+                $s3_upload_info->storage_class  = $this->s3_storage_class;
+                // Storing array of [part] and [parts] in an array within data
+                if ($upload_info->data == '') {
+                    $upload_info->data = 1;
+                    // part number
+                    $upload_info->data2 = array();
+                    // parts array
+                }
+
+                $s3_upload_info->part_number      = $upload_info->data;
+                $s3_upload_info->parts            = $upload_info->data2;
+                $s3_upload_info->upload_part_size = $global->s3_upload_part_size_in_kb * 1024;
+
+                // Temporarily switch mode to try to catch an error
+                DUP_PRO_Handler::setMode(DUP_PRO_Handler::MODE_VAR);
+                $s3_upload_info = DUP_PRO_S3_U::upload_file_chunk($s3_client, $s3_upload_info, $global->php_max_worker_time_in_sec, $this->throttleDelayInUs);
+                // The following call will check for DUP_PRO_Handler errors caught with MODE_VAR,
+                // throw exception in case of some of them, but also switch back MODE_VAR to MODE_LOG.
+                $errorsOutput = DUP_PRO_Handler::getVarLogClean();
+                DUP_PRO_Handler::setMode(DUP_PRO_Handler::MODE_LOG);
+                $this->checkS3ErrorHandler($errorsOutput);
+
+                if ($s3_upload_info->error_details == null) {
+                    // Clear the failure count - we are just looking for consecutive errors
+                    $upload_info->failure_count  = 0;
+                    $upload_info->archive_offset = isset($s3_upload_info->next_offset) ? $s3_upload_info->next_offset : 0;
+                    $upload_info->upload_id      = $s3_upload_info->upload_id;
+                    $upload_info->data           = $s3_upload_info->part_number;
+                    $upload_info->data2          = $s3_upload_info->parts;
+                    $file_size                   = filesize($source_archive_filepath);
+                    $upload_info->progress       = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
+                    DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
+                    if ($s3_upload_info->is_complete) {
+                        DUP_PRO_Log::infoTrace("SUCCESS: archive upload to S3.");
+                        $upload_info->copied_archive = true;
+                        if ($this->s3_max_files > 0) {
+                            DUP_PRO_Log::infoTrace("Attempting to purge old packages at S3 storage.");
+                            $this->purge_old_s3_packages($s3_client);
+                            DUP_PRO_Log::infoTrace("Purge of old packages at S3 storage completed.");
+                        }
                     }
-
-                    if ($upload_info->copied_archive == false && $tried_copying_installer == false) {
-                        $global = DUP_PRO_Global_Entity::getInstance();
-                        // Data
-                        $s3_upload_info                 = new DUP_PRO_S3_Client_UploadInfo();
-                        $s3_upload_info->bucket         = $this->s3_bucket;
-                        $s3_upload_info->upload_id      = $upload_info->upload_id;
-                        $s3_upload_info->dest_directory = $this->s3_storage_folder;
-                        $s3_upload_info->src_filepath   = $source_archive_filepath;
-                        $s3_upload_info->next_offset    = $upload_info->archive_offset;
-                        $s3_upload_info->storage_class  = $this->s3_storage_class;
-                        // Storing array of [part] and [parts] in an array within data
-                        if ($upload_info->data == '') {
-                            $upload_info->data = 1;
-                            // part number
-                            $upload_info->data2 = array();
-                            // parts array
-                        }
-
-                        $s3_upload_info->part_number      = $upload_info->data;
-                        $s3_upload_info->parts            = $upload_info->data2;
-                        $s3_upload_info->upload_part_size = $global->s3_upload_part_size_in_kb * 1024;
-                        $s3_upload_info                   = DUP_PRO_S3_U::upload_file_chunk($s3_client, $s3_upload_info, $global->php_max_worker_time_in_sec, $this->throttleDelayInUs);
-                        if ($s3_upload_info->error_details == null) {
-                            // Clear the failure count - we are just looking for consecutive errors
-                            $upload_info->failure_count  = 0;
-                            $upload_info->archive_offset = isset($s3_upload_info->next_offset) ? $s3_upload_info->next_offset : 0;
-                            $upload_info->upload_id      = $s3_upload_info->upload_id;
-                            $upload_info->data           = $s3_upload_info->part_number;
-                            $upload_info->data2          = $s3_upload_info->parts;
-                            $file_size                   = filesize($source_archive_filepath);
-                            $upload_info->progress       = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
-                            DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
-                            if ($s3_upload_info->is_complete) {
-                                DUP_PRO_Log::infoTrace("SUCCESS: archive upload to S3.");
-                                $upload_info->copied_archive = true;
-                                if ($this->s3_max_files > 0) {
-                                    $this->purge_old_s3_packages($s3_client);
-                                }
-                            }
-                        } else {
-                            DUP_PRO_Log::infoTrace("FAIL: archive upload to S3. Get error from S3 API: " . $s3_upload_info->error_details);
-                            // Could have partially uploaded so retain that offset.
-                            $upload_info->archive_offset = isset($s3_upload_info->next_offset) ? $s3_upload_info->next_offset : 0;
-                            $upload_info->increase_failure_count();
-                        }
-                    } else {
-                        if ($upload_info->copied_archive) {
-                            DUP_PRO_Log::trace("Already copied archive on previous execution of S3 $this->name so skipping");
-                        }
-                    }
-                } catch (Exception $e) {
-                    DUP_PRO_Log::trace("Exception caught copying package $package->Name to S3 $this->s3_storage_folder: " . $e->getMessage());
+                } else {
+                    DUP_PRO_Log::infoTrace("FAIL: archive upload to S3. Get error from S3 API: " . $s3_upload_info->error_details);
+                    // Could have partially uploaded so retain that offset.
+                    $upload_info->archive_offset = isset($s3_upload_info->next_offset) ? $s3_upload_info->next_offset : 0;
                     $upload_info->increase_failure_count();
                 }
             } else {
-                DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
-                $upload_info->failed = true;
+                if ($upload_info->copied_archive) {
+                    DUP_PRO_Log::trace("Already copied archive on previous execution of S3 $this->name so skipping");
+                }
             }
-        } else {
-            DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
-            $upload_info->failed = true;
+        } catch (Exception $e) {
+            DUP_PRO_Log::trace("Exception caught copying package $package->Name to S3 $this->s3_storage_folder: " . $e->getMessage());
+            $upload_info->increase_failure_count();
         }
 
         if ($upload_info->failed) {
@@ -1934,18 +2036,18 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                         if (!empty($storage_folder)) {
                             $this->onedrive_storage_folder_web_url = $this->get_onedrive_storage_folder()->getWebURL();
                         } else {
-                            $this->onedrive_storage_folder_web_url = DUP_PRO_U::__("Can't read storage folder");
+                            $this->onedrive_storage_folder_web_url = __("Can't read storage folder", "duplicator-pro");
                             return $this->onedrive_storage_folder_web_url;
                         }
                     } else {
-                        $this->onedrive_storage_folder_web_url = DUP_PRO_U::__("Not Authenticated");
+                        $this->onedrive_storage_folder_web_url = __("Not Authenticated", "duplicator-pro");
                         return $this->onedrive_storage_folder_web_url;
                     }
                     $this->save();
                 }
                 return '<a href="' . esc_url($this->onedrive_storage_folder_web_url) . '">' . esc_url($this->onedrive_storage_folder_web_url) . '</a>';
             default:
-                return DUP_PRO_U::__('Unknown');
+                return __('Unknown', "duplicator-pro");
         }
     }
 
@@ -1954,139 +2056,150 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
         /* @var $upload_info DUP_PRO_Package_Upload_Info */
 
         /* @var $package DUP_PRO_Package */
-        DUP_PRO_Log::trace("copying to ftp");
+        DUP_PRO_Log::trace("Copying to FTP storage");
         $source_archive_filepath = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Archive);
         // $source_archive_filepath = DUP_PRO_U::$PLUGIN_DIRECTORY . '/lib/DropPHP/Poedit-1.6.4.2601-setup.bin';
         $source_installer_filepath = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Installer);
 
-        if ($source_archive_filepath !== false) {
-            if ($source_installer_filepath !== false) {
-                if ($this->ftp_use_curl) {
-                    $ftp_client = new DUP_PRO_FTPcURL(
-                        $this->ftp_server,
-                        $this->ftp_port,
-                        $this->ftp_username,
-                        $this->ftp_password,
-                        $this->ftp_storage_folder,
-                        $this->ftp_timeout_in_secs,
-                        $this->ftp_ssl,
-                        $this->ftp_passive_mode
-                    );
-                } else {
-                    $ftp_client = new DUP_PRO_FTP_Chunker(
-                        $this->ftp_server,
-                        $this->ftp_port,
-                        $this->ftp_username,
-                        $this->ftp_password,
-                        $this->ftp_timeout_in_secs,
-                        $this->ftp_ssl,
-                        $this->ftp_passive_mode
-                    );
-                }
-
-                if ($this->ftp_use_curl || $ftp_client->open()) {
-                    if ($ftp_client->create_directory($this->ftp_storage_folder) == false) {
-                        DUP_PRO_Log::infoTrace("FAIL: create/get FTP dir $this->ftp_storage_folder");
-                        DUP_PRO_Log::trace("Couldn't create $this->ftp_storage_folder on $this->ftp_server");
-                    }
-
-                    try {
-                        if ($upload_info->copied_installer == false) {
-                            DUP_PRO_Log::trace("ATTEMPT: FTP upload installer file $source_installer_filepath to $this->ftp_storage_folder");
-                            $dest_installer_filename = $package->Installer->getInstallerName();
-                            if ($this->ftp_use_curl) {
-                                $ret_upload_file = $ftp_client->upload_file($source_installer_filepath, $dest_installer_filename);
-                            } else {
-                                $ret_upload_file = $ftp_client->upload_file($source_installer_filepath, $this->ftp_storage_folder, $dest_installer_filename);
-                            }
-                            if ($ret_upload_file == false) {
-                                $upload_info->failed = true;
-                                DUP_PRO_Log::infoTrace("FAIL: installer upload to FTP. Error uploading $source_installer_filepath to $this->ftp_storage_folder");
-                            } else {
-                                DUP_PRO_Log::infoTrace("SUCCESS: installer upload to FTP.");
-                                $upload_info->copied_installer = true;
-                                $upload_info->progress         = 5;
-                            }
-
-                            // The package update will automatically capture the upload_info since its part of the package
-                            $package->update();
-                        } else {
-                            DUP_PRO_Log::trace("Already copied installer on previous execution of FTP $this->name so skipping");
-                        }
-
-                        if ($upload_info->copied_archive == false) {
-                            $global = DUP_PRO_Global_Entity::getInstance();
-                            DUP_PRO_Log::trace("archive calling upload chunk with timeout");
-                            $ftp_upload_info = $ftp_client->upload_chunk(
-                                $source_archive_filepath,
-                                $this->ftp_use_curl ? '' : $this->ftp_storage_folder,
-                                $global->php_max_worker_time_in_sec,
-                                $upload_info->archive_offset,
-                                $this->throttleDelayInUs
-                            );
-                            DUP_PRO_Log::trace("after upload chunk archive");
-                            if ($ftp_upload_info->error_details == null) {
-                                // Since there was a successful chunk reset the failure count
-                                $upload_info->failure_count  = 0;
-                                $upload_info->archive_offset = $ftp_upload_info->next_offset;
-                                $file_size                   = filesize($source_archive_filepath);
-                                //  $upload_info->progress = max(5, 100 * (bcdiv($upload_info->archive_offset, $file_size, 2)));
-                                $upload_info->progress = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
-                                DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
-                                if ($ftp_upload_info->success) {
-                                    DUP_PRO_Log::infoTrace("SUCCESS: archive upload to FTP $this->ftp_server.");
-                                    $upload_info->copied_archive = true;
-                                    if ($this->ftp_max_files > 0) {
-                                        $this->purge_old_ftp_packages($ftp_client);
-                                    }
-
-                                    $package->update();
-                                } else {
-                                    // Need to quit all together b/c ftp connection stays open
-                                    DUP_PRO_Log::trace("Exiting process since ftp partial");
-                                    // A real hack since the ftp_close doesn't work on the async put
-                                    $package->update();
-                                    // Kick the worker again
-                                    // DUP_PRO_Package_Runner::kick_off_worker();
-                                    DUP_PRO_Package_Runner::$delayed_exit_and_kickoff = true;
-                                    //exit();
-                                    return;
-                                }
-                            } else {
-                                DUP_PRO_Log::traceError("FAIL: archive  for package $package->Name upload to FTP $this->ftp_server. Getting Error from FTP: $ftp_upload_info->error_details");
-                                if ($ftp_upload_info->fatal_error) {
-                                    $installer_filename     = basename($source_installer_filepath);
-                                    $installer_ftp_filepath = "{$this->ftp_storage_folder}/$installer_filename";
-                                    DUP_PRO_Log::trace("Failed archive transfer so deleting $installer_ftp_filepath");
-                                    $ftp_client->delete($installer_ftp_filepath);
-                                    $upload_info->failed = true;
-                                } else {
-                                    $upload_info->archive_offset = $ftp_upload_info->next_offset;
-                                    $upload_info->increase_failure_count();
-                                }
-                            }
-                        } else {
-                            DUP_PRO_Log::trace("Already copied archive on previous execution of FTP $this->name so skipping");
-                        }
-                    } catch (Exception $e) {
-                        $upload_info->increase_failure_count();
-                        DUP_PRO_Log::traceError("Problems copying package $package->Name to $this->ftp_storage_folder. " . $e->getMessage());
-                    }
-
-                    if (!$this->ftp_use_curl) {
-                        $ftp_client->close();
-                    }
-                } else {
-                    $upload_info->increase_failure_count();
-                    DUP_PRO_Log::traceError("Couldn't open ftp connection " . $ftp_client->get_info());
-                }
-            } else {
-                DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
-                $upload_info->failed = true;
-            }
-        } else {
+        if ($source_archive_filepath === false) {
             DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
             $upload_info->failed = true;
+        }
+
+        if ($source_installer_filepath === false) {
+            DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
+            $upload_info->failed = true;
+        }
+
+        if ($upload_info->failed == true) {
+            DUP_PRO_Log::infoTrace('FTP storage failed flag ($upload_info->failed) has been already set.');
+            $package->update();
+            return;
+        }
+
+        if ($this->ftp_use_curl) {
+            $ftp_client = new DUP_PRO_FTPcURL(
+                $this->ftp_server,
+                $this->ftp_port,
+                $this->ftp_username,
+                $this->ftp_password,
+                $this->ftp_storage_folder,
+                $this->ftp_timeout_in_secs,
+                $this->ftp_ssl,
+                $this->ftp_passive_mode
+            );
+        } else {
+            $ftp_client = new DUP_PRO_FTP_Chunker(
+                $this->ftp_server,
+                $this->ftp_port,
+                $this->ftp_username,
+                $this->ftp_password,
+                $this->ftp_timeout_in_secs,
+                $this->ftp_ssl,
+                $this->ftp_passive_mode
+            );
+        }
+
+        if ($this->ftp_use_curl || $ftp_client->open()) {
+            if (
+                $upload_info->archive_offset <= 0 && // For archive_offset > 0 it's obvious that ftp_storage_folder exists
+                !$ftp_client->directory_exists($this->ftp_storage_folder) &&
+                !$ftp_client->create_directory($this->ftp_storage_folder)
+            ) {
+                DUP_PRO_Log::infoTrace("FAIL: Could not create FTP dir $this->ftp_storage_folder");
+                DUP_PRO_Log::trace("Couldn't create $this->ftp_storage_folder on $this->ftp_server");
+            }
+
+            try {
+                if ($upload_info->copied_installer == false) {
+                    DUP_PRO_Log::trace("ATTEMPT: FTP upload installer file $source_installer_filepath to $this->ftp_storage_folder");
+                    $dest_installer_filename = $package->Installer->getInstallerName();
+                    if ($this->ftp_use_curl) {
+                        $ret_upload_file = $ftp_client->upload_file($source_installer_filepath, $dest_installer_filename);
+                    } else {
+                        $ret_upload_file = $ftp_client->upload_file($source_installer_filepath, $this->ftp_storage_folder, $dest_installer_filename);
+                    }
+                    if ($ret_upload_file == false) {
+                        // This will just increase the failure count and reattempt with the next worker
+                        throw new Exception("FAIL: installer upload to FTP. Error uploading $source_installer_filepath to $this->ftp_storage_folder");
+                    } else {
+                        DUP_PRO_Log::infoTrace("SUCCESS: installer uploaded to FTP.");
+                        $upload_info->copied_installer = true;
+                        $upload_info->progress         = 5;
+                    }
+
+                    // The package update will automatically capture the upload_info since its part of the package
+                    $package->update();
+                } else {
+                    DUP_PRO_Log::trace("Already copied installer on previous execution of FTP $this->name, so skipping");
+                }
+
+                if ($upload_info->copied_archive == false) {
+                    $global = DUP_PRO_Global_Entity::getInstance();
+                    DUP_PRO_Log::trace("Calling upload_chunk with timeout for archive.");
+                    $ftp_upload_info = $ftp_client->upload_chunk(
+                        $source_archive_filepath,
+                        $this->ftp_use_curl ? '' : $this->ftp_storage_folder,
+                        $global->php_max_worker_time_in_sec,
+                        $upload_info->archive_offset,
+                        $this->throttleDelayInUs
+                    );
+                    DUP_PRO_Log::trace("Call to upload_chunk for archive is completed.");
+                    if ($ftp_upload_info->error_details == null) {
+                        // Since there was a successful chunk reset the failure count
+                        $upload_info->failure_count  = 0;
+                        $upload_info->archive_offset = $ftp_upload_info->next_offset;
+                        $file_size                   = filesize($source_archive_filepath);
+                        //  $upload_info->progress = max(5, 100 * (bcdiv($upload_info->archive_offset, $file_size, 2)));
+                        $upload_info->progress = max(5, DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0));
+                        DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
+                        if ($ftp_upload_info->success) {
+                            DUP_PRO_Log::infoTrace("SUCCESS: archive uploaded to FTP $this->ftp_server.");
+                            $upload_info->copied_archive = true;
+                            if ($this->ftp_max_files > 0) {
+                                DUP_PRO_Log::infoTrace("Attempting to purge old packages at FTP storage.");
+                                $this->purge_old_ftp_packages($ftp_client);
+                                DUP_PRO_Log::infoTrace("Purge of old packages at FTP storage completed.");
+                            }
+                            $package->update();
+                        } else {
+                            // Need to quit all together b/c ftp connection stays open
+                            DUP_PRO_Log::trace("Exiting process since ftp upload_chunk was partial");
+                            // A real hack since the ftp_close doesn't work on the async put
+                            $package->update();
+                            // Kick the worker again
+                            // DUP_PRO_Package_Runner::kick_off_worker();
+                            DUP_PRO_Package_Runner::$delayed_exit_and_kickoff = true;
+                            //exit();
+                            return;
+                        }
+                    } else {
+                        DUP_PRO_Log::infoTrace("FAIL: archive for package $package->Name upload to FTP $this->ftp_server. Getting Error from FTP: $ftp_upload_info->error_details");
+                        if ($ftp_upload_info->fatal_error) {
+                            $installer_filename     = basename($source_installer_filepath);
+                            $installer_ftp_filepath = "{$this->ftp_storage_folder}/$installer_filename";
+                            DUP_PRO_Log::trace("Failed archive transfer so deleting $installer_ftp_filepath");
+                            $ftp_client->delete($installer_ftp_filepath);
+                            $upload_info->failed = true;
+                        } else {
+                            $upload_info->archive_offset = $ftp_upload_info->next_offset;
+                            $upload_info->increase_failure_count();
+                        }
+                    }
+                } else {
+                    DUP_PRO_Log::trace("Already copied archive on previous execution of FTP $this->name so skipping");
+                }
+            } catch (Exception $e) {
+                $upload_info->increase_failure_count();
+                DUP_PRO_Log::traceError("Problems copying package $package->Name to $this->ftp_storage_folder. " . $e->getMessage());
+            }
+
+            if (!$this->ftp_use_curl) {
+                $ftp_client->close();
+            }
+        } else {
+            $upload_info->increase_failure_count();
+            DUP_PRO_Log::traceError("Couldn't open ftp connection " . $ftp_client->get_info());
         }
 
         if ($upload_info->failed) {
@@ -2099,141 +2212,160 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
 
     private function copy_to_sftp(DUP_PRO_Package $package, DUP_PRO_Package_Upload_Info $upload_info)
     {
-        DUP_PRO_Log::trace("copying to sftp");
+        DUP_PRO_Log::trace("Copying to SFTP storage");
         $source_archive_filepath   = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Archive);
         $source_installer_filepath = $package->getLocalPackageFilePath(DUP_PRO_Package_File_Type::Installer);
-        if ($source_archive_filepath !== false) {
-            if ($source_installer_filepath !== false) {
-                $sFtpAdapter           = null;
-                $failureCountIncreased = false;
-                try {
-                    $storage_folder        = $this->sftp_storage_folder;
-                    $server                = $this->sftp_server;
-                    $port                  = $this->sftp_port;
-                    $username              = $this->sftp_username;
-                    $password              = $this->sftp_password;
-                    $private_key           = $this->sftp_private_key;
-                    $private_key_password  = $this->sftp_private_key_password;
-                    $disable_chunking_mode = $this->sftp_disable_chunking_mode;
-                    if (DUP_PRO_STR::startsWith($storage_folder, '/') == false) {
-                        $storage_folder = '/' . $storage_folder;
-                    }
 
-                    if (DUP_PRO_STR::endsWith($storage_folder, '/') == false) {
-                        $storage_folder = $storage_folder . '/';
-                    }
-
-                    $sFtpAdapter = new SFTPAdapter($server, $port, $username, $password, $private_key, $private_key_password);
-
-                    if ($sFtpAdapter->connect() === false) {
-                        throw new Exception('SFTP connection fail');
-                    }
-                    if (!$sFtpAdapter->fileExists($storage_folder)) {
-                        $sFtpAdapter->mkDirRecursive($storage_folder);
-                    }
-
-                    if ($upload_info->copied_installer == false) {
-                        $source_filepath    = $source_installer_filepath;
-                        $basename           = $package->Installer->getInstallerName();
-                        $continueWithUpload = true;
-                        try {
-                            $sFtpAdapter->startChunkingTimer();
-                            if (!$sFtpAdapter->put($storage_folder . $basename, $source_filepath)) {
-                                $upload_info->failed = true;
-                                $continueWithUpload  = false;
-                                DUP_PRO_Log::infoTrace("FAIL: installer $source_installer_filepath upload to SFTP $this->sftp_storage_folder.");
-                            }
-                        } catch (ChunkingTimeoutException $e) {
-                            $continueWithUpload = true;
-                        }
-
-                        if ($continueWithUpload) {
-                            DUP_PRO_Log::infoTrace("SUCCESS: installer upload to SFTP $this->sftp_storage_folder.");
-                            $upload_info->progress         = 5;
-                            $upload_info->copied_installer = true;
-                        }
-                        // The package update will automatically capture the upload_info since its part of the package
-                        $package->update();
-                    } else {
-                        DUP_PRO_Log::trace("Already copied installer on previous execution of SFTP $this->name so skipping");
-                    }
-
-                    if ($upload_info->copied_archive == false) {
-                        $global = DUP_PRO_Global_Entity::getInstance();
-                        if ($disable_chunking_mode) {
-                            DUP_PRO_Log::trace('SFTP chunking mode is disabled.');
-                            $time_threshold = -1;
-                        } else {
-                            //Make sure time threshold not exceed the server maximum execution time
-                            $time_threshold = $global->php_max_worker_time_in_sec;
-                            if (isset($this->sftp_timeout_in_secs)) {
-                                $time_threshold = $this->sftp_timeout_in_secs;
-                            }
-                            DUP_PRO_Log::trace('SFTP chunking mode is enabled, so setting the time_threshold=' . $time_threshold);
-                        }
-
-                        $source_filepath = $source_archive_filepath;
-                        $basename        = basename($source_filepath);
-
-                        $continueWithUpload = false;
-                        try {
-                            $continueWithUpload = true;
-                            $sFtpAdapter->startChunkingTimer($time_threshold);
-                            $upload_info->archive_offset = $sFtpAdapter->filesize($storage_folder . $basename);
-                            if (!$sFtpAdapter->put($storage_folder . $basename, $source_filepath, $upload_info->archive_offset)) {
-                                $upload_info->failed = true;
-                                $continueWithUpload  = false;
-                                DUP_PRO_Log::infoTrace("FAIL: archive upload to SFTP.");
-                            }
-                        } catch (ChunkingTimeoutException $e) {
-                            $continueWithUpload = true;
-                        }
-
-                        if ($continueWithUpload) {
-                            $file_size             = filesize($source_filepath);
-                            $upload_info->progress = max(
-                                5,
-                                DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0)
-                            );
-
-                            DUP_PRO_Log::infoTrace("Archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
-                            if ($upload_info->progress >= 100) {
-                                $upload_info->copied_archive = true;
-                                DUP_PRO_Log::infoTrace("SUCCESS: archive upload to SFTP.");
-                                if ($this->sftp_max_files > 0) {
-                                    $this->purge_old_sftp_packages();
-                                }
-                            }
-                        }
-
-                        // The package update will automatically capture the upload_info since its part of the package
-                        $package->update();
-                    } else {
-                        DUP_PRO_Log::trace("Already copied archive on previous execution of SFTP $this->name so skipping");
-                    }
-
-                    if ($upload_info->failed) {
-                        $source_filepath = $source_archive_filepath;
-                        $basename        = basename($source_filepath);
-                        $sFtpAdapter->delete($storage_folder . $basename);
-
-                        $source_filepath = $source_installer_filepath;
-                        $basename        = basename($source_filepath);
-                        $sFtpAdapter->delete($storage_folder . $basename);
-                    } else {
-                        $upload_info->failure_count = 0;
-                    }
-                } catch (Exception $e) {
-                    $upload_info->increase_failure_count();
-                    DUP_PRO_Log::trace("Exception caught copying package $package->Name to $this->sftp_storage_folder. " . $e->getMessage());
-                }
-            } else {
-                DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
-                $upload_info->failed = true;
-            }
-        } else {
+        if ($source_archive_filepath === false) {
             DUP_PRO_Log::traceError("Archive doesn't exist for $package->Name!? - $source_archive_filepath");
             $upload_info->failed = true;
+        }
+
+        if ($source_installer_filepath === false) {
+            DUP_PRO_Log::traceError("Installer doesn't exist for $package->Name!? - $source_installer_filepath");
+            $upload_info->failed = true;
+        }
+
+        if ($upload_info->failed == true) {
+            DUP_PRO_Log::infoTrace('SFTP storage failed flag ($upload_info->failed) has been already set.');
+            $package->update();
+            return;
+        }
+
+        $sFtpAdapter           = null;
+        $failureCountIncreased = false;
+        try {
+            $storage_folder        = $this->sftp_storage_folder;
+            $server                = $this->sftp_server;
+            $port                  = $this->sftp_port;
+            $username              = $this->sftp_username;
+            $password              = $this->sftp_password;
+            $private_key           = $this->sftp_private_key;
+            $private_key_password  = $this->sftp_private_key_password;
+            $disable_chunking_mode = $this->sftp_disable_chunking_mode;
+            if (DUP_PRO_STR::startsWith($storage_folder, '/') == false) {
+                $storage_folder = '/' . $storage_folder;
+            }
+
+            if (DUP_PRO_STR::endsWith($storage_folder, '/') == false) {
+                $storage_folder = $storage_folder . '/';
+            }
+
+            $sFtpAdapter = new SFTPAdapter($server, $port, $username, $password, $private_key, $private_key_password);
+
+            if ($sFtpAdapter->connect() === false) {
+                DUP_PRO_Log::trace("SFTP connection fail");
+                throw new Exception('SFTP connection fail');
+            }
+            if (!$sFtpAdapter->fileExists($storage_folder)) {
+                DUP_PRO_Log::trace("Attempting to create $storage_folder via SFTP");
+                $sFtpAdapter->mkDirRecursive($storage_folder);
+            }
+
+            if ($upload_info->copied_installer == false) {
+                $source_filepath    = $source_installer_filepath;
+                $basename           = $package->Installer->getInstallerName();
+                $continueWithUpload = true;
+                try {
+                    $sFtpAdapter->startChunkingTimer();
+                    if (!$sFtpAdapter->put($storage_folder . $basename, $source_filepath)) {
+                        $upload_info->failed = true;
+                        $continueWithUpload  = false;
+                        DUP_PRO_Log::infoTrace("FAIL: installer $source_installer_filepath upload to SFTP $this->sftp_storage_folder.");
+                    }
+                } catch (ChunkingTimeoutException $e) {
+                    $continueWithUpload = true;
+                }
+
+                if ($continueWithUpload) {
+                    DUP_PRO_Log::infoTrace("SUCCESS: installer upload to SFTP $this->sftp_storage_folder.");
+                    $upload_info->progress         = 5;
+                    $upload_info->copied_installer = true;
+                }
+                // The package update will automatically capture the upload_info since its part of the package
+                $package->update();
+            } else {
+                DUP_PRO_Log::trace("Already copied installer on previous execution of SFTP $this->name so skipping");
+            }
+
+            if ($upload_info->copied_archive == false) {
+                $global = DUP_PRO_Global_Entity::getInstance();
+                if ($disable_chunking_mode) {
+                    DUP_PRO_Log::trace('SFTP chunking mode is disabled.');
+                    $time_threshold = -1;
+                } else {
+                    //Make sure time threshold not exceed the server maximum execution time
+                    $time_threshold = $global->php_max_worker_time_in_sec;
+                    if (isset($this->sftp_timeout_in_secs)) {
+                        $time_threshold = $this->sftp_timeout_in_secs;
+                    }
+                    DUP_PRO_Log::trace('SFTP chunking mode is enabled, so setting the time_threshold=' . $time_threshold);
+                }
+
+                $source_filepath = $source_archive_filepath;
+                $basename        = basename($source_filepath);
+
+                $continueWithUpload = false;
+                try {
+                    $continueWithUpload = true;
+                    $sFtpAdapter->startChunkingTimer($time_threshold);
+                    $upload_info->archive_offset = $sFtpAdapter->filesize($storage_folder . $basename);
+                    if (!$upload_info->archive_offset) {
+                        $upload_info->archive_offset = 0;
+                    }
+                    DUP_PRO_Log::trace("At start of iteration archive offset is: " . $upload_info->archive_offset);
+                    if (!$sFtpAdapter->put($storage_folder . $basename, $source_filepath, $upload_info->archive_offset)) {
+                        $upload_info->failed = true;
+                        $continueWithUpload  = false;
+                        DUP_PRO_Log::infoTrace("FAIL: archive upload to SFTP.");
+                    }
+                } catch (ChunkingTimeoutException $e) {
+                    $continueWithUpload = true;
+                }
+
+                // For some reason $sFtpAdapter->filesize($storage_folder . $basename) does not work here,
+                // so there is no way to know new archive offset after call to put command.
+
+                if ($continueWithUpload) {
+                    $file_size             = filesize($source_filepath);
+                    $upload_info->progress = max(
+                        5,
+                        DUP_PRO_U::percentage($upload_info->archive_offset, $file_size, 0)
+                    );
+
+                    DUP_PRO_Log::infoTrace("At start of iteration, archive upload offset: $upload_info->archive_offset [File size: $file_size] [Upload progress: $upload_info->progress%]");
+
+                    if ($upload_info->progress >= 100) {
+                        $upload_info->copied_archive = true;
+                        DUP_PRO_Log::infoTrace("SUCCESS: archive upload to SFTP.");
+                        if ($this->sftp_max_files > 0) {
+                            DUP_PRO_Log::infoTrace("Attempting to purge old packages at SFTP storage.");
+                            $this->purge_old_sftp_packages();
+                            DUP_PRO_Log::infoTrace("Purge of old packages at SFTP storage completed.");
+                        }
+                    }
+                }
+
+                // The package update will automatically capture the upload_info since its part of the package
+                $package->update();
+            } else {
+                DUP_PRO_Log::trace("Already copied archive on previous execution of SFTP $this->name so skipping");
+            }
+
+            if ($upload_info->failed) {
+                $source_filepath = $source_archive_filepath;
+                $basename        = basename($source_filepath);
+                $sFtpAdapter->delete($storage_folder . $basename);
+
+                $source_filepath = $source_installer_filepath;
+                $basename        = basename($source_filepath);
+                $sFtpAdapter->delete($storage_folder . $basename);
+            } else {
+                $upload_info->failure_count = 0;
+            }
+        } catch (Exception $e) {
+            $upload_info->increase_failure_count();
+            DUP_PRO_Log::trace("Exception caught copying package $package->Name to $this->sftp_storage_folder. " . $e->getMessage());
         }
 
         if ($upload_info->failed) {
@@ -2362,7 +2494,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
     public function purge_old_local_packages()
     {
         if ($this->local_max_files <= 0) {
-            return ;
+            return;
         }
 
         global $wpdb;
@@ -2728,12 +2860,12 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                 }
             }
 
-            DUP_PRO_Log::traceObject('valid file list', $valid_file_list);
+            DUP_PRO_Log::traceObject('Valid file list', $valid_file_list);
             try {
                 // Sort list by the timestamp associated with it
                 usort($valid_file_list, array(__CLASS__, 'compare_package_filenames_by_date'));
             } catch (Exception $e) {
-                DUP_PRO_Log::traceError("FAIL: purging FTP packages. Sort error when attempting to purge old FTP files");
+                DUP_PRO_Log::traceError("FAIL: purging FTP packages. Sort error when attempting to purge old FTP files.");
                 return;
             }
 
@@ -2745,7 +2877,7 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
                 } else {
                     $file_path = rtrim($this->ftp_storage_folder, '/') . '/' . $file_name;
                 }
-                // just look for the archives and delete only if has matching _installer
+                // just look for the archives and installer files
                 if (DUP_PRO_STR::endsWith($file_path, "_{$global->installer_base_name}")) {
                     array_push($php_files, $file_path);
                 } elseif (DUP_PRO_STR::endsWith($file_path, '_archive.zip') || DUP_PRO_STR::endsWith($file_path, '_archive.daf')) {
@@ -2815,23 +2947,23 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
     {
         switch ($this->get_storage_type()) {
             case DUP_PRO_Storage_Types::Dropbox:
-                return DUP_PRO_U::__('Dropbox');
+                return __('Dropbox', "duplicator-pro");
             case DUP_PRO_Storage_Types::FTP:
-                return DUP_PRO_U::__('FTP');
+                return __('FTP', "duplicator-pro");
             case DUP_PRO_Storage_Types::SFTP:
-                return DUP_PRO_U::__('SFTP');
+                return __('SFTP', "duplicator-pro");
             case DUP_PRO_Storage_Types::GDrive:
-                return DUP_PRO_U::__('Google Drive');
+                return __('Google Drive', "duplicator-pro");
             case DUP_PRO_Storage_Types::Local:
-                return DUP_PRO_U::__('Local');
+                return __('Local', "duplicator-pro");
             case DUP_PRO_Storage_Types::S3:
-                return $this->s3_is_amazon() ? DUP_PRO_U::__('Amazon S3') : DUP_PRO_U::__('S3-Compatible (Generic)');
+                return $this->s3_is_amazon() ? __('Amazon S3', "duplicator-pro") : __('S3-Compatible (Generic)', "duplicator-pro");
             case DUP_PRO_Storage_Types::OneDrive:
-                return !$this->onedrive_is_business() ? DUP_PRO_U::__('OneDrive v0.1') : DUP_PRO_U::__('OneDrive v0.1 (B)');
+                return !$this->onedrive_is_business() ? __('OneDrive v0.1', "duplicator-pro") : __('OneDrive v0.1 (B)', "duplicator-pro");
             case DUP_PRO_Storage_Types::OneDriveMSGraph:
-                return DUP_PRO_U::__('OneDrive');
+                return __('OneDrive', "duplicator-pro");
             default:
-                return DUP_PRO_U::__('Unknown');
+                return __('Unknown', "duplicator-pro");
         }
     }
 
@@ -2884,8 +3016,8 @@ class DUP_PRO_Storage_Entity extends DUP_PRO_JSON_Entity_Base
     {
         $global                                      = DUP_PRO_Global_Entity::getInstance();
         $default_local_storage                       = new self();
-        $default_local_storage->name                 = DUP_PRO_U::__('Default');
-        $default_local_storage->notes                = DUP_PRO_U::__('The default location for storage on this server.');
+        $default_local_storage->name                 = __('Default', "duplicator-pro");
+        $default_local_storage->notes                = __('The default location for storage on this server.', "duplicator-pro");
         $default_local_storage->id                   = DUP_PRO_Virtual_Storage_IDs::Default_Local;
         $default_local_storage->storage_type         = DUP_PRO_Storage_Types::Local;
         $default_local_storage->local_storage_folder = DUPLICATOR_PRO_SSDIR_PATH;

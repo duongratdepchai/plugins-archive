@@ -14,6 +14,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Security;
 use Duplicator\Installer\Addons\ProBase\License;
+use Duplicator\Installer\Package\PComponents;
 use Duplicator\Installer\Utils\Log\Log;
 use Duplicator\Installer\Core\Params\PrmMng;
 
@@ -75,6 +76,7 @@ final class DUPX_Ctrl_S0
         $log .= str_pad('WP VERSION', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->version_wp . "\n";
         $log .= str_pad('DUP VERSION', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->version_dup . "\n";
         $log .= str_pad('LICENSE', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . License::getLicenseToString() . "\n";
+        $log .= str_pad('PACKAGE COMPONENTS', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . PComponents::displayComponentsList($archiveConfig->components) . "\n";
         $log .= str_pad('DB VERSION', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->version_db . "\n";
         $log .= str_pad('DB FILE SIZE', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . DUPX_U::readableByteSize($archiveConfig->dbInfo->tablesSizeOnDisk) . "\n";
         $log .= str_pad('DB TABLES', $labelPadSize, '_', STR_PAD_RIGHT) . ': ' . $archiveConfig->dbInfo->tablesFinalCount . "\n";

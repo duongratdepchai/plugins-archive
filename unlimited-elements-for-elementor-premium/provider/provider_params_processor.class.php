@@ -530,6 +530,9 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			dmp($arrIDs);
 		}
 		
+		if(empty($arrIDs))
+			$arrIDs = array(0);
+		
 		return($arrIDs);
 	}
 	
@@ -2246,9 +2249,12 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		dmp($query->found_posts);
 		*/
 				
-		
 		$arrPosts = $query->posts;
 		
+		$numPosts = $query->found_posts;
+		
+		if(!empty($arrPosts) && $numPosts == 0)
+			$arrPosts = array();
 		
 		if(!$arrPosts)
 			$arrPosts = array();
@@ -2317,8 +2323,9 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		HelperUC::addDebug("posts found: ".count($arrPosts));
 		
 		if($showDebugQuery == true){
-			dmp("Found Posts: ".count($arrPosts));
 			
+			dmp("Found Posts: ".count($arrPosts));
+									
 			echo "</div>";
 		}
 		
@@ -2590,10 +2597,14 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		$arrPosts = $query->posts;
 		
-		
 		if(empty($arrPosts))
 			$arrPosts = array();
-
+		
+		$numPosts = $query->found_posts;
+		
+		if(!empty($arrPosts) && $numPosts == 0)
+			$arrPosts = array();
+		
 		if($showDebugQuery == true && $debugType == "show_query"){
 			
 			$originalQueryVars = $query->query_vars;
@@ -2608,7 +2619,6 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			$this->showPostsDebugCallbacks($isForWoo);
 			
 		}
-		
 		
 		if($showDebugQuery == true){
 			dmp("Found Posts: ".count($arrPosts));
@@ -4667,18 +4677,23 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		
 		if(empty($special))
 			return($data);
+					
+		if($this->processType == self::PROCESS_TYPE_CONFIG)
+			return($data);
 		
+		//skip backend editor
+					
 		switch($special){
 			case "post_filter":
 				$data = $this->modifyData_postFilterOptions($data, $specialData);
 			break;
 			case "ue_form":
-				
+								
 				$objFrom = new UniteCreatorForm();
 				$objFrom->addFormIncludes();
+								
 			break;
 		}
-		
 		
 		
 		return($data);

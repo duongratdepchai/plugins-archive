@@ -197,7 +197,7 @@
 
                     $($cryptoWidget).find('.swiper-wrapper').append(output);
 
-                    var $carouselContainer = $carousel.find('.swiper-container'),
+                    var $carouselContainer = $carousel.find('.swiper-carousel'),
                         $carouselSettings = $carousel.data('settings');
 
                     const Swiper = elementorFrontend.utils.swiper;

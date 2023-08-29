@@ -8,6 +8,7 @@ use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Css_Filter;
+use Elementor\Plugin;
 
 use ElementPack\Traits\Global_Swiper_Controls;
 
@@ -956,9 +957,12 @@ class Twitter_Slider extends Module_Base
 			]
 		);
 
+		$swiper_class = Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+		$this->add_render_attribute('swiper', 'class', 'swiper-carousel ' . $swiper_class);
+
 		?>
 		<div <?php echo $this->get_render_attribute_string('slider'); ?>>
-			<div class="swiper-container">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div class="swiper-wrapper">
 			<?php
 		}

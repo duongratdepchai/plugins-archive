@@ -106,6 +106,10 @@ if ( ! class_exists( 'Jet_Engine_Compatibility' ) ) {
 					'cb'   => 'function_exists',
 					'args' => 'relevanssi_do_query',
 				),
+				'generateblocks.php' => array(
+					'cb'   => 'defined',
+					'args' => 'GENERATEBLOCKS_VERSION',
+				),
 			);
 
 			foreach ( $whitelist as $file => $condition ) {

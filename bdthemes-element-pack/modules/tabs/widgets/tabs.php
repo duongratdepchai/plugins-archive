@@ -715,17 +715,6 @@ class Tabs extends Module_Base
                 'label' => esc_html__('Normal', 'bdthemes-element-pack'),
             ]
         );
-
-        $this->add_group_control(
-            Group_Control_Background::get_type(),
-            [
-                'name'      => 'title_background',
-                'types'     => ['classic', 'gradient'],
-                'selector'  => '{{WRAPPER}} .bdt-tab .bdt-tabs-item-title',
-                'separator' => 'after',
-            ]
-        );
-
         $this->add_control(
             'title_color',
             [
@@ -739,25 +728,16 @@ class Tabs extends Module_Base
         );
 
         $this->add_group_control(
-            Group_Control_Box_Shadow::get_type(),
+            Group_Control_Background::get_type(),
             [
-                'name'     => 'title_shadow',
-                'selector' => '{{WRAPPER}} .bdt-tab .bdt-tabs-item .bdt-tabs-item-title',
+                'name'      => 'title_background',
+                'types'     => ['classic', 'gradient'],
+                'selector'  => '{{WRAPPER}} .bdt-tab .bdt-tabs-item-title',
+                // 'separator' => 'after',
             ]
         );
 
-        $this->add_responsive_control(
-            'title_padding',
-            [
-                'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
-                'type'       => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors'  => [
-                    '{{WRAPPER}} .bdt-tab .bdt-tabs-item-title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
+       
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
@@ -765,6 +745,7 @@ class Tabs extends Module_Base
                 'placeholder' => '1px',
                 'default'     => '1px',
                 'selector'    => '{{WRAPPER}} .bdt-tab .bdt-tabs-item .bdt-tabs-item-title',
+                'separator'   => 'before',
             ]
         );
 
@@ -780,12 +761,56 @@ class Tabs extends Module_Base
             ]
         );
 
+        //tab item row gap slider
+        $this->add_responsive_control(
+            'title_row_gap',
+            [
+                'label'      => esc_html__('Row Gap', 'bdthemes-element-pack') . BDTEP_NC,
+                'type'       => Controls_Manager::SLIDER,
+                'size_units' => ['px', '%', 'em'],
+                'range'      => [
+                    'px' => [
+                        'min'  => 0,
+                        'max'  => 100,
+                        'step' => 1,
+                    ],
+
+                ],
+                'selectors'  => [
+                    '{{WRAPPER}} .bdt-tabs-area .bdt-tab' => 'row-gap: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+
+        
+
+        $this->add_responsive_control(
+            'title_padding',
+            [
+                'label'      => esc_html__('Padding', 'bdthemes-element-pack'),
+                'type'       => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em', '%'],
+                'selectors'  => [
+                    '{{WRAPPER}} .bdt-tab .bdt-tabs-item-title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
         $this->add_group_control(
             Group_Control_Typography::get_type(),
             [
                 'name'     => 'title_typography',
                 'selector' => '{{WRAPPER}} .bdt-tab .bdt-tabs-item-title',
                 //'scheme'   => Schemes\Typography::TYPOGRAPHY_1,
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Box_Shadow::get_type(),
+            [
+                'name'     => 'title_shadow',
+                'selector' => '{{WRAPPER}} .bdt-tab .bdt-tabs-item .bdt-tabs-item-title',
             ]
         );
 

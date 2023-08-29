@@ -60,7 +60,7 @@ class SubsiteActions extends \Duplicator\Core\REST\AbstractRESTPoint
     public function permission(WP_REST_Request $request)
     {
         if (!CapMng::can(CapMng::CAP_IMPORT, false) || !is_super_admin() || !check_ajax_referer('wp_rest', false, false)) {
-            return new WP_Error('rest_forbidden', esc_html__('You cannot execute this action.'));
+            return new WP_Error('rest_forbidden', esc_html__('You cannot execute this action.', 'duplicator-pro'));
         }
         return true;
     }

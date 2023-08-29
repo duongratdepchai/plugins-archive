@@ -48,7 +48,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		 * get select from array
 		 */
 		public static function getHTMLSelect($arr,$default="",$htmlParams="",$assoc = false, $addData = null, $addDataText = null){
-		
+						
 			$html = "<select $htmlParams>";
 			//add first item
 			if($addData == "not_chosen"){

@@ -13,10 +13,14 @@ class DUP_PRO_Plugin_Upgrade
 {
     const DUP_VERSION_OPT_KEY = 'duplicator_pro_plugin_version';
 
+    const DUP_PRO_INSTALL_TIME = 'duplicator_pro_install_time';
+
     public static function onActivationAction()
     {
         // Init capabilities
         CapMng::getInstance();
+
+        self::setInstallTime();
 
         if (($oldDupVersion = get_option(self::DUP_VERSION_OPT_KEY, false)) === false) {
             self::newInstallation();
@@ -26,6 +30,32 @@ class DUP_PRO_Plugin_Upgrade
 
         //Rename installer files if exists
         MigrationMng::renameInstallersPhpFiles();
+    }
+
+    /**
+     * Set install time if not set.
+     *
+     * @return void
+     */
+    private static function setInstallTime()
+    {
+        if (get_option(self::DUP_PRO_INSTALL_TIME, false) !== false) {
+            return;
+        }
+
+        update_option(self::DUP_PRO_INSTALL_TIME, time());
+    }
+
+    /**
+     * Get install time.
+     *
+     * @return int|false
+     */
+    public static function getInstallTime()
+    {
+        self::setInstallTime();
+
+        return get_option(self::DUP_PRO_INSTALL_TIME);
     }
 
     protected static function newInstallation()

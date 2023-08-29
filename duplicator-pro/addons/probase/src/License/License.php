@@ -22,15 +22,16 @@ final class License extends AbstractLicense
     /**
      * GENERAL SETTINGS
      */
-    const EDD_DUPPRO_STORE_URL               = 'https://duplicator.com';
-    const EDD_DUPPRO_ITEM_NAME               = 'Duplicator Pro';
-    const LICENSE_KEY_OPTION_NAME            = 'duplicator_pro_license_key';
-    const LICENSE_CACHE_TIME                 = 1209600; // 14 DAYS IN SECONDS
-    const LICENSE_CACHE_CLEAR_KEY            = 'dup_pro_clear_updater_cache';
-    const EDD_API_CACHE_TIME                 = 172800; // 48 hours
-    const UNLICENSED_SUPER_NAG_DELAY_IN_DAYS = 30;
-    const FRONTEND_CHECK_DELAY               = 61; // Seconds, different fromgeneral frontend check to unsync
-    const FRONTEND_CHECK_DELAY_OPTION_KEY    = 'license_check';
+    const EDD_DUPPRO_STORE_URL            = 'https://duplicator.com';
+    const EDD_DUPPRO_ITEM_NAME            = 'Duplicator Pro';
+    const LICENSE_KEY_OPTION_NAME         = 'duplicator_pro_license_key';
+    const LICENSE_CACHE_TIME              = 1209600; // 14 DAYS IN SECONDS
+    const LICENSE_CACHE_CLEAR_KEY         = 'dup_pro_clear_updater_cache';
+    const EDD_API_CACHE_TIME              = 172800; // 48 hours
+    const FRONTEND_CHECK_DELAY            = 61; // Seconds, different fromgeneral frontend check to unsync
+    const FRONTEND_CHECK_DELAY_OPTION_KEY = 'license_check';
+    const SCOVRK_REGEX_LEGACY             = '/SCOVRK([a-z0-9]{32})_([0-9]\d*)/';
+    const SCOVRK_REGEX                    = '/SCOVRK2_([a-z0-9]{32})_([0-9]\d*)_([0-9]\d*)_([0-9]\d*)/';
 
     /**
      * LICENSE STATUS
@@ -68,7 +69,8 @@ final class License extends AbstractLicense
     protected static $lastRequestError = [
         'code' => 0,
         'message' => '',
-        'details' => ''
+        'details' => '',
+        'requestDetails' => ''
     ];
 
     /**
@@ -218,23 +220,11 @@ final class License extends AbstractLicense
     public static function isValidOvrKey($scrambledKey)
     {
     	return true;
-        $isValid        = false;
         $unscrambledKey = CryptCustom::unscramble($scrambledKey);
-
-        if (\DUP_PRO_STR::startsWith($unscrambledKey, 'SCOVRK')) {
-            $index = strpos($unscrambledKey, '_');
-
-            if ($index !== false) {
-                $index++;
-                $count = substr($unscrambledKey, $index);
-
-                if (is_numeric($count) && ($count > 0)) {
-                    $isValid = true;
-                }
-            }
-        }
-
-        return $isValid;
+        return (
+            preg_match(self::SCOVRK_REGEX, $unscrambledKey) === 1 ||
+            preg_match(self::SCOVRK_REGEX_LEGACY, $unscrambledKey) === 1
+        );
     }
 
     /**
@@ -246,30 +236,27 @@ final class License extends AbstractLicense
      */
     public static function setOvrKey($scrambledKey)
     {
-        if (self::isValidOvrKey($scrambledKey)) {
-            $unscrambledKey = CryptCustom::unscramble($scrambledKey);
+        $unscrambledKey       = CryptCustom::unscramble($scrambledKey);
+        $matches              = null;
+        $global               = \DUP_PRO_Global_Entity::getInstance();
+        $global->license_type = self::TYPE_UNKNOWN;
 
-            $index = strpos($unscrambledKey, '_');
-
-            if ($index !== false) {
-                $index++;
-                $count = (int) substr($unscrambledKey, $index);
-
-                $global = \DUP_PRO_Global_Entity::getInstance();
-				$global->license_limit = 800;
-                $global->license_limit               = $count;
-                $global->license_no_activations_left = false;
-                $global->license_status              = self::STATUS_VALID;
-
-                $global->save();
-
-                \DUP_PRO_Log::trace("$unscrambledKey is an ovr key with license limit $count");
-
-                update_option(self::LICENSE_KEY_OPTION_NAME, $scrambledKey);
-            }
+        if (preg_match(self::SCOVRK_REGEX, $unscrambledKey, $matches) === 1) {
+            $global->license_limit = (int) $matches[2];
+            $global->license_type  = (int) $matches[3];
+        } elseif (preg_match(self::SCOVRK_REGEX_LEGACY, $unscrambledKey, $matches) === 1) {
+            $global->license_limit = (int) $matches[2];
+            $global->license_type  = self::getType();
         } else {
             throw new Exception("Ovr key in wrong format: $scrambledKey");
         }
+
+        $global->license_no_activations_left = false;
+        $global->license_status              = self::STATUS_VALID;
+        $global->save();
+
+        \DUP_PRO_Log::trace($unscrambledKey . " is an ovr key with license type " . $global->license_type  . " limit " . $global->license_limit);
+        update_option(self::LICENSE_KEY_OPTION_NAME, $scrambledKey);
     }
 
     /**
@@ -281,17 +268,17 @@ final class License extends AbstractLicense
      */
     public static function getStandardKeyFromOvrKey($scrambledKey)
     {
-        $standardKey = '';
-
-        if (self::isValidOvrKey($scrambledKey)) {
-            $unscrambledKey = CryptCustom::unscramble($scrambledKey);
-
-            $standardKey = substr($unscrambledKey, 6, 32);
+        $unscrambledKey = CryptCustom::unscramble($scrambledKey);
+        $matches        = null;
+        $result         = self::TYPE_UNKNOWN;
+        if (preg_match(self::SCOVRK_REGEX, $unscrambledKey, $matches) === 1) {
+            $result = $matches[1];
+        } elseif (preg_match(self::SCOVRK_REGEX_LEGACY, $unscrambledKey, $matches) === 1) {
+            $result = $matches[1];
         } else {
             throw new Exception("Ovr key in wrong format: $scrambledKey");
         }
-
-        return $standardKey;
+        return $result;
     }
 
     /**
@@ -352,15 +339,15 @@ final class License extends AbstractLicense
     /**
      * return expiration license days
      *
-     * @return int // PHP_INT_MAX is filetime
+     * @return int -1 on failure PHP_INT_MAX is filetime
      */
     public static function getExpirationDays()
     {
         if (($licenseData = License::getLicenseData()) == false) {
-            return 0;
+            return -1;
         }
         if (!isset($licenseData->expires)) {
-            return 0;
+            return -1;
         }
         if ($licenseData->expires === 'lifetime') {
             return PHP_INT_MAX;
@@ -490,17 +477,29 @@ final class License extends AbstractLicense
     public static function getType()
     {
         $global = \DUP_PRO_Global_Entity::getInstance();
-
+		$global->license_limit = 800;
         if ($global->license_type == self::TYPE_UNKNOWN) {
             // Old license system
-            if ($global->license_limit < 0) {
-                return self::TYPE_UNLICENSED;
-            } elseif ($global->license_limit < 15) {
-                return self::TYPE_PERSONAL;
-            } elseif ($global->license_limit < 500) {
-                return self::TYPE_FREELANCER;
-            } else {
-                return self::TYPE_BUSINESS;
+            switch ($global->license_limit) {
+                case 2:
+                    return self::TYPE_BASIC;
+                case 5:
+                    return self::TYPE_PLUS;
+                case 20:
+                    return self::TYPE_PRO;
+                case 100:
+                    return self::TYPE_ELITE;
+                default:
+                    // Old Licenses
+                    if ($global->license_limit < 0) {
+                        return self::TYPE_UNLICENSED;
+                    } elseif ($global->license_limit < 15) {
+                        return self::TYPE_PERSONAL;
+                    } elseif ($global->license_limit < 500) {
+                        return self::TYPE_FREELANCER;
+                    } else {
+                        return self::TYPE_BUSINESS;
+                    }
             }
         } else {
             return ($global->license_status == self::STATUS_VALID ? $global->license_type : self::TYPE_UNLICENSED);
@@ -581,7 +580,7 @@ final class License extends AbstractLicense
      */
     public static function getUpsellURL()
     {
-        return 'https://duplicator.com/dashboard/';
+        return DUPLICATOR_PRO_BLOG_URL . 'dashboard/';
     }
 
     /**
@@ -600,7 +599,7 @@ final class License extends AbstractLicense
                     'duplicator-pro'
                 ),
                 License::getLicenseToString(),
-                '<a href="https://duplicator.com/my-account/support/" target="_blank">',
+                '<a href="' . DUPLICATOR_PRO_BLOG_URL . 'my-account/support/" target="_blank">',
                 '</a>'
             ) .
             '<br>' .
@@ -627,44 +626,54 @@ final class License extends AbstractLicense
         $agent_string = "WordPress/" . $wp_version;
         \DUP_PRO_Log::trace("Wordpress agent string $agent_string");
 
-        $response = wp_remote_post(
-            self::EDD_DUPPRO_STORE_URL,
-            array(
-                'timeout'    => 15,
-                'sslverify'  => false,
-                'user-agent' => $agent_string,
-                'body'       => $params
-            )
+        $postParams     = array(
+            'timeout'    => 15,
+            'sslverify'  => false,
+            'user-agent' => $agent_string,
+            'body'       => $params
         );
+        $requestDetails = JsonSerialize::serialize([
+            'url' => self::EDD_DUPPRO_STORE_URL,
+            'curlEnabled' => SnapUtil::isCurlEnabled(true),
+            'params' => $postParams
+        ], JSON_PRETTY_PRINT);
+
+        $response = wp_remote_post(self::EDD_DUPPRO_STORE_URL, $postParams);
 
         if (is_wp_error($response)) {
             /** @var WP_Error  $response */
-            self::$lastRequestError['code']    = $response->get_error_code();
-            self::$lastRequestError['message'] = $response->get_error_message();
-            self::$lastRequestError['details'] = JsonSerialize::serialize($response->get_error_data(), JSON_PRETTY_PRINT);
+            self::$lastRequestError['code']           = $response->get_error_code();
+            self::$lastRequestError['message']        = $response->get_error_message();
+            self::$lastRequestError['details']        = JsonSerialize::serialize($response->get_error_data(), JSON_PRETTY_PRINT);
+            self::$lastRequestError['requestDetails'] = $requestDetails;
             return false;
         } elseif ($response['response']['code'] < 200 || $response['response']['code'] >= 300) {
-            self::$lastRequestError['code']    = $response['response']['code'];
-            self::$lastRequestError['message'] = $response['response']['message'];
-            self::$lastRequestError['details'] = JsonSerialize::serialize($response, JSON_PRETTY_PRINT);
+            self::$lastRequestError['code']           = $response['response']['code'];
+            self::$lastRequestError['message']        = $response['response']['message'];
+            self::$lastRequestError['details']        = JsonSerialize::serialize($response, JSON_PRETTY_PRINT);
+            self::$lastRequestError['requestDetails'] = $requestDetails;
             return false;
         } else {
-            self::$lastRequestError['code']    = 0;
-            self::$lastRequestError['message'] = '';
-            self::$lastRequestError['details'] = '';
+            self::$lastRequestError['code']           = 0;
+            self::$lastRequestError['message']        = '';
+            self::$lastRequestError['details']        = '';
+            self::$lastRequestError['requestDetails'] = '';
         }
 
         $data = json_decode(wp_remote_retrieve_body($response));
         if (!is_object($data) || !property_exists($data, 'license')) {
-            self::$lastRequestError['code']    = -1;
-            self::$lastRequestError['message'] = __('Invalid license data.', 'duplicator-pro');
-            self::$lastRequestError['details'] = 'Response: ' . wp_remote_retrieve_body($response);
+            self::$lastRequestError['code']           = -1;
+            self::$lastRequestError['message']        = __('Invalid license data.', 'duplicator-pro');
+            self::$lastRequestError['details']        = 'Response: ' . wp_remote_retrieve_body($response);
+            self::$lastRequestError['requestDetails'] = $requestDetails;
             return false;
         }
 
-        self::$lastRequestError['code']    = 0;
-        self::$lastRequestError['message'] = '';
-        self::$lastRequestError['details'] = '';
+        self::$lastRequestError['code']           = 0;
+        self::$lastRequestError['message']        = '';
+        self::$lastRequestError['details']        = '';
+        self::$lastRequestError['requestDetails'] = '';
+
         return $data;
     }
 

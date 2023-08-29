@@ -1413,7 +1413,7 @@ class Post_Gallery extends Module_Base {
 				<?php endif; ?>
 			</button>
 
-			<div data-bdt-dropdown="mode: click;" class="bdt-dropdown bdt-margin-remove-top bdt-margin-remove-bottom">
+			<div data-bdt-dropdown="mode: click;" class="bdt-dropdown bdt-margin-remove-top bdt-margin-remove-bottom bdt-drop">
 				<ul class="bdt-nav bdt-dropdown-nav">
 
 					<?php if (isset($settings['filter_custom_text']) && ($settings['filter_custom_text'] != 'yes')) : ?>

@@ -114,11 +114,7 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 		 */
 		public function module_init() {
 
-			if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.5.0', '>=' ) ) {
-				add_action( 'elementor/widgets/register', array( $this, 'register_calendar_widget' ), 20 );
-			} else {
-				add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_calendar_widget' ), 20 );
-			}
+			add_action( 'jet-engine/elementor-views/widgets/register', array( $this, 'register_calendar_widget' ), 20, 2 );
 			
 			add_action( 'wp_ajax_jet_engine_calendar_get_month', array( $this, 'calendar_get_month' ) );
 			add_action( 'wp_ajax_nopriv_jet_engine_calendar_get_month', array( $this, 'calendar_get_month' ) );
@@ -211,17 +207,18 @@ if ( ! class_exists( 'Jet_Engine_Module_Calendar' ) ) {
 		/**
 		 * Register calendar widget
 		 *
+		 * @param $widgets_manager
+		 * @param $elementor_views
+		 *
 		 * @return void
 		 */
-		public function register_calendar_widget( $widgets_manager ) {
+		public function register_calendar_widget( $widgets_manager, $elementor_views ) {
 
-			if ( jet_engine()->elementor_views ) {
-				jet_engine()->elementor_views->register_widget(
-					jet_engine()->modules->modules_path( 'calendar/widget.php' ),
-					$widgets_manager,
-					'Elementor\Jet_Listing_Calendar_Widget'
-				);
-			}
+			$elementor_views->register_widget(
+				jet_engine()->modules->modules_path( 'calendar/widget.php' ),
+				$widgets_manager,
+				'Elementor\Jet_Listing_Calendar_Widget'
+			);
 
 		}
 

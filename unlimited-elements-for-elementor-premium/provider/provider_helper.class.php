@@ -19,7 +19,73 @@ class HelperProviderUC{
         	
         return($isActivated);
 	}
+	
+	/**
+	 * get sort filter default values
+	 */
+	public static function getSortFilterDefaultValues(){
+		
+		$arrValues = array();
+		$arrValues["default"] = __("Default","unlimited-elements-for-elementor");
+		$arrValues["meta"] = __("Meta Field","unlimited-elements-for-elementor");
+		$arrValues["id"] = __("ID","unlimited-elements-for-elementor");
+		$arrValues["date"] = __("Date","unlimited-elements-for-elementor");
+		$arrValues["title"] = __("Title","unlimited-elements-for-elementor");
+		$arrValues["sale_price"] = __("Sale Price","unlimited-elements-for-elementor");
+		$arrValues["sales"] = __("Number Of Sales","unlimited-elements-for-elementor");
+		$arrValues["rating"] = __("Rating","unlimited-elements-for-elementor");
+		$arrValues["name"] = __("Name","unlimited-elements-for-elementor");
+		$arrValues["author"] = __("Author","unlimited-elements-for-elementor");
+		$arrValues["modified"] = __("Last Modified","unlimited-elements-for-elementor");
+		$arrValues["comment_count"] = __("Number Of Comments","unlimited-elements-for-elementor");
+		$arrValues["rand"] = __("Random","unlimited-elements-for-elementor");
+		$arrValues["none"] = __("Unsorted","unlimited-elements-for-elementor");
+		$arrValues["menu_order"] = __("Menu Order","unlimited-elements-for-elementor");
+		$arrValues["parent"] = __("Parent Post","unlimited-elements-for-elementor");
+		
+		$output = array();
+		
+		foreach($arrValues as $type=>$title){
+			$output[] = array("type"=>$type,"title"=>$title);
+		}
+		
+		return($output);
+	}
     
+	
+	/**
+	 * get sort filter repeater fields
+	 */
+	public static function getSortFilterRepeaterFields(){
+		
+		$settings = new UniteCreatorSettings();
+		
+		//--- field type -----
+		
+		$params = array();
+		$params["origtype"] = UniteCreatorDialogParam::PARAM_DROPDOWN;
+		
+		$arrSort = UniteFunctionsWPUC::getArrSortBy(true, true);
+		
+		
+		$arrSort = array_flip($arrSort);
+		
+		$settings->addSelect("type", $arrSort, __("Field Type","unlimited-elements-for-elementor"),"default",$params);
+
+		
+		//--- field Title -----
+		
+		$params = array();
+		$params["origtype"] = UniteCreatorDialogParam::PARAM_TEXTFIELD;
+		
+		$settings->addTextBox("title", "", __("Field Title","unlimited-elements-for-elementor"),$params);
+		
+		
+		
+		return($settings);		
+	}
+	
+	
 	/**
 	 * get data for meta compare select
 	 */
@@ -260,7 +326,12 @@ class HelperProviderUC{
 		
 		$memoryLimit = ini_get('memory_limit');
 		$htmlLimit = "<b> {$memoryLimit} </b>";
-				
+		
+		$numLimit = (int)$memoryLimit;
+
+		if($numLimit < 512)
+			$htmlLimit .= "<div style='color:red;font-size:13px;padding-top:4px;'> Recommended 512M, please increase php memory.</div>";
+		
 		$setting = $objSettings->getSettingByName("memory_limit_text");
 		if(empty($setting))
 			UniteFunctionsUC::throwError("Must be memory limit troubleshooter setting");
@@ -736,7 +807,28 @@ class HelperProviderUC{
 		
 		if($hasPermission == false)
 			UniteFunctionsUC::throwError("The user don't have permission to do this operation");
-		
 	}
-	
+
+	/**
+	 * check if addon revisions are enabled
+	 */
+	public static function isAddonRevisionsEnabled(){
+
+		$isRevisionsEnabled = HelperProviderCoreUC_EL::getGeneralSetting("enable_revisions");
+		$isRevisionsEnabled = UniteFunctionsUC::strToBool($isRevisionsEnabled);
+
+		return $isRevisionsEnabled;
+	}
+
+	/**
+	 * verify if addon revisions are enabled, use it before ajax actions
+	 */
+	public static function verifyAddonRevisionsEnabled(){
+
+		$isRevisionsEnabled = self::isAddonRevisionsEnabled();
+
+		if($isRevisionsEnabled === false)
+			UniteFunctionsUC::throwError("The revisions are disabled.");
+	}
+
 }

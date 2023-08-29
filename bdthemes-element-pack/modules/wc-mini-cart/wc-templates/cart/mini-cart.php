@@ -5,12 +5,11 @@ namespace ElementPack\Modules\WcMiniCart\WcTemplates\Cart;
 defined('ABSPATH') || exit;
 
 
-
 $cart_items = WC()->cart->get_cart();
 
 if (empty($cart_items)) {
 	$shop_page_url = get_permalink(wc_get_page_id('shop'));
-	?>
+?>
 	<div class="wc-empty-mini-cart">
 		<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
 			<rect width="96" height="96" style="fill:none" />

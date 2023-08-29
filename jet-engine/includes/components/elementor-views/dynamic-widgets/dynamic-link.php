@@ -240,24 +240,26 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 			);
 		}
 
-		$this->add_control(
-			'link_wrapper_tag',
-			array(
-				'label'   => __( 'HTML wrapper', 'jet-engine' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'div',
-				'options' => array(
-					'div'  => 'DIV',
-					'h1'   => 'H1',
-					'h2'   => 'H2',
-					'h3'   => 'H3',
-					'h4'   => 'H4',
-					'h5'   => 'H5',
-					'h6'   => 'H6',
-					'span' => 'SPAN',
-				),
-			)
-		);
+		if ( ! $this->prevent_wrap() ) {
+			$this->add_control(
+				'link_wrapper_tag',
+				array(
+					'label'   => __( 'HTML wrapper', 'jet-engine' ),
+					'type'    => Controls_Manager::SELECT,
+					'default' => 'div',
+					'options' => array(
+						'div'  => 'DIV',
+						'h1'   => 'H1',
+						'h2'   => 'H2',
+						'h3'   => 'H3',
+						'h4'   => 'H4',
+						'h5'   => 'H5',
+						'h6'   => 'H6',
+						'span' => 'SPAN',
+					),
+				)
+			);
+		}
 
 		$this->add_control(
 			'open_in_new',
@@ -521,14 +523,16 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 			)
 		);
 
+		$low_order = $this->prevent_wrap() ? -1 : 1;
+
 		$this->add_control(
 			'link_icon_position',
 			array(
 				'label'   => __( 'Icon Position', 'jet-engine' ),
 				'type'    => Controls_Manager::SELECT,
-				'default' => 1,
+				'default' => $low_order,
 				'options' => array(
-					1 => __( 'Before Label', 'jet-engine' ),
+					$low_order => __( 'Before Label', 'jet-engine' ),
 					3 => __( 'After Label', 'jet-engine' )
 				),
 				'selectors'  => array(
@@ -588,7 +592,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 					'body.rtl ' . $this->css_selector( '__icon' ) => 'margin-left: {{SIZE}}{{UNIT}};',
 				),
 				'condition' => array(
-					'link_icon_position' => array( '1', 1 ),
+					'link_icon_position' => array( $low_order, '' . $low_order ),
 					'link_icon_orientation!' => 'column',
 				),
 			)
@@ -611,7 +615,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 					'body.rtl ' . $this->css_selector( '__icon' ) => 'margin-right: {{SIZE}}{{UNIT}};',
 				),
 				'condition' => array(
-					'link_icon_position' => array( '3', 3 ),
+					'link_icon_position' => array( '2', 2, '3', 3 ),
 					'link_icon_orientation!' => 'column',
 				),
 			)
@@ -633,7 +637,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 					$this->css_selector( '__icon' ) => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				),
 				'condition' => array(
-					'link_icon_position' => array( '1', 1 ),
+					'link_icon_position' => array( $low_order, '' . $low_order ),
 					'link_icon_orientation' => 'column',
 				),
 			)
@@ -655,7 +659,7 @@ class Jet_Listing_Dynamic_Link_Widget extends \Jet_Listing_Dynamic_Widget {
 					$this->css_selector( '__icon' ) => 'margin-top: {{SIZE}}{{UNIT}};',
 				),
 				'condition' => array(
-					'link_icon_position' => array( '3', 3 ),
+					'link_icon_position' => array( '2', 2, '3', 3 ),
 					'link_icon_orientation' => 'column',
 				),
 			)

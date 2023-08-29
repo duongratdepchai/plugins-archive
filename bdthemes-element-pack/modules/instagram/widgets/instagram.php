@@ -441,7 +441,7 @@ class Instagram extends Module_Base {
                 'type'       => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors'  => [
-                    '{{WRAPPER}} .bdt-instagram .bdt-instagram-item, {{WRAPPER}} .bdt-instagram .bdt-overlay.bdt-overlay-default, {{WRAPPER}} .bdt-instagram .swiper-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
+                    '{{WRAPPER}} .bdt-instagram .bdt-instagram-item, {{WRAPPER}} .bdt-instagram .bdt-overlay.bdt-overlay-default, {{WRAPPER}} .bdt-instagram .swiper-carousel' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; overflow: hidden;',
                 ],
             ]
         );

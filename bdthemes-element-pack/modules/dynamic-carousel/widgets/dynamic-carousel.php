@@ -277,7 +277,7 @@ class Dynamic_Carousel extends Module_Base {
                     ]
                 ],
                 'selectors'   => [
-                    '{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
+                    '{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
                 ],
             ]
         );
@@ -423,7 +423,7 @@ class Dynamic_Carousel extends Module_Base {
         $this->add_render_attribute('carousel', 'class', ['bdt-dynamic-carousel']);
         ?>
     <div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-            <div class="swiper-container">
+            <div <?php echo $this->get_render_attribute_string('swiper'); ?>>
                 <div class="swiper-wrapper">
         <?php
     }

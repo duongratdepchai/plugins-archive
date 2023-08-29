@@ -2198,9 +2198,15 @@ class AePostBlocks extends Widget_Base {
 			<div <?php echo $this->get_render_attribute_string( 'post-widget-wrapper' ); ?>>
 		<?php } ?>
 
-		<?php if ( $settings['layout_mode'] === 'carousel' ) { ?>
+		<?php if ( $settings['layout_mode'] === 'carousel' ) { 
+			$swiper_class = 'swiper-container';
+			$swiper_latest = get_option('elementor_experiment-e_swiper_latest');
+			if ( $swiper_latest == 'active' ) {
+				$swiper_class = 'swiper';
+			}
+			?>
 		<div <?php echo $this->get_render_attribute_string( 'outer-wrapper' ); ?> >
-			<?php $this->add_render_attribute( 'swiper-container', 'class', [ 'ae-swiper-container', 'swiper-container' ] ); ?>
+			<?php $this->add_render_attribute( 'swiper-container', 'class', [ 'ae-swiper-container', $swiper_class ] ); ?>
 		<div <?php echo $this->get_render_attribute_string( 'swiper-container' ); ?> >
 			<?php $this->add_render_attribute( 'post-list-wrapper', 'class', [ 'ae-swiper-wrapper', 'swiper-wrapper' ] ); ?>
 			<?php $this->add_render_attribute( 'post-list-item', 'class', [ 'ae-swiper-slide', 'swiper-slide' ] ); ?>

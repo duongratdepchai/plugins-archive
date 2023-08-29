@@ -37,7 +37,7 @@ switch ($license_status) {
 
         if (License::isValidOvrKey($license_key)) {
             $standard_key        = License::getStandardKeyFromOvrKey($license_key);
-            $license_status_text = printf(__("Status: Active (Using license override for key %s)", 'duplicator-pro'), $standard_key);
+            $license_status_text = sprintf(__("Status: Active (Using license override for key %s)", 'duplicator-pro'), $standard_key);
         } else {
             $license_status_text  = '<b>' . __('Status: ', 'duplicator-pro') . '</b>' . __('Active', 'duplicator-pro');
             $license_status_text .= '<br/>';
@@ -69,7 +69,7 @@ switch ($license_status) {
         }
         break;
     case License::STATUS_EXPIRED:
-        $renewal_url          = 'https://duplicator.com/checkout?edd_license_key=' . License::getLicenseKey();
+        $renewal_url          = DUPLICATOR_PRO_BLOG_URL . 'checkout?edd_license_key=' . License::getLicenseKey();
         $license_status_style = 'color:#dd3d36;';
         $license_status_text  = sprintf(
             __(
@@ -89,12 +89,12 @@ switch ($license_status) {
         $license_status_text_alt .= '<div class="dup-license-status-notes ">';
         $license_status_text_alt .= sprintf(
             '- ' . __('Failure to activate after several attempts please review %1$sfaq activation steps%2$s', 'duplicator-pro'),
-            '<a target="_blank" href="https://duplicator.com/knowledge-base/how-to-resolve-license-activation-issues/">',
+            '<a target="_blank" href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'how-to-resolve-license-activation-issues/">',
             '</a>.<br/>'
         );
         $license_status_text_alt .= sprintf(
             '- ' . __('To upgrade or renew your license visit %1$sduplicator.com%2$s', 'duplicator-pro'),
-            '<a target="_blank" href="https://duplicator.com">',
+            '<a target="_blank" href="' . DUPLICATOR_PRO_BLOG_URL . '">',
             '</a>.<br/>'
         );
         $license_status_text_alt .= '- A valid key is needed for plugin updates but not for functionality.</div>';
@@ -118,7 +118,7 @@ switch ($license_status) {
                 <th scope="row"><?php _e('Dashboard', 'duplicator-pro') ?></th>
                 <td>
                     <i class="fa fa-th-large fa-sm"></i>
-                    <a target="_blank" href="https://duplicator.com/dashboard">
+                    <a target="_blank" href="<?php echo DUPLICATOR_PRO_BLOG_URL; ?>dashboard">
                         <?php
                         _e('Manage Account Online', 'duplicator-pro')
                         ?>

@@ -13,6 +13,7 @@
 defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 use Duplicator\Installer\Core\Deploy\Plugins\PluginsManager;
+use Duplicator\Installer\Core\Deploy\ServerConfigs;
 use Duplicator\Installer\Core\Params\Descriptors\ParamDescDatabase;
 use Duplicator\Installer\Core\Params\Descriptors\ParamDescEngines;
 use Duplicator\Installer\Core\Params\Items\ParamForm;
@@ -62,6 +63,7 @@ final class DUPX_Ctrl_Params
         $paramsManager = PrmMng::getInstance();
 
         DUPX_ArchiveConfig::getInstance()->setNewPathsAndUrlParamsByMainNew();
+        DUPX_ArchiveConfig::getInstance()->setEnginesDBExcluded();
         DUPX_Custom_Host_Manager::getInstance()->setManagedHostParams();
 
         $paramsManager->save();
@@ -165,6 +167,14 @@ final class DUPX_Ctrl_Params
 
         // reload state after new path and new url
         DUPX_InstallerState::getInstance()->checkState(false, false);
+
+        if (DUPX_InstallerState::dbDoNothing()) {
+            $paramsManager->setValue(PrmMng::PARAM_REPLACE_ENGINE, DUPX_S3_Funcs::MODE_SKIP);
+            $paramsManager->setValue(PrmMng::PARAM_WP_CONFIG, ServerConfigs::ACTION_WPCONF_NOTHING);
+            $paramsManager->setValue(PrmMng::PARAM_HTACCESS_CONFIG, 'nothing');
+            $paramsManager->setValue(PrmMng::PARAM_OTHER_CONFIG, 'nothing');
+        }
+
         $paramsManager->save();
         return self::$paramsValidated;
     }
@@ -455,9 +465,12 @@ final class DUPX_Ctrl_Params
 
         $readParamsList = array(
             PrmMng::PARAM_DB_CHARSET,
-            PrmMng::PARAM_DB_COLLATE,
-            PrmMng::PARAM_DB_TABLES
+            PrmMng::PARAM_DB_COLLATE
         );
+
+        if (!DUPX_InstallerState::dbDoNothing()) {
+            $readParamsList[] = PrmMng::PARAM_DB_TABLES;
+        }
 
         foreach ($readParamsList as $cParam) {
             if ($paramsManager->setValueFromInput($cParam, ParamForm::INPUT_POST, false, true) === false) {

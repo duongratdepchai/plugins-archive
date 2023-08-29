@@ -43,6 +43,7 @@ require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.sitegr
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.multisite.subfolder.php');
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.archive.check.php');
 require_once(DUPX_INIT . '/classes/validation/tests/class.validation.test.recovery.link.php');
+require_once(DUPX_INIT . '/classes/validation/database-tests/class.validation.test.db.excluded.php');
 require_once(DUPX_INIT . '/classes/validation/database-tests/class.validation.test.cpnl.connection.php');
 require_once(DUPX_INIT . '/classes/validation/database-tests/class.validation.test.cpnl.new.user.php');
 require_once(DUPX_INIT . '/classes/validation/database-tests/class.validation.test.db.host.name.php');
@@ -133,6 +134,7 @@ class DUPX_Validation_manager
         $this->tests[] = new DUPX_Validation_test_iswritable_configs(self::CAT_FILESYSTEM);
 
         // DATABASE
+        $this->tests[] = new DUPX_Validation_test_db_excluded(self::CAT_DATABASE);
         $this->tests[] = new DUPX_Validation_test_cpnl_connection(self::CAT_DATABASE);
         $this->tests[] = new DUPX_Validation_test_cpnl_new_user(self::CAT_DATABASE);
         $this->tests[] = new DUPX_Validation_test_db_host_name(self::CAT_DATABASE);

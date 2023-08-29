@@ -12,6 +12,7 @@ use Elementor\Group_Control_Css_Filter;
 use Elementor\Group_Control_Image_Size;
 use Elementor\Icons_Manager;
 use Elementor\Repeater;
+use Elementor\Plugin;
 use ElementPack\Utils;
 
 use ElementPack\Traits\Global_Swiper_Controls;
@@ -1780,12 +1781,15 @@ class Interactive_Tabs extends Module_Base {
 			]
 		);
 
+		$swiper_class = Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+		$this->add_render_attribute('swiper', 'class', 'swiper-carousel ' . $swiper_class);
+
 	?>
 		<div class="bdt-interactive-tabs">
 			<?php $this->tab_items(); ?>
 
 			<div <?php $this->print_render_attribute_string('interactive-tabs'); ?>>
-				<div class="swiper-container">
+				<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 					<div class="swiper-wrapper">
 						<?php
 						$this->tabs_content();

@@ -145,7 +145,7 @@ SYSTEM SETTINGS -->
                 . 'is "%s" or higher. An attempt is made to override this value if the server allows it. To manually increase the memory limit have a look at this'
                 . ' %s[FAQ item]%s'),
             DUPLICATOR_PRO_MIN_MEMORY_LIMIT,
-            "<i><a href='https://snapcreek.com/duplicator/docs/faqs-tech/?210328131212#faq-trouble-056-q' target='_blank'>",
+            "<i><a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-manage-server-resources-cpu-memory-disk' target='_blank'>",
             "</a></i>"
         );
         echo '</div>';
@@ -157,7 +157,7 @@ SYSTEM SETTINGS -->
         printf(
             DUP_PRO_U::__('Servers that run a PHP 32-bit architecture are not capable of creating packages larger than 2GB.   If you need to create a package that '
                 . 'is larger than 2GB in size talk with your host or server admin to change your version of PHP to 64-bit. %s[FAQ item]%s'),
-            "<i><a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-package-145-q' target='_blank'>",
+            "<i><a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-to-resolve-file-io-related-build-issues' target='_blank'>",
             "</a></i>"
         );
         echo '</div>';
@@ -173,8 +173,8 @@ WP SETTINGS -->
     <?php
     if (!$archive_export_onlydb && isset($_POST['filter-on'])) {
         $file_filter_data        = array(
-            'filter-dir' => DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-dirs'])),
-            'filter-files' => DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-files']))
+            'filter-dir' => DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-paths'])),
+            'filter-files' => DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-paths']))
             );
         $_SESSION['filter_data'] = $file_filter_data;
     } else {
@@ -190,9 +190,9 @@ WP SETTINGS -->
     $core_dir_notice  = false;
     $core_file_notice = false;
 
-    if (!$archive_export_onlydb && isset($_POST['filter-on']) && isset($_POST['filter-dirs'])) {
+    if (!$archive_export_onlydb && isset($_POST['filter-on']) && isset($_POST['filter-paths'])) {
         //findout matched core directories
-        $filter_dirs =  DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-dirs']), true);
+        $filter_dirs =  DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-paths']), true);
 
         // clean possible blank spaces before and after the paths
         for ($i = 0; $i < count($filter_dirs); $i++) {
@@ -204,7 +204,7 @@ WP SETTINGS -->
 
 
         //find out core files
-        $filter_files = DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-files']), true);
+        $filter_files = DUP_PRO_Archive::parsePathFilter(SnapUtil::sanitizeNSChars($_POST['filter-paths']), true);
 
         // clean possible blank spaces before and after the paths
         for ($i = 0; $i < count($filter_files); $i++) {
@@ -298,7 +298,7 @@ WP SETTINGS -->
         _e("To unlock all <b>Multisite Plus</b> features please upgrade the license before building a package.", 'duplicator-pro');
         echo '<br/>';
         echo "<a href='" . esc_url(License::getUpsellURL()) . "' target='_blank'>" . DUP_PRO_U::__('Upgrade Here') . "</a>&nbsp;|&nbsp;";
-        echo "&nbsp;<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-mu-110-q' target='_blank'>"
+        echo "&nbsp;<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . "how-does-duplicator-handle-multisite-support' target='_blank'>"
                . DUP_PRO_U::__('Multisite Plus Feature Overview') . "</a>";
         echo '</div>';
     }
@@ -311,7 +311,7 @@ WP SETTINGS -->
             echo '<hr size="1" /><span><div class="dup-scan-good"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . DUP_PRO_U::__('Security Plugins: Detected') . '</b> <br/>';
             echo '<div class="scan-system-subnote">';
             DUP_PRO_U::esc_html_e('Good News! Duplicator located a valid WordPress security plugin on your site. Please visit our site for more ');
-            echo '<i><a href="https://snapcreek.com/duplicator/docs/how-to-secure-a-wordpress-website/" target="_blank">' . DUP_PRO_U::__('security resources') . '</a>.</i>';
+            echo '<i><a href="https://duplicator.com/knowledge-base/how-to-secure-a-wordpress-website" target="_blank">' . DUP_PRO_U::__('security resources') . '</a>.</i>';
             echo '</div>';
         ?>
     {{else}}
@@ -319,7 +319,7 @@ WP SETTINGS -->
             echo '<hr size="1" /><span><div class="dup-scan-warn"><i class="fa fa-check"></i></div></span>&nbsp;<b>' . DUP_PRO_U::__('Security Plugins: Not Detected') . '</b> <br/>';
             echo '<div class="scan-system-subnote">';
             DUP_PRO_U::esc_html_e('There are currently no security plugins detected on this site. It is highly recommended to install a security plugin on any site. For a full list of Duplicator recommended plugins check out our ');
-            echo '<i><a href="https://snapcreek.com/duplicator/docs/how-to-secure-a-wordpress-website/" target="_blank">' . DUP_PRO_U::__('security recommendation article') . '</a>.</i>';
+            echo '<i><a href="https://duplicator.com/knowledge-base/how-to-secure-a-wordpress-website" target="_blank">' . DUP_PRO_U::__('security recommendation article') . '</a>.</i>';
             echo '</div>';
         ?>
     {{/if}}

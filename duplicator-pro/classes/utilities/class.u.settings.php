@@ -119,7 +119,7 @@ ERR;
         }
 
         $this->processImportData($import_data, $opts);
-        $this->message  = DUP_PRO_U::__("All data has been succesfully imported and updated! <br/>");
+        $this->message  = DUP_PRO_U::__("All data has been successfully imported and updated! <br/>");
         $this->message .= DUP_PRO_U::__("Backup data file has been created here {$this->export_filepath} <br/>");
     }
 

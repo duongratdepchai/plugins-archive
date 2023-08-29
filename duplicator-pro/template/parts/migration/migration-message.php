@@ -26,7 +26,7 @@ $safeMsg       = MigrationMng::getSaveModeWarning();
 $cleanupReport = MigrationMng::getCleanupReport();
 
 ?>
-<div class="dup-notice-success notice notice-success duplicator-pro-admin-notice dup-migration-pass-wrapper">
+<div class="notice notice-success dpro-admin-notice dup-migration-pass-wrapper">
     <div class="dup-migration-pass-title">
         <i class="fa fa-check-circle"></i> <?php
         if (MigrationMng::getMigrationData('restoreBackupMode')) {

@@ -49,8 +49,8 @@ $enable_transfer_tab = (
 if ($package->Status == DUP_PRO_PackageStatus::ERROR) {
     $err_link_pack   = $package->get_log_url();
     $err_link_log    = "<a target='_blank' href=\"$err_link_pack\">" . DUP_PRO_U::__('package log') . '</a>';
-    $err_link_faq    = '<a target="_blank" href="https://snapcreek.com/duplicator/docs/faqs-tech/">' . DUP_PRO_U::__('FAQ pages') . '</a>';
-    $err_link_ticket = '<a target="_blank" href="https://duplicator.com/my-account/support/">' . DUP_PRO_U::__('help ticket') . '</a>';
+    $err_link_faq    = '<a target="_blank" href="' . DUPLICATOR_PRO_TECH_FAQ_URL . '">' . DUP_PRO_U::__('FAQ pages') . '</a>';
+    $err_link_ticket = '<a target="_blank" href="' . DUPLICATOR_PRO_BLOG_URL . 'my-account/support/">' . DUP_PRO_U::__('help ticket') . '</a>';
     ?>
 <div id='dpro-error' class="error">
     <p>

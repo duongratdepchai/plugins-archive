@@ -1299,8 +1299,6 @@ class UniteCreatorElementorIntegrate{
      */
     public function onEnqueueEditorScripts(){
 
-    	
-    	
     	$adminStyleHandle = "unlimited_elements_editor_admin_css";
     	
     	HelperUC::addScriptAbsoluteUrl(HelperProviderCoreUC_EL::$urlCore."elementor/assets/uc_editor_admin.js", "unlimited_elements_editor_admin");
@@ -1607,20 +1605,33 @@ class UniteCreatorElementorIntegrate{
 	private function a____________INIT_INTEGRATION___________(){}
 
 	/**
-	 * on elementor editor init, set some preferences of the editor
+	 * check if panel dark mode
 	 */
-	public function onEditorInit(){
+	public static function isElementorPanelDarkMode(){
 		
 		$uiTheme = SettingsManager::get_settings_managers( 'editorPreferences' )->get_model()->get_settings( 'ui_theme' );
 		
 		if($uiTheme == "dark")
-			self::$isDarkMode = true;
+			return(true);
+
+		return(false);
+	}
+	
+	/**
+	 * on elementor editor init, set some preferences of the editor
+	 */
+	public function onEditorInit(){
+		
+		self::$isDarkMode = self::isElementorPanelDarkMode();
 		
     	self::$showWidgetPreviews = HelperProviderCoreUC_EL::getGeneralSetting("enable_panel_previews");
     	self::$showWidgetPreviews = UniteFunctionsUC::strToBool(self::$showWidgetPreviews);
     	
     	self::$enableEditHTMLButton = HelperProviderCoreUC_EL::getGeneralSetting("show_edit_html_button");
     	self::$enableEditHTMLButton = UniteFunctionsUC::strToBool(self::$enableEditHTMLButton);
+    	
+    	GlobalsProviderUC::$isInsideEditorBackend = true;
+    	
 	}
 	
 	
@@ -1695,7 +1706,7 @@ class UniteCreatorElementorIntegrate{
     	self::$isEditMode = HelperUC::isElementorEditMode();
     	
     	GlobalsProviderUC::$isInsideEditor = self::$isEditMode;
-    	
+    	    	
     	$arrSettingsValues = HelperProviderCoreUC_EL::getGeneralSettingsValues();
     	
     	//detect old elementor version

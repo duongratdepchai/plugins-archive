@@ -50,6 +50,8 @@ abstract class DupArchiveExpandState extends DupArchiveStateBase
     public $fileModeOverride = -1;
     /** @var int<-1,max> */
     public $lastHeaderOffset = -1;
+    /** @var bool */
+    public $keepFileTime = false;
 
     /**
      * Class constructor
@@ -84,6 +86,7 @@ abstract class DupArchiveExpandState extends DupArchiveStateBase
         $this->directoryModeOverride    = -1;
         $this->fileModeOverride         = -1;
         $this->lastHeaderOffset         = -1;
+        $this->keepFileTime             = false;
     }
 
     /**

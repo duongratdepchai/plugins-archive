@@ -14,7 +14,7 @@ abstract class UCAdminNoticeBuilderAbstract{
 	private $id;
 	private $dismissible = false;
 	private $debug;
-	
+
 	/**
 	 * get the notice html
 	 */
@@ -59,28 +59,18 @@ abstract class UCAdminNoticeBuilderAbstract{
 	/**
 	 * get the dismiss html
 	 */
-	protected function getDismissHtml($isBanner = false){
+	protected function getDismissHtml(){
 
 		if($this->dismissible === false)
 			return '';
 
 		$ajaxUrl = $this->getDismissAjaxUrl();
-		$text = __("Dismiss", "unlimited-elements-for-elementor");
-		
-		if($isBanner == true)
-			$text = "";
-		
-		$class = "uc-notice-dismiss";
-		
-		$title = __("Dismiss","unlimited-elements-for-elementor");
-		
-		$title = esc_attr($title);
-		
-		return '<a class="uc-notice-dismiss" href="#" data-action="dismiss" title="'.$title.'" data-ajax-url="' . esc_attr($ajaxUrl) . '">' . $text . '</a>';
+		$text = __('Dismiss', 'unlimited-elements-for-elementor');
+		$title = __('Dismiss Notice', 'unlimited-elements-for-elementor');
+
+		return '<a class="uc-notice-dismiss" href="#" data-action="dismiss" title="' . esc_attr($title) . '" data-ajax-url="' . esc_attr($ajaxUrl) . '">' . $text . '</a>';
 	}
 
-	
-	
 	/**
 	 * get the debug html
 	 */

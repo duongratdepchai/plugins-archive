@@ -696,7 +696,7 @@ class Crypto_Currency_Chart_Carousel extends Module_Base {
 
 		?>
 		<div <?php $this->print_render_attribute_string('carousel'); ?>>
-			<div class="swiper-container swiper">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div class="swiper-wrapper">
 
 					<div><?php echo esc_html('Data Loading...', 'bdthemes-element-pack'); ?></div>

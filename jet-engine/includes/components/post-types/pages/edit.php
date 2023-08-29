@@ -311,7 +311,7 @@ if ( ! class_exists( 'Jet_Engine_CPT_Page_Edit' ) ) {
 					'args'        => false,
 				),
 				'jet_engine_custom_cb_render_select' => array(
-					'description' => __( 'Render human-readable value from select field', 'jet-engine' ),
+					'description' => __( 'Render human-readable value from select field or radio field', 'jet-engine' ),
 					'args'        => array(
 						'field' => array(
 							'label'       => __( 'Set field', 'jet-engine' ),

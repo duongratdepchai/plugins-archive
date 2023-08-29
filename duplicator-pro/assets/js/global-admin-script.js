@@ -1,6 +1,6 @@
 /*! dup admin script */
 jQuery(document).ready(function ($) {
-    $('.duplicator-pro-admin-notice[data-to-dismiss]').each(function () {
+    $('.dpro-admin-notice[data-to-dismiss]').each(function () {
         var notice = $(this);
         var notice_to_dismiss = notice.data('to-dismiss');
 
@@ -67,4 +67,7 @@ jQuery(document).ready(function ($) {
             });
         });
     }
+
+    $('#screen-meta-links, #screen-meta').prependTo('#dup-meta-screen');
+    $('#screen-meta-links').show();
 });

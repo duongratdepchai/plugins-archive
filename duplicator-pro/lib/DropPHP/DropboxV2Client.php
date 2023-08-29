@@ -233,7 +233,7 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
                 )
             );
             $args = $this->injectExtraReqArgs($args);
-            $response          = wp_remote_request($url, $args);
+            $response = wp_remote_request($url, $args);
 
             if (is_wp_error($response)) {
                 $error_message = $response->get_error_message();
@@ -282,7 +282,7 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
                 $start_time  = time();
                 $time_passed = 0;
 
-                self::trace("upload_id=$upload_id filesize = $file_size max_upload_time=$max_upload_time_in_sec");
+                self::trace("upload_id=$upload_id filesize=$file_size max_upload_time=$max_upload_time_in_sec");
 
                 while (feof($fh) == false && (time() - $start_time) < $max_upload_time_in_sec) {
 
@@ -319,7 +319,7 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
                         true
                     );
 
-                    DUP_PRO_Log::info("UPLOAD RETURN ". print_r($upload_return, true));
+                    DUP_PRO_Log::trace("UPLOAD RETURN " . print_r($upload_return, true));
 
                     if (
                         is_object($upload_return) && property_exists($upload_return, "error") &&
@@ -327,18 +327,23 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
                     ) {
                         $wrongOffset = $offset;
                         $offset = intval($upload_return->error->correct_offset, 10);
-                        DUP_PRO_Log::info("Detected wrong offset in upload to Dropbox: $wrongOffset. "
+                        DUP_PRO_Log::infoTrace("Detected wrong offset in upload to Dropbox: $wrongOffset. "
                             . "Replaced it with correct offset: $offset");
                     } else if (
                         $upload_return === false ||
                         (is_object($upload_return) && property_exists($upload_return, "error_summary"))
                     ) {
-                        throw new Exception("problem making call to upload_session/append_v2 for offset {$offset} - " . $upload_return->error_summary);
+                        $error_summary = "";
+                        if (is_object($upload_return) && property_exists($upload_return, "error_summary")) {
+                            $error_summary = $upload_return->error_summary;
+                        }
+                        throw new Exception("problem making call to upload_session/append_v2 for offset {$offset} - " . $error_summary);
                     } else {
                         $offset += strlen($content);
                     }
                 }
 
+                $time_passed = time() - $start_time;
                 self::trace("Time passed=$time_passed");
                 if (@feof($fh)) {
                     self::trace("end of file");
@@ -376,7 +381,11 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
             );
 
             if ($upload_return === false || (is_object($upload_return) && property_exists($upload_return, "error_summary"))) {
-                throw new \Exception("problem making call to upload_session/start - " . $upload_return->error_summary);
+                $error_summary = "";
+                if (is_object($upload_return) && property_exists($upload_return, "error_summary")) {
+                    $error_summary = $upload_return->error_summary;
+                }
+                throw new \Exception("problem making call to upload_session/start - " . $error_summary);
             }
 
             return $upload_return->session_id;
@@ -414,7 +423,7 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
 
             if (null == $return) {
                 usleep(500);
-                throw new Exception("**** Upload finish dropbox API call given null value! Something going wrong.");
+                throw new Exception("**** Upload finish Dropbox API call gave null value! Something going wrong.");
             }
 
             return $return;
@@ -432,7 +441,7 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
         {
             // Delete any file that may be there ahead of time
             try {
-                self::trace("Deleting dropbox files $dropbox_path");
+                self::trace("Deleting Dropbox files $dropbox_path");
                 $this->Delete($dropbox_path);
             } catch (Exception $ex) {
                 // Bury any exceptions
@@ -455,7 +464,7 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
             return $this->apiCall('files/upload', 'POST', $params, true);
         }
 
-        public function checkFileHash($file_metadata,$file)
+        public function checkFileHash($file_metadata, $file)
         {
             $dropbox_hash = $file_metadata->content_hash;
             $local_hash = $this->getFileHash($file);
@@ -475,7 +484,7 @@ if (!class_exists('DUP_PRO_DropboxV2Client')) {
                 $sum_string .= hash("sha256",$file_chunk,true);
             }
 
-            $result = hash("sha256",$sum_string);
+            $result = hash("sha256", $sum_string);
 
             return $result;
         }

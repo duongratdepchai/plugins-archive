@@ -8,6 +8,7 @@ use Elementor\Group_Control_Typography;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Background;
+use Elementor\Plugin;
 
 use ElementPack\Modules\TestimonialSlider\Skins;
 use ElementPack\Includes\Controls\GroupQuery\Group_Control_Query;
@@ -507,7 +508,7 @@ class Testimonial_Slider extends Module_Base {
 		$this->start_controls_section(
 			'section_style_quatation',
 			[
-				'label' => esc_html__('Quatation', 'bdthemes-element-pack'),
+				'label' => esc_html__('Quotation', 'bdthemes-element-pack'),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1360,10 +1361,13 @@ class Testimonial_Slider extends Module_Base {
 			]
 		);
 
+		$swiper_class = Plugin::$instance->experiments->is_feature_active( 'e_swiper_latest' ) ? 'swiper' : 'swiper-container';
+		$this->add_render_attribute('swiper', 'class', 'swiper-carousel ' . $swiper_class);
+
 ?>
 
 		<div <?php echo $this->get_render_attribute_string('testimonial-slider'); ?>>
-			<div class="swiper-container">
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div class="swiper-wrapper">
 
 					<?php

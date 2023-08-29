@@ -18,16 +18,17 @@ use DUP_PRO_Package_Runner;
 use DUP_PRO_Plugin_Upgrade;
 use DUP_PRO_Storage_Entity;
 use Duplicator\Controllers\ImportPageController;
-use Duplicator\Controllers\PackagesPageController;
 use Duplicator\Controllers\SettingsPageController;
 use Duplicator\Core\Addons\AddonsManager;
 use Duplicator\Core\Controllers\ControllersManager;
 use Duplicator\Controllers\ToolsPageController;
+use Duplicator\Core\Views\Notifications;
 use Duplicator\Core\REST\RESTManager;
 use Duplicator\Libs\Snap\SnapLog;
 use Duplicator\Libs\Snap\SnapUtil;
 use Duplicator\Utils\ExpireOptions;
 use Duplicator\Views\DashboardWidget;
+use Duplicator\Views\ViewHelper;
 use Error;
 use Exception;
 
@@ -56,7 +57,6 @@ class Bootstrap
             \DUP_PRO_UI_Notice::init();
             MigrationMng::init();
             DashboardWidget::init();
-
             $GLOBALS['CTRLS_DUP_PRO_CTRL_Tools']   = new \DUP_PRO_CTRL_Tools();
             $GLOBALS['CTRLS_DUP_PRO_CTRL_Package'] = new \DUP_PRO_CTRL_Package();
 
@@ -89,6 +89,7 @@ class Bootstrap
             return;
         }
 
+        Notifications::init();
         $web_services = new \DUP_PRO_Web_Services();
         $web_services->init();
 
@@ -220,6 +221,8 @@ class Bootstrap
             add_action('admin_enqueue_scripts', array(__CLASS__, 'unhookThirdPartyAssets'), 99999, 1);
         }
 
+        add_action('in_admin_header', array(ViewHelper::class, 'adminLogoHeader'), 100);
+        add_filter('admin_body_class', array(ViewHelper::class, 'addBodyClass'));
         add_action('admin_head', array('\DUP_PRO_UI_Screen', 'getCustomCss'));
 
         if (DUPLICATOR_CAPABILITIES_RESET) { // @phpstan-ignore-line

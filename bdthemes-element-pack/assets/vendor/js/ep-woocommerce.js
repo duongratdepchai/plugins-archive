@@ -10,7 +10,7 @@
             return;
         }
         
-        var $wcCarouselContainer = $wcCarousel.find('.swiper-container'),
+        var $wcCarouselContainer = $wcCarousel.find('.swiper-carousel'),
         $settings = $wcCarousel.data('settings');
 
         // Access swiper class

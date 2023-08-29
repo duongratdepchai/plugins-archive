@@ -106,19 +106,17 @@ class DUP_PRO_UI_Notice
         $errorMessage = DUP_PRO_U::__('<strong>Duplicator Pro</strong> was unable to fetch the contents of the S3 bucket to remove old packages.') . "<hr><br>" .
             sprintf(
                 DUP_PRO_U::__('<strong>RECOMMENDATION:</strong> Please make sure your S3 bucket settings are aligned with our %1sStep-by-Step guide%2s and %3sUser Bucket Policy%4s.'),
-                '<a target="_blank" href="https://snapcreek.com/duplicator/docs/amazon-s3-step-by-step/">',
+                '<a target="_blank" href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'amazon-s3-step-by-step">',
                 '</a>',
-                '<a target="_blank" href="https://snapcreek.com/duplicator/docs/amazon-s3-policy-setup/">',
+                '<a target="_blank" href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'amazon-s3-step-by-step">',
                 '</a>'
             );
 
         self::displayGeneralAdminNotice(
             $errorMessage,
-            self::GEN_WARNING_NOTICE,
+            self::GEN_ERROR_NOTICE,
             true,
             array(
-                'duplicator-pro-admin-notice',
-                'dpro-admin-notice',
                 'dup-pro-quick-fix-notice'
             ),
             array(
@@ -163,13 +161,18 @@ class DUP_PRO_UI_Notice
             sprintf(DUP_PRO_U::esc_html__('%sWarning! A Duplicator Pro scheduled backup has failed.%s'), '<b>', '</b> <br/>') .
             sprintf(DUP_PRO_U::esc_html__('This message will continue to be displayed until a %sscheduled build%s successfully runs. '), "<a href='admin.php?page=duplicator-pro-schedules'>", '</a> ') .
             sprintf(DUP_PRO_U::esc_html__('To ignore and clear this message %sclick here%s'), "<a href='" . esc_url($clear_url) . "'>", '</a>.<br/>');
-        self::displayGeneralAdminNotice($html, self::GEN_WARNING_NOTICE, true, array(
-                'duplicator-pro-admin-notice',
-                'dpro-admin-notice',
-                'dup-pro-quick-fix-notice'
-            ), array(
-                'data-to-dismiss' => self::FAILED_SCHEDULE_NOTICE
-            ));
+
+        self::displayGeneralAdminNotice(
+            $html,
+            self::GEN_ERROR_NOTICE,
+            true,
+            array(
+            'dup-pro-quick-fix-notice'
+            ),
+            array(
+            'data-to-dismiss' => self::FAILED_SCHEDULE_NOTICE
+            )
+        );
     }
 
     public static function showQuickFixNotice()
@@ -209,13 +212,17 @@ class DUP_PRO_UI_Notice
             }
         }
 
-        self::displayGeneralAdminNotice($html, self::GEN_WARNING_NOTICE, true, array(
-                'duplicator-pro-admin-notice',
-                'dpro-admin-notice',
+        self::displayGeneralAdminNotice(
+            $html,
+            self::GEN_ERROR_NOTICE,
+            true,
+            array(
                 'dup-pro-quick-fix-notice'
-            ), array(
+            ),
+            array(
                 'data-to-dismiss' => self::QUICK_FIX_NOTICE
-            ));
+            )
+        );
     }
 
     /**
@@ -230,8 +237,14 @@ class DUP_PRO_UI_Notice
      *
      * @return void
      */
-    public static function displayGeneralAdminNotice($htmlMsg, $noticeType, $isDismissible = true, $extraClasses = array(), $extraAtts = array(), $blockContent = false)
-    {
+    public static function displayGeneralAdminNotice(
+        $htmlMsg,
+        $noticeType,
+        $isDismissible = true,
+        $extraClasses = array(),
+        $extraAtts = array(),
+        $blockContent = false
+    ) {
         if (empty($extraClasses)) {
             $classes = array();
         } elseif (is_array($extraClasses)) {
@@ -257,6 +270,7 @@ class DUP_PRO_UI_Notice
             default:
                 throw new Exception('Invalid Admin notice type!');
         }
+        $classes[] = 'dpro-admin-notice';
 
         if ($isDismissible) {
             $classes[] = 'is-dismissible';
@@ -272,7 +286,7 @@ class DUP_PRO_UI_Notice
             $attsStr = implode(' ', $attsStrArr);
         }
 
-        $htmlMsg = self::GEN_ERROR_NOTICE == $noticeType ? "<i class='fa fa-exclamation-triangle'></i>&nbsp;" . $htmlMsg : $htmlMsg;
+        // $htmlMsg = self::GEN_ERROR_NOTICE == $noticeType ? "<i class='fa fa-exclamation-triangle'></i>&nbsp;" . $htmlMsg : $htmlMsg;
         $htmlMsg = !$blockContent ? "<p>" . $htmlMsg . "</p>" : $htmlMsg;
         ?>
         <div class="<?php echo esc_attr($classesStr); ?>" <?php echo $attsStr; ?>>

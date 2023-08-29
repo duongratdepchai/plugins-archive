@@ -316,7 +316,7 @@ class TutorLms_Course_Carousel extends Module_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', '%'],
 				'selectors' => [
-					'{{WRAPPER}} .bdt-tutor-course.bdt-tutor-course-item, {{WRAPPER}} .bdt-tutor-lms-course-carousel .swiper-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .bdt-tutor-course.bdt-tutor-course-item, {{WRAPPER}} .bdt-tutor-lms-course-carousel .swiper-carousel' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -388,7 +388,7 @@ class TutorLms_Course_Carousel extends Module_Base {
 					'size' => 10
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
+					'{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
 				]
 			]
 		);
@@ -1550,13 +1550,11 @@ class TutorLms_Course_Carousel extends Module_Base {
 
 		$this->add_render_attribute('carousel', 'class', ['bdt-tutor-lms-course-carousel', 'bdt-tutor-course']);
 
-		$this->add_render_attribute('tutor-courses', 'class', 'swiper-container');
-
 		$this->add_render_attribute('tutor-courses-wrapper', 'class', 'swiper-wrapper');
 
 ?>
 		<div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-			<div <?php echo $this->get_render_attribute_string('tutor-courses'); ?>>
+			<div <?php echo $this->get_render_attribute_string('swiper'); ?>>
 				<div <?php echo $this->get_render_attribute_string('tutor-courses-wrapper'); ?>>
 				<?php
 			}

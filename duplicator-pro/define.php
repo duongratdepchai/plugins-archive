@@ -18,7 +18,7 @@ if (!defined('GB_IN_BYTES')) {
     define('GB_IN_BYTES', 1024 * MB_IN_BYTES);
 }
 
-define('DUPLICATOR_PRO_VERSION', '4.5.11.1');
+define('DUPLICATOR_PRO_VERSION', '4.5.12');
 define('DUPLICATOR_PRO_GIFT_THIS_RELEASE', false); // Display Gift - should be true for new features OR if we want them to fill out survey
 define('DUPLICATOR_PRO_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('DUPLICATOR_PRO_SITE_URL', get_site_url());
@@ -135,12 +135,12 @@ define('DUPLICATOR_PRO_HELP_TARGET', '_sc-help');
 
 /* Help URLs */
 /* TODO: search for these URLs throughout the code and replace with the corresponding define */
-define('DUPLICATOR_PRO_BLOG_URL', 'https://snapcreek.com/');
-define('DUPLICATOR_PRO_DUPLICATOR_DOCS_URL', 'https://snapcreek.com/duplicator/docs/');
-define('DUPLICATOR_PRO_USER_GUIDE_URL', DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'guide/');
-define('DUPLICATOR_PRO_TECH_FAQ_URL', DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . 'faqs-tech/');
-define('DUPLICATOR_PRO_RECOVERY_GUIDE_URL', DUPLICATOR_PRO_BLOG_URL . 'quickly-restore-wordpress-site-using-recovery-point/');
-define('DUPLICATOR_PRO_DRAG_DROP_GUIDE_URL', DUPLICATOR_PRO_BLOG_URL . 'how-migrate-wordpress-site-drag-drop-duplicator-pro/');
+define('DUPLICATOR_PRO_BLOG_URL', 'https://duplicator.com/');
+define('DUPLICATOR_PRO_DUPLICATOR_DOCS_URL', DUPLICATOR_PRO_BLOG_URL . 'knowledge-base/');
+define('DUPLICATOR_PRO_USER_GUIDE_URL', DUPLICATOR_PRO_DUPLICATOR_DOCS_URL);
+define('DUPLICATOR_PRO_TECH_FAQ_URL', DUPLICATOR_PRO_BLOG_URL . 'knowledge-base-article-categories/troubleshooting/');
+define('DUPLICATOR_PRO_RECOVERY_GUIDE_URL', DUPLICATOR_PRO_BLOG_URL . 'restore-wordpress-from-backup/');
+define('DUPLICATOR_PRO_DRAG_DROP_GUIDE_URL', DUPLICATOR_PRO_BLOG_URL . 'how-to-migrate-wordpress-site/');
 
 define('DUPLICATOR_PRO_LOCKING_FILE_FILENAME', DUPLICATOR____PATH . '/dup_pro_lock.bin');
 

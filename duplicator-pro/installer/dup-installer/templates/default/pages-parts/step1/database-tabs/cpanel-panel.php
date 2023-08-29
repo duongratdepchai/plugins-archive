@@ -27,7 +27,7 @@ $paramsManager = PrmMng::getInstance();
             </div>
             <small style="font-style: italic">
                 <a href="javascript:void()" onclick="$('#s2-cpnl-status-details').hide()">[Hide Message]</a> &nbsp;
-                <a href='https://snapcreek.com/wordpress-hosting/' target='_blank'>[cPanel Supported Hosts]</a>
+                <a href='<?php echo DUPX_Constants::FAQ_URL; ?>what-host-providers-are-recommended-for-duplicator/' target='_blank'>[cPanel Supported Hosts]</a>
             </small>
         </div>
     </div>

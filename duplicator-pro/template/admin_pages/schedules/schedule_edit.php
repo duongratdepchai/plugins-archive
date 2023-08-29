@@ -88,7 +88,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
             <td>
                 <select id="dup-schedule-copy-select" name="duppro-source-schedule-id">
                     <option value="-1" selected="selected">
-                        <?php _e("Copy From"); ?>
+                        <?php _e('Copy From', 'duplicator-pro'); ?>
                     </option>
                     <?php foreach ($copyScheduleList as $copy_schedule) { ?>
                         <option value="<?php echo $copy_schedule->getId(); ?>">
@@ -210,7 +210,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
             </td>
         </tr>
         <tr>
-            <th scope="row"><label><?php _e("Storage"); ?></label></th>
+            <th scope="row"><label><?php _e('Storage', 'duplicator-pro'); ?></label></th>
             <td>
                 <!-- ===============================
                 STORAGE -->
@@ -333,7 +333,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
             DAILY -->
                 <div id="repeat-hourly-area" class="repeater-area">
                     <?php
-                    _e("Every");
+                    _e('Every', 'duplicator-pro');
                     $hour_intervals = array(1, 2, 4, 6, 12);
                     ?>
 
@@ -345,7 +345,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
                         }
                         ?>
                     </select>
-                    <?php _e("hours"); ?>
+                    <?php _e('hours', 'duplicator-pro'); ?>
                     <i 
                         class="fas fa-question-circle fa-sm" 
                         data-tooltip-title="<?php DUP_PRO_U::esc_attr_e("Frequency Note"); ?>" 
@@ -357,7 +357,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
                 <!-- ===============================
             DAILY -->
                 <div id="repeat-daily-area" class="repeater-area">
-                    <?php _e("Every"); ?>
+                    <?php _e('Every', 'duplicator-pro'); ?>
                     <select name="_run_every_days" data-parsley-ui-enabled="false">
                         <?php
                         for ($i = 1; $i < 30; $i++) {
@@ -366,7 +366,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
                         }
                         ?>
                     </select>
-                    <?php _e("days"); ?>
+                    <?php _e('days', 'duplicator-pro'); ?>
                     <i 
                         class="fas fa-question-circle fa-sm" 
                         data-tooltip-title="<?php DUP_PRO_U::esc_attr_e("Frequency Note"); ?>" 
@@ -390,31 +390,31 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
                             data-parsley-error-message="<?php DUP_PRO_U::esc_attr_e('At least one day must be checked.'); ?>"
                             data-parsley-no-focus data-parsley-errors-container="#weekday-errors" 
                         >
-                        <label for="repeat-weekly-mon"><?php _e("Monday"); ?></label>
+                        <label for="repeat-weekly-mon"><?php _e('Monday', 'duplicator-pro'); ?></label>
                     </div>
                     <div class="weekday-div">
                         <input <?php checked($schedule->is_day_set('tue')); ?> value="tue" name="weekday[]" type="checkbox" id="repeat-weekly-tue" />
-                        <label for="repeat-weekly-tue"><?php _e("Tuesday"); ?></label>
+                        <label for="repeat-weekly-tue"><?php _e('Tuesday', 'duplicator-pro'); ?></label>
                     </div>
                     <div class="weekday-div">
                         <input <?php checked($schedule->is_day_set('wed')); ?> value="wed" name="weekday[]" type="checkbox" id="repeat-weekly-wed" />
-                        <label for="repeat-weekly-wed"><?php _e("Wednesday"); ?></label>
+                        <label for="repeat-weekly-wed"><?php _e('Wednesday', 'duplicator-pro'); ?></label>
                     </div>
                     <div class="weekday-div">
                         <input <?php checked($schedule->is_day_set('thu')); ?> value="thu" name="weekday[]" type="checkbox" id="repeat-weekly-thu" />
-                        <label for="repeat-weekly-thu"><?php _e("Thursday"); ?></label>
+                        <label for="repeat-weekly-thu"><?php _e('Thursday', 'duplicator-pro'); ?></label>
                     </div>
                     <div class="weekday-div" style="clear:both">
                         <input <?php checked($schedule->is_day_set('fri')); ?> value="fri" name="weekday[]" type="checkbox" id="repeat-weekly-fri" />
-                        <label for="repeat-weekly-fri"><?php _e("Friday"); ?></label>
+                        <label for="repeat-weekly-fri"><?php _e('Friday', 'duplicator-pro'); ?></label>
                     </div>
                     <div class="weekday-div">
                         <input <?php checked($schedule->is_day_set('sat')); ?> value="sat" name="weekday[]" type="checkbox" id="repeat-weekly-sat" />
-                        <label for="repeat-weekly-sat"><?php _e("Saturday"); ?></label>
+                        <label for="repeat-weekly-sat"><?php _e('Saturday', 'duplicator-pro'); ?></label>
                     </div>
                     <div class="weekday-div">
                         <input <?php checked($schedule->is_day_set('sun')); ?> value="sun" name="weekday[]" type="checkbox" id="repeat-weekly-sun" />
-                        <label for="repeat-weekly-sun"><?php _e("Sunday"); ?></label>
+                        <label for="repeat-weekly-sun"><?php _e('Sunday', 'duplicator-pro'); ?></label>
                     </div>
                 </div>
                 <div style="padding-top:3px; clear:both;" id="weekday-errors"></div>
@@ -435,7 +435,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
                     </div>
 
                     <div style="display:inline-block">
-                        <?php _e("of every"); ?>
+                        <?php _e('of every', 'duplicator-pro'); ?>
                         <select name="_run_every_months" data-parsley-ui-enabled="false">
                             <?php
                             for ($i = 1; $i <= 12; $i++) {
@@ -444,7 +444,7 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
                             }
                             ?>
                         </select>
-                        <?php _e("month(s)"); ?>
+                        <?php _e('month(s)', 'duplicator-pro'); ?>
                     </div>
                 </div>
             </td>
@@ -487,7 +487,8 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
                             'If you set a start time of 06:00 daily but do not get any traffic ' .
                             'till 10:00 then the build will not start until 10:00. ' .
                             'If you have low traffic consider setting up a cron job to periodically hit your site or check out ' .
-                            'the free web monitoring tools found on our <a href="https://snapcreek.com/partners/#tools" target="_blank">partners page</a>.'
+                            'the free web monitoring tools found on our <a href="' . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL .
+                            'what-services-and-products-complement-the-duplicator/" target="_blank">partners page</a>.'
                         ),
                         array(
                             'b' => array(),
@@ -518,11 +519,11 @@ $langLocalDefaultMsg = __('Recovery Point Capable', 'duplicator-pro');
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row"><label for="schedule-active"><?php _e("Activated"); ?></label></th>
+            <th scope="row"><label for="schedule-active"><?php _e('Activated', 'duplicator-pro'); ?></label></th>
             <td>
                 <input name="_active" id="schedule-active" type="checkbox" <?php DUP_PRO_UI::echoChecked($schedule->active); ?>>
                 <label for="schedule-active"><?php DUP_PRO_U::esc_html_e('Enable This Schedule'); ?></label><br />
-                <i class="dpro-edit-info"> <?php _e("When checked this schedule will run"); ?></i>
+                <i class="dpro-edit-info"> <?php _e('When checked this schedule will run', 'duplicator-pro'); ?></i>
             </td>
         </tr>
     </table><br />

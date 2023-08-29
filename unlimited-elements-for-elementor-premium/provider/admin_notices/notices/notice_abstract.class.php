@@ -19,7 +19,7 @@ abstract class UCAdminNoticeAbstract{
 	private $start = 0;
 	private $duration = 0;
 	private $freeOnly = false;
-
+	
 	/**
 	 * get the notice identifier
 	 */
@@ -63,7 +63,7 @@ abstract class UCAdminNoticeAbstract{
 
 		if($isDismissed === true)
 			return false;
-
+		
 		$isFreeAllowed = $this->isFreeAllowed();
 
 		if($isFreeAllowed === false)
@@ -192,21 +192,22 @@ abstract class UCAdminNoticeAbstract{
 
 		return $builder;
 	}
-
+	
+	
 	/**
 	 * get the debug data of the notice
 	 */
 	private function getDebugData(){
-
-		$isDismissed = $this->isDismissed();
-
-		if($isDismissed === true)
-			return 'Notice hidden - dismissed';
-
+		
 		$isFreeAllowed = $this->isFreeAllowed();
-
+		
 		if($isFreeAllowed === false)
 			return 'Notice hidden - free only';
+		
+		$isDismissed = $this->isDismissed();
+			
+		if($isDismissed === true)
+			return 'Notice hidden - dismissed';
 
 		$isLocationAllowed = $this->isLocationAllowed();
 
@@ -248,7 +249,7 @@ abstract class UCAdminNoticeAbstract{
 	 * check if the notice is allowed for the free version
 	 */
 	private function isFreeAllowed(){
-
+		
 		if($this->freeOnly === true && GlobalsUC::$isProVersion === true)
 			return false;
 

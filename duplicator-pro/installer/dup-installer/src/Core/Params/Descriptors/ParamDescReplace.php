@@ -52,7 +52,7 @@ final class ParamDescReplace implements DescriptorInterface
                     return ParamForm::STATUS_ENABLED;
                 }
             },
-            'wrapperClasses' => array('revalidate-on-change'),
+            'wrapperClasses' => array('revalidate-on-change', 'requires-db-hide'),
             )
         );
 

@@ -40,56 +40,56 @@ class DUP_PRO_FTPcURL
     public function __construct($server, $port = 21, $username = 'anonymous', $password = 'anonymous@gmail.com', $directory = '/', $timeout_in_sec = 15, $ssl = false, $passive_mode = false)
     {
         if (empty($server)) {
-            throw new InvalidArgumentException(DUP_PRO_U::esc_html__('Invalid $server argument with the empty in DUP_PRO_FTPcURL class constructor.'));
+            throw new InvalidArgumentException(esc_html__('Invalid $server argument with the empty in DUP_PRO_FTPcURL class constructor.', "duplicator-pro"));
         }
 
         if (!is_string($server)) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $server argument with the value %s in DUP_PRO_FTPcURL class constructor.')), $server);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $server argument with the value %s in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $server);
         }
 
         if (empty($port)) {
-            throw new InvalidArgumentException(DUP_PRO_U::esc_html__('Invalid $port argument with the empty in DUP_PRO_FTPcURL class constructor.'));
+            throw new InvalidArgumentException(esc_html__('Invalid $port argument with the empty in DUP_PRO_FTPcURL class constructor.', "duplicator-pro"));
         }
         $port = (int) $port;
         if ($port <= 0) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $port argument with the value %s in DUP_PRO_FTPcURL class constructor.')), $port);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $port argument with the value %s in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $port);
         }
 
         if (empty($username)) {
-            throw new InvalidArgumentException(DUP_PRO_U::esc_html__('Invalid $username argument with the empty in DUP_PRO_FTPcURL class constructor.'));
+            throw new InvalidArgumentException(esc_html__('Invalid $username argument with the empty in DUP_PRO_FTPcURL class constructor.', "duplicator-pro"));
         }
         if (!is_string($username)) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $username argument with the value %s in DUP_PRO_FTPcURL class constructor.')), $username);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $username argument with the value %s in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $username);
         }
 
         if (empty($password)) {
-            throw new InvalidArgumentException(DUP_PRO_U::esc_html__('Invalid $password argument with the empty in DUP_PRO_FTPcURL class constructor.'));
+            throw new InvalidArgumentException(esc_html__('Invalid $password argument with the empty in DUP_PRO_FTPcURL class constructor.', "duplicator-pro"));
         }
         if (!is_string($password)) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $password argument with the value %s in DUP_PRO_FTPcURL class constructor.')), $password);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $password argument with the value %s in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $password);
         }
 
         if (empty($directory)) {
-            throw new InvalidArgumentException(DUP_PRO_U::esc_html__('Invalid $directory argument with the empty in DUP_PRO_FTPcURL class constructor.'));
+            throw new InvalidArgumentException(esc_html__('Invalid $directory argument with the empty in DUP_PRO_FTPcURL class constructor.', "duplicator-pro"));
         }
         if (!is_string($directory)) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $directory argument with the value %s in DUP_PRO_FTPcURL class constructor.')), $directory);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $directory argument with the value %s in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $directory);
         }
 
         if (empty($timeout_in_sec)) {
-            throw new InvalidArgumentException(DUP_PRO_U::esc_html__('Invalid $timeout_in_sec argument with the empty in DUP_PRO_FTPcURL class constructor.'));
+            throw new InvalidArgumentException(esc_html__('Invalid $timeout_in_sec argument with the empty in DUP_PRO_FTPcURL class constructor.', "duplicator-pro"));
         }
         $timeout_in_sec = (int) $timeout_in_sec;
         if ($timeout_in_sec <= 0) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $timeout_in_sec argument with the value %s in DUP_PRO_FTPcURL class constructor.')), $timeout_in_sec);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $timeout_in_sec argument with the value %s in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $timeout_in_sec);
         }
 
         if (!is_bool($ssl)) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $ssl argument with the value %s in DUP_PRO_FTPcURL class constructor.')), $ssl);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $ssl argument with the value %s in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $ssl);
         }
 
         if (!is_bool($passive_mode)) {
-            throw new InvalidArgumentException(sprintf(DUP_PRO_U::esc_html__('Invalid $passive_mode argument with the value %s  in DUP_PRO_FTPcURL class constructor.')), $passive_mode);
+            throw new InvalidArgumentException(sprintf(esc_html__('Invalid $passive_mode argument with the value %s  in DUP_PRO_FTPcURL class constructor.', "duplicator-pro")), $passive_mode);
         }
 
         $this->server         = $server;
@@ -158,17 +158,19 @@ class DUP_PRO_FTPcURL
                 switch ($errno) {
                     case 6:
                     case 7:
-                        throw new Exception(DUP_PRO_U::esc_html__('Unable to connect to FTP server. Please check your FTP hostname, port, and active mode settings.'));
+                        throw new Exception(esc_html__('Unable to connect to FTP server. Please check your FTP hostname, port, and active mode settings.', "duplicator-pro") . " Error code: $errno");
+                    case 8:
+                        throw new Exception(esc_html__('Got an unexpected reply from FTP server.', "duplicator-pro") . " Error code: $errno");
                     case 9:
-                        throw new Exception(DUP_PRO_U::esc_html__('Unable to change FTP directory. Please ensure that you have permission on the server.'));
+                        throw new Exception(esc_html__('Unable to change FTP directory. Please ensure that you have permission on the server.', "duplicator-pro") . " Error code: $errno");
                     case 23:
-                        throw new Exception(DUP_PRO_U::esc_html__('Unable to download file from FTP server. Please ensure that you have enough disk space.'));
+                        throw new Exception(esc_html__('Unable to download file from FTP server. Please ensure that you have enough disk space.', "duplicator-pro") . " Error code: $errno");
                     case 28:
-                        throw new Exception(DUP_PRO_U::esc_html__('Connecting to FTP server timed out. Please check FTP hostname, port, username, password, and active mode settings.'));
+                        throw new Exception(esc_html__('Connecting to FTP server timed out. Please check FTP hostname, port, username, password, and active mode settings.', "duplicator-pro") . " Error code: $errno");
                     case 67:
-                        throw new Exception(DUP_PRO_U::esc_html__('Unable to login to FTP server. Please check your username and password.'));
+                        throw new Exception(esc_html__('Unable to login to FTP server. Please check your username and password.', "duplicator-pro") . " Error code: $errno");
                     default:
-                        throw new Exception(sprintf(DUP_PRO_U::esc_html__('Unable to connect to FTP. Error code: %s.'), $errno));
+                        throw new Exception(esc_html__('Unable to connect to FTP.', "duplicator-pro") . " Error code: $errno");
                 }
             }
         }
@@ -176,9 +178,9 @@ class DUP_PRO_FTPcURL
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($http_code >= 400) {
             if (isset($this->messages[$http_code])) {
-                throw new Exception(sprintf(DUP_PRO_U::esc_html__('Error code: %s.'), $this->messages[ $http_code ]));
+                throw new Exception(sprintf(esc_html__('Error code: %s.', "duplicator-pro"), $this->messages[ $http_code ]));
             } else {
-                throw new Exception(sprintf(DUP_PRO_U::esc_html__('Error code: %s.'), $http_code));
+                throw new Exception(sprintf(esc_html__('Error code: %s.', "duplicator-pro"), $http_code));
             }
         }
 
@@ -201,7 +203,7 @@ class DUP_PRO_FTPcURL
                 )
             );
         } catch (Exception $e) {
-            $message = sprintf(DUP_PRO_U::esc_html__('Error connecting to FTP server %1$s:%2$d. Exception Error: %3$s.'), $this->server, $this->port, $e->getMessage());
+            $message = sprintf(esc_html__('Error connecting to FTP server %1$s:%2$d. Exception Error: %3$s.', "duplicator-pro"), $this->server, $this->port, $e->getMessage());
             DUP_PRO_Log::trace($message);
             throw $e;
         }
@@ -347,8 +349,18 @@ class DUP_PRO_FTPcURL
                 )
             );
         } catch (Exception $e) {
-            DUP_PRO_Log::trace("Failed to delete " . $file_path . " from " . $this->server . ". Error code: " . $e->getCode() . ". Error Message:" . $e->getMessage());
-            return false;
+            // Sometimes file is deleted successfully even though Exception is thrown in curl_call
+            $fSize = -1;
+            try {
+                $fSize = $this->get_file_size($file_path);
+            } catch (Exception $ex) {
+                DUP_PRO_Log::trace("Possible problem deleting " . $file_path . " from " . $this->server . ". Exception error code: " . $ex->getCode() . ". Error Message: " . $ex->getMessage());
+                return false;
+            }
+            if ($fSize > 0) {
+                DUP_PRO_Log::trace("Failed to delete " . $file_path . " from " . $this->server . ". Exception error code: " . $e->getCode() . ". Error Message: " . $e->getMessage());
+                return false;
+            } // else consider it as successfully deleted
         }
         DUP_PRO_Log::trace("Successfully deleted " . $file_path . " from " . $this->server);
         return true;
@@ -369,7 +381,7 @@ class DUP_PRO_FTPcURL
     public function upload_chunk($source_filepath, $storage_folder, $max_upload_time_in_sec = 15, $offset = 0, $server_load_delay = 0, $dest_filename = '')
     {
         DUP_PRO_Log::trace("----------------------------");
-        DUP_PRO_Log::trace("FTP CURL CHUNK UPLOAD START");
+        DUP_PRO_Log::trace("FTP cURL CHUNK UPLOAD START");
         DUP_PRO_Log::trace("FTP CHUNK OFFSET IN=$offset");
 
         $ftp_upload_info = new FTPUploadInfo();
@@ -377,7 +389,7 @@ class DUP_PRO_FTPcURL
 
         $remote_file_path = !empty($dest_filename) ? $dest_filename : basename($source_filepath);
         try {
-            DUP_PRO_Log::trace("call upload chunk for FTP cURL");
+            DUP_PRO_Log::trace("Call upload_chunk for FTP cURL");
             $fp = fopen($source_filepath, 'rb');
             if ($fp) {
                 // Read file chunk data
@@ -391,9 +403,9 @@ class DUP_PRO_FTPcURL
                     }
 
                     $time_passed = time() - $start_time;
-                    if ($time_passed < $max_upload_time_in_sec) {
+                    if ($time_passed >= $max_upload_time_in_sec) {
                         $offset = ftell($fp);
-                        DUP_PRO_Log::trace("Timed out $max_upload_time_in_sec so saving off offset $offset");
+                        DUP_PRO_Log::trace("Timed out $max_upload_time_in_sec so saving offset $offset");
                         break;
                     }
                     if ($server_load_delay !== 0) {
@@ -402,40 +414,43 @@ class DUP_PRO_FTPcURL
                 }
                 $ftp_upload_info->next_offset = $offset;
             } else {
-                $message = sprintf(DUP_PRO_U::esc_html__('Error opening %1$ for cURL FTP'), $source_filepath);
-                DUP_PRO_Log::trace($message);
-                $ftp_upload_info->error_details = $message;
-                $ftp_upload_info->next_offset   = $offset;
+                $ftp_upload_info->error_details = sprintf(esc_html__('Error opening %1$ for cURL FTP', "duplicator-pro"), $source_filepath);
+                DUP_PRO_Log::trace("Error opening $source_filepath for cURL FTP");
+                $ftp_upload_info->next_offset = $offset;
             }
-            DUP_PRO_Log::trace("closing local file handle");
+            DUP_PRO_Log::trace("Closing local file handle");
             fclose($fp);
 
             $source_filesize = filesize($source_filepath);
             if ($source_filesize <= $ftp_upload_info->next_offset) {
                 $ftp_size = $this->get_file_size($remote_file_path);
 
-                if (!$ftp_size && $ftp_size != $source_filesize) {
-                    $error_message = sprintf(DUP_PRO_U::esc_html__('cURL FTP size mismatch for %1$s. Local file=%2$d bytes while server\'s file is %3$d bytes.'), $source_filepath, $source_filesize, $ftp_size);
-
-                    DUP_PRO_Log::trace($error_message);
-                    $ftp_upload_info->error_details = $error_message;
+                if ($ftp_size > 0 && $ftp_size != $source_filesize) {
+                    DUP_PRO_Log::trace("cURL FTP size mismatch for $source_filepath. Local file has $source_filesize bytes while server's file has $ftp_size bytes.");
+                    $ftp_upload_info->error_details = sprintf(esc_html__('cURL FTP size mismatch for %1$s. Local file=%2$d bytes while server\'s file is %3$d bytes.', "duplicator-pro"), $source_filepath, $source_filesize, $ftp_size);
                     $ftp_upload_info->fatal_error   = true;
 
                     $this->delete($remote_file_path);
                 } else {
-                    DUP_PRO_Log::trace("FTP cURL upload file finish");
+                    DUP_PRO_Log::trace("FTP cURL upload file finished");
                     $ftp_upload_info->success = true;
                 }
             } else {
-                DUP_PRO_Log::trace("FTP cURL upload file is not finished yet..");
+                DUP_PRO_Log::trace("FTP cURL upload file is not finished yet...");
             }
         } catch (Exception $e) {
-            $message                        = "Tried to upload file when connection wasn't opened. Info:" . $this->get_info() . ' Exception Error: ' . $e->getMessage();
-            $ftp_upload_info->error_details = $message;
-            DUP_PRO_Log::trace($message);
+            $ftp_upload_info->error_details = __(
+                "Tried to upload file when connection wasn't opened. Info: ",
+                "duplicator-pro"
+            ) .
+                $this->get_info() . " " . __('Exception Error: ', "duplicator-pro") . $e->getMessage();
+            DUP_PRO_Log::trace(
+                "Tried to upload file when connection wasn't opened. Info: " .
+                $this->get_info() . " Exception Error: " . $e->getMessage()
+            );
             $ftp_upload_info->next_offset = $offset;
         }
-        DUP_PRO_Log::trace("FTP CURL CHUNK UPLOAD END");
+        DUP_PRO_Log::trace("FTP cURL CHUNK UPLOAD END");
         DUP_PRO_Log::trace("----------------------------");
 
         return $ftp_upload_info;
@@ -507,7 +522,7 @@ class DUP_PRO_FTPcURL
         $ssl_string     = DUP_PRO_STR::boolToString($this->ssl);
         $passive_string = DUP_PRO_STR::boolToString($this->passive_mode);
 
-        return sprintf(DUP_PRO_U::esc_html__('Server:%1$s Port:%2$d User:%3$s Directory:%4$s SSL:%5$s Passive:%6$s.'), $this->server, $this->port, $this->username, $this->directory, $ssl_string, $passive_string);
+        return sprintf(esc_html__('Server:%1$s Port:%2$d User:%3$s Directory:%4$s SSL:%5$s Passive:%6$s.', "duplicator-pro"), $this->server, $this->port, $this->username, $this->directory, $ssl_string, $passive_string);
     }
 
     /**

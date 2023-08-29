@@ -136,12 +136,15 @@ class Facebook_Feed_Carousel extends Module_Base {
                 'type'    => Controls_Manager::SELECT,
                 'default' => '12',
                 'options' => array(
-                    '30' => esc_html__('30 Minutes', 'bdthemes-element-pack'),
-                    '1'  => esc_html__('1 Hour', 'bdthemes-element-pack'),
-                    '3'  => esc_html__('3 Hour', 'bdthemes-element-pack'),
-                    '6'  => esc_html__('6 Hour', 'bdthemes-element-pack'),
-                    '12' => esc_html__('12 Hour', 'bdthemes-element-pack'),
-                    '24' => esc_html__('24 Hour', 'bdthemes-element-pack'),
+                    '30'  => esc_html__('30 Minutes', 'bdthemes-element-pack'),
+                    '1'   => esc_html__('1 Hour', 'bdthemes-element-pack'),
+                    '3'   => esc_html__('3 Hour', 'bdthemes-element-pack'),
+                    '6'   => esc_html__('6 Hour', 'bdthemes-element-pack'),
+                    '12'  => esc_html__('12 Hour', 'bdthemes-element-pack'),
+                    '24'  => esc_html__('24 Hour', 'bdthemes-element-pack'),
+                    '7d'  => esc_html__('7 Days', 'bdthemes-element-pack'),
+                    '15d' => esc_html__('15 Days', 'bdthemes-element-pack'),
+                    '30d' => esc_html__('30 Days', 'bdthemes-element-pack'),
                 ),
                 'condition' => [
                     'data_cache' => 'yes',
@@ -465,7 +468,7 @@ class Facebook_Feed_Carousel extends Module_Base {
                     ]
                 ],
                 'selectors'   => [
-                    '{{WRAPPER}} .swiper-container' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
+                    '{{WRAPPER}} .swiper-carousel' => 'padding: {{SIZE}}{{UNIT}}; margin: 0 -{{SIZE}}{{UNIT}};'
                 ],
             ]
         );
@@ -1849,6 +1852,12 @@ class Facebook_Feed_Carousel extends Module_Base {
             $expire_time = 15 * MINUTE_IN_SECONDS;
         } elseif ('30' === $expire_value) {
             $expire_time = 30 * MINUTE_IN_SECONDS;
+        } elseif ('7d' === $expire_value) {
+            $expire_time = 7 * DAY_IN_SECONDS;
+        } elseif ('15d' === $expire_value) {
+            $expire_time = 15 * DAY_IN_SECONDS;
+        } elseif ('30d' === $expire_value) {
+            $expire_time = 30 * DAY_IN_SECONDS;
         }
 
         return $expire_time;
@@ -2030,7 +2039,7 @@ class Facebook_Feed_Carousel extends Module_Base {
 
         ?>
         <div <?php echo $this->get_render_attribute_string('carousel'); ?>>
-            <div class="swiper-container">
+            <div <?php echo $this->get_render_attribute_string('swiper'); ?>>
                 <div class="swiper-wrapper">
             <?php
         }

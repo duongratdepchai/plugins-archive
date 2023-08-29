@@ -49,9 +49,9 @@ class DUP_PRO_Package_Screen extends DUP_PRO_UI_Screen
         $guide    = '#guide-packs';
         $faq      = '#faq-package';
         $content .= "<b>References:</b><br/>"
-            . "<a href='https://snapcreek.com/duplicator/docs/guide/{$guide}' class='dup-references-user-guide' target='_sc-guide'>User Guide</a> | "
-            . "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/{$faq}' class='dup-references-faqs' target='_sc-guide'>FAQs</a> | "
-            . "<a href='https://snapcreek.com/duplicator/docs/quick-start/' class='dup-references-quick-start' target='_sc-guide'>Quick Start</a>";
+            . "<a href='" . DUPLICATOR_PRO_DUPLICATOR_DOCS_URL . $guide . "' class='dup-references-user-guide' target='_sc-guide'>User Guide</a> | "
+            . "<a href='" . DUPLICATOR_PRO_TECH_FAQ_URL . $faq . "' class='dup-references-faqs' target='_sc-guide'>FAQs</a> | "
+            . "<a href='" . DUPLICATOR_PRO_BLOG_URL . "knowledge-base-article-categories/quick-start/' class='dup-references-quick-start' target='_sc-guide'>Quick Start</a>";
 
         $this->screen->add_help_tab(array(
             'id'      => 'dpro_help_package_overview',
@@ -132,7 +132,7 @@ class DUP_PRO_Package_Screen extends DUP_PRO_UI_Screen
         $result .= DUP_PRO_U::__("An archive file can be saved as either a .zip file or .daf file.  A zip file is a common archive format used to compress and group files.  The daf file short for "
                 . "'Duplicator Archive Format' is a custom format used specifically  for working with larger packages and scale-ability issues on many shared hosting platforms.  Both "
                 . "formats work very similar the main difference is that the daf file can only be extracted using the installer.php file or the "
-                . "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q' class='dup-DAF-tool' target='_blank'>DAF extraction tool</a>.  The zip file can be used by other zip "
+                . "<a href='" . DUPLICATOR_PRO_BLOG_URL . "knowledge-base/how-to-work-with-daf-files-and-the-duparchive-extraction-tool' class='dup-DAF-tool' target='_blank'>DAF extraction tool</a>.  The zip file can be used by other zip "
                 . "tools like winrar/7zip/winzip or other client-side tools.");
         $result .= '<br/><hr/>';
 
@@ -161,7 +161,7 @@ class DUP_PRO_Package_Screen extends DUP_PRO_UI_Screen
 
         $result .= '<b><i class="fa fa-bolt"></i> ' . DUP_PRO_U::__("How to Install a Package") . '</b><br/>';
         $result .= DUP_PRO_U::__("Installing a package is pretty straight forward, however it does require a quick primer if you have never done it before.  To get going with a step by step "
-                . "guide and quick video check out the <a href='https://snapcreek.com/duplicator/docs/quick-start/' class='dup-quick-start' target='_blank'>quick start guide.</a>");
+                . "guide and quick video check out the <a href='" . DUPLICATOR_PRO_BLOG_URL . "knowledge-base-article-categories/quick-start/' class='dup-quick-start' target='_blank'>quick start guide.</a>");
         $result .= '<br/><br/>';
 
         return $result;

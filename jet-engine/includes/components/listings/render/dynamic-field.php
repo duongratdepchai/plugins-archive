@@ -24,7 +24,6 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 
 		public function default_settings() {
 			return array(
-				'prevent_wrap'                     => false,
 				'dynamic_field_source'             => 'object',
 				'dynamic_field_post_object'        => 'post_title',
 				'dynamic_field_relation_type'      => 'grandparents',
@@ -395,19 +394,15 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 		}
 
 		public function get_wrapper_classes() {
-			
-			$base_class    = $this->get_name();
+
+			$classes       = parent::get_wrapper_classes();
 			$settings      = $this->get_settings();
 			$field_display = ! empty( $settings['field_display'] ) ? esc_attr( $settings['field_display'] ) : 'inline';
 
-			$classes = array(
-				'jet-listing',
-				$base_class,
-				'display-' . $field_display
-			);
+			$classes[] = 'display-' . $field_display;
 
-			if ( ! empty( $settings['className'] ) ) {
-				$classes[] = esc_attr( $settings['className'] );
+			if ( $this->prevent_wrap() && 'inline' === $field_display ) {
+				$classes[] = $this->get_name() . '__inline-wrap';
 			}
 
 			return $classes;
@@ -432,16 +427,13 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 
 			ob_start();
 
-			$prevent_wrap = ! empty( $settings['prevent_wrap'] ) ? $settings['prevent_wrap'] : false;
-			$prevent_wrap = filter_var( $prevent_wrap, FILTER_VALIDATE_BOOLEAN );
-
 			$classes = $this->get_wrapper_classes();
 
-			if ( ! $prevent_wrap ) {
+			if ( ! $this->prevent_wrap() ) {
 				printf( '<div class="%s">', implode( ' ', $classes ) );
 			}
 
-				if ( 'inline' === $field_display ) {
+				if ( ! $this->prevent_wrap() && 'inline' === $field_display ) {
 					printf( '<div class="%s__inline-wrap">', $base_class );
 				}
 
@@ -465,11 +457,11 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Field' ) ) {
 
 				do_action( 'jet-engine/listing/dynamic-field/after-field', $this );
 
-				if ( 'inline' === $field_display ) {
+				if ( ! $this->prevent_wrap() && 'inline' === $field_display ) {
 					echo '</div>';
 				}
 
-			if ( ! $prevent_wrap ) {
+			if ( ! $this->prevent_wrap() ) {
 				echo '</div>';
 			}
 

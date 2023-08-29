@@ -184,8 +184,20 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Link' ) ) {
 
 				jet_engine()->listings->macros->set_macros_context( $object_context );
 
+				$format = '<span class="%1$s__label">%2$s</span>';
+
+				// If optimized DOM tweak is active and link not has an icon - we can use plain text
+				if ( $this->prevent_wrap() 
+					&& empty( $settings['link_icon'] ) 
+					&& ( empty( $settings['selected_link_icon'] ) 
+						|| empty( $settings['selected_link_icon']['value'] ) 
+					)
+				) {
+					$format = '%2$s';
+				}
+
 				$label = jet_engine()->listings->macros->do_macros( $label, $url );
-				$label = sprintf( '<span class="%1$s__label">%2$s</span>', $base_class, $label );
+				$label = sprintf( $format, $base_class, $label );
 
 				// Reset macros context to initial.
 				jet_engine()->listings->macros->set_macros_context( $macros_context );
@@ -230,24 +242,19 @@ if ( ! class_exists( 'Jet_Engine_Render_Dynamic_Link' ) ) {
 
 			ob_start();
 
-			$classes = array(
-				'jet-listing',
-				$base_class,
-			);
-
-			if ( ! empty( $settings['className'] ) ) {
-				$classes[] = esc_attr( $settings['className'] );
+			if ( ! $this->prevent_wrap() ) {
+				printf( '<%1$s class="%2$s">', $tag, implode( ' ', $this->get_wrapper_classes() ) );
 			}
 
-			printf( '<%1$s class="%2$s">', $tag, implode( ' ', $classes ) );
+			do_action( 'jet-engine/listing/dynamic-link/before-field', $this );
 
-				do_action( 'jet-engine/listing/dynamic-link/before-field', $this );
+			$this->render_link( $settings, $base_class );
 
-				$this->render_link( $settings, $base_class );
+			do_action( 'jet-engine/listing/dynamic-link/after-field', $this );
 
-				do_action( 'jet-engine/listing/dynamic-link/after-field', $this );
-
-			printf( '</%s>', $tag );
+			if ( ! $this->prevent_wrap() ) {
+				printf( '</%s>', $tag );
+			}
 
 			$content = ob_get_clean();
 
